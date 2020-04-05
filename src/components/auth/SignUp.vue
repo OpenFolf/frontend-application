@@ -14,7 +14,7 @@
     <v-card-text>
       <p>Your E-Mail will be your User Name.</p>
       <v-form>
-        <v-text-field label="E-Mail" type="email" v-model="email" />
+        <v-text-field label="E-Mail" type="email" v-model="signUpUsername" />
         <v-text-field
           label="Password"
           v-model="password"
@@ -49,7 +49,11 @@
     },
     methods: {
       signUp() {
-        this.$Amplify.Auth.signUp(this.signUpUsername)
+        this.$Amplify.Auth.signUp({
+          attributes: { email: this.signUpUsername },
+          username: this.signUpUsername,
+          password: this.password,
+        })
           .then((data) => {
             if (data.userConfirmed === false) {
               return this.$emit("authState", {
