@@ -48,7 +48,6 @@
 
 <script>
   import { mapGetters } from "vuex";
-  import { AmplifyEventBus } from "aws-amplify-vue";
   export default {
     name: "sign-in",
     data() {
@@ -63,17 +62,12 @@
       signIn() {
         this.$Amplify.Auth.signIn(this.signInUsername, this.password)
           .then(() => {
-            return AmplifyEventBus.$emit("authState", "signedIn");
-          })
-          .then(() => {
             this.password = "";
             this.signInUsername = "";
           })
           .catch((e) => {
             if (e.code && e.code === "UserNotConfirmedException") {
               this.$emit("authState", { msg: "confirmSignUp", username: this.signInUsername });
-              // AmplifyEventBus.$emit("localUser", { username: this.signInUsername });
-              // AmplifyEventBus.$emit("authState", "confirmSignUp");
             } else {
               // this.setError(e);
               console.log("error: ", e);

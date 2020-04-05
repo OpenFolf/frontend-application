@@ -4,16 +4,12 @@
 
 <script>
   import { mapActions } from "vuex";
-  import { AmplifyEventBus } from "aws-amplify-vue";
   export default {
-    name: "options",
+    name: "sign-out",
     methods: {
       ...mapActions(["signOut"]),
       signOutAWS() {
         this.$Amplify.Auth.signOut()
-          .then(() => {
-            return AmplifyEventBus.$emit("authState", "signedOut");
-          })
           .then(() => {
             this.signOut();
           })
