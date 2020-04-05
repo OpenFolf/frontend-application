@@ -47,6 +47,7 @@
 </template>
 
 <script>
+  import { AmplifyEventBus } from "aws-amplify-vue";
   import { mapGetters } from "vuex";
   export default {
     name: "sign-in",
@@ -64,6 +65,7 @@
           .then(() => {
             this.password = "";
             this.signInUsername = "";
+            return AmplifyEventBus.$emit("authState", "signedIn");
           })
           .catch((e) => {
             if (e.code && e.code === "UserNotConfirmedException") {

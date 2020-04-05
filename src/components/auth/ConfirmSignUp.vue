@@ -20,7 +20,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn @click="cofirm" color="#41b883">CONFIRM</v-btn>
+      <v-btn @click="confirm" color="#41b883">CONFIRM</v-btn>
       <v-spacer />
     </v-card-actions>
     <v-card-actions>
