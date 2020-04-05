@@ -14,23 +14,23 @@
     <v-card-text>
       <v-form>
         <!-- TODO: Not sure what is in the first text field -->
-        <v-text-field label="*" type="text" />
-        <v-text-field label="Confirmation Code" type="text" v-model="confirm" />
+        <v-text-field :label="userNameEmail" type="text" />
+        <v-text-field label="Confirmation Code" type="text" v-model="confirmCode" />
       </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn @click="fakeConfirm" color="#41b883">CONFIRM</v-btn>
+      <v-btn @click="cofirm" color="#41b883">CONFIRM</v-btn>
       <v-spacer />
     </v-card-actions>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="fakeResend">Lost the code? Resend code.</v-btn>
+      <v-btn x-small text @click="resend">Lost the code? Resend code.</v-btn>
       <v-spacer />
     </v-card-actions>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="fakeBackToSignIn">Back to Sign In.</v-btn>
+      <v-btn x-small text @click="signIn">Back to Sign In.</v-btn>
       <v-spacer />
     </v-card-actions>
   </v-card>
@@ -39,21 +39,41 @@
 <script>
   export default {
     name: "confirm-sign-up",
+    props: {
+      userNameEmail: {
+        type: String,
+        required: true,
+      },
+    },
     data() {
       return {
-        confirm: "",
+        confirmCode: "",
       };
     },
     methods: {
-      fakeConfirm() {
-        console.log("Fake 'Confirm' triggered");
+      confirm() {
+        this.$Amplify.Auth.confirmSignUp(this.userNameEmail, this.confirmCode)
+          .then(() => {
+            this.$emit("authState", { msg: "signIn" });
+          })
+          // .catch((e) => this.setError(e));
+          .catch((e) => console.log(e));
       },
-      fakeResend() {
-        console.log("Fake 'Resend code' triggered");
+      resend() {
+        this.$Amplify.Auth.resendSignUp(this.userNameEmail)
+          .then(() => {
+            // this.logger.info("resendSignUp success");
+            console.log("Resend success");
+          })
+          // .catch((e) => this.setError(e));
+          .catch((e) => console.log(e));
       },
-      fakeBackToSignIn() {
-        console.log("Fake 'Back to Signin' triggered");
+      signIn() {
+        this.$emit("authState", { msg: "signIn" });
       },
+      // setError(e) {
+      //   this.error = this.$Amplify.I18n.get(e.message || e);
+      // },
     },
   };
 </script>

@@ -8,6 +8,7 @@
       v-if="!signedIn && confirmSignUp"
       :user="userNameEmail"
       @authState="authHandler"
+      :userNameEmail="userNameEmail"
     />
     <reset-password
       v-if="!signedIn && resetPassword"
