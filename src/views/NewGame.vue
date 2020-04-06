@@ -1,31 +1,33 @@
 <template>
-  <v-card max-width="400" class="mx-auto">
-    <v-container>
-      <v-row dense>
-        <v-col cols="12">
-          <v-card color="#45651C">
-            <v-card-title class="headline">
-              Some kind of filter? <v-icon right>fa-filter</v-icon>
-            </v-card-title>
-          </v-card>
-        </v-col>
+  <v-content>
+    <v-card max-width="400" class="mx-auto">
+      <v-container>
+        <v-row dense>
+          <v-col cols="12">
+            <v-card color="#45651C">
+              <v-card-title class="headline">
+                Some kind of filter? <v-icon right>fa-filter</v-icon>
+              </v-card-title>
+            </v-card>
+          </v-col>
 
-        <v-col v-for="course in tempCoursesList" :key="course.id" cols="12">
-          <v-card :color="course.color" ripple>
-            <div class="d-flex flex-no-wrap justify-space-between">
-              <div>
-                <v-card-title class="" v-text="course.name"></v-card-title>
-                <v-card-subtitle>Baskets: {{ course.numbOfBaskets }}</v-card-subtitle>
+          <v-col v-for="course in tempCoursesList" :key="course.id" cols="12">
+            <v-card :color="course.color" ripple>
+              <div class="d-flex flex-no-wrap justify-space-between">
+                <div>
+                  <v-card-title class="" v-text="course.name"></v-card-title>
+                  <v-card-subtitle>Baskets: {{ course.numbOfBaskets }}</v-card-subtitle>
+                </div>
+                <v-avatar class="ma-3" size="125" tile>
+                  <v-img :src="course.image"></v-img>
+                </v-avatar>
               </div>
-              <v-avatar class="ma-3" size="125" tile>
-                <v-img :src="course.image"></v-img>
-              </v-avatar>
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+  </v-content>
 </template>
 
 <script>

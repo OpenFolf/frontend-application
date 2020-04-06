@@ -1,19 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import App from "../App.vue";
+import Auth from "@/views/Auth.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "App",
-  //   component: App,
-  // },
   {
     path: "/",
     name: "auth",
-    component: () => import("@/views/Auth.vue"),
+    component: Auth,
   },
   {
     path: "/home",
@@ -31,9 +26,9 @@ const routes = [
     component: () => import("@/views/JoinGame.vue"),
   },
   {
-    path: "/options",
-    name: "options",
-    component: () => import("@/views/Options.vue"),
+    path: "/stats",
+    name: "stats",
+    component: () => import("@/views/Stats.vue"),
   },
 ];
 

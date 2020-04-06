@@ -24,12 +24,11 @@ const mutations = {
 
 const actions = {
   async getCourseList(context) {
-    
     const response = await API.graphql(graphqlOperation(queries.listCourses));
     const courseList = response.data.listCourses.items;
-    
+
     context.commit("updateCourseList", courseList);
-},
+  },
 
   async addCourse(context, payload) {
     const courseDetails = {

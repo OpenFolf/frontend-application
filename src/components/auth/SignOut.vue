@@ -1,5 +1,8 @@
 <template>
-  <v-btn @click="signOut" class="my-5" color="#41b883">SIGN OUT</v-btn>
+  <!-- <v-btn @click="signOut" class="my-5" color="#41b883">SIGN OUT</v-btn> -->
+  <v-btn @click="signOut" class="my-5" color="#52c994">
+    <v-icon>fa-sign-out-alt</v-icon>
+  </v-btn>
 </template>
 
 <script>

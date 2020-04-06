@@ -1,17 +1,20 @@
 <template>
   <v-app>
-    <v-content>
-      <router-view />
-    </v-content>
+    <router-view />
+    <bottom-nav v-if="signedIn" />
   </v-app>
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
+  import BottomNav from "@/components/BottomNav.vue";
   export default {
     name: "App",
-
-    data: () => ({
-      tempData: "value",
-    }),
+    components: {
+      BottomNav,
+    },
+    computed: {
+      ...mapGetters(["signedIn"]),
+    },
   };
 </script>
