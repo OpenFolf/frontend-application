@@ -1,24 +1,17 @@
 <template>
-  <v-card max-width="505px" class="pa-5 mx-auto" color="#4E4E4E">
-    <sign-in v-if="!signedIn && signIn" @authState="authHandler" />
+  <v-card class="pa-5 mx-auto" color="transparent" flat>
+    <sign-in v-if="!signedIn && signIn" @authState="authHandler" :userNameEmail="userNameEmail" />
     <sign-up v-if="!signedIn && signUp" @authState="authHandler" />
-
-    <!-- TODO - pass the user email to the component -->
     <confirm-sign-up
       v-if="!signedIn && confirmSignUp"
-      :user="userNameEmail"
       @authState="authHandler"
       :userNameEmail="userNameEmail"
     />
     <reset-password
       v-if="!signedIn && resetPassword"
-      :user="userNameEmail"
       @authState="authHandler"
+      :userNameEmail="userNameEmail"
     />
-
-    <div :style="signOutObject" v-if="signedIn">
-      <sign-out />
-    </div>
   </v-card>
 </template>
 
@@ -27,7 +20,6 @@
   import SignUp from "@/components/auth/SignUp.vue";
   import ConfirmSignUp from "@/components/auth/ConfirmSignUp.vue";
   import ResetPassword from "@/components/auth/ResetPassword.vue";
-  import SignOut from "@/components/auth/SignOut.vue";
   import { mapGetters } from "vuex";
   export default {
     name: "authenticator",
@@ -36,7 +28,6 @@
       SignUp,
       ConfirmSignUp,
       ResetPassword,
-      SignOut,
     },
     data() {
       return {
@@ -45,12 +36,6 @@
         signUp: false,
         confirmSignUp: false,
         resetPassword: false,
-        signOutObject: {
-          display: "flex",
-          flexFlow: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        },
       };
     },
     methods: {
@@ -71,6 +56,7 @@
           this.signUp = false;
           this.confirmSignUp = false;
           this.resetPassword = false;
+          this.userNameEmail = e.username;
         } else if (e.msg == "confirmSignUp") {
           this.signIn = false;
           this.signUp = false;

@@ -8,13 +8,13 @@
         max-width="35"
         contain
       />
-      <v-toolbar-title>openFOLF - Sign Up</v-toolbar-title>
+      <v-toolbar-title>Sign Up</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
     <v-card-text>
       <p>Your E-Mail will be your User Name.</p>
       <v-form>
-        <v-text-field label="E-Mail" type="email" v-model="signUpUsername" />
+        <v-text-field label="E-Mail" type="email" v-model="localUserNameEmail" />
         <v-text-field
           label="Password"
           v-model="password"
@@ -42,7 +42,7 @@
     name: "sign-up",
     data() {
       return {
-        signUpUsername: "",
+        localUserNameEmail: "",
         password: "",
         showPassword: false,
       };
@@ -50,24 +50,24 @@
     methods: {
       signUp() {
         this.$Amplify.Auth.signUp({
-          attributes: { email: this.signUpUsername },
-          username: this.signUpUsername,
+          attributes: { email: this.localUserNameEmail },
+          username: this.localUserNameEmail,
           password: this.password,
         })
           .then((data) => {
             if (data.userConfirmed === false) {
               return this.$emit("authState", {
                 msg: "confirmSignUp",
-                username: this.signUpUsername,
+                username: this.localUserNameEmail,
               });
             }
-            return this.$emit("authState", { msg: "signIn", username: this.signUpUsername });
+            return this.$emit("authState", { msg: "signIn", username: this.localUserNameEmail });
           })
-          .catch((e) => this.setError(e));
+          .catch((e) => console.log("error: ", e));
+        // .catch((e) => this.setError(e));
       },
       signIn() {
-        // READY
-        this.$emit("authState", { msg: "signIn" });
+        this.$emit("authState", { msg: "signIn", username: this.localUserNameEmail });
       },
     },
   };

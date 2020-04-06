@@ -8,13 +8,12 @@
         max-width="35"
         contain
       />
-      <v-toolbar-title>openFOLF - Confirm Sign Up</v-toolbar-title>
+      <v-toolbar-title>Confirm Sign Up</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
     <v-card-text>
       <v-form>
-        <!-- TODO: Not sure what is in the first text field -->
-        <v-text-field :label="userNameEmail" type="text" />
+        <v-text-field label="E-Mail" v-model="localUserNameEmail" type="text" />
         <v-text-field label="Confirmation Code" type="text" v-model="confirmCode" />
       </v-form>
     </v-card-text>
@@ -47,33 +46,41 @@
     },
     data() {
       return {
+        localUserNameEmail: "",
         confirmCode: "",
       };
     },
     methods: {
       confirm() {
-        this.$Amplify.Auth.confirmSignUp(this.userNameEmail, this.confirmCode)
+        this.$Amplify.Auth.confirmSignUp(this.localUserNameEmail, this.confirmCode)
           .then(() => {
-            this.$emit("authState", { msg: "signIn" });
+            this.$emit("authState", { msg: "signIn", username: this.localUserNameEmail });
           })
-          // .catch((e) => this.setError(e));
-          .catch((e) => console.log(e));
+          .catch((e) => console.log("error: ", e));
+        // .catch((e) => this.setError(e));
       },
       resend() {
-        this.$Amplify.Auth.resendSignUp(this.userNameEmail)
+        this.$Amplify.Auth.resendSignUp(this.localUserNameEmail)
           .then(() => {
-            // this.logger.info("resendSignUp success");
             console.log("Resend success");
           })
-          // .catch((e) => this.setError(e));
-          .catch((e) => console.log(e));
+          .catch((e) => console.log("error: ", e));
+        // .catch((e) => this.setError(e));
       },
       signIn() {
-        this.$emit("authState", { msg: "signIn" });
+        this.$emit("authState", { msg: "signIn", username: this.localUserNameEmail });
       },
       // setError(e) {
       //   this.error = this.$Amplify.I18n.get(e.message || e);
       // },
+    },
+    watch: {
+      userNameEmail: {
+        immediate: true,
+        handler() {
+          this.localUserNameEmail = this.userNameEmail;
+        },
+      },
     },
   };
 </script>

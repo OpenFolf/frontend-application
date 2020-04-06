@@ -1,5 +1,5 @@
 <template>
-  <v-btn @click="signOutAWS" class="my-5" color="#41b883">SIGN OUT</v-btn>
+  <v-btn @click="signOut" class="my-5" color="#41b883">SIGN OUT</v-btn>
 </template>
 
 <script>
@@ -7,17 +7,18 @@
   export default {
     name: "sign-out",
     methods: {
-      ...mapActions(["signOut"]),
-      signOutAWS() {
+      ...mapActions(["setSignOut"]),
+      signOut() {
         this.$Amplify.Auth.signOut()
           .then(() => {
-            this.signOut();
+            this.setSignOut();
           })
-          .catch((e) => this.setError(e));
+          .catch((e) => console.log("error", e));
+        // .catch((e) => this.setError(e));
       },
-      setError: function(e) {
-        console.log("error", e);
-      },
+      // setError: function(e) {
+      //   console.log("error", e);
+      // },
     },
   };
 </script>
