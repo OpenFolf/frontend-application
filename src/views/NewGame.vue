@@ -11,15 +11,47 @@
             </v-card>
           </v-col>
 
-          <v-col v-for="course in tempCoursesList" :key="course.id" cols="12">
-            <v-card :color="course.color" ripple>
+          <v-col v-for="course in courses" :key="course.course_id" cols="12">
+            <v-card :color="course.color" ripple :to="{ name: 'lobby' }">
               <div class="d-flex flex-no-wrap justify-space-between">
                 <div>
                   <v-card-title class="" v-text="course.name"></v-card-title>
-                  <v-card-subtitle>Baskets: {{ course.numbOfBaskets }}</v-card-subtitle>
+                  <v-card-subtitle>Nr. of holes: {{ course.holes }}</v-card-subtitle>
+                  <span>
+                    <v-avatar
+                      v-if="course.tee_1_clr !== ''"
+                      class="ma-3"
+                      size="25"
+                      tile
+                      :style="{
+                        backgroundColor: `#${course.tee_1_clr}`,
+                      }"
+                    />
+                    <v-avatar
+                      v-if="course.tee_2_clr !== ''"
+                      class="ma-3"
+                      size="25"
+                      tile
+                      :style="{ backgroundColor: `#${course.tee_2_clr}` }"
+                    />
+                    <v-avatar
+                      v-if="course.tee_3_clr !== ''"
+                      class="ma-3"
+                      size="25"
+                      tile
+                      :style="{ backgroundColor: `#${course.tee_3_clr}` }"
+                    />
+                    <v-avatar
+                      v-if="course.tee_4_clr !== ''"
+                      class="ma-3"
+                      size="25"
+                      tile
+                      :style="{ backgroundColor: `#${course.tee_4_clr}` }"
+                    />
+                  </span>
                 </div>
-                <v-avatar class="ma-3" size="125" tile>
-                  <v-img :src="course.image"></v-img>
+                <v-avatar class="ma-3" size="100" tile>
+                  <v-img :src="course.course_photo_url_medium"></v-img>
                 </v-avatar>
               </div>
             </v-card>
@@ -35,55 +67,66 @@
     name: "new-game",
     data() {
       return {
-        tempCoursesList: [
+        courses: [
           {
-            id: 1,
-            name: "Fossvogur",
-            location: "Reykjavík",
-            numbOfBaskets: "9",
-            description:
-              "A fairly easy 9 hole course set in a tranquil public park straddling a tiny brook and a collection of ponds dividing the city of Reykjavík and the town of Kópavogur. Featuring moderate elevation changes (notably on hole 3) there are various water hazards and an assortment of wooded OB areas. Although containing only 9 baskets, the experienced player rarely shoots the custom 9 hole layout, opting rather for a modified 18 hole one as featured in the weekly Tuesday league.",
-            image: require("@/assets/fossvogur.jpg"),
-            color: "#8FAE58",
+            course_id: "4726",
+            name: "Klambratúni Park",
+            holes: "9",
+            city: "Reykjavik",
+            state: "0",
+            country: "Iceland",
+            zipcode: "",
+            latitude: "64.137460",
+            longitude: "-21.913551",
+            street_addr: "",
+            reviews: "5",
+            rating: "2.80",
+            private: "0",
+            paytoplay: "0",
+            tee_1_clr: "",
+            tee_2_clr: "FFFFFF",
+            tee_3_clr: "",
+            tee_4_clr: "",
+            dgcr_url: "https://www.dgcoursereview.com/course.php?id=4726",
+            dgcr_mobile_url: "https://www.dgcoursereview.com/mobile/course.php?id=4726",
+            rating_img: "https://www.dgcoursereview.com/images/rating/discs_3.png",
+            rating_img_small: "https://www.dgcoursereview.com/images/rating/discs_sm_3.png",
+            course_photo_url_thumb:
+              "https://www.dgcoursereview.com/course_pics/4726/860cb07b_t.jpg",
+            course_photo_url_medium:
+              "https://www.dgcoursereview.com/course_pics/4726/860cb07b_m.jpg",
+            course_photo_hole: "3",
+            course_photo_caption: "Hole #3 Tee",
           },
           {
-            id: 2,
-            name: "Grafarholt",
-            location: "Reykjavík",
-            numbOfBaskets: "9",
-            description:
-              "Located in woodlands, it has the country's longest hole. There is also a driving range. Three tees per hole.",
-            image: require("@/assets/grafarholt.jpg"),
-            color: "#45651C",
-          },
-          {
-            id: 3,
-            name: "Gufunes",
-            location: "Reykjavík",
-            numbOfBaskets: "18",
-            description: "Open area with bushes, small trees and occasional hills.",
-            image: require("@/assets/gufunes.jpg"),
-            color: "#8FAE58",
-          },
-          {
-            id: 4,
-            name: "Klambratún",
-            location: "Reykjavík",
-            numbOfBaskets: "9",
-            description:
-              "This is a course that was installed new in July of 2011, it's in the center of Reykjavik in a park and is easy to find. The name of the park is Klambratúni. Great for beginners.",
-            image: require("@/assets/klambratun.jpg"),
-            color: "#45651C",
-          },
-          {
-            id: 5,
-            name: "Laugardalur",
-            location: "Reykjavík",
-            numbOfBaskets: "10",
-            description:
-              "This is a short course located in a public park near downtown Reykavík. On each hole there are 2 pin placements, red and white. The white tee pads are concrete while the shorter red ones are grass tee pads.",
-            image: require("@/assets/laugardalur.jpg"),
-            color: "#8FAE58",
+            course_id: "10562",
+            name: "Eiðsvöllur",
+            holes: "5",
+            city: "Eiðsvöllur",
+            state: "0",
+            country: "Iceland",
+            zipcode: "",
+            latitude: "65.686300",
+            longitude: "-18.090400",
+            street_addr: "",
+            reviews: "1",
+            rating: "3.00",
+            private: "0",
+            paytoplay: "0",
+            tee_1_clr: "FF0000",
+            tee_2_clr: "FFFFFF",
+            tee_3_clr: "0000CC",
+            tee_4_clr: "FFCC00",
+            dgcr_url: "https://www.dgcoursereview.com/course.php?id=10562",
+            dgcr_mobile_url: "https://www.dgcoursereview.com/mobile/course.php?id=10562",
+            rating_img: "https://www.dgcoursereview.com/images/rating/discs_3.png",
+            rating_img_small: "https://www.dgcoursereview.com/images/rating/discs_sm_3.png",
+            course_photo_url_thumb:
+              "https://www.dgcoursereview.com/course_pics/10562/48b96c0e_t.jpg",
+            course_photo_url_medium:
+              "https://www.dgcoursereview.com/course_pics/10562/48b96c0e_m.jpg",
+            course_photo_hole: "2",
+            course_photo_caption: "Hole #2 Tee",
           },
         ],
       };
