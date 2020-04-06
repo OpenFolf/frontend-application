@@ -12,13 +12,13 @@
       <li>{{ joinedUser.userName }}</li>
     </ul>
     <br />
-    <v-btn :to="{ name: 'scoreCard' }">Start Game</v-btn>
+    <v-btn :to="{ name: 'scorecard' }">Start Game</v-btn>
   </div>
 </template>
 
 <script>
   export default {
-    name: "Lobby",
+    name: "lobby",
 
     data() {
       return {
