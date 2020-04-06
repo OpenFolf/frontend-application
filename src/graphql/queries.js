@@ -10,6 +10,7 @@ export const getUser = /* GraphQL */ `
       games {
         items {
           id
+          gameStatus
         }
         nextToken
       }
@@ -21,21 +22,50 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
-      favoritecourses {
+      favoriteCourses {
         items {
           id
           name
-          courselength
-          yearestablished
-          parinfo
-          teetype
-          baskettype
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
           description
-          streetaddress
-          postalcode
           location
         }
         nextToken
+      }
+      currentGame {
+        id
+        course {
+          id
+          name
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
+          description
+          location
+        }
+        owner {
+          id
+          username
+          email
+        }
+        players {
+          nextToken
+        }
+        gameStatus
       }
     }
   }
@@ -57,8 +87,12 @@ export const listUsers = /* GraphQL */ `
         friends {
           nextToken
         }
-        favoritecourses {
+        favoriteCourses {
           nextToken
+        }
+        currentGame {
+          id
+          gameStatus
         }
       }
       nextToken
@@ -72,17 +106,19 @@ export const getGame = /* GraphQL */ `
       course {
         id
         name
+        holeCount
         holes {
           nextToken
         }
-        courselength
-        yearestablished
-        parinfo
-        teetype
-        baskettype
+        courseLength
+        yearEstablished
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        teeType
+        basketType
         description
-        streetaddress
-        postalcode
         location
       }
       owner {
@@ -95,8 +131,12 @@ export const getGame = /* GraphQL */ `
         friends {
           nextToken
         }
-        favoritecourses {
+        favoriteCourses {
           nextToken
+        }
+        currentGame {
+          id
+          gameStatus
         }
       }
       players {
@@ -107,6 +147,7 @@ export const getGame = /* GraphQL */ `
         }
         nextToken
       }
+      gameStatus
     }
   }
 `;
@@ -122,14 +163,16 @@ export const listGames = /* GraphQL */ `
         course {
           id
           name
-          courselength
-          yearestablished
-          parinfo
-          teetype
-          baskettype
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
           description
-          streetaddress
-          postalcode
           location
         }
         owner {
@@ -140,6 +183,7 @@ export const listGames = /* GraphQL */ `
         players {
           nextToken
         }
+        gameStatus
       }
       nextToken
     }
@@ -150,23 +194,31 @@ export const getCourse = /* GraphQL */ `
     getCourse(id: $id) {
       id
       name
+      holeCount
       holes {
         items {
           id
           no
-          nickname
-          par
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          redLength
+          whiteLength
+          blueLength
+          yellowLength
         }
         nextToken
       }
-      courselength
-      yearestablished
-      parinfo
-      teetype
-      baskettype
+      courseLength
+      yearEstablished
+      redPar
+      whitePar
+      bluePar
+      yellowPar
+      teeType
+      basketType
       description
-      streetaddress
-      postalcode
       location
     }
   }
@@ -181,17 +233,19 @@ export const listCourses = /* GraphQL */ `
       items {
         id
         name
+        holeCount
         holes {
           nextToken
         }
-        courselength
-        yearestablished
-        parinfo
-        teetype
-        baskettype
+        courseLength
+        yearEstablished
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        teeType
+        basketType
         description
-        streetaddress
-        postalcode
         location
       }
       nextToken
@@ -203,24 +257,32 @@ export const getHole = /* GraphQL */ `
     getHole(id: $id) {
       id
       no
-      nickname
       course {
         id
         name
+        holeCount
         holes {
           nextToken
         }
-        courselength
-        yearestablished
-        parinfo
-        teetype
-        baskettype
+        courseLength
+        yearEstablished
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        teeType
+        basketType
         description
-        streetaddress
-        postalcode
         location
       }
-      par
+      redPar
+      whitePar
+      bluePar
+      yellowPar
+      redLength
+      whiteLength
+      blueLength
+      yellowLength
     }
   }
 `;
@@ -234,21 +296,29 @@ export const listHoles = /* GraphQL */ `
       items {
         id
         no
-        nickname
         course {
           id
           name
-          courselength
-          yearestablished
-          parinfo
-          teetype
-          baskettype
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
           description
-          streetaddress
-          postalcode
           location
         }
-        par
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        redLength
+        whiteLength
+        blueLength
+        yellowLength
       }
       nextToken
     }

@@ -1,0 +1,48 @@
+type User @model {
+    id: ID!
+    username: String
+    email: String
+    games: [ Game ] @connection
+    friends: [ User ] @connection
+    favoriteCourses: [ Course ] @connection
+    currentGame: Game @connection
+}
+
+type Game @model {
+    id: ID!
+    course: Course @connection
+    owner: User @connection
+    players: [ User ] @connection
+    gameStatus: String
+}
+
+type Course @model {
+    id: ID!
+    name: String
+    holeCount: String
+    holes: [ Hole ] @connection
+    courseLength: String
+    yearEstablished: String
+    redPar: String
+    whitePar: String
+    bluePar: String
+    yellowPar: String
+    teeType: String
+    basketType: String
+    description: String
+    location: String
+}
+
+type Hole @model {
+    id: ID!
+    no: String
+    course: Course @connection
+    redPar: String
+    whitePar: String
+    bluePar: String
+    yellowPar: String
+    redLength: String
+    whiteLength: String
+    blueLength: String
+    yellowLength: String
+}

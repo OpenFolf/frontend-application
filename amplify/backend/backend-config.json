@@ -7,7 +7,7 @@
 		}
 	},
 	"api": {
-		"frontendapplication": {
+		"frontendapplication2": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {
