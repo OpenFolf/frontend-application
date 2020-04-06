@@ -13,12 +13,12 @@ const routes = [
   {
     path: "/home",
     name: "home",
-    component: () => import("@/views/Home.vue"),
+    component: () => import(/* webpackChunkName: "home" */ "@/views/Home.vue"),
   },
   {
     path: "/new-game",
     name: "new-game",
-    component: () => import("@/views/NewGame.vue"),
+    component: () => import(/* webpackChunkName: "new-game" */ "@/views/NewGame.vue"),
   },
   {
     path: "/lobby",
@@ -28,12 +28,12 @@ const routes = [
   {
     path: "/join-game",
     name: "join-game",
-    component: () => import("@/views/JoinGame.vue"),
+    component: () => import(/* webpackChunkName: "join-game" */ "@/views/JoinGame.vue"),
   },
   {
     path: "/stats",
     name: "stats",
-    component: () => import("@/views/Stats.vue"),
+    component: () => import(/* webpackChunkName: "stats" */ "@/views/Stats.vue"),
   },
 ];
 

@@ -403,7 +403,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "favoritecourses",
+          "name" : "favoriteCourses",
           "description" : null,
           "args" : [ {
             "name" : "filter",
@@ -445,6 +445,17 @@
           "type" : {
             "kind" : "OBJECT",
             "name" : "ModelCourseConnection",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "currentGame",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "OBJECT",
+            "name" : "Game",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -595,6 +606,17 @@
           },
           "isDeprecated" : false,
           "deprecationReason" : null
+        }, {
+          "name" : "gameStatus",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
         } ],
         "inputFields" : null,
         "interfaces" : [ ],
@@ -621,6 +643,17 @@
           "deprecationReason" : null
         }, {
           "name" : "name",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "holeCount",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -678,7 +711,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "courselength",
+          "name" : "courseLength",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -689,7 +722,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "yearestablished",
+          "name" : "yearEstablished",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -700,7 +733,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "parinfo",
+          "name" : "redPar",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -711,7 +744,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "teetype",
+          "name" : "whitePar",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -722,7 +755,40 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "baskettype",
+          "name" : "bluePar",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "teeType",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "basketType",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -734,28 +800,6 @@
           "deprecationReason" : null
         }, {
           "name" : "description",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "streetaddress",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "postalcode",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -841,17 +885,6 @@
           "args" : [ ],
           "type" : {
             "kind" : "SCALAR",
-            "name" : "Int",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "nickname",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
             "name" : "String",
             "ofType" : null
           },
@@ -869,7 +902,84 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "par",
+          "name" : "redPar",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "whitePar",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "bluePar",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "redLength",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "whiteLength",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "blueLength",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "yellowLength",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -882,15 +992,6 @@
         } ],
         "inputFields" : null,
         "interfaces" : [ ],
-        "enumValues" : null,
-        "possibleTypes" : null
-      }, {
-        "kind" : "SCALAR",
-        "name" : "Int",
-        "description" : "Built-in Int",
-        "fields" : null,
-        "inputFields" : null,
-        "interfaces" : null,
         "enumValues" : null,
         "possibleTypes" : null
       }, {
@@ -912,12 +1013,12 @@
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
-            "name" : "ModelIntInput",
+            "name" : "ModelStringInput",
             "ofType" : null
           },
           "defaultValue" : null
         }, {
-          "name" : "nickname",
+          "name" : "redPar",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -926,7 +1027,61 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "par",
+          "name" : "whitePar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "bluePar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "redLength",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "whiteLength",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "blueLength",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowLength",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -1248,96 +1403,11 @@
         "enumValues" : null,
         "possibleTypes" : null
       }, {
-        "kind" : "INPUT_OBJECT",
-        "name" : "ModelIntInput",
-        "description" : null,
+        "kind" : "SCALAR",
+        "name" : "Int",
+        "description" : "Built-in Int",
         "fields" : null,
-        "inputFields" : [ {
-          "name" : "ne",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Int",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "eq",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Int",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "le",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Int",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "lt",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Int",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "ge",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Int",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "gt",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Int",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "between",
-          "description" : null,
-          "type" : {
-            "kind" : "LIST",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "Int",
-              "ofType" : null
-            }
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "attributeExists",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "attributeType",
-          "description" : null,
-          "type" : {
-            "kind" : "ENUM",
-            "name" : "ModelAttributeTypes",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        } ],
+        "inputFields" : null,
         "interfaces" : null,
         "enumValues" : null,
         "possibleTypes" : null
@@ -1611,6 +1681,15 @@
           },
           "defaultValue" : null
         }, {
+          "name" : "gameStatus",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
           "name" : "and",
           "description" : null,
           "type" : {
@@ -1708,7 +1787,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "courselength",
+          "name" : "holeCount",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -1717,7 +1796,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "yearestablished",
+          "name" : "courseLength",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -1726,7 +1805,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "parinfo",
+          "name" : "yearEstablished",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -1735,7 +1814,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "teetype",
+          "name" : "redPar",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -1744,7 +1823,43 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "baskettype",
+          "name" : "whitePar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "bluePar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "teeType",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "basketType",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -1754,24 +1869,6 @@
           "defaultValue" : null
         }, {
           "name" : "description",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "streetaddress",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "postalcode",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2274,6 +2371,15 @@
           },
           "defaultValue" : null
         }, {
+          "name" : "userCurrentGameId",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "ID",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
           "name" : "gamePlayersId",
           "description" : null,
           "type" : {
@@ -2394,6 +2500,15 @@
           },
           "defaultValue" : null
         }, {
+          "name" : "userCurrentGameId",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "ID",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
           "name" : "gamePlayersId",
           "description" : null,
           "type" : {
@@ -2439,6 +2554,15 @@
           },
           "defaultValue" : null
         }, {
+          "name" : "gameStatus",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
           "name" : "userGamesId",
           "description" : null,
           "type" : {
@@ -2475,6 +2599,15 @@
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
+          "name" : "gameStatus",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
           "name" : "and",
           "description" : null,
           "type" : {
@@ -2529,6 +2662,15 @@
               "name" : "ID",
               "ofType" : null
             }
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "gameStatus",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
           },
           "defaultValue" : null
         }, {
@@ -2604,7 +2746,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "courselength",
+          "name" : "holeCount",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2613,7 +2755,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "yearestablished",
+          "name" : "courseLength",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2622,7 +2764,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "parinfo",
+          "name" : "yearEstablished",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2631,7 +2773,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "teetype",
+          "name" : "redPar",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2640,7 +2782,43 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "baskettype",
+          "name" : "whitePar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "bluePar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "teeType",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "basketType",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2658,24 +2836,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "streetaddress",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "postalcode",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "location",
           "description" : null,
           "type" : {
@@ -2685,7 +2845,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "userFavoritecoursesId",
+          "name" : "userFavoriteCoursesId",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2712,7 +2872,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "courselength",
+          "name" : "holeCount",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2721,7 +2881,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "yearestablished",
+          "name" : "courseLength",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2730,7 +2890,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "parinfo",
+          "name" : "yearEstablished",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2739,7 +2899,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "teetype",
+          "name" : "redPar",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2748,7 +2908,43 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "baskettype",
+          "name" : "whitePar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "bluePar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "teeType",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "basketType",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2758,24 +2954,6 @@
           "defaultValue" : null
         }, {
           "name" : "description",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "streetaddress",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "postalcode",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2859,7 +3037,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "courselength",
+          "name" : "holeCount",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2868,7 +3046,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "yearestablished",
+          "name" : "courseLength",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2877,7 +3055,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "parinfo",
+          "name" : "yearEstablished",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2886,7 +3064,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "teetype",
+          "name" : "redPar",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2895,7 +3073,43 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "baskettype",
+          "name" : "whitePar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "bluePar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "teeType",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "basketType",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2913,24 +3127,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "streetaddress",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "postalcode",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "location",
           "description" : null,
           "type" : {
@@ -2940,7 +3136,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "userFavoritecoursesId",
+          "name" : "userFavoriteCoursesId",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2989,12 +3185,12 @@
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
-            "name" : "Int",
+            "name" : "String",
             "ofType" : null
           },
           "defaultValue" : null
         }, {
-          "name" : "nickname",
+          "name" : "redPar",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -3003,7 +3199,61 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "par",
+          "name" : "whitePar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "bluePar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "redLength",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "whiteLength",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "blueLength",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowLength",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -3043,12 +3293,12 @@
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
-            "name" : "ModelIntInput",
+            "name" : "ModelStringInput",
             "ofType" : null
           },
           "defaultValue" : null
         }, {
-          "name" : "nickname",
+          "name" : "redPar",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -3057,7 +3307,61 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "par",
+          "name" : "whitePar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "bluePar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "redLength",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "whiteLength",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "blueLength",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowLength",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -3127,12 +3431,12 @@
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
-            "name" : "Int",
+            "name" : "String",
             "ofType" : null
           },
           "defaultValue" : null
         }, {
-          "name" : "nickname",
+          "name" : "redPar",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -3141,7 +3445,61 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "par",
+          "name" : "whitePar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "bluePar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowPar",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "redLength",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "whiteLength",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "blueLength",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "yellowLength",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -3454,6 +3812,100 @@
             "kind" : "SCALAR",
             "name" : "Boolean",
             "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "attributeExists",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Boolean",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "attributeType",
+          "description" : null,
+          "type" : {
+            "kind" : "ENUM",
+            "name" : "ModelAttributeTypes",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        } ],
+        "interfaces" : null,
+        "enumValues" : null,
+        "possibleTypes" : null
+      }, {
+        "kind" : "INPUT_OBJECT",
+        "name" : "ModelIntInput",
+        "description" : null,
+        "fields" : null,
+        "inputFields" : [ {
+          "name" : "ne",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "eq",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "le",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "lt",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "ge",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "gt",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "between",
+          "description" : null,
+          "type" : {
+            "kind" : "LIST",
+            "name" : null,
+            "ofType" : {
+              "kind" : "SCALAR",
+              "name" : "Int",
+              "ofType" : null
+            }
           },
           "defaultValue" : null
         }, {
@@ -4270,23 +4722,6 @@
         "onFragment" : false,
         "onField" : false
       }, {
-        "name" : "deprecated",
-        "description" : null,
-        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
-        "args" : [ {
-          "name" : "reason",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : "\"No longer supported\""
-        } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
         "name" : "aws_auth",
         "description" : "Directs the schema to enforce authorization on a field",
         "locations" : [ "FIELD_DEFINITION" ],
@@ -4324,6 +4759,23 @@
             }
           },
           "defaultValue" : null
+        } ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
+        "name" : "deprecated",
+        "description" : null,
+        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
+        "args" : [ {
+          "name" : "reason",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : "\"No longer supported\""
         } ],
         "onOperation" : false,
         "onFragment" : false,

@@ -10,6 +10,7 @@ export const onCreateUser = /* GraphQL */ `
       games {
         items {
           id
+          gameStatus
         }
         nextToken
       }
@@ -21,21 +22,50 @@ export const onCreateUser = /* GraphQL */ `
         }
         nextToken
       }
-      favoritecourses {
+      favoriteCourses {
         items {
           id
           name
-          courselength
-          yearestablished
-          parinfo
-          teetype
-          baskettype
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
           description
-          streetaddress
-          postalcode
           location
         }
         nextToken
+      }
+      currentGame {
+        id
+        course {
+          id
+          name
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
+          description
+          location
+        }
+        owner {
+          id
+          username
+          email
+        }
+        players {
+          nextToken
+        }
+        gameStatus
       }
     }
   }
@@ -49,6 +79,7 @@ export const onUpdateUser = /* GraphQL */ `
       games {
         items {
           id
+          gameStatus
         }
         nextToken
       }
@@ -60,21 +91,50 @@ export const onUpdateUser = /* GraphQL */ `
         }
         nextToken
       }
-      favoritecourses {
+      favoriteCourses {
         items {
           id
           name
-          courselength
-          yearestablished
-          parinfo
-          teetype
-          baskettype
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
           description
-          streetaddress
-          postalcode
           location
         }
         nextToken
+      }
+      currentGame {
+        id
+        course {
+          id
+          name
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
+          description
+          location
+        }
+        owner {
+          id
+          username
+          email
+        }
+        players {
+          nextToken
+        }
+        gameStatus
       }
     }
   }
@@ -88,6 +148,7 @@ export const onDeleteUser = /* GraphQL */ `
       games {
         items {
           id
+          gameStatus
         }
         nextToken
       }
@@ -99,21 +160,50 @@ export const onDeleteUser = /* GraphQL */ `
         }
         nextToken
       }
-      favoritecourses {
+      favoriteCourses {
         items {
           id
           name
-          courselength
-          yearestablished
-          parinfo
-          teetype
-          baskettype
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
           description
-          streetaddress
-          postalcode
           location
         }
         nextToken
+      }
+      currentGame {
+        id
+        course {
+          id
+          name
+          holeCount
+          courseLength
+          yearEstablished
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          teeType
+          basketType
+          description
+          location
+        }
+        owner {
+          id
+          username
+          email
+        }
+        players {
+          nextToken
+        }
+        gameStatus
       }
     }
   }
@@ -125,17 +215,19 @@ export const onCreateGame = /* GraphQL */ `
       course {
         id
         name
+        holeCount
         holes {
           nextToken
         }
-        courselength
-        yearestablished
-        parinfo
-        teetype
-        baskettype
+        courseLength
+        yearEstablished
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        teeType
+        basketType
         description
-        streetaddress
-        postalcode
         location
       }
       owner {
@@ -148,8 +240,12 @@ export const onCreateGame = /* GraphQL */ `
         friends {
           nextToken
         }
-        favoritecourses {
+        favoriteCourses {
           nextToken
+        }
+        currentGame {
+          id
+          gameStatus
         }
       }
       players {
@@ -160,6 +256,7 @@ export const onCreateGame = /* GraphQL */ `
         }
         nextToken
       }
+      gameStatus
     }
   }
 `;
@@ -170,17 +267,19 @@ export const onUpdateGame = /* GraphQL */ `
       course {
         id
         name
+        holeCount
         holes {
           nextToken
         }
-        courselength
-        yearestablished
-        parinfo
-        teetype
-        baskettype
+        courseLength
+        yearEstablished
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        teeType
+        basketType
         description
-        streetaddress
-        postalcode
         location
       }
       owner {
@@ -193,8 +292,12 @@ export const onUpdateGame = /* GraphQL */ `
         friends {
           nextToken
         }
-        favoritecourses {
+        favoriteCourses {
           nextToken
+        }
+        currentGame {
+          id
+          gameStatus
         }
       }
       players {
@@ -205,6 +308,7 @@ export const onUpdateGame = /* GraphQL */ `
         }
         nextToken
       }
+      gameStatus
     }
   }
 `;
@@ -215,17 +319,19 @@ export const onDeleteGame = /* GraphQL */ `
       course {
         id
         name
+        holeCount
         holes {
           nextToken
         }
-        courselength
-        yearestablished
-        parinfo
-        teetype
-        baskettype
+        courseLength
+        yearEstablished
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        teeType
+        basketType
         description
-        streetaddress
-        postalcode
         location
       }
       owner {
@@ -238,8 +344,12 @@ export const onDeleteGame = /* GraphQL */ `
         friends {
           nextToken
         }
-        favoritecourses {
+        favoriteCourses {
           nextToken
+        }
+        currentGame {
+          id
+          gameStatus
         }
       }
       players {
@@ -250,6 +360,7 @@ export const onDeleteGame = /* GraphQL */ `
         }
         nextToken
       }
+      gameStatus
     }
   }
 `;
@@ -258,23 +369,31 @@ export const onCreateCourse = /* GraphQL */ `
     onCreateCourse {
       id
       name
+      holeCount
       holes {
         items {
           id
           no
-          nickname
-          par
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          redLength
+          whiteLength
+          blueLength
+          yellowLength
         }
         nextToken
       }
-      courselength
-      yearestablished
-      parinfo
-      teetype
-      baskettype
+      courseLength
+      yearEstablished
+      redPar
+      whitePar
+      bluePar
+      yellowPar
+      teeType
+      basketType
       description
-      streetaddress
-      postalcode
       location
     }
   }
@@ -284,23 +403,31 @@ export const onUpdateCourse = /* GraphQL */ `
     onUpdateCourse {
       id
       name
+      holeCount
       holes {
         items {
           id
           no
-          nickname
-          par
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          redLength
+          whiteLength
+          blueLength
+          yellowLength
         }
         nextToken
       }
-      courselength
-      yearestablished
-      parinfo
-      teetype
-      baskettype
+      courseLength
+      yearEstablished
+      redPar
+      whitePar
+      bluePar
+      yellowPar
+      teeType
+      basketType
       description
-      streetaddress
-      postalcode
       location
     }
   }
@@ -310,23 +437,31 @@ export const onDeleteCourse = /* GraphQL */ `
     onDeleteCourse {
       id
       name
+      holeCount
       holes {
         items {
           id
           no
-          nickname
-          par
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          redLength
+          whiteLength
+          blueLength
+          yellowLength
         }
         nextToken
       }
-      courselength
-      yearestablished
-      parinfo
-      teetype
-      baskettype
+      courseLength
+      yearEstablished
+      redPar
+      whitePar
+      bluePar
+      yellowPar
+      teeType
+      basketType
       description
-      streetaddress
-      postalcode
       location
     }
   }
@@ -336,24 +471,32 @@ export const onCreateHole = /* GraphQL */ `
     onCreateHole {
       id
       no
-      nickname
       course {
         id
         name
+        holeCount
         holes {
           nextToken
         }
-        courselength
-        yearestablished
-        parinfo
-        teetype
-        baskettype
+        courseLength
+        yearEstablished
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        teeType
+        basketType
         description
-        streetaddress
-        postalcode
         location
       }
-      par
+      redPar
+      whitePar
+      bluePar
+      yellowPar
+      redLength
+      whiteLength
+      blueLength
+      yellowLength
     }
   }
 `;
@@ -362,24 +505,32 @@ export const onUpdateHole = /* GraphQL */ `
     onUpdateHole {
       id
       no
-      nickname
       course {
         id
         name
+        holeCount
         holes {
           nextToken
         }
-        courselength
-        yearestablished
-        parinfo
-        teetype
-        baskettype
+        courseLength
+        yearEstablished
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        teeType
+        basketType
         description
-        streetaddress
-        postalcode
         location
       }
-      par
+      redPar
+      whitePar
+      bluePar
+      yellowPar
+      redLength
+      whiteLength
+      blueLength
+      yellowLength
     }
   }
 `;
@@ -388,24 +539,32 @@ export const onDeleteHole = /* GraphQL */ `
     onDeleteHole {
       id
       no
-      nickname
       course {
         id
         name
+        holeCount
         holes {
           nextToken
         }
-        courselength
-        yearestablished
-        parinfo
-        teetype
-        baskettype
+        courseLength
+        yearEstablished
+        redPar
+        whitePar
+        bluePar
+        yellowPar
+        teeType
+        basketType
         description
-        streetaddress
-        postalcode
         location
       }
-      par
+      redPar
+      whitePar
+      bluePar
+      yellowPar
+      redLength
+      whiteLength
+      blueLength
+      yellowLength
     }
   }
 `;
