@@ -8,41 +8,100 @@
         max-width="35"
         contain
       />
-      <v-toolbar-title>openFOLF - Reset Password</v-toolbar-title>
+      <v-toolbar-title>Reset Password</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
     <v-card-text>
       <v-form>
-        <v-text-field label="E-Mail" type="email" v-model="userEmail" />
+        <v-text-field label="E-Mail" type="email" v-model="localUserNameEmail" />
+        <template v-if="isSentCode">
+          <v-text-field label="Code" type="text" v-model="code" />
+          <v-text-field
+            label="New Password"
+            v-model="password"
+            :type="showPassword ? 'text' : 'password'"
+            :append-icon="showPassword ? 'fa-eye' : 'fa-eye-slash'"
+            @click:append="showPassword = !showPassword"
+          />
+        </template>
       </v-form>
     </v-card-text>
-    <v-card-actions>
-      <v-spacer />
-      <v-btn @click="fakeReset" color="#41b883">Reset</v-btn>
-      <v-spacer />
-    </v-card-actions>
-    <v-card-actions>
-      <v-spacer />
-      <v-btn x-small text @click="fakeBackToSignIn">Back to Sign In.</v-btn>
-      <v-spacer />
-    </v-card-actions>
+    <template v-if="!isSentCode">
+      <v-card-actions>
+        <v-spacer />
+        <v-btn @click="submit" color="#41b883">Send Code</v-btn>
+        <v-spacer />
+      </v-card-actions>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn x-small text @click="signIn">Back to Sign In.</v-btn>
+        <v-spacer />
+      </v-card-actions>
+    </template>
+    <template v-if="isSentCode">
+      <v-card-actions>
+        <v-spacer />
+        <v-btn @click="verify" color="#41b883">Submit</v-btn>
+        <v-spacer />
+      </v-card-actions>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn x-small text @click="submit">Resend code</v-btn>
+        <v-spacer />
+      </v-card-actions>
+    </template>
   </v-card>
 </template>
 
 <script>
   export default {
     name: "reset-password",
+    props: {
+      userNameEmail: {
+        type: String,
+        required: true,
+      },
+    },
     data() {
       return {
-        userEmail: "",
+        isSentCode: false,
+        localUserNameEmail: "",
+        code: "",
+        password: "",
+        showPassword: false,
       };
     },
     methods: {
-      fakeBackToSignIn() {
-        console.log("Fake 'Back to Sign In' triggered");
+      submit() {
+        this.$Amplify.Auth.forgotPassword(this.localUserNameEmail)
+          .then(() => {
+            this.isSentCode = true;
+          })
+          .catch((e) => console.log("error: ", e));
+        // .catch((e) => this.setError(e));
       },
-      fakeReset() {
-        console.log("Fake 'Reset' triggered");
+      verify() {
+        this.$Amplify.Auth.forgotPasswordSubmit(this.localUserNameEmail, this.code, this.password)
+          .then(() => {
+            this.$emit("authState", { msg: "signIn", username: this.localUserNameEmail });
+          })
+          .catch((e) => console.log("error: ", e));
+        // .catch((e) => this.setError(e));
+      },
+      signIn() {
+        this.$emit("authState", { msg: "signIn", username: this.localUserNameEmail });
+      },
+      // setError(e) {
+      //   this.error = this.$Amplify.I18n.get(e.message || e);
+      //   this.logger.error(this.error);
+      // },
+    },
+    watch: {
+      userNameEmail: {
+        immediate: true,
+        handler() {
+          this.localUserNameEmail = this.userNameEmail;
+        },
       },
     },
   };

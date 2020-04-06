@@ -1,21 +1,17 @@
 <template>
-  <v-card max-width="505px" class="pa-5 mx-auto" color="#4E4E4E">
-    <sign-in v-if="!signedIn && signIn" @authState="authHandler" />
+  <v-card class="pa-5 mx-auto" color="transparent" flat>
+    <sign-in v-if="!signedIn && signIn" @authState="authHandler" :userNameEmail="userNameEmail" />
     <sign-up v-if="!signedIn && signUp" @authState="authHandler" />
-
-    <!-- TODO - pass the user email to the component -->
     <confirm-sign-up
       v-if="!signedIn && confirmSignUp"
-      :user="userNameEmail"
       @authState="authHandler"
       :userNameEmail="userNameEmail"
     />
     <reset-password
       v-if="!signedIn && resetPassword"
-      :user="userNameEmail"
       @authState="authHandler"
+      :userNameEmail="userNameEmail"
     />
-
     <div :style="signOutObject" v-if="signedIn">
       <sign-out />
     </div>
@@ -71,6 +67,7 @@
           this.signUp = false;
           this.confirmSignUp = false;
           this.resetPassword = false;
+          this.userNameEmail = e.username;
         } else if (e.msg == "confirmSignUp") {
           this.signIn = false;
           this.signUp = false;

@@ -8,12 +8,12 @@
         max-width="35"
         contain
       />
-      <v-toolbar-title>openFOLF - Sign In</v-toolbar-title>
+      <v-toolbar-title>Sign In</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
     <v-card-text>
       <v-form>
-        <v-text-field label="E-Mail" type="email" v-model="signInUsername" />
+        <v-text-field label="E-Mail" type="email" v-model="localUserNameEmail" />
         <v-text-field
           label="Password"
           v-model="password"
@@ -47,32 +47,49 @@
 </template>
 
 <script>
-  import { AmplifyEventBus } from "aws-amplify-vue";
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
   export default {
     name: "sign-in",
+    props: {
+      userNameEmail: {
+        type: String,
+        required: false,
+        default: "",
+      },
+    },
     data() {
       return {
         showPassword: false,
         password: "",
-        signInUsername: "",
+        localUserNameEmail: "",
         // error: "",
       };
     },
     methods: {
+      ...mapActions(["setSignedIn", "setUser"]),
       signIn() {
-        this.$Amplify.Auth.signIn(this.signInUsername, this.password)
+        this.$Amplify.Auth.signIn(this.localUserNameEmail, this.password)
+          .then(() => {
+            this.setSignedIn(true);
+            this.$Amplify.Auth.currentAuthenticatedUser()
+              .then((data) => {
+                if (data && data.signInUserSession) {
+                  this.setUser(data);
+                }
+              })
+              .catch((e) => console.log("error: ", e));
+            // .catch((e) => this.setError(e));
+          })
           .then(() => {
             this.password = "";
-            this.signInUsername = "";
-            return AmplifyEventBus.$emit("authState", "signedIn");
+            this.localUserNameEmail = "";
           })
           .catch((e) => {
             if (e.code && e.code === "UserNotConfirmedException") {
-              this.$emit("authState", { msg: "confirmSignUp", username: this.signInUsername });
+              this.$emit("authState", { msg: "confirmSignUp", username: this.localUserNameEmail });
             } else {
-              // this.setError(e);
               console.log("error: ", e);
+              // this.setError(e);
             }
           });
       },
@@ -80,11 +97,7 @@
         this.$emit("authState", { msg: "signUp" });
       },
       forgot() {
-        this.$emit("authState", { msg: "forgotPassword", username: this.signInUsername });
-      },
-      setError(e) {
-        // TODO create an Error Message
-        console.log(e);
+        this.$emit("authState", { msg: "forgotPassword", username: this.localUserNameEmail });
       },
       // setError: function(e) {
       //   this.error = this.$Amplify.I18n.get(e.message || e);
@@ -93,6 +106,14 @@
     },
     computed: {
       ...mapGetters(["signedIn"]),
+    },
+    watch: {
+      userNameEmail: {
+        immediate: true,
+        handler() {
+          this.localUserNameEmail = this.userNameEmail;
+        },
+      },
     },
   };
 </script>
