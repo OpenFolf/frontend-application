@@ -12,9 +12,6 @@
       @authState="authHandler"
       :userNameEmail="userNameEmail"
     />
-    <div :style="signOutObject" v-if="signedIn">
-      <sign-out />
-    </div>
   </v-card>
 </template>
 
@@ -23,7 +20,6 @@
   import SignUp from "@/components/auth/SignUp.vue";
   import ConfirmSignUp from "@/components/auth/ConfirmSignUp.vue";
   import ResetPassword from "@/components/auth/ResetPassword.vue";
-  import SignOut from "@/components/auth/SignOut.vue";
   import { mapGetters } from "vuex";
   export default {
     name: "authenticator",
@@ -32,7 +28,6 @@
       SignUp,
       ConfirmSignUp,
       ResetPassword,
-      SignOut,
     },
     data() {
       return {
@@ -41,12 +36,6 @@
         signUp: false,
         confirmSignUp: false,
         resetPassword: false,
-        signOutObject: {
-          display: "flex",
-          flexFlow: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        },
       };
     },
     methods: {
