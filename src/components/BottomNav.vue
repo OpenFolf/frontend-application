@@ -1,22 +1,27 @@
 <template>
-  <v-bottom-navigation app shift height="62" background-color="#41b883">
-    <v-btn x-large :to="{ name: 'home' }" color="#41b883">
-      <span class="mt-1">Home</span>
+  <v-bottom-navigation
+    class="d-flex justify-space-around align-center"
+    app
+    shift
+    background-color="#41b883"
+  >
+    <v-btn :to="{ name: 'home' }" color="#41b883">
+      <span class="mt-2">Home</span>
       <v-icon>fa-home</v-icon>
     </v-btn>
 
-    <v-btn x-large :to="{ name: 'new-game' }" color="#41b883">
-      <span class="mt-1">New Game</span>
+    <v-btn :to="{ name: 'new-game' }" color="#41b883">
+      <span class="mt-2">New Game</span>
       <v-icon>fa-play</v-icon>
     </v-btn>
 
-    <v-btn x-large :to="{ name: 'join-game' }" color="#41b883">
-      <span class="mt-1">Join Game</span>
+    <v-btn :to="{ name: 'join-game' }" color="#41b883">
+      <span class="mt-2">Join Game</span>
       <v-icon>fa-compress-alt</v-icon>
     </v-btn>
 
-    <v-btn x-large :to="{ name: 'stats' }" color="#41b883">
-      <span class="mt-1">Stats</span>
+    <v-btn :to="{ name: 'stats' }" color="#41b883">
+      <span class="mt-2">Stats</span>
       <v-icon>fa-chart-bar</v-icon>
     </v-btn>
   </v-bottom-navigation>
