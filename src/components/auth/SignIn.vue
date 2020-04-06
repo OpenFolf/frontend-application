@@ -1,5 +1,5 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold" v-if="!signedIn">
+  <v-card width="400px" class="mx-auto my-5 font-weight-bold" v-if="!getSignedIn">
     <v-toolbar color="#41b883">
       <v-img
         class="mr-2"
@@ -66,7 +66,7 @@
       };
     },
     methods: {
-      ...mapActions(["setSignedIn", "setUser"]),
+      ...mapActions(["setSignedIn", "setUserAuthObject", "setUserId"]),
       signIn() {
         this.$Amplify.Auth.signIn(this.localUserNameEmail, this.password)
           .then(() => {
@@ -74,7 +74,8 @@
             this.$Amplify.Auth.currentAuthenticatedUser()
               .then((data) => {
                 if (data && data.signInUserSession) {
-                  this.setUser(data);
+                  this.setUserAuthObject(data);
+                  this.setUserId(data.username);
                 }
               })
               .catch((e) => console.log("error: ", e));
@@ -105,7 +106,7 @@
       // },
     },
     computed: {
-      ...mapGetters(["signedIn"]),
+      ...mapGetters(["getSignedIn"]),
     },
     watch: {
       userNameEmail: {
