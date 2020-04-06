@@ -11,7 +11,7 @@ exports.handler = (event, context, callback) => {
         S: "" + event.request.userAttributes.email,
       },
     },
-    TableName: "User-zgdtaiok7jegxmh3l7uczwu5cm-prod",
+    TableName: "User-nzahcreyqbcqxae3jgf3quoylq-prod",
   };
   dynamodb.putItem(params, function(err, data) {
     if (err) {
