@@ -10,7 +10,7 @@
       <v-icon>fa-home</v-icon>
     </v-btn>
 
-    <v-btn :to="{ name: 'new-game' }" color="#41b883">
+    <v-btn :to="{ name: 'game' }" color="#41b883">
       <span class="mt-2">New Game</span>
       <v-icon>fa-play</v-icon>
     </v-btn>

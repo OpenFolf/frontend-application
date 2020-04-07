@@ -16,17 +16,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ "@/views/Home.vue"),
   },
   {
-    path: "/new-game",
-    name: "new-game",
-    component: () => import(/* webpackChunkName: "new-game" */ "@/views/NewGame.vue"),
+    path: "/game",
+    name: "game",
+    component: () => import(/* webpackChunkName: "game" */ "@/views/Game.vue"),
   },
   {
-    path: "/lobby",
+    path: "/game/lobby",
     name: "lobby",
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"),
   },
   {
-    path: "/scorecard",
+    path: "/game/scorecard",
     name: "scorecard",
     component: () => import(/* webpackChunkName: "scorecard" */ "@/views/Scorecard.vue"),
   },
@@ -50,3 +50,24 @@ const router = new VueRouter({
 });
 
 export default router;
+
+// EXAMPLE OF NESTED ROUTES IN VIEWPORT
+// {
+//   path: "/game",
+//   name: "game",
+//   component: () => import(/* webpackChunkName: "new-game" */ "@/views/NewGame.vue"),
+//   children: [
+//     {
+//       path: "lobby",
+//       name: "lobby",
+//       component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"),
+//       // props: true,
+//     },
+//     {
+//       path: "scorecard",
+//       name: "scorecard",
+//       component: () => import(/* webpackChunkName: "join-game" */ "@/views/JoinGame.vue"),
+//       // props: true,
+//     },
+//   ],
+// },
