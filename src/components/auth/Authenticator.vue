@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-5 mx-auto" color="transparent" flat>
+  <v-card class="pa-5" color="transparent" flat>
     <sign-in
       v-if="!getSignedIn && signIn"
       @authState="authHandler"
