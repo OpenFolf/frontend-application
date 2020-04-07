@@ -1,29 +1,29 @@
 import router from "@/router";
 
 const state = {
-  user: null,
+  userAuthObject: null,
   signedIn: false,
 };
 
 const getters = {
-  user: (state) => {
-    return state.user;
+  getUserAuthObject: (state) => {
+    return state.userAuthId;
   },
-  signedIn: (state) => {
+  getSignedIn: (state) => {
     return state.signedIn;
   },
 };
 
 const mutations = {
-  setUser: (state, user) => {
-    state.user = user;
+  setUserAuthObject: (state, user) => {
+    state.userAuthId = user;
   },
   setSignedIn: (state, signedIn) => {
     state.signedIn = signedIn;
     router.push({ name: "home" });
   },
   setSignOut: (state) => {
-    state.user = null;
+    state.userAuthObject = null;
     state.signedIn = false;
     sessionStorage.clear();
     router.push({ name: "auth" });
@@ -31,8 +31,8 @@ const mutations = {
 };
 
 const actions = {
-  setUser: ({ commit }, user) => {
-    commit("setUser", user);
+  setUserAuthObject: ({ commit }, user) => {
+    commit("setUserAuthObject", user);
   },
   setSignedIn: ({ commit }, signedIn) => {
     commit("setSignedIn", signedIn);

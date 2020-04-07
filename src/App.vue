@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <router-view />
-    <bottom-nav v-if="signedIn" />
+    <bottom-nav v-if="getSignedIn" />
   </v-app>
 </template>
 
@@ -14,7 +14,7 @@
       BottomNav,
     },
     computed: {
-      ...mapGetters(["signedIn"]),
+      ...mapGetters(["getSignedIn"]),
     },
   };
 </script>
