@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    name: "ScoreCard",
+    name: "scorecard",
 
     data() {
       return {

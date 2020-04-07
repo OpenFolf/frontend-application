@@ -23,13 +23,19 @@ const routes = [
   {
     path: "/lobby",
     name: "lobby",
-    component: () => import("@/views/Lobby.vue"),
+    component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"),
+  },
+  {
+    path: "/scorecard",
+    name: "scorecard",
+    component: () => import(/* webpackChunkName: "scorecard" */ "@/views/Scorecard.vue"),
   },
   {
     path: "/join-game",
     name: "join-game",
     component: () => import(/* webpackChunkName: "join-game" */ "@/views/JoinGame.vue"),
   },
+
   {
     path: "/stats",
     name: "stats",
