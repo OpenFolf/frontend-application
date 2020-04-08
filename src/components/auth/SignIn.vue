@@ -1,6 +1,6 @@
 <template>
   <v-card width="400px" class="mx-auto my-5 font-weight-bold" v-if="!getSignedIn">
-    <v-toolbar color="#41b883">
+    <v-toolbar color="primary">
       <v-img
         class="mr-2"
         :src="require('@/assets/basket_white.png')"
@@ -26,7 +26,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn @click="signIn" color="#41b883">SIGN IN</v-btn>
+      <v-btn @click="signIn" color="primary">SIGN IN</v-btn>
       <v-spacer />
     </v-card-actions>
     <v-card-actions>

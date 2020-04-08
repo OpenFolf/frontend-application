@@ -3,7 +3,7 @@
     <v-data-iterator :items="items" :items-per-page.sync="itemsPerPage" hide-default-footer>
       <!-- <v-data-iterator :items="items" :items-per-page.sync="itemsPerPage"> -->
       <template v-slot:header>
-        <v-app-bar color="#41b883" app hide-on-scroll>
+        <v-app-bar color="primary" app hide-on-scroll>
           <v-toolbar-title class="headline font-weight-bold">Sort courses:</v-toolbar-title>
           <v-spacer />
           <v-btn-toggle>
@@ -21,7 +21,7 @@
         <v-content>
           <v-row v-for="item in props.items" :key="item.name">
             <v-col class="py-1">
-              <v-card color="success" ripple :to="{ name: 'lobby' }">
+              <v-card color="accent" ripple :to="{ name: 'lobby' }">
                 <v-card-title class="headline">
                   {{ item.name }}
                   <v-spacer />

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="#41b883" app>
+  <v-app-bar color="primary" app>
     <v-avatar><v-icon>fa-user</v-icon></v-avatar>
     <v-toolbar-title>{{ getEmail }}</v-toolbar-title>
     <v-spacer />

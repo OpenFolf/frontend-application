@@ -1,6 +1,6 @@
 <template>
   <v-card width="400px" class="mx-auto my-5 font-weight-bold">
-    <v-toolbar color="#41b883">
+    <v-toolbar color="primary">
       <v-img
         class="mr-2"
         :src="require('@/assets/basket_white.png')"
@@ -29,7 +29,7 @@
     <template v-if="!isSentCode">
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="submit" color="#41b883">Send Code</v-btn>
+        <v-btn @click="submit" color="primary">Send Code</v-btn>
         <v-spacer />
       </v-card-actions>
       <v-card-actions>
@@ -41,7 +41,7 @@
     <template v-if="isSentCode">
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="verify" color="#41b883">Submit</v-btn>
+        <v-btn @click="verify" color="primary">Submit</v-btn>
         <v-spacer />
       </v-card-actions>
       <v-card-actions>

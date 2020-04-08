@@ -25,14 +25,14 @@
         contentList: [
           {
             id: 1,
-            color: "#ACCE55",
+            color: "info",
             title: "openFOLF User Profile",
             subtitle: "Edit you information, e.g. add an avatar og change your display name.",
             buttonText: "Edit Profile",
           },
           {
             id: 2,
-            color: "#10ADED",
+            color: "accent",
             title: "Allow Location Service",
             subtitle:
               "To be able to fully utilize the features of the app, please consider allowing Location services.",
@@ -40,21 +40,21 @@
           },
           {
             id: 3,
-            color: "#6A5",
+            color: "success",
             title: "Disc Golf Rules",
             subtitle: "Do you know how to play Disc Golf? Read the official PDGA rules.",
             buttonText: "See Rules",
           },
           {
             id: 4,
-            color: "#9077E2",
+            color: "addedColor",
             title: "Privacy Disclaimer",
             subtitle: "Legalized lagadót um lögræði.",
             buttonText: "",
           },
           {
             id: 5,
-            color: "#F24153",
+            color: "secondary",
             title: "Nice Feature",
             subtitle:
               "Some nice feature that makes your life awesome! High 'n' Tight, you should try it today.",
