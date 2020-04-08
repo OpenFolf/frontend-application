@@ -1,135 +1,106 @@
 <template>
-  <v-content>
-    <v-card max-width="400" class="mx-auto">
-      <v-container>
-        <v-row dense>
-          <v-col cols="12">
-            <v-card color="#45651C">
-              <v-card-title class="headline">
-                Some kind of filter? <v-icon right>fa-filter</v-icon>
-              </v-card-title>
-            </v-card>
-          </v-col>
+  <v-container fluid>
+    <v-data-iterator :items="items" :items-per-page.sync="itemsPerPage" hide-default-footer>
+      <!-- <v-data-iterator :items="items" :items-per-page.sync="itemsPerPage"> -->
+      <template v-slot:header>
+        <v-app-bar color="#41b883" app hide-on-scroll>
+          <v-toolbar-title class="headline font-weight-bold">Sort courses:</v-toolbar-title>
+          <v-spacer />
+          <v-btn-toggle>
+            <v-btn depressed :value="!filter">
+              <v-icon>fa-sort-alpha-down-alt</v-icon>
+            </v-btn>
+            <v-btn depressed :value="filter">
+              <v-icon>fa-globe-europe</v-icon>
+            </v-btn>
+          </v-btn-toggle>
+        </v-app-bar>
+      </template>
 
-          <v-col v-for="course in courses" :key="course.course_id" cols="12">
-            <v-card :color="course.color" ripple :to="{ name: 'lobby' }">
-              <div class="d-flex flex-no-wrap justify-space-between">
-                <div>
-                  <v-card-title class="" v-text="course.name"></v-card-title>
-                  <v-card-subtitle>Nr. of holes: {{ course.holes }}</v-card-subtitle>
-                  <span>
-                    <v-avatar
-                      v-if="course.tee_1_clr !== ''"
-                      class="ma-3"
-                      size="25"
-                      tile
-                      :style="{
-                        backgroundColor: `#${course.tee_1_clr}`,
-                      }"
-                    />
-                    <v-avatar
-                      v-if="course.tee_2_clr !== ''"
-                      class="ma-3"
-                      size="25"
-                      tile
-                      :style="{ backgroundColor: `#${course.tee_2_clr}` }"
-                    />
-                    <v-avatar
-                      v-if="course.tee_3_clr !== ''"
-                      class="ma-3"
-                      size="25"
-                      tile
-                      :style="{ backgroundColor: `#${course.tee_3_clr}` }"
-                    />
-                    <v-avatar
-                      v-if="course.tee_4_clr !== ''"
-                      class="ma-3"
-                      size="25"
-                      tile
-                      :style="{ backgroundColor: `#${course.tee_4_clr}` }"
-                    />
-                  </span>
-                </div>
-                <v-avatar class="ma-3" size="100" tile>
-                  <v-img :src="course.course_photo_url_medium"></v-img>
-                </v-avatar>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card>
-  </v-content>
+      <template v-slot:default="props">
+        <v-content>
+          <v-row v-for="item in props.items" :key="item.name">
+            <v-col class="py-1">
+              <v-card color="success" ripple :to="{ name: 'lobby' }">
+                <v-card-title class="headline">
+                  {{ item.name }}
+                  <v-spacer />
+                  <v-icon> fa-angle-right </v-icon>
+                </v-card-title>
+                <v-card-subtitle>
+                  {{ item.calories }}
+                  <v-avatar class="mx-1" tile size="14" color="red"></v-avatar>
+                  <v-avatar class="mx-1" tile size="14" color="white"></v-avatar>
+                  <v-avatar class="mx-1" tile size="14" color="blue"></v-avatar>
+                  <v-avatar class="mx-1" tile size="14" color="yellow"></v-avatar>
+                </v-card-subtitle>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-content>
+      </template>
+    </v-data-iterator>
+  </v-container>
 </template>
 
 <script>
+  import { v4 } from "uuid/v4";
+  // console.log(v4());
   export default {
-    name: "new-game",
-    data() {
-      return {
-        courses: [
-          {
-            course_id: "4726",
-            name: "Klambratúni Park",
-            holes: "9",
-            city: "Reykjavik",
-            state: "0",
-            country: "Iceland",
-            zipcode: "",
-            latitude: "64.137460",
-            longitude: "-21.913551",
-            street_addr: "",
-            reviews: "5",
-            rating: "2.80",
-            private: "0",
-            paytoplay: "0",
-            tee_1_clr: "",
-            tee_2_clr: "FFFFFF",
-            tee_3_clr: "",
-            tee_4_clr: "",
-            dgcr_url: "https://www.dgcoursereview.com/course.php?id=4726",
-            dgcr_mobile_url: "https://www.dgcoursereview.com/mobile/course.php?id=4726",
-            rating_img: "https://www.dgcoursereview.com/images/rating/discs_3.png",
-            rating_img_small: "https://www.dgcoursereview.com/images/rating/discs_sm_3.png",
-            course_photo_url_thumb:
-              "https://www.dgcoursereview.com/course_pics/4726/860cb07b_t.jpg",
-            course_photo_url_medium:
-              "https://www.dgcoursereview.com/course_pics/4726/860cb07b_m.jpg",
-            course_photo_hole: "3",
-            course_photo_caption: "Hole #3 Tee",
-          },
-          {
-            course_id: "10562",
-            name: "Eiðsvöllur",
-            holes: "5",
-            city: "Eiðsvöllur",
-            state: "0",
-            country: "Iceland",
-            zipcode: "",
-            latitude: "65.686300",
-            longitude: "-18.090400",
-            street_addr: "",
-            reviews: "1",
-            rating: "3.00",
-            private: "0",
-            paytoplay: "0",
-            tee_1_clr: "FF0000",
-            tee_2_clr: "FFFFFF",
-            tee_3_clr: "0000CC",
-            tee_4_clr: "FFCC00",
-            dgcr_url: "https://www.dgcoursereview.com/course.php?id=10562",
-            dgcr_mobile_url: "https://www.dgcoursereview.com/mobile/course.php?id=10562",
-            rating_img: "https://www.dgcoursereview.com/images/rating/discs_3.png",
-            rating_img_small: "https://www.dgcoursereview.com/images/rating/discs_sm_3.png",
-            course_photo_url_thumb:
-              "https://www.dgcoursereview.com/course_pics/10562/48b96c0e_t.jpg",
-            course_photo_url_medium:
-              "https://www.dgcoursereview.com/course_pics/10562/48b96c0e_m.jpg",
-            course_photo_hole: "2",
-            course_photo_caption: "Hole #2 Tee",
-          },
-        ],
-      };
-    },
+    name: "game",
+    data: () => ({
+      filter: true,
+      itemsPerPage: 100,
+      items: [
+        {
+          name: "Fossvogur",
+          id: v4(),
+        },
+        {
+          name: "Klambratún",
+          id: v4(),
+        },
+        {
+          name: "Laugardalur",
+          id: v4(),
+        },
+        {
+          name: "Gufunes",
+          id: v4(),
+        },
+        {
+          name: "Grafarvogur",
+          id: v4(),
+        },
+        {
+          name: "Fjarkanistan",
+          id: v4(),
+        },
+        {
+          name: "Hafnarfjörður",
+          id: v4(),
+        },
+        {
+          name: "Kópavogur",
+          id: v4(),
+        },
+        {
+          name: "Selfoss",
+          id: v4(),
+        },
+        {
+          name: "Egilstaðir",
+          id: v4(),
+        },
+        {
+          name: "Breiðholt",
+          id: v4(),
+        },
+        {
+          name: "Kjalarnes",
+          id: v4(),
+        },
+      ],
+    }),
   };
 </script>
