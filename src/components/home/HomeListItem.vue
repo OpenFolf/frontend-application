@@ -18,22 +18,6 @@
         type: Object,
         required: true,
       },
-      // color: {
-      //   type: String,
-      //   default: "#ACE",
-      // },
-      // title: {
-      //   type: String,
-      //   required: true,
-      // },
-      // subtitle: {
-      //   type: String,
-      //   required: true,
-      // },
-      // buttonText: {
-      //   type: String,
-      //   required: true,
-      // },
     },
   };
 </script>

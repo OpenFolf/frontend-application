@@ -6,22 +6,22 @@
     background-color="#41b883"
   >
     <v-btn :to="{ name: 'home' }" color="#41b883">
-      <span class="mt-2">Home</span>
+      <span class="mt-3">Home</span>
       <v-icon>fa-home</v-icon>
     </v-btn>
 
-    <v-btn :to="{ name: 'new-game' }" color="#41b883">
-      <span class="mt-2">New Game</span>
+    <v-btn :to="{ name: 'game' }" color="#41b883">
+      <span class="mt-3">New Game</span>
       <v-icon>fa-play</v-icon>
     </v-btn>
 
     <v-btn :to="{ name: 'join-game' }" color="#41b883">
-      <span class="mt-2">Join Game</span>
+      <span class="mt-3">Join Game</span>
       <v-icon>fa-compress-alt</v-icon>
     </v-btn>
 
     <v-btn :to="{ name: 'stats' }" color="#41b883">
-      <span class="mt-2">Stats</span>
+      <span class="mt-3">Stats</span>
       <v-icon>fa-chart-bar</v-icon>
     </v-btn>
   </v-bottom-navigation>

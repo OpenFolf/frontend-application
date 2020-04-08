@@ -2,43 +2,11 @@
   <fragment>
     <top-bar />
     <v-content>
-      <v-card max-width="400" class="mx-auto">
+      <!-- <v-card max-width="400" class="mx-auto"> -->
+      <v-card flat color="transparent">
         <v-container>
           <v-row dense>
             <home-list-item v-for="item in contentList" :key="item.id" :content="item" />
-            <!-- <v-col cols="12">
-              <v-card color="#ACCE55">
-                <v-card-title class="headline">openFOLF User Profile</v-card-title>
-                <v-card-subtitle>
-                  Change you information, e.g. add an avatar or change your display name.
-                </v-card-subtitle>
-                <v-card-actions>
-                  <v-btn text>Edit Profile</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-            <v-col cols="12">
-              <v-card color="#10ADED">
-                <v-card-title class="headline">Rules of the Game</v-card-title>
-                <v-card-subtitle>
-                  Do you know how to play Disc Golf? Read the official PDGA rules.
-                </v-card-subtitle>
-                <v-card-actions>
-                  <v-btn text>Read Now</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-            <v-col cols="12">
-              <v-card color="#C55C55">
-                <v-card-title class="headline">Donate - We love Money!</v-card-title>
-                <v-card-subtitle>
-                  Cash rules everything around me, CREAM, get the money, dollar dollar bill yo!
-                </v-card-subtitle>
-                <v-card-actions>
-                  <v-btn text>Donate Now</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col> -->
           </v-row>
         </v-container>
       </v-card>
@@ -65,9 +33,32 @@
           {
             id: 2,
             color: "#10ADED",
+            title: "Allow Location Service",
+            subtitle:
+              "To be able to fully utilize the features of the app, please consider allowing Location services.",
+            buttonText: "Enable Location Service",
+          },
+          {
+            id: 3,
+            color: "#6A5",
             title: "Disc Golf Rules",
             subtitle: "Do you know how to play Disc Golf? Read the official PDGA rules.",
             buttonText: "See Rules",
+          },
+          {
+            id: 4,
+            color: "#9077E2",
+            title: "Privacy Disclaimer",
+            subtitle: "Legalized lagadót um lögræði.",
+            buttonText: "",
+          },
+          {
+            id: 5,
+            color: "#F24153",
+            title: "Nice Feature",
+            subtitle:
+              "Some nice feature that makes your life awesome! High 'n' Tight, you should try it today.",
+            buttonText: "Try it out",
           },
         ],
       };
