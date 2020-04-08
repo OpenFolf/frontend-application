@@ -85,7 +85,7 @@
           .then(() => {
             this.password = "";
             this.localUserNameEmail = "";
-            this.fetchUser();
+            //this.fetchUser();
           })
           .catch((e) => {
             if (e.code && e.code === "UserNotConfirmedException") {

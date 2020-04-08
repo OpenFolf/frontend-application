@@ -9,7 +9,7 @@
 
 <script>
   import SignOut from "@/components/auth/SignOut.vue";
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
   export default {
     name: "top-bar",
     components: {
@@ -18,11 +18,11 @@
     computed: {
       ...mapGetters(["getEmail"]),
     },
-    // methods: {
-    //   ...mapActions(["fetchUser"]),
-    // },
-    // beforeMount() {
-    //   this.fetchUser();
-    // },
+    methods: {
+      ...mapActions(["fetchUser"]),
+    },
+    beforeMount() {
+      this.fetchUser();
+    },
   };
 </script>
