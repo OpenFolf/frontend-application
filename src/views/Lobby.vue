@@ -7,7 +7,7 @@
     </v-app-bar>
 
     <v-content>
-      <v-container fluid>
+      <v-container fluid fill-height>
         <v-row>
           <v-col>
             <v-simple-table>
@@ -22,7 +22,11 @@
                     <fragment v-if="!index"><v-icon small>fa-crown</v-icon></fragment>
                     {{ player.userName }}
                   </td>
-                  <td class="text-right"><v-icon>fa-minus-circle</v-icon></td>
+                  <td class="text-right">
+                    <fragment v-if="index && currentUser.userId !== player.userId">
+                      <v-icon>fa-minus-circle</v-icon>
+                    </fragment>
+                  </td>
                 </tr>
 
                 <td v-if="game.players.length <= 1" colspan="2" class=" pt-5">
@@ -55,17 +59,17 @@
     data() {
       return {
         lobbyCode: "XYZQ",
-        courseName: "Folf völlurinn sprell",
-        currentUserId: 1,
-        currentUserName: "Siggi Hall",
-        lobbyOwnerId: 4,
-        lobbyOwnerName: "Nigga Beinteins",
+        courseName: "Klabratún",
+        currentUser: {
+          userId: 3,
+          userName: "Nigga Beinteins",
+        },
         game: {},
       };
     },
     created() {
       this.initialize();
-      var indexOfOwner = this.game.players.findIndex((o) => o.userId === this.game.ownerId);
+      var indexOfOwner = this.game.players.findIndex((o) => o.userId === this.game.owner.useId);
       const ownerElement = this.game.players.splice(indexOfOwner, 1);
       this.game.players = [...ownerElement, ...this.game.players];
     },
@@ -77,7 +81,11 @@
           gameStatus: 0,
           lobbyId: 1,
           courseName: "Klabratun",
-          ownerId: 3,
+          owner: {
+            userId: 3,
+            userName: "Nigga Beinteins",
+          },
+
           players: [
             {
               userId: 1,
