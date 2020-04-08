@@ -20,6 +20,7 @@
           :type="showPassword ? 'text' : 'password'"
           :append-icon="showPassword ? 'fa-eye' : 'fa-eye-slash'"
           @click:append="showPassword = !showPassword"
+          @keyup.enter="signIn"
         />
       </v-form>
     </v-card-text>
@@ -66,7 +67,7 @@
       };
     },
     methods: {
-      ...mapActions(["setSignedIn", "setUserAuthObject", "setUserId"]),
+      ...mapActions(["setSignedIn", "setUserAuthObject", "setUserId", "fetchUser"]),
       signIn() {
         this.$Amplify.Auth.signIn(this.localUserNameEmail, this.password)
           .then(() => {
@@ -84,6 +85,7 @@
           .then(() => {
             this.password = "";
             this.localUserNameEmail = "";
+            this.fetchUser();
           })
           .catch((e) => {
             if (e.code && e.code === "UserNotConfirmedException") {
