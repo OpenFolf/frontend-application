@@ -20,7 +20,7 @@ const mutations = {
   },
   setSignedIn: (state, signedIn) => {
     state.signedIn = signedIn;
-    router.push({ name: "home" });
+    router.push({ name: "home-menu" });
   },
   setSignOut: (state) => {
     state.userAuthObject = null;
