@@ -9,8 +9,8 @@
             </router-link>
             <v-toolbar-title class="headline font-weight-bold">{{ "/ " + path }}</v-toolbar-title>
           </v-container>
-          <h1 class="font-weight-bold display-3 white--text pt-6">{{ course.name }}</h1>
-          <v-btn x-large color="white" outlined class="mt-6">Play Course</v-btn>
+          <h1 class="font-weight-bold display-1 white--text pt-6">{{ course.name }}</h1>
+          <v-btn large color="white" outlined class="mt-6">Play Course</v-btn>
         </v-card-title>
 
         <v-tabs v-model="currentTab" background-color="transparent" color="white" grow>
@@ -23,7 +23,7 @@
           <v-tab-item><course-info /></v-tab-item>
           <v-tab-item><course-baskets /></v-tab-item>
           <v-tab-item><course-map /></v-tab-item>
-          <v-tab-item><course-stats /></v-tab-item>
+          <!-- <v-tab-item><course-stats /></v-tab-item> -->
         </v-tabs-items>
       </v-card>
     </v-content>
@@ -34,14 +34,14 @@
   import CourseInfo from "@/components/game/CourseInfo.vue";
   import CourseBaskets from "@/components/game/CourseBaskets.vue";
   import CourseMap from "@/components/game/CourseMap.vue";
-  import CourseStats from "@/components/game/CourseStats.vue";
+  // import CourseStats from "@/components/game/CourseStats.vue";
   export default {
     name: "game-course",
     components: {
       CourseInfo,
       CourseBaskets,
       CourseMap,
-      CourseStats,
+      // CourseStats,
     },
     props: {
       path: {
@@ -57,7 +57,7 @@
     data() {
       return {
         currentTab: null,
-        tabs: ["Info", "Basket", "Map", "Stats"],
+        tabs: ["Info", "Baskets", "Map" /*, "Stats"*/],
         course: {
           id: 1,
           name: "Fossvogur",
