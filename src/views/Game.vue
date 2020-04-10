@@ -4,7 +4,7 @@
       <!-- <v-data-iterator :items="items" :items-per-page.sync="itemsPerPage"> -->
       <template v-slot:header>
         <v-app-bar color="primary" app hide-on-scroll>
-          <v-toolbar-title class="headline font-weight-bold">Sort courses:</v-toolbar-title>
+          <v-toolbar-title class="headline">Sort courses:</v-toolbar-title>
           <v-spacer />
           <v-btn-toggle>
             <v-btn depressed :value="!filter">

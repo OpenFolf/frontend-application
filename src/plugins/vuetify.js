@@ -4,11 +4,13 @@ import Vuetify from "vuetify/lib";
 Vue.use(Vuetify);
 
 export default new Vuetify({
+  customVariables: ["~/sass/variables.scss"],
   theme: {
     dark: true,
     options: {
       customProperties: true,
     },
+    //BREAK:
     themes: {
       light: {
         primary: "#012E33",
