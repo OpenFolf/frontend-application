@@ -1,12 +1,14 @@
 <template>
   <v-container fluid>
     <v-app-bar color="#41b883" app hide-on-scroll>
-      <v-avatar><v-icon>fa-play</v-icon></v-avatar>
-      <v-toolbar-title class="headline font-weight-bold">Courses</v-toolbar-title>
+      <!-- <v-avatar><v-icon>fa-play</v-icon></v-avatar> -->
+      <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
+      <v-toolbar-title class="headline font-weight-bold">/</v-toolbar-title>
+      <!-- <v-toolbar-title class="headline font-weight-bold">Courses</v-toolbar-title> -->
       <v-spacer />
       <v-btn-toggle v-model="sortAlpha">
         <v-btn depressed :value="true">
-          <v-icon>fa-sort-alpha-up-alt</v-icon>
+          <v-icon>fa-sort-alpha-down</v-icon>
         </v-btn>
         <v-btn depressed :value="false">
           <v-icon>fa-globe-europe</v-icon>
