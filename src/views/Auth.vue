@@ -1,11 +1,11 @@
 <template>
   <v-container class="fill-height">
     <v-row>
-      <v-col class="d-flex justify-center pb-0">
+      <v-col class="d-flex justify-center ">
         <v-img
           :src="require('@/assets/openfolfwhite.svg')"
-          max-height="150"
-          max-width="150"
+          max-height="130"
+          max-width="130"
           contain
           class="d-flex justify-content-center pb-0"
         />
