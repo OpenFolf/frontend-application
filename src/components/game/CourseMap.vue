@@ -1,17 +1,15 @@
 <template>
-  <v-container class="pa-0 ma-0 fill-height">
-    <l-map
-      :style="mapStyle"
-      :zoom="zoom"
-      :center="center"
-      @update:zoom="zoomUpdated"
-      @update:center="centerUpdated"
-      @update:bounds="boundsUpdated"
-    >
-      <l-tile-layer :url="url"></l-tile-layer>
-      <l-marker :lat-lng="latLng"></l-marker>
-    </l-map>
-  </v-container>
+  <l-map
+    :style="mapStyle"
+    :zoom="zoom"
+    :center="center"
+    @update:zoom="zoomUpdated"
+    @update:center="centerUpdated"
+    @update:bounds="boundsUpdated"
+  >
+    <l-tile-layer :url="url"></l-tile-layer>
+    <l-marker :lat-lng="latLng"></l-marker>
+  </l-map>
 </template>
 
 <script>
@@ -26,17 +24,21 @@
     data() {
       return {
         url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        zoom: 10,
-        center: [64.128288, -21.827774],
+        zoom: 12,
+        center: [64.118179, -21.888047],
         latLng: [64.118179, -21.888047],
         bounds: null,
         mapStyle: {
-          height: "350px",
+          height: "415px",
           width: "100%",
         },
+        heightVal: "",
       };
     },
     methods: {
+      logg() {
+        this.heightVal = this.$refs.logObj.clientHeight;
+      },
       zoomUpdated(zoom) {
         this.zoom = zoom;
       },

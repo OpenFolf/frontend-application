@@ -1,10 +1,8 @@
 <template>
-  <v-container fluid>
+  <fragment>
     <v-app-bar color="#41b883" app hide-on-scroll>
-      <!-- <v-avatar><v-icon>fa-play</v-icon></v-avatar> -->
       <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
       <v-toolbar-title class="headline font-weight-bold">/</v-toolbar-title>
-      <!-- <v-toolbar-title class="headline font-weight-bold">Courses</v-toolbar-title> -->
       <v-spacer />
       <v-btn-toggle v-model="sortAlpha">
         <v-btn depressed :value="true">
@@ -16,18 +14,24 @@
       </v-btn-toggle>
     </v-app-bar>
     <v-content>
-      <course-list-item v-for="course in courses" :key="course.id" :content="course" />
+      <v-container fluid>
+        <v-row dense>
+          <course-list-item v-for="course in courses" :key="course.id" :content="course" />
+        </v-row>
+      </v-container>
     </v-content>
-  </v-container>
+  </fragment>
 </template>
 
 <script>
   import { v4 } from "uuid/v4";
   import CourseListItem from "@/components/game/CourseListItem.vue";
+  import { Fragment } from "vue-fragment";
   export default {
     name: "game",
     components: {
       CourseListItem,
+      Fragment,
     },
     computed: {
       courses() {

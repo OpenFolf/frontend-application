@@ -1,12 +1,9 @@
 <template>
-  <!-- <v-card max-width="400" class="mx-auto"> -->
-  <v-card flat color="transparent">
-    <v-container>
-      <v-row dense>
-        <home-menu-item v-for="item in contentList" :key="item.id" :content="item" />
-      </v-row>
-    </v-container>
-  </v-card>
+  <v-container fluid>
+    <v-row dense>
+      <home-menu-item v-for="item in contentList" :key="item.id" :content="item" />
+    </v-row>
+  </v-container>
 </template>
 
 <script>

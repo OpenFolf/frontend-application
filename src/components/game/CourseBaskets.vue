@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-sheet fill-height>
     <h1>Baskets</h1>
-  </div>
+  </v-sheet>
 </template>
 
 <script>
