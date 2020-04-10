@@ -1,13 +1,6 @@
 <template>
   <v-card width="400px" class="mx-auto my-5 font-weight-bold" v-if="!getSignedIn">
     <v-toolbar color="primary">
-      <v-img
-        class="mr-2"
-        :src="require('@/assets/basket_white.png')"
-        max-height="35"
-        max-width="35"
-        contain
-      />
       <v-toolbar-title>Sign In</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
@@ -63,7 +56,7 @@
         showPassword: false,
         password: "",
         localUserNameEmail: "",
-        // error: "",
+        error: "",
       };
     },
     methods: {
@@ -102,10 +95,10 @@
       forgot() {
         this.$emit("authState", { msg: "forgotPassword", username: this.localUserNameEmail });
       },
-      // setError: function(e) {
-      //   this.error = this.$Amplify.I18n.get(e.message || e);
-      //   this.logger.error(this.error);
-      // },
+      setError: function(e) {
+        // this.error = this.$Amplify.I18n.get(e.message || e);
+        this.logger.error(this.error, e);
+      },
     },
     computed: {
       ...mapGetters(["getSignedIn"]),

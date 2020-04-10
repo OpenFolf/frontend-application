@@ -18,12 +18,14 @@
               <tbody>
                 <tr v-for="(player, index) in game.players" :key="player.id">
                   <td>
-                    <fragment v-if="!index"><v-icon small>fa-crown</v-icon></fragment>
+                    <fragment v-if="!index"
+                      ><v-icon small color="warning">fa-crown</v-icon></fragment
+                    >
                     {{ player.userName }}
                   </td>
                   <td class="text-right">
                     <fragment v-if="index && currentUser.userId !== player.userId">
-                      <v-icon>fa-minus-circle</v-icon>
+                      <v-icon color="error">fa-minus-circle</v-icon>
                     </fragment>
                   </td>
                 </tr>

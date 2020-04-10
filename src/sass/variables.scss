@@ -18,9 +18,7 @@ caption,
 overline;
 
 #app {
-  font-family: $body-font-family,
-    'Raleway',
-    sans-serif !important;
+  font-family: $body-font-family, 'Raleway', sans-serif !important;
 
   @each $typoOption in $typoOptions {
     .#{$typoOption} {
