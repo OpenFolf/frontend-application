@@ -1,5 +1,5 @@
 projects:
-  frontendapplication2:
+  frontendapplicationprod:
     schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js

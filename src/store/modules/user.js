@@ -1,14 +1,11 @@
 import { API, graphqlOperation } from "aws-amplify";
-import * as queries from "../../graphql/queries";
+import * as usergraphQL from "../../graphql/custom/usergraphQL";
 // import * as graphQLmutations from "../../graphql/mutations";
 // import * as subscriptions from "../../graphql/subscriptions";
 
 const state = {
   user: {
-    id: "",
-    username: "",
-    email: "",
-    currentGame: "",
+      id: ""
   },
 };
 
@@ -53,7 +50,7 @@ const actions = {
     commit("setUserId", payload);
   },
   async fetchUser(context) {
-    const response = await API.graphql(graphqlOperation(queries.getUser, { id: state.user.id }));
+    const response = await API.graphql(graphqlOperation(usergraphQL.getUser, { id: state.user.id }));
 
     context.commit("setUser", response.data.getUser);
   },

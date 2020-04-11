@@ -10,8 +10,15 @@ exports.handler = (event, context, callback) => {
       email: {
         S: "" + event.request.userAttributes.email,
       },
+      defTee: {
+        S: "RED",
+      },
+      defMode: {
+        S: "DARK"
+      }
+
     },
-    TableName: "User-nzahcreyqbcqxae3jgf3quoylq-prod",
+    TableName: "User-2ktwvesmrfadlbqu76uyitfmqi-prod",
   };
   dynamodb.putItem(params, function(err, data) {
     if (err) {

@@ -1,0 +1,89 @@
+type User @model {
+    id: ID!
+    username: String
+    email: String
+    gamesPlayed: [ Player ] @connection (name: "PlayedGame")
+    favoriteCourses: [ UserFavoriteCourse ] @connection (name: "UserFavorites")
+    currentGame: Game @connection
+    avatar: String
+    defTee: Tee
+    defMode: Mode
+}
+
+type Player @model {
+    id: ID!
+    user: User @connection (name: "PlayedGame")
+    game: Game @connection (name: "GamePlayed")
+    team: String
+    teeColor: Tee
+    totalScore: String
+    gameHoles: [ GameHole ] @connection
+}
+
+type GameHole @model {
+    id: ID!
+    hole: Hole @connection
+    game: Game @connection
+}
+
+type Game @model {
+    id: ID!
+    course: Course @connection
+    owner: User @connection
+    players: [ Player ] @connection (name: "GamePlayed")
+    gameType: String
+    lobbyCode: String
+    gameStatus: String
+}
+
+type UserFavoriteCourse @model {
+    id: ID!
+    user: User @connection (name: "UserFavorites")
+    course: Course @connection (name: "CourseUsers")
+}
+
+type Course @model {
+    id: ID!
+    name: String
+    holeCount: String
+    holes: [ Hole ] @connection
+    teetype: String
+    baskettype: String
+    description: String
+    latitude: String
+    longitude: String
+    red: Boolean
+    white: Boolean
+    blue: Boolean
+    yellow: Boolean
+    course_photo_url_thumb: String
+    course_photo_url_medium: String
+    userfavorite: [ UserFavoriteCourse ] @connection (name: "CourseUsers")
+}
+
+type Hole @model {
+    id: ID!
+    no: String
+    course: Course @connection
+    redLength: String
+    whiteLength: String
+    blueLength: String
+    yellowLength: String
+    redPar: String
+    whitePar: String
+    bluePar: String
+    yellowPar: String
+    holePhoto: String
+}
+
+enum Mode {
+    LIGHT
+    DARK
+}
+
+enum Tee {
+    RED
+    WHITE
+    BLUE
+    YELLOW
+}
