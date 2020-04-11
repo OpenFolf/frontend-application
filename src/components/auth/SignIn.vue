@@ -104,11 +104,13 @@
                   this.setUserId(data.username);
                 }
               })
+              .then(() => {
+                this.fetchUser();
+              })
               .catch((e) => this.setError(e));
           })
           .then(() => {
             this.$refs.signInForm.reset();
-            // this.fetchUser();
           })
           .catch((e) => {
             if (e.code && e.code === "UserNotConfirmedException") {
@@ -127,8 +129,6 @@
       setError(e) {
         this.errorObj = this.$Amplify.I18n.get(e.message || e);
         this.isError = true;
-        // console.log("isError: ", this.isError);
-        // console.log("setError: ", e);
       },
       validate() {
         this.$refs.signInForm.validate();

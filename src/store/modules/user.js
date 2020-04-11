@@ -52,7 +52,7 @@ const actions = {
   async fetchUser(context) {
     try {
       const response = await API.graphql(
-        graphqlOperation(usergraphQL.FetchUser, { id: state.user.id }),
+        graphqlOperation(usergraphQL.fetchUser, { id: state.user.id }),
       );
       context.commit("setUser", response.data.getUser);
     } catch (e) {
