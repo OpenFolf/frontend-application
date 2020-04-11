@@ -20,7 +20,7 @@
           type="text"
           required
         />
-        <v-btn block :disable="!valid" @click="confirm" color="#41b883">CONFIRM</v-btn>
+        <v-btn block :disable="!valid" @click="confirm" color="primary">CONFIRM</v-btn>
       </v-form>
     </v-card-text>
     <!-- <v-card-actions>

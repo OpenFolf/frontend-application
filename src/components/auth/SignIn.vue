@@ -23,16 +23,12 @@
           @keyup.enter="signIn"
           required
         />
-        <v-btn block :disabled="!valid" @click="signIn" color="#41b883">SIGN IN</v-btn>
+        <v-btn block :disabled="!valid" @click="signIn" color="Primary">SIGN IN</v-btn>
       </v-form>
     </v-card-text>
     <!-- <v-card-actions>
       <v-spacer />
-<<<<<<< HEAD
-      <v-btn @click="signIn" color="primary">SIGN IN</v-btn>
-=======
-      <v-btn :disabled="!valid" @click="signIn" color="#41b883">SIGN IN</v-btn>
->>>>>>> f7a4cbf1a2c93e762502fd72081cf145db8155d4
+      <v-btn :disabled="!valid" @click="signIn" color="primary">SIGN IN</v-btn>
       <v-spacer />
     </v-card-actions> -->
     <v-card-actions>
@@ -83,14 +79,10 @@
           (v) => (v && v.length > 6) || "Password must be longer than 6 characters",
         ],
         localUserNameEmail: "",
-<<<<<<< HEAD
-        error: "",
-=======
         emailRules: [
           (v) => !!v || "E-mail is required",
           (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
         ],
->>>>>>> f7a4cbf1a2c93e762502fd72081cf145db8155d4
       };
     },
     mounted() {
@@ -132,11 +124,6 @@
       forgot() {
         this.$emit("authState", { msg: "forgotPassword", username: this.localUserNameEmail });
       },
-<<<<<<< HEAD
-      setError: function(e) {
-        // this.error = this.$Amplify.I18n.get(e.message || e);
-        this.logger.error(this.error, e);
-=======
       setError(e) {
         this.errorObj = this.$Amplify.I18n.get(e.message || e);
         this.isError = true;
@@ -151,7 +138,6 @@
       },
       resetValidation() {
         this.$refs.signInForm.resetValidation();
->>>>>>> f7a4cbf1a2c93e762502fd72081cf145db8155d4
       },
     },
     computed: {

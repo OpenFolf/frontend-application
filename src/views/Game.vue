@@ -1,50 +1,6 @@
 <template>
-<<<<<<< HEAD
-  <v-container fluid>
-    <v-data-iterator :items="items" :items-per-page.sync="itemsPerPage" hide-default-footer>
-      <!-- <v-data-iterator :items="items" :items-per-page.sync="itemsPerPage"> -->
-      <template v-slot:header>
-        <v-app-bar color="primary" app hide-on-scroll>
-          <v-toolbar-title class="headline">Sort courses:</v-toolbar-title>
-          <v-spacer />
-          <v-btn-toggle>
-            <v-btn depressed :value="!filter">
-              <v-icon>fa-sort-alpha-down-alt</v-icon>
-            </v-btn>
-            <v-btn depressed :value="filter">
-              <v-icon>fa-globe-europe</v-icon>
-            </v-btn>
-          </v-btn-toggle>
-        </v-app-bar>
-      </template>
-
-      <template v-slot:default="props">
-        <v-content>
-          <v-row v-for="item in props.items" :key="item.name">
-            <v-col class="py-1">
-              <v-card color="accent" ripple :to="{ name: 'lobby' }">
-                <v-card-title class="headline">
-                  {{ item.name }}
-                  <v-spacer />
-                  <v-icon> fa-angle-right </v-icon>
-                </v-card-title>
-                <v-card-subtitle>
-                  {{ item.calories }}
-                  <v-avatar class="mx-1" tile size="14" color="red"></v-avatar>
-                  <v-avatar class="mx-1" tile size="14" color="white"></v-avatar>
-                  <v-avatar class="mx-1" tile size="14" color="blue"></v-avatar>
-                  <v-avatar class="mx-1" tile size="14" color="yellow"></v-avatar>
-                </v-card-subtitle>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-content>
-      </template>
-    </v-data-iterator>
-  </v-container>
-=======
   <fragment>
-    <v-app-bar color="#41b883" app hide-on-scroll>
+    <v-app-bar color="primary" app hide-on-scroll>
       <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
       <v-toolbar-title class="headline font-weight-bold">/</v-toolbar-title>
       <v-spacer />
@@ -65,7 +21,6 @@
       </v-container>
     </v-content>
   </fragment>
->>>>>>> f7a4cbf1a2c93e762502fd72081cf145db8155d4
 </template>
 
 <script>

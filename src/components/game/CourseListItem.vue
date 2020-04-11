@@ -1,6 +1,6 @@
 <template>
   <v-col cols="12">
-    <v-card color="#41b883" ripple :to="{ name: 'game-course', params: { path: content.path } }">
+    <v-card color="secondary" ripple :to="{ name: 'game-course', params: { path: content.path } }">
       <v-card-title class="headline mb-3">
         {{ content.name }} - {{ content.distance }} KM
         <v-spacer />

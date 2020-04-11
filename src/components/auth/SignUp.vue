@@ -23,16 +23,12 @@
           @click:append="showPassword = !showPassword"
           required
         />
-        <v-btn block :disabled="!valid" @click="signUp" color="#41b883">Sign Up</v-btn>
+        <v-btn block :disabled="!valid" @click="signUp" color="primary">Sign Up</v-btn>
       </v-form>
     </v-card-text>
     <!-- <v-card-actions>
       <v-spacer />
-<<<<<<< HEAD
-      <v-btn @click="signUp" color="primary">Sign Up</v-btn>
-=======
       <v-btn :disabled="!valid" @click="signUp" color="#41b883">Sign Up</v-btn>
->>>>>>> f7a4cbf1a2c93e762502fd72081cf145db8155d4
       <v-spacer />
     </v-card-actions> -->
     <v-card-actions>

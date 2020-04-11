@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <v-card class="ma-0 pa-0" color="transparent" tile flat>
-      <v-toolbar color="#41b883" flat>
+      <v-toolbar color="primary" flat>
         <v-container class="ma-0 pa-0 d-flex flex-row justify-start align-center full-width">
           <router-link :to="{ name: 'game' }">
             <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
@@ -9,10 +9,10 @@
           <v-toolbar-title class="headline font-weight-bold">{{ "/ " + path }}</v-toolbar-title>
         </v-container>
       </v-toolbar>
-      <v-card class="ma-0 pa-0 d-flex justify-center" color="#41b883" tile flat>
+      <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile flat>
         <v-btn large color="white" outlined class="my-6">Play Course</v-btn>
       </v-card>
-      <v-tabs v-model="currentTab" background-color="#41b883" color="white" grow>
+      <v-tabs v-model="currentTab" background-color="secondary" color="white" grow>
         <v-tab v-for="tab in tabs" :key="tab" class="white--text">
           {{ tab }}
         </v-tab>

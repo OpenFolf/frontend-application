@@ -12,52 +12,6 @@
   import { Fragment } from "vue-fragment";
   export default {
     name: "home",
-<<<<<<< HEAD
-    data() {
-      return {
-        contentList: [
-          {
-            id: 1,
-            color: "info",
-            title: "openFOLF User Profile",
-            subtitle: "Edit you information, e.g. add an avatar og change your display name.",
-            buttonText: "Edit Profile",
-          },
-          {
-            id: 2,
-            color: "accent",
-            title: "Allow Location Service",
-            subtitle:
-              "To be able to fully utilize the features of the app, please consider allowing Location services.",
-            buttonText: "Enable Location Service",
-          },
-          {
-            id: 3,
-            color: "success",
-            title: "Disc Golf Rules",
-            subtitle: "Do you know how to play Disc Golf? Read the official PDGA rules.",
-            buttonText: "See Rules",
-          },
-          {
-            id: 4,
-            color: "addedColor",
-            title: "Privacy Disclaimer",
-            subtitle: "Legalized lagadót um lögræði.",
-            buttonText: "",
-          },
-          {
-            id: 5,
-            color: "secondary",
-            title: "Nice Feature",
-            subtitle:
-              "Some nice feature that makes your life awesome! High 'n' Tight, you should try it today.",
-            buttonText: "Try it out",
-          },
-        ],
-      };
-    },
-=======
->>>>>>> f7a4cbf1a2c93e762502fd72081cf145db8155d4
     components: {
       TopBar,
       Fragment,

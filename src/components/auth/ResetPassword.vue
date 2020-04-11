@@ -27,10 +27,10 @@
           />
         </template>
         <template v-if="!isSentCode">
-          <v-btn block :disabled="!valid" @click="submit" color="#41b883">Send Code</v-btn>
+          <v-btn block :disabled="!valid" @click="submit" color="primary">Send Code</v-btn>
         </template>
         <template v-if="isSentCode">
-          <v-btn block :disabled="!valid" @click="verify" color="#41b883">Submit</v-btn>
+          <v-btn block :disabled="!valid" @click="verify" color="primary">Submit</v-btn>
         </template>
       </v-form>
       <!-- <v-form>
