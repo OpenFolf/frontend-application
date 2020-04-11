@@ -4,7 +4,9 @@ import * as usergraphQL from "../../graphql/custom/usergraphQL";
 // import * as subscriptions from "../../graphql/subscriptions";
 
 const state = {
-  user: {},
+  user: {
+      id: ""
+  },
 };
 
 const getters = {
