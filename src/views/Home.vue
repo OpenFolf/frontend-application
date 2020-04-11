@@ -8,6 +8,7 @@
 </template>
 
 <script>
+  import { mapActions } from "vuex";
   import TopBar from "@/components/home/TopBar.vue";
   import { Fragment } from "vue-fragment";
   export default {
@@ -15,6 +16,12 @@
     components: {
       TopBar,
       Fragment,
+    },
+    methods: {
+      ...mapActions(["fetchUser"]),
+    },
+    mounted() {
+      this.fetchUser();
     },
   };
 </script>
