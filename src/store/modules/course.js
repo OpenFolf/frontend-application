@@ -12,6 +12,9 @@ const getters = {
   getCourses: (state) => {
     return state.courses;
   },
+  getCurrentCourse: (state) => {
+    return state.currentCourse;
+  },
 };
 
 const mutations = {
@@ -27,18 +30,18 @@ const mutations = {
 };
 
 const actions = {
-  async getCourseList(context) {
+  async fetchCourseList(context) {
     const response = await API.graphql(graphqlOperation(coursegraphQL.getCourses));
     const courseList = response.data.listCourses.items;
 
     context.commit("updateCourseList", courseList);
   },
 
-  async getCourse(context, payload) {
-    const response = await API.graphql(graphqlOperation(coursegraphQL.getCourse, { payload }));
-    const courseList = response.data.listCourses.items;
+  async fetchCourse(context, payload) {
+    const response = await API.graphql(graphqlOperation(coursegraphQL.getCourse, { id: payload }));
+    const course = response.data;
 
-    context.commit("updateCurrentCourse", courseList);
+    context.commit("updateCurrentCourse", course);
   },
 
   async addCourse(context, payload) {
