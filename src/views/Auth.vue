@@ -16,5 +16,13 @@
     components: {
       Authenticator,
     },
+    // beforeRouteEnter(to, from, next) {
+    //   next((vm) => {
+    //     if (vm.$store.getters.getSignedIn) {
+    //       vm.$router.next({ name: "home" });
+    //     }
+    //     return true;
+    //   });
+    // },
   };
 </script>
