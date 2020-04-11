@@ -5,6 +5,41 @@ export const getCourse = /* GraphQL */ `
     getCourse(id: $id) {
       id
       name
+      holeCount
+      holes {
+        items {
+          no
+          redLength
+          whiteLength
+          blueLength
+          yellowLength
+          redPar
+          whitePar
+          bluePar
+          yellowPar
+          holePhoto
+        }
+      }
+      teetype
+      baskettype
+      description
+      latitude
+      longitude
+      red
+      white
+      blue
+      yellow
+      course_photo_url_thumb
+      course_photo_url_medium
+      userfavorite {
+        items {
+          user {
+            id
+            username
+            email
+          }
+        }
+      }
     }
   }
 `;
