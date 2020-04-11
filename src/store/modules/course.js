@@ -1,10 +1,11 @@
 import { API, graphqlOperation } from "aws-amplify";
-import * as queries from "../../graphql/queries";
+import * as coursegraphQL from "../../graphql/custom/coursegraphQL";
 import * as graphQLmutations from "../../graphql/mutations";
 import * as subscriptions from "../../graphql/subscriptions";
 
 const state = {
   courses: [],
+  currentCourse: {},
 };
 
 const getters = {
@@ -17,6 +18,9 @@ const mutations = {
   updateCourseList: (state, payload) => {
     state.courses = payload;
   },
+  updateCurrentCourse: (state, payload) => {
+    state.currentCourse = payload;
+  },
   newCourse: (state, payload) => {
     state.courses.unshift(payload);
   },
@@ -24,10 +28,17 @@ const mutations = {
 
 const actions = {
   async getCourseList(context) {
-    const response = await API.graphql(graphqlOperation(queries.listCourses));
+    const response = await API.graphql(graphqlOperation(coursegraphQL.getCourses));
     const courseList = response.data.listCourses.items;
 
     context.commit("updateCourseList", courseList);
+  },
+
+  async getCourse(context, payload) {
+    const response = await API.graphql(graphqlOperation(coursegraphQL.getCourse, { payload }));
+    const courseList = response.data.listCourses.items;
+
+    context.commit("updateCurrentCourse", courseList);
   },
 
   async addCourse(context, payload) {
