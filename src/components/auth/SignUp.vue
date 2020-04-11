@@ -45,6 +45,7 @@
       v-model="isError"
       elevation="0"
       class="py-5"
+      color="error"
     >
       {{ errorObj }}
     </v-alert>

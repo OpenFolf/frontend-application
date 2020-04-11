@@ -10,7 +10,6 @@ export default new Vuetify({
     options: {
       customProperties: true,
     },
-    //BREAK:
     themes: {
       light: {
         primary: "#012E33",
