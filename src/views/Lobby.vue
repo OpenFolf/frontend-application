@@ -18,7 +18,6 @@
               <tbody>
                 <tr v-for="(player, index) in game.players" :key="player.id">
                   <td>
-
                     <fragment v-if="!index"
                       ><v-icon small color="warning">fa-crown</v-icon></fragment
                     >
@@ -92,7 +91,6 @@
             userName: "Nigga Beinteins",
           },
 
-
           players: [
             {
               userId: 1,
@@ -122,8 +120,6 @@
         confirm("Are you sure you want to kick user?") && this.joinedUsers.splice(index, 1);
       },
     },
-
-
   };
 </script>
 
