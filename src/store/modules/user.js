@@ -4,12 +4,7 @@ import * as usergraphQL from "../../graphql/custom/usergraphQL";
 // import * as subscriptions from "../../graphql/subscriptions";
 
 const state = {
-  user: {
-    id: "",
-    username: "",
-    email: "",
-    currentGame: "",
-  },
+  user: {},
 };
 
 const getters = {
