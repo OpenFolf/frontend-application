@@ -1,13 +1,6 @@
 <template>
   <v-card width="400px" class="mx-auto my-5 font-weight-bold">
-    <v-toolbar color="#41b883">
-      <v-img
-        class="mr-2"
-        :src="require('@/assets/basket_white.png')"
-        max-height="35"
-        max-width="35"
-        contain
-      />
+    <v-toolbar color="primary">
       <v-toolbar-title>Confirm Sign Up</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
@@ -27,7 +20,7 @@
           type="text"
           required
         />
-        <v-btn block :disable="!valid" @click="confirm" color="#41b883">CONFIRM</v-btn>
+        <v-btn block :disable="!valid" @click="confirm" color="primary">CONFIRM</v-btn>
       </v-form>
     </v-card-text>
     <!-- <v-card-actions>

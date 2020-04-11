@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <v-app-bar color="#41b883" app hide-on-scroll>
+    <v-app-bar color="primary" app hide-on-scroll>
       <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
       <v-toolbar-title class="headline font-weight-bold">/</v-toolbar-title>
       <v-spacer />

@@ -1,13 +1,6 @@
 <template>
   <v-card width="400px" class="mx-auto my-5 font-weight-bold">
-    <v-toolbar color="#41b883">
-      <v-img
-        class="mr-2"
-        :src="require('@/assets/basket_white.png')"
-        max-height="35"
-        max-width="35"
-        contain
-      />
+    <v-toolbar color="primary">
       <v-toolbar-title>Reset Password</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
@@ -34,10 +27,10 @@
           />
         </template>
         <template v-if="!isSentCode">
-          <v-btn block :disabled="!valid" @click="submit" color="#41b883">Send Code</v-btn>
+          <v-btn block :disabled="!valid" @click="submit" color="primary">Send Code</v-btn>
         </template>
         <template v-if="isSentCode">
-          <v-btn block :disabled="!valid" @click="verify" color="#41b883">Submit</v-btn>
+          <v-btn block :disabled="!valid" @click="verify" color="primary">Submit</v-btn>
         </template>
       </v-form>
       <!-- <v-form>
@@ -65,7 +58,7 @@
     <!-- <template v-if="!isSentCode">
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="submit" color="#41b883">Send Code</v-btn>
+        <v-btn @click="submit" color="primary">Send Code</v-btn>
         <v-spacer />
       </v-card-actions>
       <v-card-actions>
@@ -77,7 +70,7 @@
     <template v-if="isSentCode">
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="verify" color="#41b883">Submit</v-btn>
+        <v-btn @click="verify" color="primary">Submit</v-btn>
         <v-spacer />
       </v-card-actions>
       <v-card-actions>

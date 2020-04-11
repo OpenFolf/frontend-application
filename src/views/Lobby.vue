@@ -5,9 +5,8 @@
       <v-spacer />
       <v-banner single-line>Code: {{ lobbyCode }}</v-banner>
     </v-app-bar>
-
     <v-content>
-      <v-container fluid>
+      <v-container fluid fill-height>
         <v-row>
           <v-col>
             <v-simple-table>
@@ -19,10 +18,17 @@
               <tbody>
                 <tr v-for="(player, index) in game.players" :key="player.id">
                   <td>
-                    <fragment v-if="!index"><v-icon small>fa-crown</v-icon></fragment>
+
+                    <fragment v-if="!index"
+                      ><v-icon small color="warning">fa-crown</v-icon></fragment
+                    >
                     {{ player.userName }}
                   </td>
-                  <td class="text-right"><v-icon>fa-minus-circle</v-icon></td>
+                  <td class="text-right">
+                    <fragment v-if="index && currentUser.userId !== player.userId">
+                      <v-icon color="error">fa-minus-circle</v-icon>
+                    </fragment>
+                  </td>
                 </tr>
 
                 <td v-if="game.players.length <= 1" colspan="2" class=" pt-5">
@@ -55,17 +61,20 @@
     data() {
       return {
         lobbyCode: "XYZQ",
-        courseName: "Folf völlurinn sprell",
-        currentUserId: 1,
-        currentUserName: "Siggi Hall",
-        lobbyOwnerId: 4,
-        lobbyOwnerName: "Nigga Beinteins",
+
+        courseName: "Klabratún",
+        currentUser: {
+          userId: 3,
+          userName: "Nigga Beinteins",
+        },
+
         game: {},
       };
     },
     created() {
       this.initialize();
-      var indexOfOwner = this.game.players.findIndex((o) => o.userId === this.game.ownerId);
+
+      var indexOfOwner = this.game.players.findIndex((o) => o.userId === this.game.owner.useId);
       const ownerElement = this.game.players.splice(indexOfOwner, 1);
       this.game.players = [...ownerElement, ...this.game.players];
     },
@@ -77,7 +86,13 @@
           gameStatus: 0,
           lobbyId: 1,
           courseName: "Klabratun",
-          ownerId: 3,
+
+          owner: {
+            userId: 3,
+            userName: "Nigga Beinteins",
+          },
+
+
           players: [
             {
               userId: 1,
@@ -108,13 +123,7 @@
       },
     },
 
-    //   <v-data-table
-    //   v-if="joinedUsers.length === 1"
-    //   loading
-    //   loading-text="Waiting for players to join"
-    //   hide-default-footer="true"
-    //   mobile-breakpoint="320"
-    // />
+
   };
 </script>
 

@@ -1,13 +1,6 @@
 <template>
   <v-card width="400px" class="mx-auto my-5 font-weight-bold" v-if="!getSignedIn">
-    <v-toolbar color="#41b883">
-      <v-img
-        class="mr-2"
-        :src="require('@/assets/basket_white.png')"
-        max-height="35"
-        max-width="35"
-        contain
-      />
+    <v-toolbar color="primary">
       <v-toolbar-title>Sign In</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
@@ -30,12 +23,12 @@
           @keyup.enter="signIn"
           required
         />
-        <v-btn block :disabled="!valid" @click="signIn" color="#41b883">SIGN IN</v-btn>
+        <v-btn block :disabled="!valid" @click="signIn" color="Primary">SIGN IN</v-btn>
       </v-form>
     </v-card-text>
     <!-- <v-card-actions>
       <v-spacer />
-      <v-btn :disabled="!valid" @click="signIn" color="#41b883">SIGN IN</v-btn>
+      <v-btn :disabled="!valid" @click="signIn" color="primary">SIGN IN</v-btn>
       <v-spacer />
     </v-card-actions> -->
     <v-card-actions>
