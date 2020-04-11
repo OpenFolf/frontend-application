@@ -50,11 +50,14 @@ const actions = {
     commit("setUserId", payload);
   },
   async fetchUser(context) {
-    const response = await API.graphql(
-      graphqlOperation(usergraphQL.getUser, { id: state.user.id }),
-    );
-
-    context.commit("setUser", response.data.getUser);
+    try {
+      const response = await API.graphql(
+        graphqlOperation(usergraphQL.FetchUser, { id: state.user.id }),
+      );
+      context.commit("setUser", response.data.getUser);
+    } catch (e) {
+      console.log("Error", e);
+    }
   },
 };
 
