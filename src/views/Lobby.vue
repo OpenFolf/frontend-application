@@ -1,9 +1,9 @@
 <template>
   <fragment>
-    <v-app-bar app color="primary">
-      <v-toolbar-title class="headline">{{ courseName }}</v-toolbar-title>
+    <v-app-bar color="primary" app>
+      <v-toolbar-title>{{ courseName }}</v-toolbar-title>
       <v-spacer />
-      <v-banner single-line class="headline">Code: {{ lobbyCode }}</v-banner>
+      <v-banner single-line>Code: {{ lobbyCode }}</v-banner>
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height>
@@ -18,6 +18,7 @@
               <tbody>
                 <tr v-for="(player, index) in game.players" :key="player.id">
                   <td>
+
                     <fragment v-if="!index"
                       ><v-icon small color="warning">fa-crown</v-icon></fragment
                     >
@@ -29,6 +30,7 @@
                     </fragment>
                   </td>
                 </tr>
+
                 <td v-if="game.players.length <= 1" colspan="2" class=" pt-5">
                   <v-data-table
                     class="mt-5"
@@ -59,20 +61,24 @@
     data() {
       return {
         lobbyCode: "XYZQ",
+
         courseName: "Klabratún",
         currentUser: {
           userId: 3,
           userName: "Nigga Beinteins",
         },
+
         game: {},
       };
     },
     created() {
       this.initialize();
+
       var indexOfOwner = this.game.players.findIndex((o) => o.userId === this.game.owner.useId);
       const ownerElement = this.game.players.splice(indexOfOwner, 1);
       this.game.players = [...ownerElement, ...this.game.players];
     },
+
     components: { Fragment },
     methods: {
       initialize() {
@@ -80,10 +86,12 @@
           gameStatus: 0,
           lobbyId: 1,
           courseName: "Klabratun",
+
           owner: {
             userId: 3,
             userName: "Nigga Beinteins",
           },
+
 
           players: [
             {
@@ -114,6 +122,8 @@
         confirm("Are you sure you want to kick user?") && this.joinedUsers.splice(index, 1);
       },
     },
+
+
   };
 </script>
 
