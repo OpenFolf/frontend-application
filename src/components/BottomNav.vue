@@ -5,13 +5,13 @@
     shift
     background-color="primary"
   >
-    <v-btn :to="{ name: 'home' }" color="primary">
+    <v-btn :to="{ name: 'home-menu' }" color="primary">
       <span class="mt-3">Home</span>
       <v-icon>fa-home</v-icon>
     </v-btn>
 
     <v-btn :to="{ name: 'game' }" color="primary">
-      <span class="mt-3">New Game</span>
+      <span class="mt-3">Game</span>
       <v-icon>fa-play</v-icon>
     </v-btn>
 
