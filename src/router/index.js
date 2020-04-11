@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Store from "../store";
+import Store from "@/store";
 import Auth from "@/views/Auth.vue";
 import Home from "@/views/Home.vue";
 import HomeMenu from "@/components/home/Menu.vue";
@@ -43,6 +43,12 @@ const routes = [
         path: "/home/rules",
         name: "home-rules",
         component: () => import(/* webpackChunkName: "rules" */ "@/components/home/Rules.vue"),
+      },
+      {
+        path: "/home/location",
+        name: "home-location",
+        component: () =>
+          import(/* webpackChunkName: "location" */ "@/components/home/Location.vue"),
       },
     ],
   },

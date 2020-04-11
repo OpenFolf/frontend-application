@@ -34,7 +34,7 @@
               "To be able to fully utilize the features of the app, please consider allowing Location services.",
             buttonText: "Enable Location Service",
             routerPath: {
-              name: "",
+              name: "home-location",
             },
           },
           {
