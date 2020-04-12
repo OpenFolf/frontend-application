@@ -15,27 +15,33 @@
         <v-form @submit="fetchCourseButton">
           <p>
             Enter courseid for a single course and press fetchSingleCourseButton. The object for the
-            single cours will be uploaded to the store as an object named currentCourse
+            single course will be uploaded to the store as an object named currentCourse
           </p>
           <input type="text" v-model="title" placeholder="Enter Course id..." />
           <input type="submit" value="fetchsingleCourseButton" />
         </v-form>
         <h4>currentCourse is:</h4>
         <p>{{ singleCourse }}</p>
-        <p v-if="singleCourse">{{ singleCourse.getCourse.id }}</p>
+        <p v-if="singleCourse">
+          Daemi um ad na i single element ur object-inu: {{ singleCourse.getCourse.id }}
+        </p>
       </div>
     </v-card>
     <v-card max-width="400" class="mx-auto" color="#9C27B0">
       <v-card-title>Game</v-card-title>
-      <!-- <div class="about">
-        <p>To fetch courses click fetch courses button: {{ courses }}</p>
-        <button class="btn btn-primary" @click="fetchCourseList">fetchCourses</button>
-        <form @submit="onSubmit">
-            <input type="text" v-model="title" placeholder="Enter Course id..." />
-            <input type="submit" value="fetchCourse" />
-        </form>
-        <p>currentCourse is: {{ singleCourse }}</p>
-        </div> -->
+      <!-- Setja inn create Game -->
+      <!-- get currentGame -->
+      <!-- subscription a Game -->
+    </v-card>
+    <v-card max-width="400" class="mx-auto" color="#9C27B0">
+      <v-card-title>User</v-card-title>
+      <!-- Setja inn edit user Game -->
+      <!-- Hvad fleira? -->
+    </v-card>
+    <v-card max-width="400" class="mx-auto" color="#9C27B0">
+      <v-card-title>Player</v-card-title>
+      <!-- Setja inn edit user Game -->
+      <!-- Hvad fleira? -->
     </v-card>
   </v-content>
 </template>
