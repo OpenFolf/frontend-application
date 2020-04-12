@@ -22,6 +22,7 @@
         </v-form>
         <h4>currentCourse is:</h4>
         <p>{{ singleCourse }}</p>
+        <p v-if="singleCourse">{{ singleCourse.getCourse.id }}</p>
       </div>
     </v-card>
     <v-card max-width="400" class="mx-auto" color="#9C27B0">

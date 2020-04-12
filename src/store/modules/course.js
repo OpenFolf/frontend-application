@@ -4,8 +4,8 @@ import * as graphQLmutations from "../../graphql/mutations";
 import * as subscriptions from "../../graphql/subscriptions";
 
 const state = {
-  courses: [],
-  currentCourse: {},
+  courses: null,
+  currentCourse: null,
 };
 
 const getters = {
