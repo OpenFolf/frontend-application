@@ -31,17 +31,27 @@ const mutations = {
 
 const actions = {
   async fetchCourseList(context) {
-    const response = await API.graphql(graphqlOperation(coursegraphQL.getCourses));
-    const courseList = response.data.listCourses.items;
+    try {
+      const response = await API.graphql(graphqlOperation(coursegraphQL.getCourses));
+      const courseList = response.data.listCourses.items;
 
-    context.commit("updateCourseList", courseList);
+      context.commit("updateCourseList", courseList);
+    } catch (e) {
+      console.log("Error", e);
+    }
   },
 
   async fetchCourse(context, payload) {
-    const response = await API.graphql(graphqlOperation(coursegraphQL.getCourse, { id: payload }));
-    const course = response.data;
+    try {
+      const response = await API.graphql(
+        graphqlOperation(coursegraphQL.getCourse, { id: payload }),
+      );
+      const course = response.data;
 
-    context.commit("updateCurrentCourse", course);
+      context.commit("updateCurrentCourse", course);
+    } catch (e) {
+      console.log("Error", e);
+    }
   },
 
   async addCourse(context, payload) {
