@@ -23,6 +23,9 @@ Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
+//TODO: Remove
+Vue.prototype.$log = console.log;
+
 Vue.use(Vuelidate);
 
 Amplify.configure(awsconfig);
