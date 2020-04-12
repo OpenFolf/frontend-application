@@ -20,7 +20,7 @@
           @change="$v.confirmCode.$touch()"
           @blur="$v.confirmCode.$touch()"
           :error-messages="confirmCodeErrors"
-          type="text"
+          type="number"
           required
         />
         <v-btn
@@ -29,12 +29,6 @@
           @click="confirm"
           color="primary"
           >CONFIRM
-          <v-scroll-x-transition>
-            <v-icon v-if="signInSuccess">
-              {{ console.log(success) }}
-              check
-            </v-icon>
-          </v-scroll-x-transition>
         </v-btn>
       </v-form>
     </v-card-text>
@@ -80,7 +74,6 @@
         confirmCode: "",
         errorObj: "",
         isError: false,
-        signInSuccess: false,
       };
     },
     methods: {
@@ -99,7 +92,6 @@
           .catch((e) => this.setError(e));
       },
       signIn() {
-        this.signInSuccess = true;
         this.$emit("authState", { msg: "signIn", username: this.email });
       },
       setError(e) {
