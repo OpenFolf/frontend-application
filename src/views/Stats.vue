@@ -15,7 +15,7 @@
         <v-form @submit="fetchCourseButton">
           <p>
             Enter courseid for a single course and press fetchSingleCourseButton. The object for the
-            single course will be uploaded to the store as an object named currentCourse
+            single course will be uploaded to the store as an object named currentCourse [CID test]
           </p>
           <input type="text" v-model="title" placeholder="Enter Course id..." />
           <input type="submit" value="fetchsingleCourseButton" />
