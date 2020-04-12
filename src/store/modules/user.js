@@ -25,6 +25,9 @@ const getters = {
   getCurrentGame: (state) => {
     return state.user.currentGame;
   },
+  getUserTee: (state) => {
+    return state.user.defTee;
+  },
 };
 
 const mutations = {
@@ -43,11 +46,26 @@ const mutations = {
   setCurrentGame: (state, payload) => {
     state.user.currentGame = payload;
   },
+  setUserTheme: (state, payload) => {
+    state.user.defMode = payload;
+  },
+  setUserTee: (state, payload) => {
+    state.user.defTee = payload;
+  },
 };
 
 const actions = {
   setUserId: ({ commit }, payload) => {
     commit("setUserId", payload);
+  },
+  setUserName: ({ commit }, payload) => {
+    commit("setUserName", payload);
+  },
+  setUserTheme: ({ commit }, payload) => {
+    commit("setUserTheme", payload);
+  },
+  setUserTee: ({ commit }, payload) => {
+    commit("setUserTee", payload);
   },
   async fetchUser(context) {
     try {
