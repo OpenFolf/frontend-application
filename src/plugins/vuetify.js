@@ -10,7 +10,6 @@ export default new Vuetify({
     options: {
       customProperties: true,
     },
-    //BREAK:
     themes: {
       light: {
         primary: "#012E33",
@@ -26,7 +25,7 @@ export default new Vuetify({
         primary: "#005737",
         secondary: "#012E33",
         accent: "#2F4858",
-        error: "#9B3923",
+        error: "#FF7859",
         info: "#008B9C",
         success: "#00A76C",
         warning: "#EEE683",

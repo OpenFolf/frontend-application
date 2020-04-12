@@ -5,22 +5,22 @@
     shift
     background-color="primary"
   >
-    <v-btn :to="{ name: 'home-menu' }" color="primary">
+    <v-btn :to="{ name: 'home-menu' }">
       <span class="mt-3">Home</span>
       <v-icon>fa-home</v-icon>
     </v-btn>
 
-    <v-btn :to="{ name: 'game' }" color="primary">
+    <v-btn :to="{ name: 'game' }">
       <span class="mt-3">Game</span>
       <v-icon>fa-play</v-icon>
     </v-btn>
 
-    <v-btn :to="{ name: 'join-game' }" color="primary">
+    <v-btn :to="{ name: 'join-game' }">
       <span class="mt-3">Join Game</span>
       <v-icon>fa-compress-alt</v-icon>
     </v-btn>
 
-    <v-btn :to="{ name: 'stats' }" color="primary">
+    <v-btn :to="{ name: 'stats' }">
       <span class="mt-3">Stats</span>
       <v-icon>fa-chart-bar</v-icon>
     </v-btn>
