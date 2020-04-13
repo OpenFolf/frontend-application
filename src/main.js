@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+import Vuelidate from "vuelidate";
 import "./sass/variables.scss";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@fortawesome/fontawesome-free/css/all.css";
@@ -21,6 +22,11 @@ Icon.Default.mergeOptions({
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
+
+//TODO: Remove
+Vue.prototype.$log = console.log;
+
+Vue.use(Vuelidate);
 
 Amplify.configure(awsconfig);
 Vue.use(Auth);

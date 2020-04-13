@@ -5,32 +5,39 @@
       <v-spacer />
     </v-toolbar>
     <v-card-text>
-      <v-form ref="signInForm" v-model="valid" lazy-validation>
+      <v-form ref="signInForm">
         <v-text-field
           label="E-Mail"
           type="email"
-          :rules="emailRules"
-          v-model="localUserNameEmail"
+          @change="$v.email.$touch()"
+          @blur="$v.email.$touch()"
+          :error-messages="emailErrors"
+          v-model="email"
           required
         />
+
         <v-text-field
           label="Password"
           v-model="password"
-          :rules="passwordRules"
+          @change="$v.password.$touch()"
+          @blur="$v.password.$touch()"
+          :error-messages="passwordErrors"
           :type="showPassword ? 'text' : 'password'"
           :append-icon="showPassword ? 'fa-eye' : 'fa-eye-slash'"
           @click:append="showPassword = !showPassword"
           @keyup.enter="signIn"
           required
         />
-        <v-btn block :disabled="!valid" @click="signIn" color="Primary">SIGN IN</v-btn>
+
+        <v-btn
+          block
+          :disabled="$v.email.$invalid || $v.password.$invalid"
+          @click="signIn"
+          color="primary"
+          >SIGN IN
+        </v-btn>
       </v-form>
     </v-card-text>
-    <!-- <v-card-actions>
-      <v-spacer />
-      <v-btn :disabled="!valid" @click="signIn" color="primary">SIGN IN</v-btn>
-      <v-spacer />
-    </v-card-actions> -->
     <v-card-actions>
       <v-spacer />
       <v-btn x-small text @click="signUp">No account? Create one!</v-btn>
@@ -50,6 +57,7 @@
       v-model="isError"
       elevation="0"
       class="py-5"
+      color="error"
     >
       {{ errorObj }}
     </v-alert>
@@ -58,6 +66,7 @@
 
 <script>
   import { mapGetters, mapActions } from "vuex";
+  import { required, email, minLength } from "vuelidate/lib/validators";
   export default {
     name: "sign-in",
     props: {
@@ -69,32 +78,18 @@
     },
     data() {
       return {
+        email: "",
+        password: "",
         showPassword: false,
         errorObj: "",
         isError: false,
-        valid: true,
-        password: "",
-        passwordRules: [
-          (v) => !!v || "Password is required",
-          (v) => (v && v.length > 6) || "Password must be longer than 6 characters",
-        ],
-        localUserNameEmail: "",
-        emailRules: [
-          (v) => !!v || "E-mail is required",
-          (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-        ],
       };
     },
-    mounted() {
-      this.$nextTick(function() {
-        this.valid = false;
-        // this.validate();
-      });
-    },
+
     methods: {
       ...mapActions(["setSignedIn", "setUserAuthObject", "setUserId", "fetchUser"]),
       signIn() {
-        this.$Amplify.Auth.signIn(this.localUserNameEmail, this.password)
+        this.$Amplify.Auth.signIn(this.email, this.password)
           .then(() => {
             this.setSignedIn(true);
             this.$Amplify.Auth.currentAuthenticatedUser()
@@ -114,7 +109,7 @@
           })
           .catch((e) => {
             if (e.code && e.code === "UserNotConfirmedException") {
-              this.$emit("authState", { msg: "confirmSignUp", username: this.localUserNameEmail });
+              this.$emit("authState", { msg: "confirmSignUp", username: this.email });
             } else {
               this.setError(e);
             }
@@ -124,7 +119,7 @@
         this.$emit("authState", { msg: "signUp" });
       },
       forgot() {
-        this.$emit("authState", { msg: "forgotPassword", username: this.localUserNameEmail });
+        this.$emit("authState", { msg: "forgotPassword", username: this.email });
       },
       setError(e) {
         this.errorObj = this.$Amplify.I18n.get(e.message || e);
@@ -140,14 +135,38 @@
         this.$refs.signInForm.resetValidation();
       },
     },
+    validations: {
+      email: {
+        required,
+        email,
+      },
+      password: {
+        required,
+        minLength: minLength(8),
+      },
+    },
     computed: {
       ...mapGetters(["getSignedIn"]),
+      emailErrors() {
+        const errors = [];
+        if (!this.$v.email.$dirty) return errors;
+        !this.$v.email.email && errors.push("Must be valid e-mail");
+        !this.$v.email.required && errors.push("E-mail is required");
+        return errors;
+      },
+      passwordErrors() {
+        const errors = [];
+        if (!this.$v.password.$dirty) return errors;
+        !this.$v.password.minLength && errors.push("Password must be at least 8 characters long");
+        !this.$v.password.required && errors.push("Password is required.");
+        return errors;
+      },
     },
     watch: {
       userNameEmail: {
         immediate: true,
         handler() {
-          this.localUserNameEmail = this.userNameEmail;
+          this.email = this.userNameEmail;
         },
       },
     },
