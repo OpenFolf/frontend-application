@@ -87,7 +87,13 @@
     },
 
     methods: {
-      ...mapActions(["setSignedIn", "setUserAuthObject", "setUserId", "fetchUser"]),
+      ...mapActions([
+        "setSignedIn",
+        "setUserAuthObject",
+        "setUserId",
+        "fetchUser",
+        "fetchCourseList",
+      ]),
       signIn() {
         this.$Amplify.Auth.signIn(this.email, this.password)
           .then(() => {
@@ -101,6 +107,7 @@
               })
               .then(() => {
                 this.fetchUser();
+                this.fetchCourseList();
               })
               .catch((e) => this.setError(e));
           })

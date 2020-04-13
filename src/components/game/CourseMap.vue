@@ -21,12 +21,22 @@
       LTileLayer,
       LMarker,
     },
+    props: {
+      lat: {
+        type: String,
+        required: true,
+      },
+      lng: {
+        type: String,
+        required: true,
+      },
+    },
     data() {
       return {
         url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         zoom: 12,
-        center: [64.118179, -21.888047],
-        latLng: [64.118179, -21.888047],
+        center: [parseFloat(this.lat), parseFloat(this.lng)],
+        latLng: [parseFloat(this.lat), parseFloat(this.lng)],
         bounds: null,
         mapStyle: {
           height: "415px",

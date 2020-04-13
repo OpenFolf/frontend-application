@@ -164,7 +164,7 @@
     border-left: 1px solid var(--v-secondary-lighten1);
   }
   .theme--dark.v-data-table {
-    background-color: var(--v-secondary-base);
+    background-color: var(--v-secondary-darken1);
     color: #ffffff;
   }
 </style>
