@@ -18,7 +18,7 @@
         </v-tab>
       </v-tabs>
       <v-tabs-items v-model="currentTab" touchless>
-        <v-tab-item><course-info /></v-tab-item>
+        <v-tab-item><course-info :singleCourse="singleCourse"/></v-tab-item>
         <v-tab-item><course-baskets /></v-tab-item>
         <v-tab-item><course-map /></v-tab-item>
         <!-- <v-tab-item><course-stats /></v-tab-item> -->
@@ -32,6 +32,7 @@
   import CourseBaskets from "@/components/game/CourseBaskets.vue";
   import CourseMap from "@/components/game/CourseMap.vue";
   // import CourseStats from "@/components/game/CourseStats.vue";
+  import { mapGetters, mapActions } from "vuex";
   export default {
     name: "game-course",
     components: {
@@ -56,7 +57,7 @@
         currentTab: null,
         tabs: ["Info", "Baskets", "Map" /*, "Stats"*/],
         course: {
-          id: 1,
+          id: "5e8432d7-d5e2-4ea5-96be-4032ac88c532",
           name: "Fossvogur",
           info: {
             text:
@@ -69,6 +70,20 @@
           },
           stats: {
             data: "value",
+          },
+        },
+
+        computed: {
+          ...mapGetters(["getCurrentCourse"]),
+          singleCourse() {
+            return this.getCurrentCourse;
+          },
+        },
+        methods: {
+          ...mapActions(["fetchCourse"]),
+          mounted() {
+            console.log("this.course.id", this.course.id);
+            this.fetchCourse(this.course.id);
           },
         },
       };
