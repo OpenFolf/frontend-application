@@ -11,7 +11,7 @@ export function getUserLocation() {
   }
 
   function displayLocationInfo(position) {
-    // Here there should be a call to the store.
+    // TODO: Here there should be a call to the store.
     const location = new Object();
     location.lat = position.coords.latitude;
     location.lon = position.coords.longitude;
