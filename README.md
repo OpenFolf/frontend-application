@@ -2,7 +2,7 @@
 
 ## Version 0.0.2
 
-This is the final version we are building.
+This is part of a final project at Reykjavik University.
 
 The master branch is being continuously delivered.
 
@@ -12,9 +12,9 @@ The master branch is being continuously delivered.
 
 Its main purpose is to keep track of a game of Disc Golf.
 
-openFOLF is a mobile application, completely system agnostic and run on web technologies. With evergreen browser vendors, the ability to install the app is possible on mobile devices, use geoLocation API services and run service workers for off-line capabilities.
+openFOLF is a mobile application, completely system agnostic and runs on web technologies. With evergreen browser vendors, the ability to install the app is possible on mobile devices, use geoLocation API services and run service workers for off-line capabilities.
 
-All instances of a game in openFOLF are synced together via GraphQL and DynamoDB. This allows for more flexibility when filling out the score card as it shared between all instances of the game in real time.
+All instances of a game in openFOLF are synced together via GraphQL and DynamoDB. This allows for more flexibility when filling out the score card as it is shared between all instances of the game in real time.
 
 ## Tools
 
@@ -24,7 +24,7 @@ The code is written in Visual Studio Code with a wide variety of pluggins.
 
 We use Prettier+ESLint with a set of custom rules for code formatting and to insure that the team has a unified style in the code written.
 
-The frontend uses VueJS along with some of it's packages.
+The frontend uses VueJS along with some of its packages.
 
 We embrace and try to follow the ideas of JAM Stack for this project. We really appreciate how developer friendly the core idea is.
 
