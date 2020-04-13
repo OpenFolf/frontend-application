@@ -32,9 +32,9 @@
             title: "Allow Location Service",
             subtitle:
               "To be able to fully utilize the features of the app, please consider allowing Location services.",
-            buttonText: "Enable Location Service",
+            buttonText: "Location Services",
             routerPath: {
-              name: "",
+              name: "home-location",
             },
           },
           {

@@ -16,7 +16,8 @@ const getters = {
   getUserId: (state) => {
     return state.user.id;
   },
-  getUsername: (state) => {
+  // Changed "getUsername" -> "getUserName" AEXX @ aegir-ui 13.04
+  getUserName: (state) => {
     return state.user.username;
   },
   getEmail: (state) => {
@@ -24,6 +25,10 @@ const getters = {
   },
   getCurrentGame: (state) => {
     return state.user.currentGame;
+  },
+  // Added AEXX @ aegir-ui 13.04
+  getUserTee: (state) => {
+    return state.user.defTee;
   },
 };
 
@@ -43,11 +48,30 @@ const mutations = {
   setCurrentGame: (state, payload) => {
     state.user.currentGame = payload;
   },
+  // Added AEXX @ aegir-ui 13.04
+  setUserTheme: (state, payload) => {
+    state.user.defMode = payload;
+  },
+  // Added AEXX @ aegir-ui 13.04
+  setUserDefaultTee: (state, payload) => {
+    state.user.defTee = payload;
+  },
 };
 
 const actions = {
   setUserId: ({ commit }, payload) => {
     commit("setUserId", payload);
+  },
+  setUserName: ({ commit }, payload) => {
+    commit("setUserName", payload);
+  },
+  // Added AEXX @ aegir-ui 13.04
+  setUserTheme: ({ commit }, payload) => {
+    commit("setUserTheme", payload);
+  },
+  // Added AEXX @ aegir-ui 13.04
+  setUserDefaultTee: ({ commit }, payload) => {
+    commit("setUserDefaultTee", payload);
   },
   async fetchUser(context) {
     try {

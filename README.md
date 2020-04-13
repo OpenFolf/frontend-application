@@ -2,30 +2,34 @@
 
 ## Version 0.0.2
 
-This is final version we are building. This is for all the marbles.
+This is part of a final project at Reykjavik University.
 
-### Purpose of this version
+The master branch is being continuously delivered.
 
-To have something to handin at the start of May.
+[Current build](https://app.openfolf.net/)
 
 ## What is this application
 
-The application is used to keep track of disc golf games played. It keeps track of who is playing, the score of each player and shares the information between players in real time. 
+Its main purpose is to keep track of a game of Disc Golf.
+
+openFOLF is a mobile application, completely system agnostic and runs on web technologies. With evergreen browser vendors, the ability to install the app is possible on mobile devices, use geoLocation API services and run service workers for off-line capabilities.
+
+All instances of a game in openFOLF are synced together via GraphQL and DynamoDB. This allows for more flexibility when filling out the score card as it is shared between all instances of the game in real time.
 
 ## Tools
 
+The application uses backend services from [Amplify](https://aws-amplify.github.io/) and [AppSync](https://aws.amazon.com/appsync/). In the end we went with a combination of different services. They are: [Cognito](https://aws.amazon.com/cognito/), [DynamoDB](https://aws.amazon.com/dynamodb/), [Lambda](https://aws.amazon.com/lambda/), [S3](https://aws.amazon.com/s3/), [CodePipeline](https://aws.amazon.com/codepipeline/), [Route 53](https://aws.amazon.com/route53/).
+
 The code is written in Visual Studio Code with a wide variety of pluggins.
 
-We use Prettier+ESLint with a set of custom rules for code formating and to insure that the team has a unified style in the code witten.
+We use Prettier+ESLint with a set of custom rules for code formatting and to insure that the team has a unified style in the code written.
 
-The backend is a wide selection of different AWS services. The scope of services changes as we discover different ways to execute our vision. Currently we are looking at AWS Amplify and AppSync with its GraphQL features. The data is stored in a DynamoDB NO-SQL database and uses Cognito to authenticate the users.
+The frontend uses VueJS along with some of its packages.
 
-The frontend uses VueJS along with some of it's packages. They are Vuex, Vue-Router and prebuilt components from Vuetify.
-
-We try to embrace the ideas of JAM Stack for this project and make the developer environment as friendly as possible.
+We embrace and try to follow the ideas of JAM Stack for this project. We really appreciate how developer friendly the core idea is.
 
 ## The Team
 
 Arnar Arnarson, Dagur Kristjánsson and Ægir Tómasson.
 
-We are all computer science students at Reykjavik University.
+We are all computer science students at [Reykjavik University](https://www.ru.is/).
