@@ -97,7 +97,7 @@
             <template v-if="singleCourse">
               <v-alert dense type="success" class="">
                 Daemi um ad na i single element ur object-inu:
-                <strong>{{ singleCourse.getCourse.id }}</strong>
+                <strong>{{ singleCourse.id }}</strong>
               </v-alert>
             </template>
             <pre>{{ singleCourse }}</pre>

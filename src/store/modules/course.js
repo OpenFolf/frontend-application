@@ -46,7 +46,7 @@ const actions = {
       const response = await API.graphql(
         graphqlOperation(coursegraphQL.getCourse, { id: payload }),
       );
-      const course = response.data;
+      const course = response.data.getCourse;
 
       context.commit("updateCurrentCourse", course);
     } catch (e) {
