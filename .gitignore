@@ -230,6 +230,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+
 # End of https://www.gitignore.io/api/vue,vim,node,vuejs,linux,macos,windows,visualstudiocode
 
 #amplify

@@ -62,6 +62,12 @@ const routes = [
     name: "game-course",
     component: () => import(/* webpackChunkName: "game-course" */ "@/components/game/Course.vue"),
     props: true,
+    // eslint-disable-next-line no-unused-vars
+    beforeEnter: (to, from, next) => {
+      console.log("to.params", to.params);
+      Store.dispatch("fetchCourse", to.params.id);
+      next();
+    },
   },
   {
     path: "/game/:path/lobby",

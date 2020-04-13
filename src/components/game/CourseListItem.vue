@@ -1,6 +1,10 @@
 <template>
   <v-col cols="12">
-    <v-card color="secondary" ripple :to="{ name: 'game-course', params: { path: content.path } }">
+    <v-card
+      color="secondary"
+      ripple
+      :to="{ name: 'game-course', params: { path: content.path, id: content.id } }"
+    >
       <v-card-title class="headline mb-3">
         {{ content.name }} - {{ content.distance }} KM
         <v-spacer />
@@ -24,6 +28,11 @@
         type: Object,
         required: true,
       },
+    },
+    beforeLeave(to, from, next) {
+      console.log("from.params.id", to.params.id);
+      this.$store.actions.fetchCourse(to.params.id);
+      next();
     },
   };
 </script>
