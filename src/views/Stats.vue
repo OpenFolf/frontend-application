@@ -97,7 +97,7 @@
             <template v-if="singleCourse">
               <v-alert dense type="success" class="">
                 Daemi um ad na i single element ur object-inu:
-                <strong>{{ singleCourse.getCourse.id }}</strong>
+                <strong>{{ singleCourse.id }}</strong>
               </v-alert>
             </template>
             <pre>{{ singleCourse }}</pre>
@@ -123,8 +123,8 @@
             </v-btn>
             <pre class="mb-5">{{ game }}</pre>
             Setja inn courseID til ad bua til leik tha verdur til leikur thar sem userinn er owner
-            og gamestatus 0. Svo a eftir ad stilla tvi thannig upp ad owner verdur sjalkrafa leikmadur.
-            Budin er svo update-ud med thessum nyja leik.
+            og gamestatus 0. Svo a eftir ad stilla tvi thannig upp ad owner verdur sjalkrafa
+            leikmadur. Budin er svo update-ud med thessum nyja leik.
             <v-text-field
               outlined
               clearable
@@ -140,6 +140,46 @@
               <v-icon>Create Game</v-icon>
             </v-btn>
           </v-card>
+          <v-card color="accent" class="pa-1 overflow-x-auto">
+            <v-card-title>Player</v-card-title>
+            Add player to game virkar thannig ad sett er inn gameID og current user verdur til sem
+            player i leiknum.
+            <!-- Add player to game -->
+            <v-text-field
+              outlined
+              clearable
+              clear-icon="fa-times-circle"
+              flat
+              solo
+              v-model="playerGameId"
+              label="Enter gameId to add user to game"
+              @keyup.enter="addPlayerHandler"
+              class="mx-1"
+            />
+            <v-btn x-large block color="error" @click="addPlayerHandler">
+              <v-icon>Add user to game</v-icon>
+            </v-btn>
+          </v-card>
+          <v-card color="success" class="pa-1 overflow-x-auto">
+            <v-card-title>Fetch Games</v-card-title>
+            <v-card-text class="d-flex flex-row font-weight-bold">
+              List of all games fetched from the database and then uploaded into state
+            </v-card-text>
+            <v-card max-width="600px">
+              <v-btn
+                x-large
+                block
+                :disabled="pushed"
+                class="my-3"
+                color="info"
+                @click="fetchGamesHandler"
+              >
+                fetch Games
+              </v-btn>
+            </v-card>
+            <v-divider />
+            <pre class="mb-5">{{ games }}</pre>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -151,7 +191,7 @@
   export default {
     name: "stats",
     computed: {
-      ...mapGetters(["getSignedIn", "getCourses", "getCurrentCourse", "getGame"]),
+      ...mapGetters(["getSignedIn", "getCourses", "getCurrentCourse", "getGame", "getGamesList"]),
       courses() {
         return this.getCourses;
       },
@@ -161,10 +201,20 @@
       game() {
         return this.getGame;
       },
+      games() {
+        return this.getGamesList;
+      },
     },
 
     methods: {
-      ...mapActions(["fetchCourseList", "fetchCourse", "fetchGame", "createGame"]),
+      ...mapActions([
+        "fetchCourseList",
+        "fetchCourse",
+        "fetchGame",
+        "createGame",
+        "createPlayer",
+        "fetchGames",
+      ]),
       fetchSingleHandler() {
         this.fetchCourse(this.courseId);
         this.courseId = "";
@@ -177,9 +227,17 @@
         this.fetchGame(this.gameId);
         this.gameId = "";
       },
+      fetchGamesHandler() {
+        this.fetchGames();
+        this.gameId = "";
+      },
       createGameHandler() {
         this.createGame(this.createGameCourseId);
         this.createGameCourseId = "";
+      },
+      addPlayerHandler() {
+        this.createPlayer(this.playerGameId);
+        this.playerGameId = "";
       },
     },
     data() {
@@ -188,6 +246,7 @@
         pushed: false,
         gameId: "",
         createGameCourseId: "",
+        playerGameId: "",
       };
     },
   };

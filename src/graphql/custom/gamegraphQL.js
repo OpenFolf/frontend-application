@@ -69,7 +69,22 @@ export const listGames = /* GraphQL */ `
   query ListGames($filter: ModelGameFilterInput, $limit: Int, $nextToken: String) {
     listGames(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        
+        id
+        course {
+          name
+        }
+        owner {
+          username
+          email
+        }
+        players {
+          items {
+            user {
+              username
+              email
+            }
+          }
+        }
       }
       nextToken
     }
