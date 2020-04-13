@@ -2,8 +2,11 @@
   <v-container fluid>
     <v-row dense>
       <v-col cols="12">
-        <v-card color="info" class="pa-1">
-          <pre>{{ getUser }}</pre>
+        <v-card color="info" class="pa-1 overflow-x-auto">
+          <v-btn text color="error" @click="seeDebug = !seeDebug" small>
+            {{ seeDebug ? "Hide" : "Show Debug text" }}
+          </v-btn>
+          <pre v-if="seeDebug">{{ getUser }}</pre>
           <v-divider />
           <v-card-title class="headline">
             User Name: {{ getUserName ? getUserName : "--" }}
@@ -33,7 +36,7 @@
           <v-card class="pa-1 my-1 d-flex flex-row align-center" color="transparent" flat>
             <v-card-title class="headline">Set Theme:</v-card-title>
             <v-spacer />
-            <v-btn @click="toggleTheme" class="pa-5 mr-2">
+            <v-btn x-large @click="toggleTheme" class="mr-2">
               <v-icon left>fa-sun</v-icon>
               /
               <v-icon right>fa-moon</v-icon>
@@ -54,6 +57,7 @@
         localUserName: "",
         localTeeValue: 3,
         localColorLabel: "YELLOW",
+        seeDebug: false,
       };
     },
     computed: {
