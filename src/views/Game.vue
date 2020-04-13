@@ -24,18 +24,28 @@
 </template>
 
 <script>
-  import { v4 } from "uuid/v4";
+  //import { v4 } from "uuid/v4";
+  import { mapGetters, mapActions } from "vuex";
   import CourseListItem from "@/components/game/CourseListItem.vue";
   import { Fragment } from "vue-fragment";
   export default {
+    data() {
+      return {
+        courseId: "",
+        pushed: false,
+        sortAlpha: true,
+      };
+    },
     name: "game",
     components: {
       CourseListItem,
       Fragment,
     },
     computed: {
+      ...mapGetters(["getCourses", "getCurrentCourse"]),
       courses() {
-        let sortedList = this.coursesList.map((x) => x);
+        //return this.getCourses;
+        let sortedList = this.getCourses.map((x) => x);
         if (this.sortAlpha) {
           return sortedList.sort(function(a, b) {
             let nameA = a.name.toUpperCase();
@@ -54,131 +64,145 @@
           });
         }
       },
+      getCourseById() {
+        return this.getCurrentCourse;
+      },
     },
-    data: () => ({
-      sortAlpha: true,
-      coursesList: [
-        {
-          name: "Fossvogur",
-          path: "fossvogur",
-          id: v4(),
-          distance: 10,
-          red: true,
-          blue: true,
-          yellow: false,
-          white: true,
-        },
-        {
-          name: "Klambratún",
-          path: "klambratun",
-          id: v4(),
-          distance: 20,
-          red: true,
-          blue: false,
-          yellow: true,
-          white: true,
-        },
-        {
-          name: "Laugardalur",
-          path: "laugardalur",
-          id: v4(),
-          distance: 30,
-          red: true,
-          blue: true,
-          yellow: true,
-          white: true,
-        },
-        {
-          name: "Gufunes",
-          path: "gufunes",
-          id: v4(),
-          distance: 440,
-          red: false,
-          blue: false,
-          yellow: false,
-          white: true,
-        },
-        {
-          name: "Grafarvogur",
-          path: "grafarvogur",
-          id: v4(),
-          distance: 50,
-          red: false,
-          blue: false,
-          yellow: false,
-          white: false,
-        },
-        {
-          name: "Fjarkanistan",
-          path: "fjarkanistan",
-          id: v4(),
-          distance: 60,
-          red: true,
-          blue: true,
-          yellow: true,
-          white: true,
-        },
-        {
-          name: "Hafnarfjörður",
-          path: "hafnarfjordur",
-          id: v4(),
-          distance: 70,
-          red: true,
-          blue: true,
-          yellow: true,
-          white: true,
-        },
-        {
-          name: "Kópavogur",
-          path: "kopavogur",
-          id: v4(),
-          distance: 99,
-          red: true,
-          blue: true,
-          yellow: true,
-          white: true,
-        },
-        {
-          name: "Selfoss",
-          path: "selfoss",
-          id: v4(),
-          distance: 90,
-          red: true,
-          blue: true,
-          yellow: true,
-          white: true,
-        },
-        {
-          name: "Egilstaðir",
-          path: "egilstadir",
-          id: v4(),
-          distance: 5100,
-          red: true,
-          blue: true,
-          yellow: true,
-          white: true,
-        },
-        {
-          name: "Breiðholt",
-          path: "breidholt",
-          id: v4(),
-          distance: 105,
-          red: true,
-          blue: true,
-          yellow: true,
-          white: true,
-        },
-        {
-          name: "Kjalarnes",
-          path: "kjalarnes",
-          id: v4(),
-          distance: 100,
-          red: true,
-          blue: true,
-          yellow: true,
-          white: true,
-        },
-      ],
-    }),
+    methods: {
+      ...mapActions(["fetchCourseList", "fetchCourse"]),
+      fetchSingleHandler() {
+        this.fetchCourse(this.courseId);
+        this.courseId = "";
+      },
+      fetchCoursesHandler() {
+        this.fetchCourseList();
+        this.pushed = true;
+      },
+    },
+    // data: () => ({
+    //   sortAlpha: true,
+    //   coursesList: [
+    //     {
+    //       name: "Fossvogur",
+    //       path: "fossvogur",
+    //       id: v4(),
+    //       distance: 10,
+    //       red: true,
+    //       blue: true,
+    //       yellow: false,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Klambratún",
+    //       path: "klambratun",
+    //       id: v4(),
+    //       distance: 20,
+    //       red: true,
+    //       blue: false,
+    //       yellow: true,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Laugardalur",
+    //       path: "laugardalur",
+    //       id: v4(),
+    //       distance: 30,
+    //       red: true,
+    //       blue: true,
+    //       yellow: true,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Gufunes",
+    //       path: "gufunes",
+    //       id: v4(),
+    //       distance: 440,
+    //       red: false,
+    //       blue: false,
+    //       yellow: false,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Grafarvogur",
+    //       path: "grafarvogur",
+    //       id: v4(),
+    //       distance: 50,
+    //       red: false,
+    //       blue: false,
+    //       yellow: false,
+    //       white: false,
+    //     },
+    //     {
+    //       name: "Fjarkanistan",
+    //       path: "fjarkanistan",
+    //       id: v4(),
+    //       distance: 60,
+    //       red: true,
+    //       blue: true,
+    //       yellow: true,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Hafnarfjörður",
+    //       path: "hafnarfjordur",
+    //       id: v4(),
+    //       distance: 70,
+    //       red: true,
+    //       blue: true,
+    //       yellow: true,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Kópavogur",
+    //       path: "kopavogur",
+    //       id: v4(),
+    //       distance: 99,
+    //       red: true,
+    //       blue: true,
+    //       yellow: true,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Selfoss",
+    //       path: "selfoss",
+    //       id: v4(),
+    //       distance: 90,
+    //       red: true,
+    //       blue: true,
+    //       yellow: true,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Egilstaðir",
+    //       path: "egilstadir",
+    //       id: v4(),
+    //       distance: 5100,
+    //       red: true,
+    //       blue: true,
+    //       yellow: true,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Breiðholt",
+    //       path: "breidholt",
+    //       id: v4(),
+    //       distance: 105,
+    //       red: true,
+    //       blue: true,
+    //       yellow: true,
+    //       white: true,
+    //     },
+    //     {
+    //       name: "Kjalarnes",
+    //       path: "kjalarnes",
+    //       id: v4(),
+    //       distance: 100,
+    //       red: true,
+    //       blue: true,
+    //       yellow: true,
+    //       white: true,
+    //     },
+    //   ],
+    // }),
   };
 </script>
