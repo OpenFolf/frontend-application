@@ -27,6 +27,7 @@
   //import { v4 } from "uuid/v4";
   import { mapGetters, mapActions } from "vuex";
   import CourseListItem from "@/components/game/CourseListItem.vue";
+  import { replaceAccentForUrl } from "../services/remove-accents";
   import { Fragment } from "vue-fragment";
   export default {
     data() {
@@ -44,8 +45,14 @@
     computed: {
       ...mapGetters(["getCourses", "getCurrentCourse"]),
       courses() {
-        //return this.getCourses;
-        let sortedList = this.getCourses.map((x) => x);
+        var courseList = this.getCourses.map((x) => {
+          var urlPath = replaceAccentForUrl(x.name);
+          var addedObject = Object.assign({}, x);
+          addedObject.path = urlPath;
+          return addedObject;
+        });
+
+        let sortedList = courseList.map((x) => x);
         if (this.sortAlpha) {
           return sortedList.sort(function(a, b) {
             let nameA = a.name.toUpperCase();
