@@ -47,7 +47,6 @@ const actions = {
         graphqlOperation(coursegraphQL.getCourse, { id: payload }),
       );
       const course = response.data;
-
       context.commit("updateCurrentCourse", course);
     } catch (e) {
       console.log("Error", e);

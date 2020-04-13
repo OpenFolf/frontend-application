@@ -64,9 +64,9 @@ const routes = [
     props: true,
     // eslint-disable-next-line no-unused-vars
     beforeEnter: (to, from, next) => {
-      console.log("to.params", to.params);
-      Store.dispatch("fetchCourse", to.params.id);
-      next();
+      return new Promise((resolve) => {
+        resolve(Store.dispatch("fetchCourse", to.params.id));
+      }).then(() => next());
     },
   },
   {
