@@ -1,42 +1,15 @@
-// import { API, graphqlOperation } from "aws-amplify";
-// import * as queries from "../../graphql/queries";
-// import * as graphQLmutations from "../../graphql/mutations";
+import { API, graphqlOperation } from "aws-amplify";
+import * as gamegraphQL from "../../graphql/custom/gamegraphQL";
+//import * as graphQLmutations from "../../graphql/mutations";
 // import * as subscriptions from "../../graphql/subscriptions";
 
 const state = {
-  game: {
-    id: "",
-    course: {
-      id: "",
-      name: "",
-    },
-    owner: "",
-    players: [],
-    gameStatus: "",
-  },
+  game: {},
 };
 
 const getters = {
   getGame: (state) => {
     return state.game;
-  },
-  getGameId: (state) => {
-    return state.game.id;
-  },
-  getCourse: (state) => {
-    return state.game.course;
-  },
-  getCourseId: (state) => {
-    return state.game.course.id;
-  },
-  getCourseName: (state) => {
-    return state.game.course.name;
-  },
-  getGameOwner: (state) => {
-    return state.game.owner;
-  },
-  getGameStatus: (state) => {
-    return state.game.gameStatus;
   },
 };
 
@@ -44,27 +17,39 @@ const mutations = {
   setGame: (state, payload) => {
     state.game = payload;
   },
-  setGameId: (state, payload) => {
-    state.game.id = payload;
-  },
-  setCourse: (state, payload) => {
-    state.game.course = payload;
-  },
-  setCourseId: (state, payload) => {
-    state.game.course.id = payload;
-  },
-  setCourseName: (state, payload) => {
-    state.game.course.name = payload;
-  },
-  setGameOwner: (state, payload) => {
-    state.game.owner = payload;
-  },
-  setGameStatus: (state, payload) => {
-    state.game.gameStatus = payload;
-  },
 };
 
-const actions = {};
+const actions = {
+  async fetchGame(context, payload) {
+    try {
+      const response = await API.graphql(graphqlOperation(gamegraphQL.getGame, { id: payload }));
+      const game = response.data;
+
+      context.commit("setGame", game);
+    } catch (e) {
+      console.log("Error", e);
+    }
+  },
+
+  async createGame(context, payload) {
+    try {
+      const createGameDetails = {
+        gameCourseId: payload,
+        gameOwnerId: context.rootState.user.user.id,
+        gameStatus: "0",
+      };
+      console.log("Game details console log", createGameDetails);
+      const response = await API.graphql(
+        graphqlOperation(gamegraphQL.createGame, { input: createGameDetails }),
+      );
+      const newGame = response;
+
+      context.commit("setGame", newGame);
+    } catch (e) {
+      console.log("Error", e);
+    }
+  },
+};
 
 export default {
   state,
