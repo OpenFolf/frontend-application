@@ -6,17 +6,24 @@ import * as playergraphQL from "../../graphql/custom/playergraphQL";
 
 const state = {
   game: {},
+  gamesList: [],
 };
 
 const getters = {
   getGame: (state) => {
     return state.game;
   },
+  getGamesList: (state) => {
+    return state.gamesList;
+  },
 };
 
 const mutations = {
   setGame: (state, payload) => {
     state.game = payload;
+  },
+  setGamesList: (state, payload) => {
+    state.gamesList = payload;
   },
 };
 
@@ -27,6 +34,17 @@ const actions = {
       const game = response.data;
 
       context.commit("setGame", game);
+    } catch (e) {
+      console.log("Error", e);
+    }
+  },
+
+  async fetchGames(context) {
+    try {
+      const response = await API.graphql(graphqlOperation(gamegraphQL.listGames));
+      const gamesList = response.data.listGames.items;
+
+      context.commit("setGamesList", gamesList);
     } catch (e) {
       console.log("Error", e);
     }
