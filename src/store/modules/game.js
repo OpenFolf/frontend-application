@@ -1,5 +1,6 @@
 import { API, graphqlOperation } from "aws-amplify";
 import * as gamegraphQL from "../../graphql/custom/gamegraphQL";
+import * as playergraphQL from "../../graphql/custom/playergraphQL";
 //import * as graphQLmutations from "../../graphql/mutations";
 // import * as subscriptions from "../../graphql/subscriptions";
 
@@ -45,6 +46,22 @@ const actions = {
       const newGame = response;
 
       context.commit("setGame", newGame);
+    } catch (e) {
+      console.log("Error", e);
+    }
+  },
+
+  async createPlayer(context, payload) {
+    try {
+      const createPlayerDetails = {
+        playerUserId: context.rootState.user.user.id,
+        playerGameId: payload,
+      };
+
+      const response = await API.graphql(
+        graphqlOperation(playergraphQL.createPlayer, { input: createPlayerDetails }),
+      );
+      console.log("Response", response);
     } catch (e) {
       console.log("Error", e);
     }

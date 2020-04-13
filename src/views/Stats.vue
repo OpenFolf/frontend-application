@@ -140,6 +140,25 @@
               <v-icon>Create Game</v-icon>
             </v-btn>
           </v-card>
+          <v-card color="accent" class="pa-1 overflow-x-auto">
+            <v-card-title>Player</v-card-title>
+            Add player to game virkar thannig ad sett er inn gameID og current user verdur til sem player i leiknum.
+            <!-- Add player to game -->
+            <v-text-field
+              outlined
+              clearable
+              clear-icon="fa-times-circle"
+              flat
+              solo
+              v-model="playerGameId"
+              label="Enter gameId to add user to game"
+              @keyup.enter="addPlayerHandler"
+              class="mx-1"
+            />
+            <v-btn x-large block color="error" @click="addPlayerHandler">
+              <v-icon>Add user to game</v-icon>
+            </v-btn>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -164,7 +183,7 @@
     },
 
     methods: {
-      ...mapActions(["fetchCourseList", "fetchCourse", "fetchGame", "createGame"]),
+      ...mapActions(["fetchCourseList", "fetchCourse", "fetchGame", "createGame", "createPlayer"]),
       fetchSingleHandler() {
         this.fetchCourse(this.courseId);
         this.courseId = "";
@@ -181,6 +200,10 @@
         this.createGame(this.createGameCourseId);
         this.createGameCourseId = "";
       },
+      addPlayerHandler() {
+        this.createPlayer(this.playerGameId);
+        this.playerGameId = "";
+      }
     },
     data() {
       return {
@@ -188,6 +211,7 @@
         pushed: false,
         gameId: "",
         createGameCourseId: "",
+        playerGameId: "",
       };
     },
   };
