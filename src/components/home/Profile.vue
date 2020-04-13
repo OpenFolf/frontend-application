@@ -3,32 +3,33 @@
     <v-row dense>
       <v-col cols="12">
         <v-card color="info" class="pa-1">
-          <p>{{ getUser }}</p>
+          <pre>{{ getUser }}</pre>
+          <v-divider />
           <v-card-title class="headline">
-            User Name: {{ getUsername ? getUsername : "--" }}
+            User Name: {{ getUserName ? getUserName : "--" }}
           </v-card-title>
           <v-text-field
+            v-model="localUserName"
             @click:append="saveLocalUserName"
             append-icon="fa-save"
             outlined
             label="User Name"
             flat
-            v-model="localUserName"
             class="px-2"
           />
           <v-divider />
           <v-card class="pa-1 my-1 d-flex flex-column justify-center" color="transparent" flat>
             <v-card-title class="headline">Default Tee Color:</v-card-title>
-            <v-btn-toggle mandatory v-model="teeColor" class="mb-2 mx-auto">
+            <v-btn-toggle mandatory v-model="localTeeValue" class="mb-2 mx-auto">
               <v-btn :value="0" text color="blue">blue</v-btn>
               <v-btn :value="1" text color="white">white</v-btn>
               <v-btn :value="2" text color="red">red</v-btn>
               <v-btn :value="3" text color="yellow">yellow</v-btn>
             </v-btn-toggle>
           </v-card>
-          <p>tee color: {{ teeColor }}</p>
-          <p>tee label: {{ getUserTee }}</p>
+
           <v-divider />
+
           <v-card class="pa-1 my-1 d-flex flex-row align-center" color="transparent" flat>
             <v-card-title class="headline">Set Theme:</v-card-title>
             <v-spacer />
@@ -37,7 +38,6 @@
               /
               <v-icon right>fa-moon</v-icon>
             </v-btn>
-            <!-- <v-switch flat v-model="toggleTheme" append-icon="fa-moon" prepend-icon="fa-sun" /> -->
           </v-card>
         </v-card>
       </v-col>
@@ -52,40 +52,61 @@
     data() {
       return {
         localUserName: "",
-        teeColor: 2,
-        colorLabel: "",
+        localTeeValue: 3,
+        localColorLabel: "YELLOW",
       };
     },
     computed: {
-      ...mapGetters(["getUser", "getUsername", "getUserTee"]),
+      ...mapGetters(["getUser", "getUserName", "getUserTee"]),
     },
     methods: {
-      ...mapActions(["setUserName", "setUserTheme", "setUserTee"]),
+      ...mapActions(["setUserName", "setUserDefaultTee"]),
       saveLocalUserName() {
         this.setUserName(this.localUserName);
+        this.localUserName = "";
       },
+      // SECTION: TODO: .
+      // This function should reside in the store or centralized logic.
+      // Ideal would be to GET value and DISPATCH an action to toggle the theme settings.
+      // Also this should be saved with the user object and set during initialization.
       toggleTheme() {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-        this.$vuetify.theme.dark ? this.setUserTheme("DARK") : this.setUserTheme("LIGHT");
+        // this.$vuetify.theme.dark ? this.setUserTheme("DARK") : this.setUserTheme("LIGHT");
         // This set GLOBAL THEME WITH THE USER STORE.
       },
+      // SECTION: TODO: .
     },
     watch: {
-      teeColor() {
-        switch (this.teeColor) {
+      localTeeValue() {
+        switch (this.localTeeValue) {
           case 0:
-            this.setUserTee("BLUE");
+            this.setUserDefaultTee("BLUE");
             break;
           case 1:
-            this.setUserTee("WHITE");
+            this.setUserDefaultTee("WHITE");
             break;
           case 2:
-            this.setUserTee("RED");
+            this.setUserDefaultTee("RED");
             break;
           case 3:
-            this.setUserTee("YELLOW");
+            this.setUserDefaultTee("YELLOW");
             break;
         }
+      },
+      localColorLabel: {
+        immediate: true,
+        handler() {
+          let colorLabel = this.$store.getters.getUserTee;
+          if (colorLabel === "BLUE") {
+            this.localTeeValue = 0;
+          } else if (colorLabel === "WHITE") {
+            this.localTeeValue = 1;
+          } else if (colorLabel === "RED") {
+            this.localTeeValue = 2;
+          } else {
+            this.localTeeValue = 3;
+          }
+        },
       },
     },
   };
