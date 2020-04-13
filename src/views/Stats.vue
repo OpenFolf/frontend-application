@@ -102,6 +102,44 @@
             </template>
             <pre>{{ singleCourse }}</pre>
           </v-card>
+          <v-card color="accent" class="pa-1 overflow-x-auto">
+            <v-card-title>Game</v-card-title>
+            Fetch game virkar thannig ad sett er inn gameID og tha naer fallid i upplysingarnar um
+            thann leik og setur i budina
+            <!-- get game -->
+            <v-text-field
+              outlined
+              clearable
+              clear-icon="fa-times-circle"
+              flat
+              solo
+              v-model="gameId"
+              label="Game ID"
+              @keyup.enter="fetchGameHandler"
+              class="mx-1"
+            />
+            <v-btn x-large block color="error" @click="fetchGameHandler">
+              <v-icon>fa-cloud-download-alt</v-icon>
+            </v-btn>
+            <pre class="mb-5">{{ game }}</pre>
+            Setja inn courseID til ad bua til leik tha verdur til leikur thar sem userinn er owner
+            og gamestatus 0. Svo a eftir ad stilla tvi thannig upp ad owner verdur sjalkrafa leikmadur.
+            Budin er svo update-ud med thessum nyja leik.
+            <v-text-field
+              outlined
+              clearable
+              clear-icon="fa-times-circle"
+              flat
+              solo
+              v-model="createGameCourseId"
+              label="Enter courseId to Create game"
+              @keyup.enter="createGameHandler"
+              class="mx-1"
+            />
+            <v-btn x-large block color="error" @click="createGameHandler">
+              <v-icon>Create Game</v-icon>
+            </v-btn>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -113,17 +151,20 @@
   export default {
     name: "stats",
     computed: {
-      ...mapGetters(["getSignedIn", "getCourses", "getCurrentCourse"]),
+      ...mapGetters(["getSignedIn", "getCourses", "getCurrentCourse", "getGame"]),
       courses() {
         return this.getCourses;
       },
       singleCourse() {
         return this.getCurrentCourse;
       },
+      game() {
+        return this.getGame;
+      },
     },
 
     methods: {
-      ...mapActions(["fetchCourseList", "fetchCourse"]),
+      ...mapActions(["fetchCourseList", "fetchCourse", "fetchGame", "createGame"]),
       fetchSingleHandler() {
         this.fetchCourse(this.courseId);
         this.courseId = "";
@@ -132,11 +173,21 @@
         this.fetchCourseList();
         this.pushed = true;
       },
+      fetchGameHandler() {
+        this.fetchGame(this.gameId);
+        this.gameId = "";
+      },
+      createGameHandler() {
+        this.createGame(this.createGameCourseId);
+        this.createGameCourseId = "";
+      },
     },
     data() {
       return {
         courseId: "",
         pushed: false,
+        gameId: "",
+        createGameCourseId: "",
       };
     },
   };
