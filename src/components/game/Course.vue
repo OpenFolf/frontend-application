@@ -25,7 +25,9 @@
         </v-tab>
       </v-tabs>
       <v-tabs-items v-model="currentTab" touchless>
-        <v-tab-item><course-info :course="getCurrentCourse"/></v-tab-item>
+        <v-tab-item
+          ><course-info :course="getCurrentCourse" :lengthSums="lengthSums" :parSums="parSums"
+        /></v-tab-item>
         <v-tab-item><course-baskets /></v-tab-item>
         <v-tab-item>
           <course-map :lat="getCurrentCourse.latitude" :lng="getCurrentCourse.longitude"
@@ -43,28 +45,68 @@
   import { mapGetters } from "vuex";
   export default {
     name: "game-course",
-    components: {
-      CourseInfo,
-      CourseBaskets,
-      CourseMap,
-      // CourseStats,
-    },
     props: {
       path: {
         type: String,
         required: true,
       },
     },
-    methods: {
-      swipe(direction) {
-        this.dir = direction;
-      },
-    },
     data() {
       return {
         currentTab: null,
         tabs: ["Info", "Baskets", "Map" /*, "Stats"*/],
+        sums: [0, 0, 0, 0, 0, 0, 0, 0],
+        lengthSums: [
+          { name: "Red", length: 0 },
+          { name: "White", length: 0 },
+          { name: "Blue", length: 0 },
+          { name: "Yellow", length: 0 },
+        ],
+        parSums: [
+          { name: "Red", parTotal: 0 },
+          { name: "White", parTotal: 0 },
+          { name: "Blue", parTotal: 0 },
+          { name: "Yellow", parTotal: 0 },
+        ],
       };
+    },
+    components: {
+      CourseInfo,
+      CourseBaskets,
+      CourseMap,
+      // CourseStats,
+    },
+
+    created: function() {
+      this.calculateLengthAndTotalPar();
+    },
+    methods: {
+      swipe(direction) {
+        this.dir = direction;
+      },
+      calculateLengthAndTotalPar() {
+        console.log("this.course", this.getCurrentCourse);
+        if (this.getCurrentCourse.holes.items.length > 0) {
+          this.getCurrentCourse.holes.items.forEach((m) => {
+            this.sums[0] += parseInt(m.redLength);
+            this.sums[1] += parseInt(m.whiteLength);
+            this.sums[2] += parseInt(m.blueLength);
+            this.sums[3] += parseInt(m.yellowLength);
+            this.sums[4] += parseInt(m.redPar);
+            this.sums[5] += parseInt(m.whitePar);
+            this.sums[6] += parseInt(m.bluePar);
+            this.sums[7] += parseInt(m.yellowPar);
+          });
+          this.lengthSums[0].length = Math.trunc(this.sums[0] * 0.3048);
+          this.lengthSums[1].length = Math.trunc(this.sums[1] * 0.3048);
+          this.lengthSums[2].length = Math.trunc(this.sums[2] * 0.3048);
+          this.lengthSums[3].length = Math.trunc(this.sums[3] * 0.3048);
+          this.parSums[0].parTotal = this.sums[4];
+          this.parSums[1].parTotal = this.sums[5];
+          this.parSums[2].parTotal = this.sums[6];
+          this.parSums[3].parTotal = this.sums[7];
+        }
+      },
     },
     computed: {
       ...mapGetters(["getCurrentCourse"]),
