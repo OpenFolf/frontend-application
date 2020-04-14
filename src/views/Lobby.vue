@@ -1,11 +1,12 @@
 <template>
   <fragment>
     <v-app-bar color="primary" app>
-      <v-toolbar-title>{{ courseName }}</v-toolbar-title>
+      <v-toolbar-title>{{ $log(getGame) || getGame.course.name }}</v-toolbar-title>
       <v-spacer />
       <v-banner single-line>Code: {{ lobbyCode }}</v-banner>
     </v-app-bar>
     <v-content>
+      <h2>{{ $log(getGame) || getGame }}</h2>
       <v-container fluid fill-height class="justify-center">
         <v-row class="col-12">
           <v-col class="col-12 align-content-space-between">
@@ -52,30 +53,35 @@
 
 <script>
   import { Fragment } from "vue-fragment";
+  import { mapGetters } from "vuex";
   export default {
     name: "lobby",
-
     data() {
       return {
         lobbyCode: "XYZQ",
-
         courseName: "Klabratún",
         currentUser: {
           userId: 3,
           userName: "Nigga Beinteins",
         },
-
         game: {},
       };
     },
     created() {
       this.initialize();
-
       var indexOfOwner = this.game.players.findIndex((o) => o.userId === this.game.owner.useId);
       const ownerElement = this.game.players.splice(indexOfOwner, 1);
       this.game.players = [...ownerElement, ...this.game.players];
     },
-
+    props: {
+      path: {
+        type: String,
+        required: true,
+      },
+    },
+    computed: {
+      ...mapGetters(["getGame"]),
+    },
     components: { Fragment },
     methods: {
       initialize() {

@@ -15,7 +15,7 @@
           color="white"
           outlined
           class="my-6"
-          :to="{ name: 'game-lobby', params: { path: path } }"
+          :to="{ name: 'game-lobby', params: { path: path, id: getCurrentCourse.id } }"
           >Play Course</v-btn
         >
       </v-card>
