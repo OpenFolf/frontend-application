@@ -6,7 +6,6 @@
       <v-banner single-line>Code: {{ lobbyCode }}</v-banner>
     </v-app-bar>
     <v-content>
-      <h2>{{ $log(getGame) || getGame }}</h2>
       <v-container fluid fill-height class="justify-center">
         <v-row class="col-12">
           <v-col class="col-12 align-content-space-between">
@@ -48,6 +47,7 @@
         </v-card>
       </v-container>
     </v-content>
+    <pre class="mb-5">{{ $log(getGame) || getGame }}</pre>
   </fragment>
 </template>
 

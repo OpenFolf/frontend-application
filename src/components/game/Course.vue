@@ -25,9 +25,7 @@
         </v-tab>
       </v-tabs>
       <v-tabs-items v-model="currentTab" touchless>
-        <v-tab-item
-          ><course-info :course="getCurrentCourse" :lengthSums="lengthSums" :parSums="parSums"
-        /></v-tab-item>
+        <v-tab-item><course-info :course="getCurrentCourse" :holeSums="holeSums"/></v-tab-item>
         <v-tab-item><course-baskets /></v-tab-item>
         <v-tab-item>
           <course-map :lat="getCurrentCourse.latitude" :lng="getCurrentCourse.longitude"
@@ -56,17 +54,11 @@
         currentTab: null,
         tabs: ["Info", "Baskets", "Map" /*, "Stats"*/],
         sums: [0, 0, 0, 0, 0, 0, 0, 0],
-        lengthSums: [
-          { name: "Red", length: 0 },
-          { name: "White", length: 0 },
-          { name: "Blue", length: 0 },
-          { name: "Yellow", length: 0 },
-        ],
-        parSums: [
-          { name: "Red", parTotal: 0 },
-          { name: "White", parTotal: 0 },
-          { name: "Blue", parTotal: 0 },
-          { name: "Yellow", parTotal: 0 },
+        holeSums: [
+          { name: "Red", length: 0, parTotal: 0 },
+          { name: "White", length: 0, parTotal: 0 },
+          { name: "Blue", length: 0, parTotal: 0 },
+          { name: "Yellow", length: 0, parTotal: 0 },
         ],
       };
     },
@@ -97,14 +89,14 @@
             this.sums[6] += parseInt(m.bluePar);
             this.sums[7] += parseInt(m.yellowPar);
           });
-          this.lengthSums[0].length = Math.trunc(this.sums[0] * 0.3048);
-          this.lengthSums[1].length = Math.trunc(this.sums[1] * 0.3048);
-          this.lengthSums[2].length = Math.trunc(this.sums[2] * 0.3048);
-          this.lengthSums[3].length = Math.trunc(this.sums[3] * 0.3048);
-          this.parSums[0].parTotal = this.sums[4];
-          this.parSums[1].parTotal = this.sums[5];
-          this.parSums[2].parTotal = this.sums[6];
-          this.parSums[3].parTotal = this.sums[7];
+          this.holeSums[0].length = Math.trunc(this.sums[0] * 0.3048);
+          this.holeSums[1].length = Math.trunc(this.sums[1] * 0.3048);
+          this.holeSums[2].length = Math.trunc(this.sums[2] * 0.3048);
+          this.holeSums[3].length = Math.trunc(this.sums[3] * 0.3048);
+          this.holeSums[0].parTotal = this.sums[4];
+          this.holeSums[1].parTotal = this.sums[5];
+          this.holeSums[2].parTotal = this.sums[6];
+          this.holeSums[3].parTotal = this.sums[7];
         }
       },
     },
