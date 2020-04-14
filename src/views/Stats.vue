@@ -30,7 +30,7 @@
               <v-card-text>
                 Enter <strong>'courseid'</strong> for a single course and press
                 fetchSingleCourseButton. The object for the single course will be uploaded to the
-                store as an object named currentCourse [CID test]
+                store as an object named currentCourse.
               </v-card-text>
               <v-text-field
                 outlined

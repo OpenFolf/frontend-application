@@ -63,7 +63,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-frontend-application-prod-184920-deployment",
-					"S3Key": "amplify-builds/postconfirmationlambda-7166306b665076585555-build.zip"
+					"S3Key": "amplify-builds/postconfirmationlambda-50643956497146756e77-build.zip"
 				}
 			}
 		},
