@@ -27,12 +27,9 @@
       <v-tabs-items v-model="currentTab" touchless>
         <v-tab-item><course-info :course="getCurrentCourse"/></v-tab-item>
         <v-tab-item><course-baskets /></v-tab-item>
-        <v-tab-item
-          ><course-map
-            :lat="getCurrentCourse.getCourse.latitude"
-            :lng="getCurrentCourse.getCourse.longitude"
+        <v-tab-item>
+          <course-map :lat="getCurrentCourse.latitude" :lng="getCurrentCourse.longitude"
         /></v-tab-item>
-        <!-- <v-tab-item><course-stats /></v-tab-item> -->
       </v-tabs-items>
     </v-card>
   </v-content>
