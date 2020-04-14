@@ -74,6 +74,11 @@ const routes = [
     name: "game-lobby",
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
+    beforeEnter: (to, from, next) => {
+      return new Promise((resolve) => {
+        resolve(Store.dispatch("createGame", to.params.id));
+      }).then(() => next());
+    },
   },
   {
     path: "/game/:path/scorecard",

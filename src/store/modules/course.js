@@ -22,6 +22,10 @@ const mutations = {
     state.courses = payload;
   },
   updateCurrentCourse: (state, payload) => {
+    console.log("payload", payload);
+    if (payload.holes.items.length > 0) {
+      payload.holes.items.sort((a, b) => a.no - b.no);
+    }
     state.currentCourse = payload;
   },
   newCourse: (state, payload) => {
@@ -37,10 +41,8 @@ const actions = {
 
       context.commit("updateCourseList", courseList);
       console.log("response", response);
-      return true;
     } catch (e) {
       console.log("Error", e);
-      return false;
     }
   },
 
@@ -50,6 +52,7 @@ const actions = {
         graphqlOperation(coursegraphQL.getCourse, { id: payload }),
       );
       const course = response.data.getCourse;
+
       context.commit("updateCurrentCourse", course);
     } catch (e) {
       console.log("Error", e);
