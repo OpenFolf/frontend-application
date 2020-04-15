@@ -135,6 +135,26 @@
             <v-divider />
             <pre class="mb-5">{{ games }}</pre>
           </v-card>
+          <v-card color="accent" class="pa-1 overflow-x-auto">
+            <v-card-title>Subscribe to Games</v-card-title>
+            <v-card-text class="d-flex flex-row font-weight-bold">
+              Update operation in the Game database table will be uploaded into state
+            </v-card-text>
+            <v-card max-width="600px">
+              <v-btn
+                x-large
+                block
+                :disabled="pushed"
+                class="my-3"
+                color="info"
+                @click="subscribeToGamesHandler"
+              >
+                subscribe to Games
+              </v-btn>
+            </v-card>
+            <v-divider />
+            <pre class="mb-5">{{ gameSubscription }}</pre>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -146,7 +166,14 @@
   export default {
     name: "stats",
     computed: {
-      ...mapGetters(["getSignedIn", "getCourses", "getCurrentCourse", "getGame", "getGamesList"]),
+      ...mapGetters([
+        "getSignedIn",
+        "getCourses",
+        "getCurrentCourse",
+        "getGame",
+        "getGamesList",
+        "getSubscriptionList",
+      ]),
       courses() {
         return this.getCourses;
       },
@@ -159,6 +186,9 @@
       games() {
         return this.getGamesList;
       },
+      gameSubscription() {
+        return this.getSubscriptionList;
+      },
     },
 
     methods: {
@@ -169,6 +199,7 @@
         "createGame",
         "createPlayer",
         "fetchGames",
+        "subscribeGames",
       ]),
       fetchSingleHandler() {
         this.fetchCourse(this.courseId);
@@ -193,6 +224,9 @@
       addPlayerHandler() {
         this.createPlayer(this.playerGameId);
         this.playerGameId = "";
+      },
+      subscribeToGamesHandler() {
+        this.subscribeGames();
       },
     },
     data() {
