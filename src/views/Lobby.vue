@@ -3,14 +3,16 @@
     <v-app-bar color="primary" app flat>
       <v-toolbar-title>{{ $log(getGame) || getGame.course.name }}</v-toolbar-title>
       <v-spacer />
-      <v-banner single-line>Code: {{ lobbyCode }}</v-banner>
+      <v-banner single-line class="text-center">
+        <span> Code: </span><span class="font-weight-bold">{{ getGame.lobbyCode }}</span></v-banner
+      >
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height class="justify-center">
         <v-row class="col-12">
           <v-col class="col-12 align-content-space-between">
-            <v-simple-table>
-              <thead color="secondary">
+            <v-simple-table hide-actions>
+              <thead class="secondary">
                 <tr>
                   <th class="table-text  text-center title" colspan="2">Players</th>
                 </tr>
@@ -43,7 +45,12 @@
           </v-col>
         </v-row>
         <v-card flat>
-          <v-btn :to="{ name: 'scorecard' }" color="primary" class="">Start Game</v-btn>
+          <v-btn
+            :to="{ name: 'game-scorecard' /*, params: { path: path, id: getCurrentCourse.id*/ }"
+            color="primary"
+            class=""
+            >Start Game</v-btn
+          >
         </v-card>
       </v-container>
     </v-content>

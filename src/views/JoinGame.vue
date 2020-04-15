@@ -25,7 +25,12 @@
                 flat
                 clearable
               />
-              <v-btn block :disabled="$v.gameCode.$invalid" @click="joinGame" color="primary"
+              <v-btn
+                block
+                :disabled="$v.gameCode.$invalid"
+                @click="joinGame"
+                color="primary"
+                :to="{ name: 'game-lobby' }"
                 >Join Game
               </v-btn>
               <v-alert

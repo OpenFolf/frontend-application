@@ -1,7 +1,7 @@
 <template>
   <v-col cols="12">
     <v-card
-      color="info"
+      color="secondary"
       ripple
       flat
       :to="{ name: 'game-course', params: { path: content.path, id: content.id } }"
