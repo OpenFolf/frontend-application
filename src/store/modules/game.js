@@ -1,6 +1,7 @@
 import { API, graphqlOperation } from "aws-amplify";
 import * as gamegraphQL from "../../graphql/custom/gamegraphQL";
 import * as playergraphQL from "../../graphql/custom/playergraphQL";
+import * as services from "../../services/index";
 //import * as graphQLmutations from "../../graphql/mutations";
 // import * as subscriptions from "../../graphql/subscriptions";
 
@@ -52,10 +53,13 @@ const actions = {
 
   async createGame(context, payload) {
     try {
+      const generatedCode = services.getLobbyCode();
+
       const createGameDetails = {
         gameCourseId: payload,
         gameOwnerId: context.rootState.user.user.id,
         gameStatus: "0",
+        lobbyCode: generatedCode,
       };
       console.log("Game details console log", createGameDetails);
       const response = await API.graphql(
