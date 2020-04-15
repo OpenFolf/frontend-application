@@ -6,7 +6,9 @@
           <router-link :to="{ name: 'game' }">
             <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
           </router-link>
-          <v-toolbar-title class="headline font-weight-bold">{{ "/ " + path }}</v-toolbar-title>
+          <v-toolbar-title class="headline font-weight-bold">{{
+            "/ " + getCurrentCourse.name
+          }}</v-toolbar-title>
         </v-container>
       </v-toolbar>
       <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile flat>
@@ -26,7 +28,7 @@
       </v-tabs>
       <v-tabs-items v-model="currentTab" touchless>
         <v-tab-item><course-info :course="getCurrentCourse" :holeSums="holeSums"/></v-tab-item>
-        <v-tab-item><course-baskets /></v-tab-item>
+        <!-- <v-tab-item><course-baskets /></v-tab-item> -->
         <v-tab-item>
           <course-map :lat="getCurrentCourse.latitude" :lng="getCurrentCourse.longitude"
         /></v-tab-item>
@@ -37,7 +39,7 @@
 
 <script>
   import CourseInfo from "@/components/game/CourseInfo.vue";
-  import CourseBaskets from "@/components/game/CourseBaskets.vue";
+  // import CourseBaskets from "@/components/game/CourseBaskets.vue";
   import CourseMap from "@/components/game/CourseMap.vue";
   // import CourseStats from "@/components/game/CourseStats.vue";
   import { mapGetters } from "vuex";
@@ -52,7 +54,7 @@
     data() {
       return {
         currentTab: null,
-        tabs: ["Info", "Baskets", "Map" /*, "Stats"*/],
+        tabs: ["Info" /*"Baskets"*/, "Map" /*, "Stats"*/],
         sums: [0, 0, 0, 0, 0, 0, 0, 0],
         holeSums: [
           { name: "Red", length: 0, parTotal: 0 },
@@ -64,7 +66,7 @@
     },
     components: {
       CourseInfo,
-      CourseBaskets,
+      // CourseBaskets,
       CourseMap,
       // CourseStats,
     },

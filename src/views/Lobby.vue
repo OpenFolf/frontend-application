@@ -10,7 +10,7 @@
         <v-row class="col-12">
           <v-col class="col-12 align-content-space-between">
             <v-simple-table>
-              <thead class="header">
+              <thead color="secondary">
                 <tr>
                   <th class="table-text  text-center title" colspan="2">Players</th>
                 </tr>
@@ -130,12 +130,3 @@
     },
   };
 </script>
-
-<style scoped>
-  .header {
-    background-color: var(--v-secondary-base);
-  }
-  .table-text {
-    color: white;
-  }
-</style>

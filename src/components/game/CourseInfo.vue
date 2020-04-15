@@ -11,7 +11,7 @@
             height="200px"
           >
           </v-img>
-          <v-card-text class="pt-1 pb-1">{{ course.description }} </v-card-text>
+          <v-card-text class="pt-1 pb-1 subtitle-1">{{ course.description }} </v-card-text>
           <v-card-subtitle class="pb-1"
             ><span class="font-weight-bold">Nr. of holes: </span
             ><span>{{ course.holeCount }}</span></v-card-subtitle
@@ -20,7 +20,7 @@
             ><span class="font-weight-bold"> Tees: </span>
             <span>{{ course.teetype }}</span></v-card-subtitle
           >
-          <div v-if="holeSums.find((m) => m.length > 0 || m.parTotal > 0)">
+          <template v-if="holeSums.find((m) => m.length > 0 || m.parTotal > 0)">
             <div v-for="(tee, index) in holeSums" :key="index">
               <v-card-subtitle class="pb-1 pt-1">
                 <span class="font-weight-bold" v-if="tee.length || tee.parTotal"
@@ -30,7 +30,7 @@
                 <span v-if="tee.parTotal">Par: {{ tee.parTotal }}</span>
               </v-card-subtitle>
             </div>
-          </div>
+          </template>
           <v-card-subtitle class="pt-1 pb-1"
             ><span class="font-weight-bold">Basket: </span
             ><span>{{ course.baskettype }}</span></v-card-subtitle
