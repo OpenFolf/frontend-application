@@ -12,9 +12,9 @@
       <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile flat>
         <v-btn
           large
-          color="white"
           outlined
-          class="my-6"
+          color="white"
+          class="my-6 primary"
           :to="{ name: 'game-lobby', params: { path: path, id: getCurrentCourse.id } }"
           >Play Course</v-btn
         >

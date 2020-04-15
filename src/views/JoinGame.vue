@@ -3,7 +3,7 @@
     <v-row>
       <v-col class="d-flex flex-column justify-center">
         <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat>
-          <v-toolbar color="primary">
+          <v-toolbar color="primary" flat>
             <v-toolbar-title>Join Game</v-toolbar-title>
             <v-spacer />
           </v-toolbar>

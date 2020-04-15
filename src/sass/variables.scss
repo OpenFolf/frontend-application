@@ -4,6 +4,18 @@
 $body-font-family: 'Raleway',
 sans-serif;
 
+$material-light: ('background': #3fbb85);
+
+.theme--light.v-tabs-items {
+  background-color: #3fbb85;
+}
+
+$material-dark: ('background': #000000);
+
+.theme--dark.v-tabs-items {
+  background-color: #000000;
+}
+
 $typoOptions: display-4,
 display-3,
 display-2,

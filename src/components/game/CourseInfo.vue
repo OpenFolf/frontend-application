@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row dense>
       <v-col cols="12">
-        <v-card color="secondary" class="pa-1 overflow-x-auto" flat>
+        <v-card color="info" class="pa-1 overflow-x-auto" flat>
           <v-img
             v-if="checkUrl"
             :src="course.course_photo_url_medium"
