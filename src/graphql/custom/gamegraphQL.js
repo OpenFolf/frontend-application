@@ -15,12 +15,14 @@ export const createGame = /* GraphQL */ `
       players {
         items {
           user {
+            id
             username
             email
           }
         }
       }
       gameStatus
+      lobbyCode
     }
   }
 `;
@@ -46,6 +48,7 @@ export const getGame = /* GraphQL */ `
     getGame(id: $id) {
       id
       owner {
+        id
         username
         email
       }
@@ -55,12 +58,15 @@ export const getGame = /* GraphQL */ `
       players {
         items {
           user {
+            id
             username
             email
           }
           totalScore
         }
       }
+      gameStatus
+      lobbyCode
     }
   }
 `;
