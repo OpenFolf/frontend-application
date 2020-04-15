@@ -91,6 +91,8 @@ export const listGames = /* GraphQL */ `
             }
           }
         }
+        gameStatus
+        lobbyCode
       }
       nextToken
     }
