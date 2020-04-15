@@ -63,12 +63,24 @@ const actions = {
         lobbyCode: generatedCode,
       };
       console.log("Game details console log", createGameDetails);
-      const response = await API.graphql(
+      const gameResponse = await API.graphql(
         graphqlOperation(gamegraphQL.createGame, { input: createGameDetails }),
       );
-      const newGame = response.data.createGame;
 
-      context.commit("setGame", newGame);
+      const newGame = gameResponse.data.createGame;
+
+      const createPlayerDetails = {
+        playerUserId: context.rootState.user.user.id,
+        playerGameId: newGame.id,
+      };
+
+      const playerResponse = await API.graphql(
+        graphqlOperation(playergraphQL.createPlayer, { input: createPlayerDetails }),
+      );
+
+      await newGame.players.items.push(playerResponse.data.createPlayer);
+
+      await context.commit("setGame", newGame);
     } catch (e) {
       console.log("Error", e);
     }
