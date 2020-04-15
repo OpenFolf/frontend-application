@@ -1,6 +1,6 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold" v-if="!getSignedIn">
-    <v-toolbar color="primary">
+  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat v-if="!getSignedIn">
+    <v-toolbar color="primary" flat>
       <v-toolbar-title>Sign In</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
@@ -31,7 +31,7 @@
 
         <v-btn
           block
-          :disabled="$v.email.$invalid || $v.password.$invalid"
+          :disabled="$v.email.$invalid || $v.password.$invalid || isCompleted"
           @click="signIn"
           color="primary"
           >SIGN IN
@@ -167,6 +167,9 @@
         !this.$v.password.minLength && errors.push("Password must be at least 8 characters long");
         !this.$v.password.required && errors.push("Password is required.");
         return errors;
+      },
+      isComplete() {
+        return this.email && this.password;
       },
     },
     watch: {

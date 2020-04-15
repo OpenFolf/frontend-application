@@ -1,19 +1,20 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app>
+    <v-app-bar color="primary" app flat>
       <v-toolbar-title>{{ $log(getGame) || getGame.course.name }}</v-toolbar-title>
       <v-spacer />
-      <v-banner single-line>Code: {{ lobbyCode }}</v-banner>
+      <v-banner single-line class="text-center">
+        <span> Code: </span><span class="font-weight-bold">{{ getGame.lobbyCode }}</span></v-banner
+      >
     </v-app-bar>
     <v-content>
-      <h2>{{ $log(getGame) || getGame }}</h2>
       <v-container fluid fill-height class="justify-center">
         <v-row class="col-12">
           <v-col class="col-12 align-content-space-between">
-            <v-simple-table>
-              <thead class="header">
+            <v-simple-table hide-actions>
+              <thead class="secondary">
                 <tr>
-                  <th class="text-left title" colspan="2">Players</th>
+                  <th class="table-text  text-center title" colspan="2">Players</th>
                 </tr>
               </thead>
               <tbody>
@@ -44,10 +45,16 @@
           </v-col>
         </v-row>
         <v-card flat>
-          <v-btn :to="{ name: 'scorecard' }" color="primary" class="">Start Game</v-btn>
+          <v-btn
+            :to="{ name: 'game-scorecard' /*, params: { path: path, id: getCurrentCourse.id*/ }"
+            color="primary"
+            class=""
+            >Start Game</v-btn
+          >
         </v-card>
       </v-container>
     </v-content>
+    <pre class="mb-5">{{ $log(getGame) || getGame }}</pre>
   </fragment>
 </template>
 
@@ -69,9 +76,13 @@
     },
     created() {
       this.initialize();
-      var indexOfOwner = this.game.players.findIndex((o) => o.userId === this.game.owner.useId);
-      const ownerElement = this.game.players.splice(indexOfOwner, 1);
-      this.game.players = [...ownerElement, ...this.game.players];
+      //TODO: Remove when the game object is ready
+
+      // var indexOfOwner = this.getGame.players.items.findIndex(
+      //   (o) => o.user.email === this.getGame.owner.email,
+      // );
+      // const ownerElement = this.getGame.players.items.splice(indexOfOwner, 1);
+      // this.getGame.players.items = [...ownerElement, ...this.game.players.items];
     },
     props: {
       path: {
@@ -126,9 +137,3 @@
     },
   };
 </script>
-
-<style scoped>
-  .header {
-    background-color: var(--v-secondary-lighten1);
-  }
-</style>

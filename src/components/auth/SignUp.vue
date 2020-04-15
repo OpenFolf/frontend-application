@@ -1,6 +1,6 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold">
-    <v-toolbar color="primary">
+  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat>
+    <v-toolbar color="primary" flat>
       <v-toolbar-title>Sign Up</v-toolbar-title>
       <v-spacer />
     </v-toolbar>

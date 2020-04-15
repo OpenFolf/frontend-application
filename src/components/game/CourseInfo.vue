@@ -2,30 +2,40 @@
   <v-container fluid>
     <v-row dense>
       <v-col cols="12">
-        <v-card color="secondary" class="pa-1 overflow-x-auto">
+        <v-card color="accent" class="pa-1 overflow-x-auto" flat>
           <v-img
             v-if="checkUrl"
             :src="course.course_photo_url_medium"
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             height="200px"
+            contain
           >
           </v-img>
-          <div v-for="(tee, index) in lengthSums" :key="index">
-            <v-card-subtitle class="pb-1" v-if="tee.length">
-              {{ tee.name }}: {{ tee.length }} meters</v-card-subtitle
-            >
-          </div>
-          <div v-for="(par, index) in parSums" :key="index">
-            <v-card-subtitle class="pb-1" v-if="par.parTotal">
-              Total: {{ par.name }}: {{ par.parTotal }}</v-card-subtitle
-            >
-          </div>
-          <v-card-subtitle class="pb-1">Nr. of holes: {{ course.holeCount }}</v-card-subtitle>
-          <v-card-subtitle class="pt-1 pb-1">Tee: {{ course.teetype }}</v-card-subtitle>
-          <v-card-subtitle class="pt-1 pb-1">basket: {{ course.baskettype }}</v-card-subtitle>
-          <v-card-subtitle class="pt-1 pb-1">{{ course.description }} </v-card-subtitle>
-          <v-card-subtitle class="pt-1 pb-1">{{ $log(course) || course }} </v-card-subtitle>
+          <v-card-text class="pt-1 pb-1 subtitle-1">{{ course.description }} </v-card-text>
+          <v-card-subtitle class="pb-1"
+            ><span class="font-weight-bold">Nr. of holes: </span
+            ><span>{{ course.holeCount }}</span></v-card-subtitle
+          >
+          <v-card-subtitle class="pt-1 pb-1"
+            ><span class="font-weight-bold"> Tees: </span>
+            <span>{{ course.teetype }}</span></v-card-subtitle
+          >
+          <template v-if="holeSums.find((m) => m.length > 0 || m.parTotal > 0)">
+            <div v-for="(tee, index) in holeSums" :key="index">
+              <v-card-subtitle class="pb-1 pt-1">
+                <span class="font-weight-bold" v-if="tee.length || tee.parTotal"
+                  >{{ tee.name }}:
+                </span>
+                <span v-if="tee.length">Length: {{ tee.length }} meters. </span>
+                <span v-if="tee.parTotal">Par: {{ tee.parTotal }}</span>
+              </v-card-subtitle>
+            </div>
+          </template>
+          <v-card-subtitle class="pt-1 pb-1"
+            ><span class="font-weight-bold">Basket: </span
+            ><span>{{ course.baskettype }}</span></v-card-subtitle
+          >
         </v-card>
       </v-col>
     </v-row>
@@ -33,6 +43,7 @@
 </template>
 
 <script>
+  // import div from "vue-div";
   export default {
     name: "game-course-info",
     props: {
@@ -40,14 +51,13 @@
         type: Object,
         required: true,
       },
-      lengthSums: {
+      holeSums: {
         type: Array,
         required: true,
       },
-      parSums: {
-        type: Array,
-        required: true,
-      },
+    },
+    components: {
+      // div,
     },
     computed: {
       checkUrl() {

@@ -57,7 +57,7 @@
 <script>
   import { Fragment } from "vue-fragment";
   export default {
-    name: "scorecard",
+    name: "game-scorecard",
 
     data() {
       return {

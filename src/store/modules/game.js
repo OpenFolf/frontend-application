@@ -33,7 +33,7 @@ const actions = {
     try {
       const response = await API.graphql(graphqlOperation(gamegraphQL.getGame, { id: payload }));
       const game = response.data.getGame;
-
+      console.log("FetchGame", response);
       context.commit("setGame", game);
     } catch (e) {
       console.log("Error", e);
@@ -43,6 +43,7 @@ const actions = {
   async fetchGames(context) {
     try {
       const response = await API.graphql(graphqlOperation(gamegraphQL.listGames));
+      console.log("FetchGames", response);
       const gamesList = response.data.listGames.items;
 
       context.commit("setGamesList", gamesList);
