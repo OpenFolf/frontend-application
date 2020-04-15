@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app>
+    <v-app-bar color="primary" app flat>
       <v-toolbar-title>{{ $log(getGame) || getGame.course.name }}</v-toolbar-title>
       <v-spacer />
       <v-banner single-line>Code: {{ lobbyCode }}</v-banner>
@@ -12,7 +12,7 @@
             <v-simple-table>
               <thead class="header">
                 <tr>
-                  <th class="text-left title" colspan="2">Players</th>
+                  <th class="table-text  text-center title" colspan="2">Players</th>
                 </tr>
               </thead>
               <tbody>
@@ -133,6 +133,9 @@
 
 <style scoped>
   .header {
-    background-color: var(--v-secondary-lighten1);
+    background-color: var(--v-secondary-base);
+  }
+  .table-text {
+    color: white;
   }
 </style>
