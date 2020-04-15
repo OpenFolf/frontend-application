@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row dense>
       <v-col cols="12">
-        <v-card color="info" class="pa-1 overflow-x-auto">
+        <v-card color="info" class="pa-1 overflow-x-auto" flat>
           <v-btn text color="error" @click="seeDebug = !seeDebug" small>
             {{ seeDebug ? "Hide" : "Show Debug text" }}
           </v-btn>
