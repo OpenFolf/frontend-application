@@ -3,6 +3,7 @@
     <v-card
       color="secondary"
       ripple
+      flat
       :to="{ name: 'game-course', params: { path: content.path, id: content.id } }"
     >
       <v-card-title class="headline mb-3">

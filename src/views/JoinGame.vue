@@ -2,7 +2,7 @@
   <v-container class="fill-height">
     <v-row>
       <v-col class="d-flex flex-column justify-center">
-        <v-card width="400px" class="mx-auto my-5 font-weight-bold">
+        <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat>
           <v-toolbar color="primary">
             <v-toolbar-title>Join Game</v-toolbar-title>
             <v-spacer />

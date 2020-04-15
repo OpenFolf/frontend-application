@@ -1,5 +1,5 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold" v-if="!getSignedIn">
+  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat v-if="!getSignedIn">
     <v-toolbar color="primary">
       <v-toolbar-title>Sign In</v-toolbar-title>
       <v-spacer />

@@ -69,9 +69,13 @@
     },
     created() {
       this.initialize();
-      var indexOfOwner = this.game.players.findIndex((o) => o.userId === this.game.owner.useId);
-      const ownerElement = this.game.players.splice(indexOfOwner, 1);
-      this.game.players = [...ownerElement, ...this.game.players];
+      //TODO: Remove when the game object is ready
+
+      // var indexOfOwner = this.getGame.players.items.findIndex(
+      //   (o) => o.user.email === this.getGame.owner.email,
+      // );
+      // const ownerElement = this.getGame.players.items.splice(indexOfOwner, 1);
+      // this.getGame.players.items = [...ownerElement, ...this.game.players.items];
     },
     props: {
       path: {

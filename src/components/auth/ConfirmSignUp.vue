@@ -1,5 +1,5 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold">
+  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat>
     <v-toolbar color="primary">
       <v-toolbar-title>Confirm Sign Up</v-toolbar-title>
       <v-spacer />

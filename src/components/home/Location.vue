@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row dense>
       <v-col cols="12">
-        <v-card color="#00897B">
+        <v-card color="#00897B" flat>
           <v-card-title class="headline">Store value: {{ storeLocationValue }}</v-card-title>
           <v-card-title class="headline"> LocalStore Value: {{ localLocationValue }} </v-card-title>
           <v-btn @click="pingLocation" block>Ping navigator.geolocation</v-btn>
