@@ -9,6 +9,7 @@
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             height="200px"
+            contain
           >
           </v-img>
           <v-card-text class="pt-1 pb-1 subtitle-1">{{ course.description }} </v-card-text>

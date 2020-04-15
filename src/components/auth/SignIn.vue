@@ -31,7 +31,7 @@
 
         <v-btn
           block
-          :disabled="$v.email.$invalid || $v.password.$invalid"
+          :disabled="$v.email.$invalid || $v.password.$invalid || isCompleted"
           @click="signIn"
           color="primary"
           >SIGN IN
@@ -167,6 +167,9 @@
         !this.$v.password.minLength && errors.push("Password must be at least 8 characters long");
         !this.$v.password.required && errors.push("Password is required.");
         return errors;
+      },
+      isComplete() {
+        return this.email && this.password;
       },
     },
     watch: {
