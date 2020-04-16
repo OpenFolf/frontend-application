@@ -80,8 +80,6 @@ const actions = {
       await newGame.players.items.push(playerResponse.data.createPlayer);
 
       await context.commit("setGame", newGame);
-      // Added by Arnar
-      return generatedCode;
     } catch (e) {
       console.log("Create game error", e);
     }

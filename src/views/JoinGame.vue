@@ -65,10 +65,10 @@
       async joinGameRequest() {
         var response = await checkLobbyCode(this.gameCode);
         console.log("joinGameRequest, Response", response);
-        if (response) {
+        if (response.path) {
           this.$router.push({
             name: "game-lobby",
-            params: { path: response.path, id: response.id, lobbyCode: this.gameCode },
+            params: { path: response.path, id: response.id },
           });
         }
       },

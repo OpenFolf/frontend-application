@@ -72,10 +72,10 @@
     },
     methods: {
       async playCourse() {
-        var lobbyCode = await createGame(this.getCurrentCourse.id);
+        await createGame(this.getCurrentCourse.id);
         this.$router.push({
           name: "game-lobby",
-          params: { path: this.path, id: this.getCurrentCourse.id, lobbyCode: lobbyCode },
+          params: { path: this.path, id: this.getCurrentCourse.id },
         });
       },
       swipe(direction) {

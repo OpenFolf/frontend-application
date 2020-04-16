@@ -70,7 +70,7 @@ const routes = [
     },
   },
   {
-    path: "/game/:path/:lobbyCode",
+    path: "/game/:path/lobby",
     name: "game-lobby",
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
