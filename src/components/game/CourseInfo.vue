@@ -12,30 +12,32 @@
             contain
           >
           </v-img>
-          <v-card-text class="pt-1 pb-1 subtitle-1">{{ course.description }} </v-card-text>
-          <v-card-subtitle class="pb-1"
-            ><span class="font-weight-bold">Nr. of holes: </span
-            ><span>{{ course.holeCount }}</span></v-card-subtitle
-          >
-          <v-card-subtitle class="pt-1 pb-1"
-            ><span class="font-weight-bold"> Tees: </span>
-            <span>{{ course.teetype }}</span></v-card-subtitle
-          >
+          <v-card-text class="pt-1 pb-1 subtitle-1">
+            {{ course.description }}
+          </v-card-text>
+          <v-card-subtitle class="pb-1">
+            <span class="font-weight-bold">Nr. of holes: </span>
+            <span>{{ course.holeCount }}</span>
+          </v-card-subtitle>
+          <v-card-subtitle class="pt-1 pb-1">
+            <span class="font-weight-bold"> Tees: </span>
+            <span>{{ course.teetype }}</span>
+          </v-card-subtitle>
           <template v-if="holeSums.find((m) => m.length > 0 || m.parTotal > 0)">
             <div v-for="(tee, index) in holeSums" :key="index">
               <v-card-subtitle class="pb-1 pt-1">
-                <span class="font-weight-bold" v-if="tee.length || tee.parTotal"
-                  >{{ tee.name }}:
+                <span class="font-weight-bold" v-if="tee.length || tee.parTotal">
+                  {{ tee.name }}:
                 </span>
                 <span v-if="tee.length">Length: {{ tee.length }} meters. </span>
                 <span v-if="tee.parTotal">Par: {{ tee.parTotal }}</span>
               </v-card-subtitle>
             </div>
           </template>
-          <v-card-subtitle class="pt-1 pb-1"
-            ><span class="font-weight-bold">Basket: </span
-            ><span>{{ course.baskettype }}</span></v-card-subtitle
-          >
+          <v-card-subtitle v-if="!isBasket" class="pt-1 pb-1">
+            <span class="font-weight-bold">Basket:</span>
+            <span>{{ course.baskettype }}</span>
+          </v-card-subtitle>
         </v-card>
       </v-col>
     </v-row>
@@ -65,6 +67,9 @@
           this.course.course_photo_url_medium.endsWith(".jpg") ||
           this.course.course_photo_url_medium.endsWith(".png")
         );
+      },
+      isBasket() {
+        return this.course.baskettype === "baskettype";
       },
     },
   };

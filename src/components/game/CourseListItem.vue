@@ -4,7 +4,10 @@
       color="secondary"
       ripple
       flat
-      :to="{ name: 'game-course', params: { path: content.path, id: content.id } }"
+      :to="{
+        name: 'game-course',
+        params: { path: pathName, id: content.id },
+      }"
     >
       <v-card-title class="headline mb-3">
         {{ content.name }} - {{ content.distance }} KM
@@ -22,6 +25,7 @@
 </template>
 
 <script>
+  import * as removeAcc from "@/services/remove-accents.js";
   export default {
     name: "course-list-item",
     props: {
@@ -29,6 +33,11 @@
         type: Object,
         required: true,
       },
+    },
+    data() {
+      return {
+        pathName: removeAcc.replaceAccentForUrl(this.content.name),
+      };
     },
     beforeLeave(to, from, next) {
       this.$store.actions.fetchCourse(to.params.id);

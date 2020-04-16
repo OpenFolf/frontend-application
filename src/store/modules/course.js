@@ -2,6 +2,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import * as coursegraphQL from "../../graphql/custom/coursegraphQL";
 import * as graphQLmutations from "../../graphql/mutations";
 import * as subscriptions from "../../graphql/subscriptions";
+import { getDistanceKM } from "@/services";
 
 const state = {
   courses: null,
@@ -15,6 +16,23 @@ const getters = {
   getCurrentCourse: (state) => {
     return state.currentCourse;
   },
+  getCoursesDistance: (state) => {
+    // Bring in an actual user location. This is RU.
+    const userLocation = {
+      lat: 64.123782,
+      lng: -21.925765,
+    };
+    const listWithDistance = JSON.parse(JSON.stringify(state.courses));
+    for (let item of listWithDistance) {
+      item.distance = getDistanceKM(
+        userLocation.lat,
+        userLocation.lng,
+        item.latitude,
+        item.longitude,
+      ).toFixed(1);
+    }
+    return listWithDistance;
+  },
 };
 
 const mutations = {
@@ -22,7 +40,7 @@ const mutations = {
     state.courses = payload;
   },
   updateCurrentCourse: (state, payload) => {
-    console.log("payload", payload);
+    // console.log("payload", payload);
     if (payload.holes.items.length > 0) {
       payload.holes.items.sort((a, b) => a.no - b.no);
     }
