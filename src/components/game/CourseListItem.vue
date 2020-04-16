@@ -31,7 +31,6 @@
       },
     },
     beforeLeave(to, from, next) {
-      console.log("from.params.id", to.params.id);
       this.$store.actions.fetchCourse(to.params.id);
       next();
     },
