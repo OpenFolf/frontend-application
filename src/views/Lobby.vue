@@ -64,7 +64,7 @@
   import { Fragment } from "vue-fragment";
   import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
   import { mapGetters } from "vuex";
-  import Store from "../store";
+  // import Store from "../store";
   export default {
     name: "lobby",
     data() {
@@ -96,13 +96,13 @@
     },
     created() {
       //this.initialize();
-      this.$Store.dispatch("fetchGame", this.getGame.id);
+      this.$store.dispatch("fetchGame", this.getGame.id);
       //TODO: Remove when the game object is ready
       var indexOfOwner = this.getGame.players.items.findIndex(
         (o) => o.user.email === this.getGame.owner.email,
       );
       const ownerElement = this.getGame.players.items.splice(indexOfOwner, 1);
-      this.getGame.players.items = [...ownerElement, ...this.game.players.items];
+      this.getGame.players.items = [...ownerElement, ...this.getGame.players.items];
     },
     props: {
       path: {
@@ -116,7 +116,7 @@
     components: { Fragment, ConfirmDialogue },
     methods: {
       refreshLobby() {
-        Store.dispatch("fetchGame", this.getGame.id);
+        this.$store.dispatch("fetchGame", this.getGame.id);
       },
 
       kickUser(item) {
