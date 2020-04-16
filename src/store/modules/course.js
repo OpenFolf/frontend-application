@@ -40,7 +40,7 @@ const actions = {
       const courseList = response.data.listCourses.items;
 
       context.commit("updateCourseList", courseList);
-      console.log("response", response);
+      //console.log("response", response);
     } catch (e) {
       console.log("Error", e);
     }

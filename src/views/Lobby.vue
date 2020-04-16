@@ -11,7 +11,7 @@
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height class="justify-center">
-        <v-row class="col-12">
+        <v-row>
           <v-col class="col-12 align-content-space-between">
             <v-simple-table hide-actions>
               <thead class="secondary">
@@ -37,19 +37,20 @@
                   </td>
                 </tr>
 
-                <td v-if="game.players.length <= 1" colspan="2" class=" pt-5">
+                <!-- <td v-if="game.players.length <= 1" colspan="2" class=" pt-5">
                   <v-data-table
                     class="mt-5"
                     loading
                     loading-text="Waiting for other users to join"
                     hide-default-footer
                   />
-                </td>
+                </td> -->
               </tbody>
             </v-simple-table>
           </v-col>
         </v-row>
         <v-card flat>
+          <v-btn color="error" @click="refreshLobby">Refresh</v-btn>
           <v-btn
             :to="{ name: 'game-scorecard' /*, params: { path: path, id: getCurrentCourse.id*/ }"
             color="primary"
@@ -68,6 +69,7 @@
 <script>
   import { Fragment } from "vue-fragment";
   import { mapGetters } from "vuex";
+  import Store from "../store";
   export default {
     name: "lobby",
     data() {
@@ -82,9 +84,8 @@
       };
     },
     created() {
-      this.initialize();
+      //this.initialize();
       //TODO: Remove when the game object is ready
-
       // var indexOfOwner = this.getGame.players.items.findIndex(
       //   (o) => o.user.email === this.getGame.owner.email,
       // );
@@ -102,41 +103,10 @@
     },
     components: { Fragment },
     methods: {
-      initialize() {
-        this.game = {
-          gameStatus: 0,
-          lobbyId: 1,
-          courseName: "Klabratun",
-
-          owner: {
-            userId: 3,
-            userName: "Nigga Beinteins",
-          },
-
-          players: [
-            {
-              userId: 1,
-              userName: "Siggi Hall",
-            },
-            {
-              userId: 2,
-              userName: "Sigga Beinteins",
-            },
-            {
-              userId: 3,
-              userName: "Nigga Beinteins",
-            },
-            {
-              userId: 4,
-              userName: "Durgurinn",
-            },
-            {
-              userId: 5,
-              userName: "Rassi Prump",
-            },
-          ],
-        };
+      refreshLobby() {
+        Store.dispatch("fetchGame", this.getGame.id);
       },
+
       kickUser(item) {
         const index = this.joinedUsers.indexOf(item);
         confirm("Are you sure you want to kick user?") && this.joinedUsers.splice(index, 1);

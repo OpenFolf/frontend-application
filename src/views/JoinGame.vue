@@ -9,10 +9,10 @@
           </v-toolbar>
 
           <v-card-text class="headline text--white text-center">
-            Enter the 4-digit code
+            Enter the 3-letter code
           </v-card-text>
           <v-container>
-            <v-form ref="signInForm">
+            <v-form ref="signInForm" @submit.prevent>
               <v-text-field
                 label="GAME CODE"
                 type="text"
@@ -24,6 +24,7 @@
                 outlined
                 flat
                 clearable
+                @keyup.enter="joinGameRequest"
               />
               <v-btn block :disabled="$v.gameCode.$invalid" @click="joinGameRequest" color="primary"
                 >Join Game
@@ -62,7 +63,7 @@
     },
     methods: {
       async joinGameRequest() {
-        var response = await checkLobbyCode(this.gameCode);
+        var response = await checkLobbyCode(this.gameCode.toUpperCase());
         if (response.path) {
           this.$router.push({
             name: "join-lobby",
@@ -74,7 +75,6 @@
         }
       },
       clearErrorObj() {
-        console.log("Kemur 'i clear");
         this.errorObj = "";
         this.isError = false;
       },
