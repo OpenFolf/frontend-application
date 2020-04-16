@@ -83,6 +83,7 @@
         showPassword: false,
         errorObj: "",
         isError: false,
+        isCompleted: false,
       };
     },
 

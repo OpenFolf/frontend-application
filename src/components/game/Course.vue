@@ -12,12 +12,7 @@
         </v-container>
       </v-toolbar>
       <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile flat>
-        <v-btn
-          large
-          outlined
-          color="white"
-          class="my-6 primary"
-          :to="{ name: 'game-lobby', params: { path: path, id: getCurrentCourse.id } }"
+        <v-btn large outlined color="white" class="my-6 primary" @click="playCourse"
           >Play Course</v-btn
         >
       </v-card>
@@ -42,6 +37,7 @@
   // import CourseBaskets from "@/components/game/CourseBaskets.vue";
   import CourseMap from "@/components/game/CourseMap.vue";
   // import CourseStats from "@/components/game/CourseStats.vue";
+  import { createGame } from "@/services/index";
   import { mapGetters } from "vuex";
   export default {
     name: "game-course",
@@ -75,11 +71,17 @@
       this.calculateLengthAndTotalPar();
     },
     methods: {
+      async playCourse() {
+        var lobbyCode = await createGame(this.getCurrentCourse.id);
+        this.$router.push({
+          name: "game-lobby",
+          params: { path: this.path, id: this.getCurrentCourse.id, lobbyCode: lobbyCode },
+        });
+      },
       swipe(direction) {
         this.dir = direction;
       },
       calculateLengthAndTotalPar() {
-        console.log("this.course", this.getCurrentCourse);
         if (this.getCurrentCourse.holes.items.length > 0) {
           this.getCurrentCourse.holes.items.forEach((m) => {
             this.sums[0] += parseInt(m.redLength);

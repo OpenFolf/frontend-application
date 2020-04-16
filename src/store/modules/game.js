@@ -43,19 +43,18 @@ const actions = {
       console.log("FetchGame", response);
       context.commit("setGame", game);
     } catch (e) {
-      console.log("Error", e);
+      console.log("Fetch game error", e);
     }
   },
 
   async fetchGames(context) {
     try {
       const response = await API.graphql(graphqlOperation(gamegraphQL.listGames));
-      console.log("FetchGames", response);
       const gamesList = response.data.listGames.items;
 
       context.commit("setGamesList", gamesList);
     } catch (e) {
-      console.log("Error", e);
+      console.log("Fetch games error", e);
     }
   },
 
@@ -88,8 +87,10 @@ const actions = {
       await newGame.players.items.push(playerResponse.data.createPlayer);
 
       await context.commit("setGame", newGame);
+      // Added by Arnar
+      return generatedCode;
     } catch (e) {
-      console.log("Error", e);
+      console.log("Create game error", e);
     }
   },
 
@@ -105,7 +106,7 @@ const actions = {
       );
       console.log("Response", response);
     } catch (e) {
-      console.log("Error", e);
+      console.log("Create player error", e);
     }
   },
 

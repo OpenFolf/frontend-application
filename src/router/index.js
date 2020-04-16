@@ -70,15 +70,17 @@ const routes = [
     },
   },
   {
-    path: "/game/:path/lobby",
+    path: "/game/:path/:lobbyCode",
     name: "game-lobby",
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
-    beforeEnter: (to, from, next) => {
-      return new Promise((resolve) => {
-        resolve(Store.dispatch("createGame", to.params.id));
-      }).then(() => next());
-    },
+    // Don't need this anymore, we now call from the component directly to services
+    // beforeEnter: (to, from, next) => {
+    //   console.log("BeforeEnter, game", to.params.id);
+    //   return new Promise((resolve) => {
+    //     resolve(Store.dispatch("createGame", to.params.id));
+    //   }).then(() => next());
+    // },
   },
   {
     path: "/game/:path/scorecard",

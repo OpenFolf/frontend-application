@@ -1,7 +1,7 @@
 <template>
   <fragment>
     <v-app-bar color="primary" app flat>
-      <v-toolbar-title>{{ $log(getGame) || getGame.course.name }}</v-toolbar-title>
+      <v-toolbar-title>{{ $log(getGame.course.name) || getGame.course.name }}</v-toolbar-title>
       <v-spacer />
       <v-banner single-line class="text-center">
         <span> Code: </span><span class="font-weight-bold">{{ getGame.lobbyCode }}</span></v-banner
@@ -18,15 +18,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(player, index) in game.players" :key="player.id">
+                <tr v-for="(player, index) in getGame.players.items" :key="index">
                   <td>
                     <fragment v-if="!index"
                       ><v-icon small color="warning" class="mr-2">fa-crown</v-icon></fragment
                     >
-                    {{ player.userName }}
+                    {{ player.user.username }}
                   </td>
                   <td class="text-right">
-                    <fragment v-if="index && currentUser.userId !== player.userId">
+                    <fragment v-if="index && $store.getters.getUser.id !== player.user.id">
                       <v-icon color="error" small>fa-minus-circle</v-icon>
                     </fragment>
                   </td>
