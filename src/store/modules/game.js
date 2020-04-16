@@ -8,6 +8,7 @@ import * as services from "../../services/index";
 const state = {
   game: {},
   gamesList: [],
+  subscriptionList: "Typpi",
 };
 
 const getters = {
@@ -17,6 +18,9 @@ const getters = {
   getGamesList: (state) => {
     return state.gamesList;
   },
+  getSubscriptionList: (state) => {
+    return state.subscriptionList;
+  },
 };
 
 const mutations = {
@@ -25,6 +29,9 @@ const mutations = {
   },
   setGamesList: (state, payload) => {
     state.gamesList = payload;
+  },
+  setSubscriptionList: (state, payload) => {
+    state.subscriptionList = payload;
   },
 };
 
@@ -101,6 +108,23 @@ const actions = {
     } catch (e) {
       console.log("Create player error", e);
     }
+  },
+
+  // Test fyrir subscription a game object
+  //   async subscribeGames(context) {
+  //     const games = API.graphql(graphqlOperation(gamegraphQL.onCreateGame)).subscribe({
+  //       next: (gameData) => context.commit("setSubscriptionList", gameData),
+  //     });
+
+  //     console.log(games);
+  //   },
+
+  async subscribeGames(context) {
+    const games = API.graphql(graphqlOperation(gamegraphQL.onUpdateGame)).subscribe({
+      next: (gameData) => context.commit("setSubscriptionList", gameData.value.data.onUpdateGame),
+    });
+
+    console.log(games);
   },
 };
 

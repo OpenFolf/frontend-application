@@ -98,3 +98,55 @@ export const listGames = /* GraphQL */ `
     }
   }
 `;
+
+// Subscription test
+
+export const onUpdateGame = /* GraphQL */ `
+  subscription OnUpdateGame {
+    onUpdateGame {
+      id
+      owner {
+        username
+        email
+      }
+      course {
+        name
+      }
+      players {
+        items {
+          user {
+            username
+            email
+          }
+        }
+      }
+      gameStatus
+      lobbyCode
+    }
+  }
+`;
+
+export const onCreateGame = /* GraphQL */ `
+  subscription OnCreateGame {
+    onCreateGame {
+      id
+      owner {
+        username
+        email
+      }
+      course {
+        name
+      }
+      players {
+        items {
+          user {
+            username
+            email
+          }
+        }
+      }
+      gameStatus
+      lobbyCode
+    }
+  }
+`;

@@ -5,6 +5,7 @@ export const createPlayer = /* GraphQL */ `
     createPlayer(input: $input, condition: $condition) {
       id
       user {
+        username
         email
       }
       game {
