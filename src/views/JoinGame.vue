@@ -51,7 +51,7 @@
 
 <script>
   import { required, minLength, maxLength } from "vuelidate/lib/validators";
-  import { checkLobbyCode } from "../services/index";
+  import { checkLobbyCode } from "../services";
   export default {
     name: "join-game",
     data() {
@@ -64,10 +64,9 @@
     methods: {
       async joinGameRequest() {
         var response = await checkLobbyCode(this.gameCode);
-        console.log("joinGameRequest, Response", response);
         if (response.path) {
           this.$router.push({
-            name: "game-lobby",
+            name: "join-lobby",
             params: { path: response.path, id: response.id },
           });
         }

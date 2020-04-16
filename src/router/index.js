@@ -4,6 +4,7 @@ import Store from "@/store";
 import Auth from "@/views/Auth.vue";
 import Home from "@/views/Home.vue";
 import HomeMenu from "@/components/home/Menu.vue";
+//import Services from "../services";
 
 Vue.use(VueRouter);
 
@@ -74,13 +75,16 @@ const routes = [
     name: "game-lobby",
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
-    // Don't need this anymore, we now call from the component directly to services
-    // beforeEnter: (to, from, next) => {
-    //   console.log("BeforeEnter, game", to.params.id);
-    //   return new Promise((resolve) => {
-    //     resolve(Store.dispatch("createGame", to.params.id));
-    //   }).then(() => next());
-    // },
+    beforeEnter: async (to, from, next) => {
+      await Store.dispatch("createGame", to.params.id);
+      next();
+    },
+  },
+  {
+    path: "/game/:path/lobby",
+    name: "join-lobby",
+    component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
+    props: true,
   },
   {
     path: "/game/:path/scorecard",

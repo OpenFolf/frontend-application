@@ -52,12 +52,12 @@ export async function checkLobbyCode(lobbyCode) {
       Store.dispatch("fetchGame", gameExists.id);
       console.log("gameExists", gameExists);
       // TODO: Maybe redundant, but works, should be able to get straight from the state
-      return { path: replaceAccentForUrl(gameExists.course.name) };
+      return { path: replaceAccentForUrl(gameExists.course.name), id: gameExists.id };
     } catch {
       throw new TypeError("CheckLobbyCode error, lobby code used: ", lobbyCode);
     }
   }
-  return false;
+  throw new TypeError("CheckLobbyCode error, lobby code used: ", lobbyCode);
 }
 
 export async function createGame(courseId) {
