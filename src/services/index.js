@@ -44,7 +44,7 @@ export async function checkLobbyCode(lobbyCode) {
     return `No game found with the lobby code ${lobbyCode}`;
   } else if (gameExists.gameStatus !== "0") {
     return `A game with the lobby code ${lobbyCode} found but has already started`;
-  } else if (gameExists || gameExists.gameStatus === 0) {
+  } else if (gameExists || gameExists.gameStatus === "0") {
     try {
       // Create the new player in the database
       Store.dispatch("createPlayer", gameExists.id);

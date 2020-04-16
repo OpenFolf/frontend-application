@@ -1,9 +1,9 @@
 <template>
   <fragment>
     <v-app-bar color="primary" app flat>
-      <v-toolbar-title>{{
-        $log("Lobby>Title, getGame.course.name", getGame.course.name) || getGame.course.name
-      }}</v-toolbar-title>
+      <v-toolbar-title
+        >{{ $log("Lobby>Title, getGame.course.name", getGame.course.name) || getGame.course.name }}
+      </v-toolbar-title>
       <v-spacer />
       <v-banner single-line class="text-center">
         <span> Code: </span><span class="font-weight-bold">{{ getGame.lobbyCode }}</span></v-banner
@@ -14,9 +14,9 @@
         <v-row>
           <v-col class="col-12 align-content-space-between">
             <v-simple-table hide-actions>
-              <thead class="secondary">
+              <thead class="secondary ">
                 <tr>
-                  <th class="table-text  text-center title" colspan="2">Players</th>
+                  <th class="table-text  text-center title rounded" colspan="2">Players</th>
                 </tr>
               </thead>
               <tbody>
@@ -25,39 +25,33 @@
                     <fragment v-if="!index"
                       ><v-icon small color="warning" class="mr-2">fa-crown</v-icon></fragment
                     >
-                    {{
-                      $log("Lobby>Title, ggetGame.players.items.course.name", player.user.email) ||
-                        player.user.email
-                    }}
+                    {{ player.user.email }}
                   </td>
                   <td class="text-right">
                     <fragment v-if="index && $store.getters.getUser.id !== player.user.id">
-                      <v-icon color="error" small>fa-minus-circle</v-icon>
+                      <ConfirmDialogue :dialog="dialog" :message="kickUserMsg" />
                     </fragment>
                   </td>
                 </tr>
 
-                <!-- <td v-if="game.players.length <= 1" colspan="2" class=" pt-5">
+                <td v-if="getGame.players.items.length <= 1" colspan="2">
                   <v-data-table
-                    class="mt-5"
+                    class=""
                     loading
                     loading-text="Waiting for other users to join"
                     hide-default-footer
                   />
-                </td> -->
+                </td>
               </tbody>
             </v-simple-table>
           </v-col>
         </v-row>
         <v-card flat>
-          <v-btn color="error" @click="refreshLobby">Refresh</v-btn>
-          <v-btn
-            :to="{ name: 'game-scorecard' /*, params: { path: path, id: getCurrentCourse.id*/ }"
-            color="primary"
-            class=""
-            >Start Game</v-btn
-          >
+          <v-btn color="info" @click="refreshLobby">Refresh</v-btn>
         </v-card>
+        <ConfirmDialogue :dialog="dialog" :message="leaveMsg" />
+
+        <ConfirmDialogue :dialog="dialog" :message="continueMsg" />
         <v-card class="pa-1 overflow-x-auto">
           <pre class="mb-5">{{ $log(getGame) || getGame }}</pre>
         </v-card>
@@ -68,29 +62,47 @@
 
 <script>
   import { Fragment } from "vue-fragment";
+  import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
   import { mapGetters } from "vuex";
   import Store from "../store";
   export default {
     name: "lobby",
     data() {
       return {
-        lobbyCode: "XYZQ",
-        courseName: "Klabratún",
-        currentUser: {
-          userId: 3,
-          userName: "Nigga Beinteins",
+        dialog: false,
+
+        continueMsg: {
+          title: "Start Game",
+          body: "Are you sure you want to start the game?",
+          button1: "Cancel",
+          button2: "Start",
+          color: "primary",
         },
-        game: {},
+        leaveMsg: {
+          title: "Leave Lobby",
+          body: "Are you want to leave?",
+          button1: "No",
+          button2: "Yes",
+          color: "error",
+        },
+        kickUserMsg: {
+          icon: "fa-minus-circle",
+          title: "Kick Player",
+          body: "Are you sure you want kick the player?",
+          button1: "Cancel",
+          button2: "Yes",
+        },
       };
     },
     created() {
       //this.initialize();
+      this.$Store.dispatch("fetchGame", this.getGame.id);
       //TODO: Remove when the game object is ready
-      // var indexOfOwner = this.getGame.players.items.findIndex(
-      //   (o) => o.user.email === this.getGame.owner.email,
-      // );
-      // const ownerElement = this.getGame.players.items.splice(indexOfOwner, 1);
-      // this.getGame.players.items = [...ownerElement, ...this.game.players.items];
+      var indexOfOwner = this.getGame.players.items.findIndex(
+        (o) => o.user.email === this.getGame.owner.email,
+      );
+      const ownerElement = this.getGame.players.items.splice(indexOfOwner, 1);
+      this.getGame.players.items = [...ownerElement, ...this.game.players.items];
     },
     props: {
       path: {
@@ -101,7 +113,7 @@
     computed: {
       ...mapGetters(["getGame"]),
     },
-    components: { Fragment },
+    components: { Fragment, ConfirmDialogue },
     methods: {
       refreshLobby() {
         Store.dispatch("fetchGame", this.getGame.id);
