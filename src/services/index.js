@@ -35,19 +35,29 @@ export function getDistanceKM(lat1, lon1, lat2, lon2) {
 
 // Used to check a "join lobby" request by going through all games in the state "lobby" and cross referencing its lobby code. Returns path and id.
 export async function checkLobbyCode(lobbyCode) {
+  console.log("LobbyCode", lobbyCode);
   // Get all games from the database
   await Store.dispatch("fetchGames");
   // Look up the lobby code
-  var gameExists = Store.getters.getGamesList.find((x) => x.lobbyCode == lobbyCode);
-  if (gameExists || gameExists.gameStatus === 0) {
-    // Create the new player in the database
-    Store.dispatch("createPlayer", gameExists.id);
-    // Get the new Game object and set that as current game
-    Store.dispatch("fetchGame", gameExists.id);
-    // TODO: Maybe redundant, but works, should be able to get straight from the state
-    return { path: replaceAccentForUrl(gameExists.course.name), id: gameExists.id };
+  const gameExists = Store.getters.getGamesList.find((x) => x.lobbyCode == lobbyCode);
+  if (!gameExists) {
+    return `No game found with the lobby code ${lobbyCode}`;
+  } else if (gameExists.gameStatus !== "0") {
+    return `A game with the lobby code ${lobbyCode} found but has already started`;
+  } else if (gameExists || gameExists.gameStatus === 0) {
+    try {
+      // Create the new player in the database
+      Store.dispatch("createPlayer", gameExists.id);
+      // Get the new Game object and set that as current game
+      Store.dispatch("fetchGame", gameExists.id);
+      console.log("gameExists", gameExists);
+      // TODO: Maybe redundant, but works, should be able to get straight from the state
+      return { path: replaceAccentForUrl(gameExists.course.name), id: gameExists.id };
+    } catch {
+      throw new TypeError("CheckLobbyCode error, lobby code used: ", lobbyCode);
+    }
   }
-  return false;
+  throw new TypeError("CheckLobbyCode error, lobby code used: ", lobbyCode);
 }
 
 export async function createGame(courseId) {

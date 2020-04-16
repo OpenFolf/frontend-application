@@ -9,10 +9,10 @@
           </v-toolbar>
 
           <v-card-text class="headline text--white text-center">
-            Enter the 4-digit code
+            Enter the 3-letter code
           </v-card-text>
           <v-container>
-            <v-form ref="signInForm">
+            <v-form ref="signInForm" @submit.prevent>
               <v-text-field
                 label="GAME CODE"
                 type="text"
@@ -24,19 +24,19 @@
                 outlined
                 flat
                 clearable
+                @keyup.enter="joinGameRequest"
               />
               <v-btn block :disabled="$v.gameCode.$invalid" @click="joinGameRequest" color="primary"
                 >Join Game
               </v-btn>
               <v-alert
                 dense
-                border="top"
+                border="left"
                 colored-border
                 close-text="Dismiss"
                 dismissible
                 v-model="isError"
                 elevation="0"
-                class="py-5"
                 color="error"
               >
                 {{ errorObj }}
@@ -51,7 +51,7 @@
 
 <script>
   import { required, minLength, maxLength } from "vuelidate/lib/validators";
-  import { checkLobbyCode } from "../services/index";
+  import { checkLobbyCode } from "../services";
   export default {
     name: "join-game",
     data() {
@@ -63,14 +63,20 @@
     },
     methods: {
       async joinGameRequest() {
-        var response = await checkLobbyCode(this.gameCode);
-        console.log("joinGameRequest, Response", response);
-        if (response) {
+        var response = await checkLobbyCode(this.gameCode.toUpperCase());
+        if (response.path) {
           this.$router.push({
-            name: "game-lobby",
-            params: { path: response.path, id: response.id, lobbyCode: this.gameCode },
+            name: "join-lobby",
+            params: { path: response.path, id: response.id },
           });
+        } else {
+          this.isError = true;
+          this.errorObj = response;
         }
+      },
+      clearErrorObj() {
+        this.errorObj = "";
+        this.isError = false;
       },
     },
     validations: {
@@ -87,6 +93,8 @@
         !this.$v.gameCode.minLength && errors.push("Game code must be 3 characters long");
         !this.$v.gameCode.maxLength && errors.push("Game code must be 3 characters long");
         !this.$v.gameCode.required && errors.push("Game code is required");
+        if (this.isError) errors.push(this.errorObj);
+        this.clearErrorObj();
         return errors;
       },
     },

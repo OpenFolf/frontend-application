@@ -12,7 +12,15 @@
         </v-container>
       </v-toolbar>
       <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile flat>
-        <v-btn large outlined color="white" class="my-6 primary" @click="playCourse"
+        <v-btn
+          large
+          outlined
+          color="white"
+          class="my-6 primary"
+          :to="{
+            name: 'game-lobby',
+            params: { path: this.path, id: this.getCurrentCourse.id },
+          }"
           >Play Course</v-btn
         >
       </v-card>
@@ -72,11 +80,8 @@
     },
     methods: {
       async playCourse() {
-        var lobbyCode = await createGame(this.getCurrentCourse.id);
-        this.$router.push({
-          name: "game-lobby",
-          params: { path: this.path, id: this.getCurrentCourse.id, lobbyCode: lobbyCode },
-        });
+        await createGame(this.getCurrentCourse.id);
+        this.$router.push();
       },
       swipe(direction) {
         this.dir = direction;
