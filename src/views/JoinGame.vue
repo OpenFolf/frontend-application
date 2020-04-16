@@ -25,12 +25,7 @@
                 flat
                 clearable
               />
-              <v-btn
-                block
-                :disabled="$v.gameCode.$invalid"
-                @click="joinGame"
-                color="primary"
-                :to="{ name: 'game-lobby' }"
+              <v-btn block :disabled="$v.gameCode.$invalid" @click="joinGameRequest" color="primary"
                 >Join Game
               </v-btn>
               <v-alert
@@ -56,6 +51,7 @@
 
 <script>
   import { required, minLength, maxLength } from "vuelidate/lib/validators";
+  import { checkLobbyCode } from "../services/index";
   export default {
     name: "join-game",
     data() {
@@ -66,21 +62,30 @@
       };
     },
     methods: {
-      signIn() {},
+      async joinGameRequest() {
+        var response = await checkLobbyCode(this.gameCode);
+        console.log("joinGameRequest, Response", response);
+        if (response) {
+          this.$router.push({
+            name: "game-lobby",
+            params: { path: response.path, id: response.id, lobbyCode: this.gameCode },
+          });
+        }
+      },
     },
     validations: {
       gameCode: {
         required,
-        minLength: minLength(4),
-        maxLength: maxLength(4),
+        minLength: minLength(3),
+        maxLength: maxLength(3),
       },
     },
     computed: {
       gameCodeErrors() {
         const errors = [];
         if (!this.$v.gameCode.$dirty) return errors;
-        !this.$v.gameCode.minLength && errors.push("Game code must be 4 characters long");
-        !this.$v.gameCode.maxLength && errors.push("Game code must be 4 characters long");
+        !this.$v.gameCode.minLength && errors.push("Game code must be 3 characters long");
+        !this.$v.gameCode.maxLength && errors.push("Game code must be 3 characters long");
         !this.$v.gameCode.required && errors.push("Game code is required");
         return errors;
       },
