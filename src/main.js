@@ -26,6 +26,8 @@ Icon.Default.mergeOptions({
 //TODO: Remove
 Vue.prototype.$log = console.log;
 
+Vue.prototype.$typpi = console.log;
+
 Vue.use(Vuelidate);
 
 Amplify.configure(awsconfig);
