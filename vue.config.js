@@ -1,22 +1,9 @@
 module.exports = {
   pwa: {
-    // workboxPluginMode: "GenerateSW",
-    // workboxOptions: {
-    //   navigateFallback: "/index.html",
-    //   runtimeCaching: [
-    //     {
-    //       urlPattern: new RegExp("^https://"),
-    //       handler: "networkFirst",
-    //       options: {
-    //         networkTimeoutSeconds: 10,
-    //         cacheName: "api-cache",
-    //         cacheableResponse: {
-    //           statuses: [0, 200],
-    //         },
-    //       },
-    //     },
-    //   ],
-    // },
+    workboxPluginMode: "GenerateSW",
+    workboxOptions: {
+      navigateFallback: "/index.html",
+    },
     manifestOptions: {
       name: "openFOLF",
       short_name: "openFOLF",
