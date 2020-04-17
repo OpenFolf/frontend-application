@@ -9,16 +9,17 @@
 
               <th class="title ">Par</th>
 
-              <fragment v-for="(player, playerIndex) in players" :key="playerIndex">
-                <th class="title text-center">{{ player.name }}</th>
+              <fragment v-for="player in getGame.players.items" :key="player.id">
+                <th class="title text-center">{{ player.user.username }}</th>
               </fragment>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(hole, index) in par" :key="index">
+            <tr v-for="(hole, index) in getCurrentCourse.holes.items" :key="hole.no">
               <td class="text-center">{{ index + 1 }}</td>
-              <td class="text-center">{{ hole }}</td>
-              <fragment v-for="(player, playerIndex) in players" :key="playerIndex">
+              <!-- Change get current user par -->
+              <td class="text-center">{{ hole.redPar }}</td>
+              <fragment v-for="(player, playerIndex) in getGame.players.items" :key="player.id">
                 <td :key="componentKey" class="text-center">
                   <button
                     type="button"
@@ -28,7 +29,10 @@
                     <v-icon small>fas fa-minus-square</v-icon>
                   </button>
 
-                  {{ $log("player.scores[index]", player.scores[index]) || player.scores[index] }}
+                  {{
+                    $log("player.scores[index]", player.scoreArray[index]) ||
+                      player.scoreArray[index]
+                  }}
 
                   <button type="button" v-on:click="updateScore(index, playerIndex, 'up')">
                     <v-icon small class="ml-1">fas fa-plus-square</v-icon>
@@ -43,19 +47,24 @@
               <th class="bold body-1">
                 {{ parTotal }}
               </th>
-              <fragment v-for="(player, playerIndex) in players" :key="playerIndex">
-                <th class="bold body-1">{{ player.total }}</th>
+              <fragment v-for="player in getGame.players.items" :key="player.id">
+                <th class="bold body-1">??</th>
               </fragment>
             </tr>
           </thead>
         </template>
       </v-simple-table>
+      <v-card class="pa-1 overflow-x-auto">
+        <pre class="mb-5">{{ getGame }}</pre>
+        <pre class="mb-5">{{ getCurrentCourse }}</pre>
+      </v-card>
     </v-container>
   </v-content>
 </template>
 
 <script>
   import { Fragment } from "vue-fragment";
+  import { mapGetters } from "vuex";
   export default {
     name: "game-scorecard",
 
@@ -83,6 +92,10 @@
         componentKey: 0,
       };
     },
+    computed: {
+      ...mapGetters(["getGame", "getCurrentCourse"]),
+    },
+
     components: { Fragment },
     created: function() {
       this.loadHoles();
