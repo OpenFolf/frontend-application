@@ -13,7 +13,7 @@
       <v-container fluid fill-height class="justify-center">
         <v-row>
           <v-col class="col-12 align-content-space-between">
-            <v-simple-table hide-actions>
+            <v-simple-table hide-actions :key="componentKey">
               <thead class="secondary ">
                 <tr>
                   <th class="table-text  text-center title rounded" colspan="2">Players</th>
