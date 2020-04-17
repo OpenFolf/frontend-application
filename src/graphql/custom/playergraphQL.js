@@ -32,3 +32,51 @@ export const deletePlayer = /* GraphQL */ `
     }
   }
 `;
+
+// Subscriptions
+export const onCreatePlayer = /* GraphQL */ `
+  subscription OnCreatePlayer {
+    onCreatePlayer {
+      id
+      user {
+        id
+        email
+        username
+      }
+      game {
+        id
+        course {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+export const onUpdatePlayer = /* GraphQL */ `
+  subscription OnUpdatePlayer($id: ID!) {
+    onUpdatePlayer(id: $id) {
+      id
+      user {
+        id
+        username
+      }
+      team
+    }
+  }
+`;
+export const onDeletePlayer = /* GraphQL */ `
+  subscription OnDeletePlayer {
+    onDeletePlayer {
+      id
+      user {
+        id
+        username
+      }
+      game {
+        id
+      }
+      scoreArray
+    }
+  }
+`;

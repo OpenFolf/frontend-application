@@ -13,6 +13,7 @@ export const getUser = /* GraphQL */ `
           team
           teeColor
           totalScore
+          scoreArray
         }
         nextToken
       }
@@ -158,6 +159,7 @@ export const getPlayer = /* GraphQL */ `
         }
         nextToken
       }
+      scoreArray
     }
   }
 `;
@@ -190,6 +192,7 @@ export const listPlayers = /* GraphQL */ `
         gameHoles {
           nextToken
         }
+        scoreArray
       }
       nextToken
     }
@@ -349,6 +352,7 @@ export const getGame = /* GraphQL */ `
           team
           teeColor
           totalScore
+          scoreArray
         }
         nextToken
       }

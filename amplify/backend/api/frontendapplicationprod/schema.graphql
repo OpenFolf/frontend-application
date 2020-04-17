@@ -18,6 +18,7 @@ type Player @model {
     teeColor: Tee
     totalScore: String
     gameHoles: [ GameHole ] @connection
+    scoreArray: [ String ]
 }
 
 type GameHole @model {
