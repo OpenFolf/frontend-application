@@ -76,8 +76,23 @@ export const getGame = /* GraphQL */ `
         email
       }
       course {
+        id
         name
         holeCount
+        holes {
+          items {
+            id
+            no
+            redPar
+            whitePar
+            yellowPar
+            bluePar
+            redLength
+            whiteLength
+            yellowLength
+            blueLength
+          }
+        }
       }
       players {
         items {
