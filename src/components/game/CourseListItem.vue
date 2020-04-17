@@ -25,7 +25,8 @@
 </template>
 
 <script>
-  import * as removeAcc from "@/services/remove-accents.js";
+  import { replaceIcelandicCharacters } from "@/services";
+  import { mapActions } from "vuex";
   export default {
     name: "course-list-item",
     props: {
@@ -36,11 +37,14 @@
     },
     data() {
       return {
-        pathName: removeAcc.replaceAccentForUrl(this.content.name),
+        pathName: replaceIcelandicCharacters(this.content.name),
       };
     },
+    methods: {
+      ...mapActions(["fetchCourse"]),
+    },
     beforeLeave(to, from, next) {
-      this.$store.actions.fetchCourse(to.params.id);
+      this.fetchCourse(to.params.id);
       next();
     },
   };

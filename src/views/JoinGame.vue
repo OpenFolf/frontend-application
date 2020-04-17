@@ -26,8 +26,13 @@
                 clearable
                 @keyup.enter="joinGameRequest"
               />
-              <v-btn block :disabled="$v.gameCode.$invalid" @click="joinGameRequest" color="primary"
-                >Join Game
+              <v-btn
+                block
+                :disabled="$v.gameCode.$invalid"
+                @click="joinGameRequest"
+                color="primary"
+              >
+                Join Game
               </v-btn>
               <v-alert
                 dense
@@ -51,7 +56,8 @@
 
 <script>
   import { required, minLength, maxLength } from "vuelidate/lib/validators";
-  import { checkLobbyCode } from "../services";
+  import { mapActions, mapGetters } from "vuex";
+  import { replaceIcelandicCharacters } from "../services";
   export default {
     name: "join-game",
     data() {
@@ -59,24 +65,40 @@
         gameCode: "",
         errorObj: "",
         isError: false,
+        gameObject: undefined,
       };
     },
     methods: {
+      ...mapActions(["fetchGames", "fetchGame", "createPlayer"]),
       async joinGameRequest() {
-        var response = await checkLobbyCode(this.gameCode.toUpperCase());
-        if (response.path) {
+        await this.checkLobbyCode();
+        if (this.gameObject && !this.isError) {
           this.$router.push({
             name: "join-lobby",
-            params: { path: response.path, id: response.id },
+            params: {
+              path: replaceIcelandicCharacters(this.gameObject.course.name),
+              id: this.gameObject.id,
+            },
           });
-        } else {
-          this.isError = true;
-          this.errorObj = response;
         }
       },
       clearErrorObj() {
         this.errorObj = "";
         this.isError = false;
+      },
+      async checkLobbyCode(code) {
+        await this.fetchGames();
+        this.gameObject = this.getGamesList.find((x) => x.lobbyCode == code);
+        if (!this.gameObject) {
+          this.errorObj = `No game found with the lobby code ${code}`;
+          this.isError = true;
+        } else if (this.gameObject.gameStatus != 0) {
+          this.errorObj = `A game with the lobby code ${code} found but has already started`;
+          this.isError = true;
+        } else {
+          await this.createPlayer(this.gameObject.id);
+          await this.fetchGame(this.gameObject.id);
+        }
       },
     },
     validations: {
@@ -87,6 +109,7 @@
       },
     },
     computed: {
+      ...mapGetters(["getGamesList"]),
       gameCodeErrors() {
         const errors = [];
         if (!this.$v.gameCode.$dirty) return errors;
@@ -99,4 +122,33 @@
       },
     },
   };
+
+  // // Used to check a "join lobby" request by going through all games in the state "lobby" and cross referencing its lobby code. Returns path and id.
+  // export async function checkLobbyCode(lobbyCode) {
+  //   // Synchronize the store and backend
+  //   await Store.dispatch("fetchGames");
+
+  //   // Look up the lobby code
+  //   const gameExists = Store.getters.getGamesList.find((x) => x.lobbyCode == lobbyCode);
+
+  //   if (!gameExists) {
+  //     return `No game found with the lobby code ${lobbyCode}`;
+  //   } else if (gameExists.gameStatus !== "0") {
+  //     return `A game with the lobby code ${lobbyCode} found but has already started`;
+  //   } else if (gameExists || gameExists.gameStatus === "0") {
+  //     try {
+  //       // Create the new player in the database
+  //       Store.dispatch("createPlayer", gameExists.id);
+
+  //       // Get the new Game object and set that as current game
+  //       Store.dispatch("fetchGame", gameExists.id);
+
+  //       // TODO: Maybe redundant, but works, should be able to get straight from the state
+  //       return { path: replaceIcelandicCharacters(gameExists.course.name), id: gameExists.id };
+  //     } catch {
+  //       throw new TypeError("CheckLobbyCode error, lobby code used: ", lobbyCode);
+  //     }
+  //   }
+  //   throw new TypeError("CheckLobbyCode error, lobby code used: ", lobbyCode);
+  // }
 </script>
