@@ -13,6 +13,7 @@ export const onCreateUser = /* GraphQL */ `
           team
           teeColor
           totalScore
+          scoreArray
         }
         nextToken
       }
@@ -73,6 +74,7 @@ export const onUpdateUser = /* GraphQL */ `
           team
           teeColor
           totalScore
+          scoreArray
         }
         nextToken
       }
@@ -133,6 +135,7 @@ export const onDeleteUser = /* GraphQL */ `
           team
           teeColor
           totalScore
+          scoreArray
         }
         nextToken
       }
@@ -247,6 +250,7 @@ export const onCreatePlayer = /* GraphQL */ `
         }
         nextToken
       }
+      scoreArray
     }
   }
 `;
@@ -316,6 +320,7 @@ export const onUpdatePlayer = /* GraphQL */ `
         }
         nextToken
       }
+      scoreArray
     }
   }
 `;
@@ -385,6 +390,7 @@ export const onDeletePlayer = /* GraphQL */ `
         }
         nextToken
       }
+      scoreArray
     }
   }
 `;
@@ -647,6 +653,7 @@ export const onCreateGame = /* GraphQL */ `
           team
           teeColor
           totalScore
+          scoreArray
         }
         nextToken
       }
@@ -708,6 +715,7 @@ export const onUpdateGame = /* GraphQL */ `
           team
           teeColor
           totalScore
+          scoreArray
         }
         nextToken
       }
@@ -769,6 +777,7 @@ export const onDeleteGame = /* GraphQL */ `
           team
           teeColor
           totalScore
+          scoreArray
         }
         nextToken
       }

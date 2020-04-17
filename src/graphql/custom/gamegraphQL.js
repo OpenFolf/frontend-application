@@ -30,7 +30,24 @@ export const createGame = /* GraphQL */ `
 export const updateGame = /* GraphQL */ `
   mutation UpdateGame($input: UpdateGameInput!, $condition: ModelGameConditionInput) {
     updateGame(input: $input, condition: $condition) {
-      
+      id
+      owner {
+        username
+        email
+      }
+      course {
+        name
+      }
+      players {
+        items {
+          user {
+            username
+            email
+          }
+          totalScore
+        }
+      }
+      gameStatus
     }
   }
 `;
@@ -54,9 +71,11 @@ export const getGame = /* GraphQL */ `
       }
       course {
         name
+        holeCount
       }
       players {
         items {
+          id
           user {
             id
             username

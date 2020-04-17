@@ -24,7 +24,7 @@
             <v-divider />
             <pre class="mb-5">{{ courses }}</pre>
           </v-card> -->
-          <v-card color="info" class="pa-1 overflow-x-auto">
+          <!-- <v-card color="info" class="pa-1 overflow-x-auto">
             <v-card-title>Get Single Course by Courses ID</v-card-title>
             <v-card max-width="600px" class="mt-5 pt-3">
               <v-card-text>
@@ -56,7 +56,7 @@
               </v-alert>
             </template>
             <pre>{{ singleCourse }}</pre>
-          </v-card>
+          </v-card> -->
           <v-card color="accent" class="pa-1 overflow-x-auto">
             <v-card-title>Game</v-card-title>
             Fetch game virkar thannig ad sett er inn gameID og tha naer fallid i upplysingarnar um
@@ -155,6 +155,46 @@
             <v-divider />
             <pre class="mb-5">{{ gameSubscription }}</pre>
           </v-card>
+          <v-card color="success" class="pa-1 overflow-x-auto">
+            <v-card-title>Subscribe to Player</v-card-title>
+            <v-card-text class="d-flex flex-row font-weight-bold">
+              Update operation in the Player database table will be uploaded into state
+            </v-card-text>
+            <v-card max-width="600px">
+              <v-btn
+                x-large
+                block
+                :disabled="pushed"
+                class="my-3"
+                color="info"
+                @click="subscribeToPlayerHandler"
+              >
+                subscribe to Players
+              </v-btn>
+            </v-card>
+            <v-divider />
+            <pre class="mb-5">{{ joinedPlayerSubscription }}</pre>
+          </v-card>
+          <v-card color="accent" class="pa-1 overflow-x-auto">
+            <v-card-title>Start Game</v-card-title>
+            <v-card-text class="d-flex flex-row font-weight-bold">
+              Initalizes the game
+            </v-card-text>
+            <v-card max-width="600px">
+              <v-btn
+                x-large
+                block
+                :disabled="pushed"
+                class="my-3"
+                color="info"
+                @click="startGameFromLobby"
+              >
+                Start game
+              </v-btn>
+            </v-card>
+            <v-divider />
+            <pre class="mb-5">{{ game }}</pre>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -173,6 +213,7 @@
         "getGame",
         "getGamesList",
         "getSubscriptionList",
+        "getJoinedPlayer",
       ]),
       courses() {
         return this.getCourses;
@@ -189,6 +230,9 @@
       gameSubscription() {
         return this.getSubscriptionList;
       },
+      joinedPlayerSubscription() {
+        return this.getJoinedPlayer;
+      },
     },
 
     methods: {
@@ -200,6 +244,8 @@
         "createPlayer",
         "fetchGames",
         "subscribeGames",
+        "lobbySubscription",
+        "startGame",
       ]),
       fetchSingleHandler() {
         this.fetchCourse(this.courseId);
@@ -227,6 +273,12 @@
       },
       subscribeToGamesHandler() {
         this.subscribeGames();
+      },
+      subscribeToPlayerHandler() {
+        this.lobbySubscription();
+      },
+      startGameFromLobby() {
+        this.startGame();
       },
     },
     data() {
