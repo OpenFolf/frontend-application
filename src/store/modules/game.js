@@ -117,7 +117,7 @@ const actions = {
   },
 
   async startGame(context) {
-    // Change status of game to signal it has started
+    // Change status of game to signal it has started //
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
