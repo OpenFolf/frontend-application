@@ -21,7 +21,20 @@ export const createPlayer = /* GraphQL */ `
 export const updatePlayer = /* GraphQL */ `
   mutation UpdatePlayer($input: UpdatePlayerInput!, $condition: ModelPlayerConditionInput) {
     updatePlayer(input: $input, condition: $condition) {
-      
+      id
+      user {
+        id
+        email
+        username
+      }
+      game {
+        id
+        course {
+          id
+          name
+        }
+      }
+      scoreArray
     }
   }
 `;
