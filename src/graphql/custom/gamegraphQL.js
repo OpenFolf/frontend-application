@@ -32,22 +32,28 @@ export const updateGame = /* GraphQL */ `
     updateGame(input: $input, condition: $condition) {
       id
       owner {
+        id
         username
         email
       }
       course {
         name
+        holeCount
       }
       players {
         items {
+          id
           user {
+            id
             username
             email
           }
           totalScore
+          scoreArray
         }
       }
       gameStatus
+      lobbyCode
     }
   }
 `;
@@ -82,6 +88,7 @@ export const getGame = /* GraphQL */ `
             email
           }
           totalScore
+          scoreArray
         }
       }
       gameStatus

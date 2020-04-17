@@ -118,80 +118,46 @@ const actions = {
 
   async startGame(context) {
     // Change status of game to signal it has started
+    //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
-      id: "67cf5d7b-bbc9-4c16-ba5d-b4cee84a329a", //context.rootState.game.game.id,
+      id: context.rootState.game.game.id,
       gameStatus: "1",
     };
 
+    // update the game details with new gamestatus
     try {
-      const response = await API.graphql(
-        graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }),
-      );
-      console.log(response);
-      context.commit("setGame", response);
+      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
     } catch (e) {
-      console.log("Update game error", e);
+      console.log("Update gamestatus error", e);
     }
-    const holeCount = 9; //Na i thetta ur state
-    
-    //Create new array
-    const scoreInit = [];
 
+    //Get the number of holes for current game course
+    const holeCount = parseInt(context.rootState.game.game.course.holeCount, 10); //Na i thetta ur state
+    //Create new array and initialize to zero for every hole
+    const scoreInit = [];
     for (var i = 0; i < holeCount; i++) {
       scoreInit.push("0");
     }
 
-    
     //For each player in player array call update with the newly created array
-    // const gamePlayers = state.game.players.items;
+    const gamePlayers = context.rootState.game.game.players.items;
 
-    // const player = gamePlayers[0];
-    // const updateScore = {
-    //   id: player.id,
-    //   scoreArray: scoreInit,
-    // };
+    for (i = 0; i < gamePlayers.length; i++) {
+      const updateScore = {
+        id: gamePlayers[i].id,
+        scoreArray: scoreInit,
+      };
+      try {
+        await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: updateScore }));
+      } catch (e) {
+        console.log("Update player error", e);
+      }
+    }
 
-    
-    // console.log(updateScore, context);
+    //Refresh state of game
+    context.dispatch("fetchGame", context.rootState.game.game.id);
 
-    // try {
-    //   const response = await API.graphql(
-    //     graphqlOperation(playergraphQL.updatePlayer, { input: updateScore }),
-    //   );
-    //   console.log("Response", response);
-    // } catch (e) {
-    //   console.log("Update game error", e);
-    // }
-
-    // context.dispatch("fetchGame", "67cf5d7b-bbc9-4c16-ba5d-b4cee84a329a");
-  },
-
-  // Test fyrir subscription a game object
-  //   async subscribeGames(context) {
-  //     const games = API.graphql(graphqlOperation(gamegraphQL.onCreateGame)).subscribe({
-  //       next: (gameData) => context.commit("setSubscriptionList", gameData),
-  //     });
-
-  //     console.log(games);
-  //   },
-
-  async subscribeGames(context) {
-    const games = API.graphql(graphqlOperation(gamegraphQL.onUpdateGame)).subscribe({
-      next: (gameData) => context.commit("setSubscriptionList", gameData.value.data.onUpdateGame),
-    });
-
-    console.log(games);
-  },
-
-  async lobbySubscription(context) {
-    const playerId = "70c636bf-dc47-4de8-ace8-ae47d4c9ce71";
-    const player = API.graphql(
-      graphqlOperation(playergraphQL.onUpdatePlayer, { id: playerId }),
-    ).subscribe({
-      next: (updatedPlayer) => context.commit("joinPlayerToGame", updatedPlayer),
-    });
-
-    console.log(player);
+    //subscribe a update a ollum players, subscribe a player kalla a fetch game
   },
 };
 
