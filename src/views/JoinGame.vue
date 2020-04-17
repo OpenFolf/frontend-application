@@ -71,7 +71,7 @@
     methods: {
       ...mapActions(["fetchGames", "fetchGame", "createPlayer"]),
       async joinGameRequest() {
-        await this.checkLobbyCode();
+        await this.checkLobbyCode(this.gameCode);
         if (this.gameObject && !this.isError) {
           this.$router.push({
             name: "join-lobby",

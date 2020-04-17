@@ -29,7 +29,7 @@
                   </td>
                   <td class="text-right">
                     <fragment v-if="index && $store.getters.getUser.id !== player.user.id">
-                      <ConfirmDialogue :dialog="dialog" :message="kickUserMsg" />
+                      <ConfirmDialogue :dialog="kickUserDialog" :message="kickUserMsg" />
                     </fragment>
                   </td>
                 </tr>
@@ -49,9 +49,9 @@
         <v-card flat>
           <v-btn color="info" @click="refreshLobby">Refresh</v-btn>
         </v-card>
-        <ConfirmDialogue :dialog="dialog" :message="leaveMsg" />
+        <ConfirmDialogue :dialog="leaveGameDialog" :message="leaveMsg" />
 
-        <ConfirmDialogue :dialog="dialog" :message="continueMsg" />
+        <ConfirmDialogue :dialog="startGameDialog" :message="startGameMsg" @start="startGame" />
         <v-card class="pa-1 overflow-x-auto">
           <pre class="mb-5">{{ $log(getGame) || getGame }}</pre>
         </v-card>
@@ -63,27 +63,29 @@
 <script>
   import { Fragment } from "vue-fragment";
   import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
   // import Store from "../store";
   export default {
     name: "lobby",
     data() {
       return {
-        dialog: false,
+        startGameDialog: false,
+        leaveGameDialog: false,
+        kickUserDialog: false,
 
-        continueMsg: {
+        startGameMsg: {
           title: "Start Game",
           body: "Are you sure you want to start the game?",
           button1: "Cancel",
           button2: "Start",
-          color: "primary",
+          headerColor: "primary",
         },
         leaveMsg: {
           title: "Leave Lobby",
           body: "Are you want to leave?",
           button1: "No",
           button2: "Yes",
-          color: "error",
+          headerColor: "error",
         },
         kickUserMsg: {
           icon: "fa-minus-circle",
@@ -95,9 +97,7 @@
       };
     },
     created() {
-      //this.initialize();
-      this.$store.dispatch("fetchGame", this.getGame.id);
-      //TODO: Remove when the game object is ready
+      this.fetchGame(this.getGame.id);
       var indexOfOwner = this.getGame.players.items.findIndex(
         (o) => o.user.email === this.getGame.owner.email,
       );
@@ -115,8 +115,9 @@
     },
     components: { Fragment, ConfirmDialogue },
     methods: {
+      ...mapActions(["startGame", "fetchGame"]),
       refreshLobby() {
-        this.$store.dispatch("fetchGame", this.getGame.id);
+        this.fetchGame(this.getGame.id);
       },
 
       kickUser(item) {

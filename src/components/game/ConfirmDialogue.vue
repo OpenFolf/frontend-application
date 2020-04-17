@@ -1,11 +1,11 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="500" overlay-opacity="0.7">
+    <v-dialog v-model="localDialog" width="500" overlay-opacity="0.7">
       <template v-slot:activator="{ on }">
         <template v-if="message.icon">
           <v-icon color="error" small v-on="on"> {{ message.icon }} </v-icon>
         </template>
-        <v-btn v-on="on" :color="message.color" v-else>
+        <v-btn v-on="on" :color="message.headerColor" v-else>
           {{ message.title }}
         </v-btn>
       </template>
@@ -21,7 +21,11 @@
           <v-btn color="error" @click="dialog = false">
             {{ message.button1 }}
           </v-btn>
-          <v-btn color="primary" :to="{ name: 'game-scorecard', path: $route.params.path }">
+          <v-btn
+            color="primary"
+            :to="{ name: 'game-scorecard', path: $route.params.path }"
+            @click="$emit('start')"
+          >
             {{ message.button2 }}
           </v-btn>
         </v-card-actions>
@@ -41,6 +45,19 @@
       message: {
         type: Object,
         required: true,
+      },
+    },
+    data() {
+      return {
+        localDialog: true,
+      };
+    },
+    watch: {
+      dialog: {
+        immediate: true,
+        handler() {
+          this.localDialog = this.dialog;
+        },
       },
     },
   };
