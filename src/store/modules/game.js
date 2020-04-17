@@ -171,7 +171,9 @@ const actions = {
   async subscribeToPlayer(context, payload) {
     const playerId = payload;
     try {
-      const subscription = API.graphql(graphqlOperation(playergraphQL.onUpdatePlayer, { id: playerId })).subscribe({
+      const subscription = API.graphql(
+        graphqlOperation(playergraphQL.onUpdatePlayer, { id: playerId }),
+      ).subscribe({
         next: () => context.dispatch("fetchGame", context.rootState.game.game.id),
       });
       console.log("Subscription", subscription);
