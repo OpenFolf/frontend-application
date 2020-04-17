@@ -136,46 +136,6 @@
             <pre class="mb-5">{{ games }}</pre>
           </v-card>
           <v-card color="accent" class="pa-1 overflow-x-auto">
-            <v-card-title>Subscribe to Games</v-card-title>
-            <v-card-text class="d-flex flex-row font-weight-bold">
-              Update operation in the Game database table will be uploaded into state
-            </v-card-text>
-            <v-card max-width="600px">
-              <v-btn
-                x-large
-                block
-                :disabled="pushed"
-                class="my-3"
-                color="info"
-                @click="subscribeToGamesHandler"
-              >
-                subscribe to Games
-              </v-btn>
-            </v-card>
-            <v-divider />
-            <pre class="mb-5">{{ gameSubscription }}</pre>
-          </v-card>
-          <v-card color="success" class="pa-1 overflow-x-auto">
-            <v-card-title>Subscribe to Player</v-card-title>
-            <v-card-text class="d-flex flex-row font-weight-bold">
-              Update operation in the Player database table will be uploaded into state
-            </v-card-text>
-            <v-card max-width="600px">
-              <v-btn
-                x-large
-                block
-                :disabled="pushed"
-                class="my-3"
-                color="info"
-                @click="subscribeToPlayerHandler"
-              >
-                subscribe to Players
-              </v-btn>
-            </v-card>
-            <v-divider />
-            <pre class="mb-5">{{ joinedPlayerSubscription }}</pre>
-          </v-card>
-          <v-card color="accent" class="pa-1 overflow-x-auto">
             <v-card-title>Start Game</v-card-title>
             <v-card-text class="d-flex flex-row font-weight-bold">
               Initalizes the game
@@ -195,6 +155,25 @@
             <v-divider />
             <pre class="mb-5">{{ game }}</pre>
           </v-card>
+          <v-card color="accent" class="pa-1 overflow-x-auto">
+            <v-card-title>Subscribe a update Player</v-card-title>
+            Subscribe a update player
+            <v-text-field
+              outlined
+              clearable
+              clear-icon="fa-times-circle"
+              flat
+              solo
+              v-model="playerSubscribeId"
+              label="Enter playerId to subscribe to player"
+              @keyup.enter="subscribeToPlayer"
+              class="mx-1"
+            />
+            <v-btn x-large block color="error" @click="subscribeToPlayerHandler">
+              <v-icon>Subscribe to player</v-icon>
+            </v-btn>
+            <pre class="mb-5">{{ updatePlayer }}</pre>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -212,8 +191,7 @@
         "getCurrentCourse",
         "getGame",
         "getGamesList",
-        "getSubscriptionList",
-        "getJoinedPlayer",
+        "getUpdatePlayer",
       ]),
       courses() {
         return this.getCourses;
@@ -227,11 +205,8 @@
       games() {
         return this.getGamesList;
       },
-      gameSubscription() {
-        return this.getSubscriptionList;
-      },
-      joinedPlayerSubscription() {
-        return this.getJoinedPlayer;
+      updatePlayer() {
+        return this.getUpdatePlayer;
       },
     },
 
@@ -243,9 +218,8 @@
         "createGame",
         "createPlayer",
         "fetchGames",
-        "subscribeGames",
-        "lobbySubscription",
         "startGame",
+        "subscribeToPlayer",
       ]),
       fetchSingleHandler() {
         this.fetchCourse(this.courseId);
@@ -271,11 +245,9 @@
         this.createPlayer(this.playerGameId);
         this.playerGameId = "";
       },
-      subscribeToGamesHandler() {
-        this.subscribeGames();
-      },
       subscribeToPlayerHandler() {
-        this.lobbySubscription();
+        this.subscribeToPlayer(this.playerSubscribeId);
+        this.playerSubscribeId = "";
       },
       startGameFromLobby() {
         this.startGame();
@@ -288,6 +260,7 @@
         gameId: "",
         createGameCourseId: "",
         playerGameId: "",
+        playerSubscribeId: "",
       };
     },
   };

@@ -8,8 +8,7 @@ import * as services from "../../services/index";
 const state = {
   game: {},
   gamesList: [],
-  subscriptionList: "Typpi",
-  joinedPlayer: {},
+  updatePlayer: {},
 };
 
 const getters = {
@@ -19,11 +18,8 @@ const getters = {
   getGamesList: (state) => {
     return state.gamesList;
   },
-  getSubscriptionList: (state) => {
-    return state.subscriptionList;
-  },
-  getJoinedPlayer: (state) => {
-    return state.joinedPlayer;
+  getUpdatePlayer: (state) => {
+    return state.updatePlayer;
   },
 };
 
@@ -34,11 +30,8 @@ const mutations = {
   setGamesList: (state, payload) => {
     state.gamesList = payload;
   },
-  setSubscriptionList: (state, payload) => {
-    state.subscriptionList = payload;
-  },
-  joinPlayerToGame: (state, payload) => {
-    state.joinedPlayer = payload;
+  setUpdatePlayer: (state, payload) => {
+    state.updatePlayer = payload;
   },
 };
 
@@ -117,7 +110,7 @@ const actions = {
   },
 
   async startGame(context) {
-    // Change status of game to signal it has started
+    // Change status of game to signal it has started //
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
@@ -158,6 +151,30 @@ const actions = {
     context.dispatch("fetchGame", context.rootState.game.game.id);
 
     //subscribe a update a ollum players, subscribe a player kalla a fetch game
+  },
+
+  async updatePlayer(context, payload) {
+    //   //Payload example: Tad tharf ad bua til svona object
+    //   const updatePlayerDetails = {
+    //     id: "",
+    //     scoreArray: ["1","0","0","0","0","0",],
+    //   };
+    try {
+      await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: payload }));
+    } catch (e) {
+      console.log("update player error", e);
+    }
+  },
+
+  async subscribeToPlayer(context, payload) {
+    const playerId = payload;
+    try {
+      API.graphql(graphqlOperation(playergraphQL.onUpdatePlayer, { id: playerId })).subscribe({
+        next: (updatedPlayer) => context.commit("setUpdatePlayer", updatedPlayer),
+      });
+    } catch (e) {
+      console.log("Player subscription error", e);
+    }
   },
 };
 
