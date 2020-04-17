@@ -35,6 +35,7 @@ const mutations = {
   },
 };
 
+//BREAK: ACTIONS
 const actions = {
   async fetchGame(context, payload) {
     console.log("actions>FetchGame", payload);
@@ -79,6 +80,7 @@ const actions = {
       const createPlayerDetails = {
         playerUserId: context.rootState.user.user.id,
         playerGameId: newGame.id,
+        scoreArray: [],
       };
 
       const playerResponse = await API.graphql(
@@ -98,6 +100,7 @@ const actions = {
       const createPlayerDetails = {
         playerUserId: context.rootState.user.user.id,
         playerGameId: payload,
+        scoreArray: ["0"],
       };
 
       const response = await API.graphql(
@@ -158,7 +161,7 @@ const actions = {
   async updatePlayer(context, payload) {
     //   //Payload example: Tad tharf ad bua til svona object
     //   const updatePlayerDetails = {
-    //     id: "",
+    //     id: "playerId",
     //     scoreArray: ["1","0","0","0","0","0",],
     //   };
     try {
