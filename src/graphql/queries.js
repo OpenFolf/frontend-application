@@ -55,6 +55,7 @@ export const getUser = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
       avatar
       defTee
@@ -84,6 +85,7 @@ export const listUsers = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -112,6 +114,7 @@ export const getPlayer = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -149,6 +152,7 @@ export const getPlayer = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
       team
       teeColor
@@ -185,6 +189,7 @@ export const listPlayers = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         team
         teeColor
@@ -263,6 +268,7 @@ export const getGameHole = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
     }
   }
@@ -294,6 +300,7 @@ export const listGameHoles = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
       }
       nextToken
@@ -341,6 +348,7 @@ export const getGame = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -359,6 +367,7 @@ export const getGame = /* GraphQL */ `
       gameType
       lobbyCode
       gameStatus
+      gameDate
     }
   }
 `;
@@ -401,6 +410,7 @@ export const listGames = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
       nextToken
     }
@@ -425,6 +435,7 @@ export const getUserFavoriteCourse = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee

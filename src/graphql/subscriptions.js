@@ -55,6 +55,7 @@ export const onCreateUser = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
       avatar
       defTee
@@ -116,6 +117,7 @@ export const onUpdateUser = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
       avatar
       defTee
@@ -177,6 +179,7 @@ export const onDeleteUser = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
       avatar
       defTee
@@ -203,6 +206,7 @@ export const onCreatePlayer = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -240,6 +244,7 @@ export const onCreatePlayer = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
       team
       teeColor
@@ -273,6 +278,7 @@ export const onUpdatePlayer = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -310,6 +316,7 @@ export const onUpdatePlayer = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
       team
       teeColor
@@ -343,6 +350,7 @@ export const onDeletePlayer = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -380,6 +388,7 @@ export const onDeletePlayer = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
       team
       teeColor
@@ -459,6 +468,7 @@ export const onCreateGameHole = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
     }
   }
@@ -528,6 +538,7 @@ export const onUpdateGameHole = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
     }
   }
@@ -597,6 +608,7 @@ export const onDeleteGameHole = /* GraphQL */ `
         gameType
         lobbyCode
         gameStatus
+        gameDate
       }
     }
   }
@@ -642,6 +654,7 @@ export const onCreateGame = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -660,6 +673,7 @@ export const onCreateGame = /* GraphQL */ `
       gameType
       lobbyCode
       gameStatus
+      gameDate
     }
   }
 `;
@@ -704,6 +718,7 @@ export const onUpdateGame = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -722,6 +737,7 @@ export const onUpdateGame = /* GraphQL */ `
       gameType
       lobbyCode
       gameStatus
+      gameDate
     }
   }
 `;
@@ -766,6 +782,7 @@ export const onDeleteGame = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -784,6 +801,7 @@ export const onDeleteGame = /* GraphQL */ `
       gameType
       lobbyCode
       gameStatus
+      gameDate
     }
   }
 `;
@@ -806,6 +824,7 @@ export const onCreateUserFavoriteCourse = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -855,6 +874,7 @@ export const onUpdateUserFavoriteCourse = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee
@@ -904,6 +924,7 @@ export const onDeleteUserFavoriteCourse = /* GraphQL */ `
           gameType
           lobbyCode
           gameStatus
+          gameDate
         }
         avatar
         defTee

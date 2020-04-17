@@ -35,6 +35,7 @@ type Game @model {
     gameType: String
     lobbyCode: String
     gameStatus: String
+    gameDate: String
 }
 
 type UserFavoriteCourse @model {
