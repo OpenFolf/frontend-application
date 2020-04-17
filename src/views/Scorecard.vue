@@ -6,37 +6,20 @@
           <thead class="header" bold>
             <tr>
               <th class="title">Hole</th>
-
               <th class="title ">Par</th>
-
               <fragment v-for="player in getGame.players.items" :key="player.id">
                 <th class="title text-center">{{ player.user.username }}</th>
               </fragment>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(hole, index) in getCurrentCourse.holes.items" :key="hole.no">
+            <tr v-for="(hole, index) in getGame.course.holes.items" :key="hole.no">
               <td class="text-center">{{ index + 1 }}</td>
               <!-- Change get current user par -->
               <td class="text-center">{{ hole.redPar }}</td>
-              <fragment v-for="(player, playerIndex) in getGame.players.items" :key="player.id">
-                <td :key="componentKey" class="text-center">
-                  <button
-                    type="button"
-                    v-on:click="updateScore(index, playerIndex, 'down')"
-                    class="mr-1"
-                  >
-                    <v-icon small>fas fa-minus-square</v-icon>
-                  </button>
-
-                  {{
-                    $log("player.scores[index]", player.scoreArray[index]) ||
-                      player.scoreArray[index]
-                  }}
-
-                  <button type="button" v-on:click="updateScore(index, playerIndex, 'up')">
-                    <v-icon small class="ml-1">fas fa-plus-square</v-icon>
-                  </button>
+              <fragment v-for="(player, index) in getGame.players.items" :key="player.id">
+                <td class="text-center" :key="componentKey">
+                  {{ player.scoreArray[index] }}
                 </td>
               </fragment>
             </tr>
@@ -45,18 +28,25 @@
             <tr>
               <th class="bold body-1">Total</th>
               <th class="bold body-1">
-                {{ parTotal }}
+                <!-- {{ redParSum }} -->
               </th>
-              <fragment v-for="player in getGame.players.items" :key="player.id">
+              <!-- <fragment v-for="player in getGame.players.items" :key="player.id">
                 <th class="bold body-1">??</th>
-              </fragment>
+              </fragment> -->
             </tr>
           </thead>
         </template>
       </v-simple-table>
+      <v-form @submit.prevent>
+        <v-text-field v-model="player" label="player" type="number" />
+        <v-text-field v-model="holeNumber" label="holeNumber" type="number" />
+        <v-text-field v-model="score" label="score" type="number" />
+        <v-btn @click="updateScorecard" color="success">Update</v-btn>
+      </v-form>
       <v-card class="pa-1 overflow-x-auto">
+        <pre class="mb-5">{{ getGame.players.items[0].scoreArray }}</pre>
         <pre class="mb-5">{{ getGame }}</pre>
-        <pre class="mb-5">{{ getCurrentCourse }}</pre>
+        <!-- <pre class="mb-5">{{ getCurrentCourse }}</pre> -->
       </v-card>
     </v-container>
   </v-content>
@@ -64,72 +54,59 @@
 
 <script>
   import { Fragment } from "vue-fragment";
-  import { mapGetters } from "vuex";
+  //  import Vue from "vue";
+  import { mapGetters, mapActions } from "vuex";
   export default {
     name: "game-scorecard",
 
     data() {
       return {
-        courseName: "Folf völlurinn sprell",
-        currentUserName: "Siggi Hall",
-        holes: 9,
-        par: [3, 3, 4, 3, 5, 3, 4, 3, 3],
-        parTotal: 0,
-        numPlayers: 2,
-        newScore: 0,
-        players: {
-          p1: {
-            name: "Tim",
-            scores: [],
-            total: 0,
-          },
-          p2: {
-            name: "Fran",
-            scores: [],
-            total: 0,
-          },
-        },
+        redParSum: 0,
+        player: 0,
+        holeNumber: 0,
+        score: 0,
         componentKey: 0,
       };
     },
     computed: {
-      ...mapGetters(["getGame", "getCurrentCourse"]),
+      ...mapGetters(["getGame"]),
     },
 
     components: { Fragment },
-    created: function() {
+    created() {
       this.loadHoles();
-      this.loadPlayers();
-      this.calculateTotalScores();
+    },
+    watch: {
+      getGame(newValue, oldValue) {
+        console.log(`Watch>getGame>Updating from ${oldValue} to ${newValue}`);
+        this.componentKey += 1;
+        this.$forceUpdate();
+      },
     },
 
     methods: {
-      log(message) {
-        console.log(message);
-      },
+      ...mapActions(["updatePlayer"]),
       loadHoles: function() {
         // calculate the total of the par scores
-        for (var key in this.par) {
-          if (Object.prototype.hasOwnProperty.call(this.par, key)) {
-            var par = this.par[key];
-            //console.log(par);
-            this.parTotal += par;
-          }
-        }
+        this.getGame.course.holes.items.forEach((m) => {
+          this.redParSum += parseInt(m.redPar);
+        });
       },
-      loadPlayers: function() {
-        // create empty scores (of 0) for each hole for each player for each hole
-        for (var key in this.players) {
-          if (Object.prototype.hasOwnProperty.call(this.players, key)) {
-            var player = this.players[key];
-            player.scores = [];
 
-            for (var i = 0; i < this.holes; i++) {
-              player.scores.push(0);
-            }
-          }
-        }
+      updateScorecard() {
+        const oldScore = this.getGame.players.items[this.player - 1].scoreArray.map((x) => x);
+        console.log("id", this.getGame.players.items[this.player - 1].id);
+        console.log("oldScore", oldScore);
+        console.log("NewOldScore", (oldScore[this.holeNumber - 1] = this.score));
+        console.log("oldScoerArr", oldScore);
+
+        const payLoadObject = {
+          id: this.getGame.players.items[this.player - 1].id,
+          scoreArray: oldScore,
+        };
+        this.updatePlayer(payLoadObject);
       },
+
       updateScore: function(index, playerIndex, direction) {
         if (direction === "up") {
           this.newScore = this.players[playerIndex].scores[index] + 1;
