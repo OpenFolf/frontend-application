@@ -44,6 +44,7 @@ const mutations = {
 
 const actions = {
   async fetchGame(context, payload) {
+    console.log("actions>FetchGame", payload);
     try {
       const response = await API.graphql(graphqlOperation(gamegraphQL.getGame, { id: payload }));
       const game = response.data.getGame;
@@ -75,7 +76,7 @@ const actions = {
         gameStatus: "0",
         lobbyCode: generatedCode,
       };
-      console.log("Game details console log", createGameDetails);
+      // console.log("Game details console log", createGameDetails);
       const gameResponse = await API.graphql(
         graphqlOperation(gamegraphQL.createGame, { input: createGameDetails }),
       );

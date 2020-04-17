@@ -27,7 +27,7 @@
   //import { v4 } from "uuid/v4";
   import { mapGetters, mapActions } from "vuex";
   import CourseListItem from "@/components/game/CourseListItem.vue";
-  import { replaceAccentForUrl } from "../services/remove-accents";
+  // import { replaceAccentForUrl } from "../services/remove-accents";
   import { Fragment } from "vue-fragment";
   export default {
     data() {
@@ -43,31 +43,33 @@
       Fragment,
     },
     computed: {
-      ...mapGetters(["getCourses"]),
+      ...mapGetters(["getCoursesDistance"]),
       courses() {
-        return this.getCourses.map((x) => {
-          const urlPath = replaceAccentForUrl(x.name);
-          const addedObject = Object.assign({}, x);
-          addedObject.path = urlPath;
-          return addedObject;
-        });
-        // if (this.sortAlpha) {
-        //   return courseList.sort(function(a, b) {
-        //     let nameA = a.name.toUpperCase();
-        //     let nameB = b.name.toUpperCase();
-        //     if (nameA < nameB) {
-        //       return -1;
-        //     }
-        //     if (nameA > nameB) {
-        //       return 1;
-        //     }
-        //     return 0;
-        //   });
-        // } else {
-        //   return courseList.sort(function(a, b) {
-        //     return a.distance - b.distance;
-        //   });
-        // }
+        const courseList = this.getCoursesDistance.map((x) => x);
+        // const coursesList = this.getCourses.map((x) => {
+        //   const urlPath = replaceAccentForUrl(x.name);
+        //   const addedObject = Object.assign({}, x);
+        //   addedObject.path = urlPath;
+        //   return addedObject;
+        // });
+
+        if (this.sortAlpha) {
+          return courseList.sort(function(a, b) {
+            let nameA = a.name.toUpperCase();
+            let nameB = b.name.toUpperCase();
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+            return 0;
+          });
+        } else {
+          return courseList.sort(function(a, b) {
+            return a.distance - b.distance;
+          });
+        }
       },
     },
     methods: {
