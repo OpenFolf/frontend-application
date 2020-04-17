@@ -72,9 +72,17 @@ export const onUpdatePlayer = /* GraphQL */ `
       id
       user {
         id
+        email
         username
       }
-      team
+      game {
+        id
+        course {
+          id
+          name
+        }
+      }
+      scoreArray
     }
   }
 `;
