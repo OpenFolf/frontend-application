@@ -24,10 +24,8 @@
 </template>
 
 <script>
-  //import { v4 } from "uuid/v4";
-  import { mapGetters, mapActions } from "vuex";
+  import { mapGetters } from "vuex";
   import CourseListItem from "@/components/game/CourseListItem.vue";
-  // import { replaceAccentForUrl } from "../services/remove-accents";
   import { Fragment } from "vue-fragment";
   export default {
     data() {
@@ -46,13 +44,6 @@
       ...mapGetters(["getCoursesDistance"]),
       courses() {
         const courseList = this.getCoursesDistance.map((x) => x);
-        // const coursesList = this.getCourses.map((x) => {
-        //   const urlPath = replaceAccentForUrl(x.name);
-        //   const addedObject = Object.assign({}, x);
-        //   addedObject.path = urlPath;
-        //   return addedObject;
-        // });
-
         if (this.sortAlpha) {
           return courseList.sort(function(a, b) {
             let nameA = a.name.toUpperCase();
@@ -70,17 +61,6 @@
             return a.distance - b.distance;
           });
         }
-      },
-    },
-    methods: {
-      ...mapActions(["fetchCourseList", "fetchCourse"]),
-      fetchSingleHandler() {
-        this.fetchCourse(this.courseId);
-        this.courseId = "";
-      },
-      fetchCoursesHandler() {
-        this.fetchCourseList();
-        this.pushed = true;
       },
     },
   };
