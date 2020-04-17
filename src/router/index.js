@@ -4,7 +4,6 @@ import Store from "@/store";
 import Auth from "@/views/Auth.vue";
 import Home from "@/views/Home.vue";
 import HomeMenu from "@/components/home/Menu.vue";
-//import Services from "../services";
 
 Vue.use(VueRouter);
 
@@ -63,11 +62,9 @@ const routes = [
     name: "game-course",
     component: () => import(/* webpackChunkName: "game-course" */ "@/components/game/Course.vue"),
     props: true,
-    // eslint-disable-next-line no-unused-vars
-    beforeEnter: (to, from, next) => {
-      return new Promise((resolve) => {
-        resolve(Store.dispatch("fetchCourse", to.params.id));
-      }).then(() => next());
+    beforeEnter: async (to, from, next) => {
+      await Store.dispatch("fetchCourse", to.params.id);
+      next();
     },
   },
   {
