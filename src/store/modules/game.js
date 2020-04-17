@@ -145,6 +145,8 @@ const actions = {
       } catch (e) {
         console.log("Update player error", e);
       }
+
+      context.dispatch("subscribeToPlayer", gamePlayers[i].id);
     }
 
     //Refresh state of game
@@ -169,9 +171,10 @@ const actions = {
   async subscribeToPlayer(context, payload) {
     const playerId = payload;
     try {
-      API.graphql(graphqlOperation(playergraphQL.onUpdatePlayer, { id: playerId })).subscribe({
-        next: (updatedPlayer) => context.commit("setUpdatePlayer", updatedPlayer),
+      const subscription = API.graphql(graphqlOperation(playergraphQL.onUpdatePlayer, { id: playerId })).subscribe({
+        next: () => context.dispatch("fetchGame", context.rootState.game.game.id),
       });
+      console.log("Subscription", subscription);
     } catch (e) {
       console.log("Player subscription error", e);
     }
