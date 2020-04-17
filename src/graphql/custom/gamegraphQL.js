@@ -82,7 +82,6 @@ export const getGame = /* GraphQL */ `
             email
           }
           totalScore
-          scoreArray
         }
       }
       gameStatus
