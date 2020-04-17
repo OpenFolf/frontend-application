@@ -10,15 +10,34 @@ export const createGame = /* GraphQL */ `
         email
       }
       course {
+        id
         name
+        holeCount
+        holes {
+          items {
+            id
+            no
+            redPar
+            whitePar
+            yellowPar
+            bluePar
+            redLength
+            whiteLength
+            yellowLength
+            blueLength
+          }
+        }
       }
       players {
         items {
+          id
           user {
             id
             username
             email
           }
+          totalScore
+          scoreArray
         }
       }
       gameStatus
@@ -37,8 +56,23 @@ export const updateGame = /* GraphQL */ `
         email
       }
       course {
+        id
         name
         holeCount
+        holes {
+          items {
+            id
+            no
+            redPar
+            whitePar
+            yellowPar
+            bluePar
+            redLength
+            whiteLength
+            yellowLength
+            blueLength
+          }
+        }
       }
       players {
         items {
@@ -147,18 +181,39 @@ export const onUpdateGame = /* GraphQL */ `
     onUpdateGame {
       id
       owner {
+        id
         username
         email
       }
       course {
+        id
         name
+        holeCount
+        holes {
+          items {
+            id
+            no
+            redPar
+            whitePar
+            yellowPar
+            bluePar
+            redLength
+            whiteLength
+            yellowLength
+            blueLength
+          }
+        }
       }
       players {
         items {
+          id
           user {
+            id
             username
             email
           }
+          totalScore
+          scoreArray
         }
       }
       gameStatus
@@ -172,18 +227,39 @@ export const onCreateGame = /* GraphQL */ `
     onCreateGame {
       id
       owner {
+        id
         username
         email
       }
       course {
+        id
         name
+        holeCount
+        holes {
+          items {
+            id
+            no
+            redPar
+            whitePar
+            yellowPar
+            bluePar
+            redLength
+            whiteLength
+            yellowLength
+            blueLength
+          }
+        }
       }
       players {
         items {
+          id
           user {
+            id
             username
             email
           }
+          totalScore
+          scoreArray
         }
       }
       gameStatus
