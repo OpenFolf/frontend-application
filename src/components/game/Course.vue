@@ -31,7 +31,6 @@
       </v-tabs>
       <v-tabs-items v-model="currentTab" touchless>
         <v-tab-item><course-info :course="getCurrentCourse" :holeSums="holeSums"/></v-tab-item>
-        <!-- <v-tab-item><course-baskets /></v-tab-item> -->
         <v-tab-item>
           <course-map :lat="getCurrentCourse.latitude" :lng="getCurrentCourse.longitude"
         /></v-tab-item>
@@ -42,11 +41,8 @@
 
 <script>
   import CourseInfo from "@/components/game/CourseInfo.vue";
-  // import CourseBaskets from "@/components/game/CourseBaskets.vue";
   import CourseMap from "@/components/game/CourseMap.vue";
-  // import CourseStats from "@/components/game/CourseStats.vue";
-  import { createGame } from "@/services/index";
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
   export default {
     name: "game-course",
     props: {
@@ -58,7 +54,7 @@
     data() {
       return {
         currentTab: null,
-        tabs: ["Info" /*"Baskets"*/, "Map" /*, "Stats"*/],
+        tabs: ["Info", "Map"],
         sums: [0, 0, 0, 0, 0, 0, 0, 0],
         holeSums: [
           { name: "Red", length: 0, parTotal: 0 },
@@ -70,17 +66,16 @@
     },
     components: {
       CourseInfo,
-      // CourseBaskets,
       CourseMap,
-      // CourseStats,
     },
 
     created: function() {
       this.calculateLengthAndTotalPar();
     },
     methods: {
+      ...mapActions(["createGame"]),
       async playCourse() {
-        await createGame(this.getCurrentCourse.id);
+        await this.createGame(this.getCurrentCourse.id);
         this.$router.push();
       },
       swipe(direction) {
