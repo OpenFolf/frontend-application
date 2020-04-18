@@ -103,6 +103,7 @@
       );
       const ownerElement = this.getGame.players.items.splice(indexOfOwner, 1);
       this.getGame.players.items = [...ownerElement, ...this.getGame.players.items];
+      this.subscribeToGame();
     },
     props: {
       path: {
@@ -115,7 +116,7 @@
     },
     components: { Fragment, ConfirmDialogue },
     methods: {
-      ...mapActions(["startGame", "fetchGame"]),
+      ...mapActions(["startGame", "fetchGame", "subscribeToGame"]),
       refreshLobby() {
         this.fetchGame(this.getGame.id);
       },

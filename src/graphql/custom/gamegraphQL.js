@@ -177,8 +177,8 @@ export const listGames = /* GraphQL */ `
 // Subscription test
 
 export const onUpdateGame = /* GraphQL */ `
-  subscription OnUpdateGame {
-    onUpdateGame {
+  subscription OnUpdateGame($id: ID!) {
+    onUpdateGame(id: $id) {
       id
       owner {
         id

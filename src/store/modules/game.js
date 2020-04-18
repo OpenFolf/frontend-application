@@ -184,6 +184,18 @@ const actions = {
       console.log("Player subscription error", e);
     }
   },
+
+  async subscribeToGame(context) {
+    const gameId = context.rootState.game.game.id;
+
+    try {
+      API.graphql(graphqlOperation(gamegraphQL.onUpdateGame, { id: gameId })).subscribe({
+        next: () => context.dispatch("fetchGame", context.rootState.game.game.id),
+      });
+    } catch (e) {
+      console.log("Game subscription error", e);
+    }
+  },
 };
 
 export default {
