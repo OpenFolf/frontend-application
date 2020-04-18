@@ -3,7 +3,7 @@
     <v-app-bar color="primary" app>
       <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
       <v-toolbar-title class="headline font-weight-bold" flat>
-        {{ getGame.course.name }}
+        / {{ getGame.course.name }}
       </v-toolbar-title>
       <v-spacer />
       <v-btn color="error" @click="finishGame">finish</v-btn>
@@ -100,10 +100,8 @@
     // },
 
     methods: {
-
       ...mapActions(["updatePlayer", "subscribeToPlayerList", "finishGame"]),
       loadHoles() {
-
         // calculate the total of the par scores
         this.getGame.course.holes.items.forEach((m) => {
           this.redParSum += parseInt(m.redPar);
