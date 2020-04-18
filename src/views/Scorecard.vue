@@ -3,68 +3,61 @@
     <v-app-bar color="primary" app>
       <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
       <v-toolbar-title class="headline font-weight-bold" flat>
-        {{ $route.params.name }}
+        {{ getGame.course.name }}
       </v-toolbar-title>
       <v-spacer />
       <v-btn color="error" :to="{ name: 'home-menu' }">finish</v-btn>
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height class="d-flex flex-column align-center justify-center">
-        <v-simple-table class="mx-auto">
-          <template v-slot:default>
-            <thead class="header" bold>
-              <tr>
-                <th class="title">Hole</th>
-                <th class="title ">Par</th>
-                <fragment v-for="player in getGame.players.items" :key="player.id">
-                  <th class="title text-center">{{ player.user.username }}</th>
-                </fragment>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(hole, index) in getGame.course.holes.items" :key="hole.no">
-                <td class="diff text-center">{{ index + 1 }}</td>
-                <td class="diff text-center">{{ hole.redPar }}</td>
-                <fragment v-for="(player, playerIndex) in getGame.players.items" :key="playerIndex">
-                  <td class="text-center" ref="player-hole" @click="$log($refs)">
-                    {{ player.scoreArray[index] }}
-                  </td>
-                </fragment>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-        <table class="scorecard--keyboard">
-          <thead>
+        <table>
+          <!-- <template v-slot:default> -->
+          <thead class="header" bold>
             <tr>
-              <th colspan="5">Focus: ({[ FOCUSED CELL ]})</th>
+              <th class="title">Hole</th>
+              <th class="title ">Par</th>
+              <fragment v-for="player in getGame.players.items" :key="player.id">
+                <th class="title text-center">{{ player.user.username }}</th>
+              </fragment>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(hole, index) in getGame.course.holes.items" :key="hole.no">
-              <td class="text-center">{{ index + 1 }}</td>
-              <!-- Change get current user par -->
-              <td class="text-center">{{ hole.redPar }}</td>
+            <tr v-for="(hole, holeIndex) in getGame.course.holes.items" :key="hole.no">
+              <td class="diff text-center">{{ holeIndex + 1 }}</td>
+              <td class="diff text-center">{{ hole.redPar }}</td>
               <fragment v-for="(player, playerIndex) in getGame.players.items" :key="playerIndex">
-                <td class="text-center" ref="`payer-hole-${index}" @click="$log($refs)">
-                  {{ player.scoreArray[index] }}
+                <td
+                  class="text-center"
+                  ref="player-hole"
+                  @click="activeHole(playerIndex, holeIndex)"
+                >
+                  {{ player.scoreArray[holeIndex] }}
                 </td>
               </fragment>
             </tr>
-
+          </tbody>
+          <!-- </template> -->
+        </table>
+        <table class="scorecard--keyboard">
+          <thead>
             <tr>
-              <td>0</td>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
+              <th colspan="5">{{ selectedPlayer + 1 }}{{ selectedHole + 1 }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td @click="setScore(0)">0</td>
+              <td @click="setScore(1)">1</td>
+              <td @click="setScore(2)">2</td>
+              <td @click="setScore(3)">3</td>
+              <td @click="setScore(4)">4</td>
             </tr>
             <tr>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-              <td>8</td>
-              <td>9</td>
+              <td @click="setScore(5)">5</td>
+              <td @click="setScore(6)">6</td>
+              <td @click="setScore(7)">7</td>
+              <td @click="setScore(8)">8</td>
+              <td @click="setScore(9)">9</td>
             </tr>
           </tbody>
         </table>
@@ -87,6 +80,8 @@
         score: 0,
         componentKey: 0,
         playerScore: [],
+        selectedHole: 0,
+        selectedPlayer: 0,
       };
     },
     computed: {
@@ -106,7 +101,7 @@
 
     methods: {
       ...mapActions(["updatePlayer", "subscribeToPlayerList"]),
-      loadHoles: function() {
+      loadHoles() {
         // calculate the total of the par scores
         this.getGame.course.holes.items.forEach((m) => {
           this.redParSum += parseInt(m.redPar);
@@ -117,6 +112,26 @@
         const oldScore = this.getGame.players.items[this.player].scoreArray.map((x) => x);
         const payLoadObject = {
           id: this.getGame.players.items[this.player].id,
+          scoreArray: oldScore,
+        };
+        this.updatePlayer(payLoadObject);
+      },
+      activeHole(playerIndex, holeIndex) {
+        //console.log("event", ev); // this is the event
+
+        this.selectedPlayer = playerIndex;
+        this.selectedHole = holeIndex;
+
+        console.log("holeIndex", holeIndex); // i is index of v-for
+        console.log("PlayerIndex", playerIndex);
+      },
+      setScore(score) {
+        console.log("score", score);
+        const oldScore = this.getGame.players.items[this.selectedPlayer].scoreArray.map((x) => x);
+        oldScore[this.selectedHole] = score;
+
+        const payLoadObject = {
+          id: this.getGame.players.items[this.selectedPlayer].id,
           scoreArray: oldScore,
         };
         this.updatePlayer(payLoadObject);
