@@ -85,6 +85,7 @@
     components: { Fragment },
     created() {
       this.loadHoles();
+      this.subscribeToPlayerList();
     },
     // watch: {
     //   getGame(newValue, oldValue) {
@@ -93,7 +94,7 @@
     // },
 
     methods: {
-      ...mapActions(["updatePlayer"]),
+      ...mapActions(["updatePlayer", "subscribeToPlayerList"]),
       loadHoles: function() {
         // calculate the total of the par scores
         this.getGame.course.holes.items.forEach((m) => {

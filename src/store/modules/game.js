@@ -30,6 +30,17 @@ const getters = {
 
 const mutations = {
   setGame: (state, payload) => {
+    console.log("Store>Game>Mutations>SetGame, payload", payload);
+    // Go through the array of current players in the game and find the index of the owner
+    const indexOfOwner = payload.players.items.findIndex(
+      (o) => o.user.email === payload.owner.email,
+    );
+    // Remove the owner from the list
+    const ownerElement = payload.players.items.splice(indexOfOwner, 1);
+    // Order the players still in the list alphabetically
+    payload.players.items.sort((a, b) => a.no - b.no);
+    // Add the owner back to the array, this time to the front of the list
+    payload.players.items = [...ownerElement, ...payload.players.items];
     state.game = payload;
   },
   setGamesList: (state, payload) => {
@@ -43,7 +54,7 @@ const mutations = {
   },
 };
 
-//BREAK: ACTIONS
+// BREAK: ACTIONS
 const actions = {
   toggleIsScorecard: ({ commit }) => {
     commit("toggleIsScorecard");
@@ -80,6 +91,7 @@ const actions = {
         gameOwnerId: context.rootState.user.user.id,
         gameStatus: "0",
         lobbyCode: generatedCode,
+        gameType: context.rootState.user.user.id + " joined", // Most recent player changes
       };
       // console.log("Game details console log", createGameDetails);
       const gameResponse = await API.graphql(
@@ -107,19 +119,45 @@ const actions = {
   },
 
   async createPlayer(context, payload) {
+    const createPlayerDetails = {
+      playerUserId: context.rootState.user.user.id,
+      playerGameId: payload,
+      scoreArray: [],
+    };
     try {
-      const createPlayerDetails = {
-        playerUserId: context.rootState.user.user.id,
-        playerGameId: payload,
-        scoreArray: ["0"],
-      };
-
-      const response = await API.graphql(
+      await API.graphql(
         graphqlOperation(playergraphQL.createPlayer, { input: createPlayerDetails }),
       );
-      console.log("Response", response);
+      // Create game object to update game state
     } catch (e) {
       console.log("Create player error", e);
+    }
+    const updateGameDetails = {
+      id: payload,
+      gameType: context.rootState.user.user.id + " joined", // Most recent player changes
+    };
+    try {
+      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
+    } catch (e) {
+      console.log("Update game error", e);
+    }
+  },
+
+  async deletePlayer(context, payload) {
+    const playerId = payload;
+    try {
+      await API.graphql(graphqlOperation(playergraphQL.deletePlayer, { id: playerId }));
+    } catch (e) {
+      console.log("Player delete error", e);
+    }
+    const updateGameDetails = {
+      id: payload,
+      gameType: context.rootState.user.user.id + " left", // Most recent player changes
+    };
+    try {
+      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
+    } catch (e) {
+      console.log("Update game error", e);
     }
   },
 
@@ -159,22 +197,12 @@ const actions = {
       } catch (e) {
         console.log("Update player error", e);
       }
-
-      context.dispatch("subscribeToPlayer", gamePlayers[i].id);
     }
-
     //Refresh state of game
     context.dispatch("fetchGame", context.rootState.game.game.id);
-
-    //subscribe a update a ollum players, subscribe a player kalla a fetch game
   },
 
   async updatePlayer(context, payload) {
-    //   //Payload example: Tad tharf ad bua til svona object
-    //   const updatePlayerDetails = {
-    //     id: "playerId",
-    //     scoreArray: ["1","0","0","0","0","0",],
-    //   };
     try {
       await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: payload }));
     } catch (e) {
@@ -209,6 +237,16 @@ const actions = {
       console.log("Game subscription: ", subscribe);
     } catch (e) {
       console.log("Game subscription error", e);
+    }
+  },
+
+  subscribeToPlayerList(context) {
+    // Get list of all players in game
+    const gamePlayers = context.rootState.game.game.players.items;
+    // Subscribe to changes on all players
+    for (var i = 0; i < gamePlayers.length; i++) {
+      context.dispatch("subscribeToPlayer", gamePlayers[i].id);
+      console.log("Subscribing to", gamePlayers[i].id);
     }
   },
 };
