@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <router-view />
-    <bottom-nav v-if="getSignedIn" />
+    <bottom-nav v-if="getSignedIn && !getIsScorecard" />
   </v-app>
 </template>
 
@@ -14,7 +14,7 @@
       BottomNav,
     },
     computed: {
-      ...mapGetters(["getSignedIn"]),
+      ...mapGetters(["getSignedIn", "getIsScorecard"]),
     },
   };
 </script>
