@@ -21,6 +21,9 @@ const getters = {
   getUpdatePlayer: (state) => {
     return state.updatePlayer;
   },
+  getGameStatus: (state) => {
+    return state.game.gameStatus;
+  },
 };
 
 const mutations = {

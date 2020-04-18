@@ -112,7 +112,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getGame"]),
+      ...mapGetters(["getGame", "getGameStatus"]),
     },
     components: { Fragment, ConfirmDialogue },
     methods: {
@@ -124,6 +124,11 @@
       kickUser(item) {
         const index = this.joinedUsers.indexOf(item);
         confirm("Are you sure you want to kick user?") && this.joinedUsers.splice(index, 1);
+      },
+    },
+    watch: {
+      getGameStatus() {
+        this.$route.push({ name: "game-scorecard" });
       },
     },
   };
