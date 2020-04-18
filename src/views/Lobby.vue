@@ -30,7 +30,11 @@
                     <fragment
                       v-if="getUser.id === getGame.owner.id && getUser.id !== player.user.id"
                     >
-                      <ConfirmDialogue :dialog="kickUserDialog" :message="kickUserMsg" />
+                      <ConfirmDialogue
+                        :userToKickId="player.user.id"
+                        :dialog="kickUserDialog"
+                        :message="kickUserMsg"
+                      />
                     </fragment>
                   </td>
                 </tr>
