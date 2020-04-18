@@ -22,7 +22,6 @@ $material-dark: ('background': #000000);
 
 // Remove hover in dark mode
 .theme--dark.v-data-table tbody tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
-  background-color: #000000;
   background: #1E1E1E;
 }
 

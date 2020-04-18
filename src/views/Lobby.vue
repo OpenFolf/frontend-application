@@ -27,19 +27,18 @@
                     {{ player.user.email }}
                   </td>
                   <td class="text-right">
-                    <fragment
-                      v-if="getUser.id === getGame.owner.id && getUser.id !== player.user.id"
-                    >
+                    <fragment v-if="isOwner && getUser.id !== player.user.id">
                       <ConfirmDialogue
-                        :userToKickId="player.user.id"
+                        :userToRemove="player.user.id"
                         :dialog="kickUserDialog"
                         :message="kickUserMsg"
+                        @removeUser="removeUser"
                       />
                     </fragment>
                   </td>
                 </tr>
 
-                <td v-if="getGame.players.items.length <= 1" colspan="2">
+                <td v-if="otherPlayers" colspan="2">
                   <v-data-table
                     class=""
                     loading
@@ -54,10 +53,15 @@
         <v-card flat>
           <v-btn color="info" @click="refreshLobby">Refresh</v-btn>
         </v-card>
-        <ConfirmDialogue :dialog="leaveGameDialog" :message="leaveMsg" />
+        <ConfirmDialogue
+          :dialog="leaveGameDialog"
+          :message="leaveMsg"
+          :userToRemove="getUser.id"
+          @removeUser="removeUser"
+        />
 
         <ConfirmDialogue
-          v-if="getUser.id === getGame.owner.id"
+          v-if="isOwner"
           :dialog="startGameDialog"
           :message="startGameMsg"
           @start="startGame"
@@ -112,7 +116,6 @@
     },
     created() {
       this.fetchGame(this.getGame.id);
-
       this.subscribeToGame();
     },
     props: {
@@ -123,17 +126,22 @@
     },
     computed: {
       ...mapGetters(["getGame", "getGameStatus", "getUser"]),
+      isOwner() {
+        return this.getUser.id === this.getGame.owner.id;
+      },
+      otherPlayers() {
+        return this.getGame.players.items.length <= 1;
+      },
     },
     components: { Fragment, ConfirmDialogue },
     methods: {
-      ...mapActions(["startGame", "fetchGame", "subscribeToGame"]),
+      ...mapActions(["startGame", "fetchGame", "subscribeToGame", "deletePlayer"]),
       refreshLobby() {
         this.fetchGame(this.getGame.id);
       },
-
-      kickUser(item) {
-        const index = this.joinedUsers.indexOf(item);
-        confirm("Are you sure you want to kick user?") && this.joinedUsers.splice(index, 1);
+      removeUser(userId) {
+        console.log("methods>kickUser, userid", userId);
+        this.deletePlayer(userId);
       },
     },
     watch: {
