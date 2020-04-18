@@ -18,7 +18,7 @@
               <!-- Change get current user par -->
               <td class="text-center">{{ hole.redPar }}</td>
               <fragment v-for="(player, playerIndex) in getGame.players.items" :key="playerIndex">
-                <td class="text-center">
+                <td class="text-center" ref="`payer-hole-${index}" @click="$log($refs)">
                   {{ player.scoreArray[index] }}
                 </td>
               </fragment>
