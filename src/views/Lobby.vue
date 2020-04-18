@@ -103,6 +103,7 @@
       );
       const ownerElement = this.getGame.players.items.splice(indexOfOwner, 1);
       this.getGame.players.items = [...ownerElement, ...this.getGame.players.items];
+      this.subscribeToGame();
     },
     props: {
       path: {
@@ -111,11 +112,11 @@
       },
     },
     computed: {
-      ...mapGetters(["getGame"]),
+      ...mapGetters(["getGame", "getGameStatus"]),
     },
     components: { Fragment, ConfirmDialogue },
     methods: {
-      ...mapActions(["startGame", "fetchGame"]),
+      ...mapActions(["startGame", "fetchGame", "subscribeToGame"]),
       refreshLobby() {
         this.fetchGame(this.getGame.id);
       },
@@ -123,6 +124,11 @@
       kickUser(item) {
         const index = this.joinedUsers.indexOf(item);
         confirm("Are you sure you want to kick user?") && this.joinedUsers.splice(index, 1);
+      },
+    },
+    watch: {
+      getGameStatus() {
+        this.$route.push({ name: "game-scorecard" });
       },
     },
   };

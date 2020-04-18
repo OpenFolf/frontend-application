@@ -21,6 +21,9 @@ const getters = {
   getUpdatePlayer: (state) => {
     return state.updatePlayer;
   },
+  getGameStatus: (state) => {
+    return state.game.gameStatus;
+  },
 };
 
 const mutations = {
@@ -182,6 +185,22 @@ const actions = {
       console.log("Subscription", subscription);
     } catch (e) {
       console.log("Player subscription error", e);
+    }
+  },
+
+  async subscribeToGame(context) {
+    const gameId = context.rootState.game.game.id;
+
+    try {
+      const subscribe = API.graphql(
+        graphqlOperation(gamegraphQL.onUpdateGame, { id: gameId }),
+      ).subscribe({
+        next: () => context.dispatch("fetchGame", gameId),
+      });
+
+      console.log("Game subscription: ", subscribe);
+    } catch (e) {
+      console.log("Game subscription error", e);
     }
   },
 };
