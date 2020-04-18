@@ -189,9 +189,13 @@ const actions = {
     const gameId = context.rootState.game.game.id;
 
     try {
-      API.graphql(graphqlOperation(gamegraphQL.onUpdateGame, { id: gameId })).subscribe({
-        next: () => context.dispatch("fetchGame", context.rootState.game.game.id),
+      const subscribe = API.graphql(
+        graphqlOperation(gamegraphQL.onUpdateGame, { id: gameId }),
+      ).subscribe({
+        next: () => context.dispatch("fetchGame", gameId),
       });
+
+      console.log("Game subscription: ", subscribe);
     } catch (e) {
       console.log("Game subscription error", e);
     }
