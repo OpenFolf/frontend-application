@@ -250,6 +250,30 @@ const actions = {
       console.log("Subscribing to", gamePlayers[i].id);
     }
   },
+
+  async finishGame(context) {
+    // Change status of game to signal it has started //
+    //Create the object to send to graphQL api, a game has to be in state for this to work
+    const updateGameDetails = {
+      id: context.rootState.game.game.id,
+      gameStatus: "2",
+    };
+
+    // update the game details with new gamestatus
+    try {
+      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
+    } catch (e) {
+      console.log("Finish Game error", e);
+    }
+
+    // TODO: Calculate totalscore for each player
+
+    // TODO: Check if subscriber is still active and takes care of this
+    //Refresh state of game
+    // context.dispatch("fetchGame", context.rootState.game.game.id);
+
+    // TODO: Turn off all subscribers
+  },
 };
 
 export default {
