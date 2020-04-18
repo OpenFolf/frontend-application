@@ -6,7 +6,7 @@
         {{ getGame.course.name }}
       </v-toolbar-title>
       <v-spacer />
-      <v-btn color="error" :to="{ name: 'home-menu' }">finish</v-btn>
+      <v-btn color="error" @click="finishGame">finish</v-btn>
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height class="d-flex flex-column align-center justify-center">
@@ -85,7 +85,7 @@
       };
     },
     computed: {
-      ...mapGetters(["getGame"]),
+      ...mapGetters(["getGame", "getGameStatus"]),
     },
 
     components: { Fragment },
@@ -100,8 +100,10 @@
     // },
 
     methods: {
-      ...mapActions(["updatePlayer", "subscribeToPlayerList"]),
+
+      ...mapActions(["updatePlayer", "subscribeToPlayerList", "finishGame"]),
       loadHoles() {
+
         // calculate the total of the par scores
         this.getGame.course.holes.items.forEach((m) => {
           this.redParSum += parseInt(m.redPar);
@@ -135,6 +137,11 @@
           scoreArray: oldScore,
         };
         this.updatePlayer(payLoadObject);
+      },
+    },
+    watch: {
+      getGameStatus() {
+        this.$router.push({ name: "stats" });
       },
     },
   };
