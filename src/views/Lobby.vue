@@ -23,12 +23,13 @@
               <tbody>
                 <tr v-for="(player, index) in getGame.players.items" :key="index">
                   <td>
-                    <!-- TODO: LAGA LOGIC! -->
                     <v-icon v-if="!index" small color="warning" class="mr-2">fa-crown</v-icon>
                     {{ player.user.email }}
                   </td>
                   <td class="text-right">
-                    <fragment v-if="index && getUser.id !== player.user.id">
+                    <fragment
+                      v-if="getUser.id === getGame.owner.id && getUser.id !== player.user.id"
+                    >
                       <ConfirmDialogue :dialog="kickUserDialog" :message="kickUserMsg" />
                     </fragment>
                   </td>
@@ -51,7 +52,12 @@
         </v-card>
         <ConfirmDialogue :dialog="leaveGameDialog" :message="leaveMsg" />
 
-        <ConfirmDialogue :dialog="startGameDialog" :message="startGameMsg" @start="startGame" />
+        <ConfirmDialogue
+          v-if="getUser.id === getGame.owner.id"
+          :dialog="startGameDialog"
+          :message="startGameMsg"
+          @start="startGame"
+        />
         <v-container class="d-flex flex-column align-center justify-center">
           <pre class="mb-5">{{ $log(getGame.id) || getGame.id }}</pre>
           <v-divider />
@@ -102,11 +108,7 @@
     },
     created() {
       this.fetchGame(this.getGame.id);
-      var indexOfOwner = this.getGame.players.items.findIndex(
-        (o) => o.user.email === this.getGame.owner.email,
-      );
-      const ownerElement = this.getGame.players.items.splice(indexOfOwner, 1);
-      this.getGame.players.items = [...ownerElement, ...this.getGame.players.items];
+
       this.subscribeToGame();
     },
     props: {
