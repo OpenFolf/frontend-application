@@ -1,20 +1,21 @@
 <template>
   <fragment>
     <v-app-bar color="primary" app flat>
-      <v-toolbar-title
-        >{{ $log("Lobby>Title, getGame.course.name", getGame.course.name) || getGame.course.name }}
-      </v-toolbar-title>
+      <v-toolbar-title>{{ getGame.course.name ? getGame.course.name : "ERROR" }} </v-toolbar-title>
       <v-spacer />
       <v-banner single-line class="text-center">
-        <span> Code: </span><span class="font-weight-bold">{{ getGame.lobbyCode }}</span></v-banner
-      >
+        <span> Lobby Code: </span>
+        <span class="font-weight-bold pa-2">
+          {{ getGame.lobbyCode }}
+        </span>
+      </v-banner>
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height class="justify-center">
         <v-row>
           <v-col class="col-12 align-content-space-between">
-            <v-simple-table hide-actions :key="componentKey">
-              <thead class="secondary ">
+            <v-simple-table hide-actions>
+              <thead class="secondary">
                 <tr>
                   <th class="table-text  text-center title rounded" colspan="2">Players</th>
                 </tr>
@@ -22,13 +23,12 @@
               <tbody>
                 <tr v-for="(player, index) in getGame.players.items" :key="index">
                   <td>
-                    <fragment v-if="!index"
-                      ><v-icon small color="warning" class="mr-2">fa-crown</v-icon></fragment
-                    >
+                    <!-- TODO: LAGA LOGIC! -->
+                    <v-icon v-if="!index" small color="warning" class="mr-2">fa-crown</v-icon>
                     {{ player.user.email }}
                   </td>
                   <td class="text-right">
-                    <fragment v-if="index && $store.getters.getUser.id !== player.user.id">
+                    <fragment v-if="index && getUser.id !== player.user.id">
                       <ConfirmDialogue :dialog="kickUserDialog" :message="kickUserMsg" />
                     </fragment>
                   </td>
@@ -52,9 +52,14 @@
         <ConfirmDialogue :dialog="leaveGameDialog" :message="leaveMsg" />
 
         <ConfirmDialogue :dialog="startGameDialog" :message="startGameMsg" @start="startGame" />
-        <v-card class="pa-1 overflow-x-auto">
+        <v-container class="d-flex flex-column align-center justify-center">
+          <pre class="mb-5">{{ $log(getGame.id) || getGame.id }}</pre>
+          <v-divider />
+          <pre class="mb-5">{{ $log(getGameStatus) || getGameStatus }}</pre>
+        </v-container>
+        <!-- <v-card class="pa-1 overflow-x-auto">
           <pre class="mb-5">{{ $log(getGame) || getGame }}</pre>
-        </v-card>
+        </v-card> -->
       </v-container>
     </v-content>
   </fragment>
@@ -112,7 +117,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getGame", "getGameStatus"]),
+      ...mapGetters(["getGame", "getGameStatus", "getUser"]),
     },
     components: { Fragment, ConfirmDialogue },
     methods: {
@@ -128,7 +133,7 @@
     },
     watch: {
       getGameStatus() {
-        this.$route.push({ name: "game-scorecard" });
+        this.$router.push({ name: "game-scorecard" });
       },
     },
   };

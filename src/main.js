@@ -38,11 +38,9 @@ Vue.component("l-map", LMap);
 Vue.component("l-tile-layer", LTileLayer);
 Vue.component("l-marker", LMarker);
 
-var vm = new Vue({
+new Vue({
   router,
   store,
   vuetify,
   render: (h) => h(App),
 }).$mount("#app");
-
-global.vm = vm;
