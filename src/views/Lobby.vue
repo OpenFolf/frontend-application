@@ -140,7 +140,7 @@
         this.fetchGame(this.getGame.id);
       },
       removeUser(userId) {
-        console.log("methods>kickUser, userid", userId);
+        console.log("methods>removeUser, userid", userId);
         this.deletePlayer(userId);
       },
     },

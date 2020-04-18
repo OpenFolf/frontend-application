@@ -29,14 +29,14 @@
             color="primary"
             @click="$emit('removeUser', userToRemove)"
           >
-            {{ message.button2 }}{{ userToRemove }}
+            {{ message.button2 }}
           </v-btn>
           <v-btn
             v-if="message.title === 'Leave Lobby'"
             color="primary"
             @click="$emit('removeUser', userToRemove)"
           >
-            {{ message.button2 }}{{ userToRemove }}
+            {{ message.button2 }}
           </v-btn>
         </v-card-actions>
       </v-card>
