@@ -84,6 +84,7 @@ const actions = {
         gameStatus: "0",
         lobbyCode: generatedCode,
         gameType: context.rootState.user.user.id + " joined", // Most recent player changes
+        gameDate: "" + Date.now(),
       };
       // console.log("Game details console log", createGameDetails);
       const gameResponse = await API.graphql(
