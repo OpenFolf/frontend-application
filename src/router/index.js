@@ -88,6 +88,10 @@ const routes = [
     name: "game-scorecard",
     component: () => import(/* webpackChunkName: "scorecard" */ "@/views/Scorecard.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
+    beforeEnter: (to, from, next) => {
+      Store.dispatch("toggleIsScorecard");
+      next();
+    },
   },
   {
     path: "/join-game",

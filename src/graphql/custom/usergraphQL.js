@@ -37,3 +37,39 @@ export const fetchUser = /* GraphQL */ `
     }
   }
 `;
+
+export const fetchUserGameList = /* GraphQL */ `
+  query FetchUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      username
+      gamesPlayed {
+        items {
+          id
+          scoreArray
+          totalScore
+          game {
+            gameStatus
+            gameDate
+            owner {
+              id
+              username
+              email
+            }
+            players {
+              items {
+                user {
+                  id
+                  username
+                  email
+                }
+                totalScore
+                scoreArray
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

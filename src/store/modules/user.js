@@ -7,6 +7,7 @@ const state = {
   user: {
     id: "",
   },
+  userGames: [],
 };
 
 const getters = {
@@ -30,6 +31,13 @@ const getters = {
   },
   getUserLocation: (state) => {
     return state.user.location;
+  },
+  getUserGames: (state) => {
+    // TODO: Breyta gognum fyrir component, t.d. rada eftir timestamp rod, pikka ut naudsynlegar upplysingar o.s.frv.
+
+    // Add some brilliant code here
+
+    return state.userGames;
   },
 };
 
@@ -59,6 +67,9 @@ const mutations = {
     state.user.location.lat = payload.lat;
     state.user.location.lng = payload.lng;
   },
+  setUserGames: (state, payload) => {
+    state.userGames = payload;
+  },
 };
 
 const actions = {
@@ -85,6 +96,18 @@ const actions = {
       context.commit("setUser", response.data.getUser);
     } catch (e) {
       console.log("fetchUserError", e);
+    }
+  },
+
+  async fetchUserGameList(context) {
+    console.log("User ID", state.user.id);
+    try {
+      const response = await API.graphql(
+        graphqlOperation(usergraphQL.fetchUserGameList, { id: state.user.id }),
+      );
+      context.commit("setUserGames", response.data.getUser);
+    } catch (e) {
+      console.log("fetchUserGameListError", e);
     }
   },
 };

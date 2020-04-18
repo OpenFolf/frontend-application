@@ -1,15 +1,43 @@
 <template>
-  <v-content>
-    <v-container fluid fill-height>
-      <v-simple-table class="mx-auto">
-        <template v-slot:default>
-          <thead class="header" bold>
+  <fragment>
+    <v-app-bar color="primary" app>
+      <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
+      <v-toolbar-title class="headline font-weight-bold" flat>
+        {{ $route.params.name }}
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn color="error" :to="{ name: 'home-menu' }">finish</v-btn>
+    </v-app-bar>
+    <v-content>
+      <v-container fluid fill-height class="d-flex flex-column align-center justify-center">
+        <v-simple-table class="mx-auto">
+          <template v-slot:default>
+            <thead class="header" bold>
+              <tr>
+                <th class="title">Hole</th>
+                <th class="title ">Par</th>
+                <fragment v-for="player in getGame.players.items" :key="player.id">
+                  <th class="title text-center">{{ player.user.username }}</th>
+                </fragment>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(hole, index) in getGame.course.holes.items" :key="hole.no">
+                <td class="diff text-center">{{ index + 1 }}</td>
+                <td class="diff text-center">{{ hole.redPar }}</td>
+                <fragment v-for="(player, playerIndex) in getGame.players.items" :key="playerIndex">
+                  <td class="text-center" ref="player-hole" @click="$log($refs)">
+                    {{ player.scoreArray[index] }}
+                  </td>
+                </fragment>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <table class="scorecard--keyboard">
+          <thead>
             <tr>
-              <th class="title">Hole</th>
-              <th class="title ">Par</th>
-              <fragment v-for="player in getGame.players.items" :key="player.id">
-                <th class="title text-center">{{ player.user.username }}</th>
-              </fragment>
+              <th colspan="5">Focus: ({[ FOCUSED CELL ]})</th>
             </tr>
           </thead>
           <tbody>
@@ -23,38 +51,30 @@
                 </td>
               </fragment>
             </tr>
-          </tbody>
-          <thead class="footer">
+
             <tr>
-              <th class="bold body-1">Total</th>
-              <th class="bold body-1">
-                <!-- {{ redParSum }} -->
-              </th>
-              <!-- <fragment v-for="player in getGame.players.items" :key="player.id">
-                <th class="bold body-1">??</th>
-              </fragment> -->
+              <td>0</td>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
             </tr>
-          </thead>
-        </template>
-      </v-simple-table>
-      <v-form @submit.prevent>
-        <v-text-field v-model="player" label="player" type="number" />
-        <v-text-field v-model="holeNumber" label="holeNumber" type="number" />
-        <v-text-field v-model="score" label="score" type="number" />
-        <v-btn @click="updateScorecard" color="success">Update</v-btn>
-      </v-form>
-      <v-card class="pa-1 overflow-x-auto">
-        <pre class="mb-5">{{ getGame.players.items[0].scoreArray }}</pre>
-        <!-- <pre class="mb-5">{{ getGame }}</pre> -->
-        <!-- <pre class="mb-5">{{ getCurrentCourse }}</pre> -->
-      </v-card>
-    </v-container>
-  </v-content>
+            <tr>
+              <td>5</td>
+              <td>6</td>
+              <td>7</td>
+              <td>8</td>
+              <td>9</td>
+            </tr>
+          </tbody>
+        </table>
+      </v-container>
+    </v-content>
+  </fragment>
 </template>
 
 <script>
   import { Fragment } from "vue-fragment";
-  //  import Vue from "vue";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "game-scorecard",
@@ -78,13 +98,11 @@
       this.loadHoles();
       this.subscribeToPlayerList();
     },
-    watch: {
-      getGame(newValue, oldValue) {
-        console.log(`Watch>getGame>Updating from ${oldValue} to ${newValue}`);
-        //this.componentKey += 1;
-        //this.$forceUpdate();
-      },
-    },
+    // watch: {
+    //   getGame(newValue, oldValue) {
+    //     console.log(`Watch>getGame>Updating from ${oldValue} to ${newValue}`);
+    //   },
+    // },
 
     methods: {
       ...mapActions(["updatePlayer", "subscribeToPlayerList"]),
@@ -97,11 +115,6 @@
 
       updateScorecard() {
         const oldScore = this.getGame.players.items[this.player].scoreArray.map((x) => x);
-        console.log("id", this.getGame.players.items[this.player].id);
-        console.log("oldScore", oldScore);
-        console.log("NewOldScore", (oldScore[this.holeNumber] = this.score));
-        console.log("oldScoerArr", oldScore);
-
         const payLoadObject = {
           id: this.getGame.players.items[this.player].id,
           scoreArray: oldScore,
@@ -113,6 +126,27 @@
 </script>
 
 <style lang="scss" scoped>
+  .scorecard--keyboard {
+    margin-top: 2rem;
+  }
+  .scorecard--keyboard td,
+  .scorecard--keyboard th {
+    width: 4rem;
+    height: 2rem;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  t.scorecard--keyboard h {
+    background: lightblue;
+    border-color: white;
+  }
+  .diff {
+    background-color: #ccc;
+    color: #000;
+  }
+  body {
+    padding: 1rem;
+  }
   .header {
     background-color: var(--v-primary-base);
   }

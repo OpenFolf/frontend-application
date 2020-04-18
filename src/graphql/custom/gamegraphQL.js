@@ -42,6 +42,7 @@ export const createGame = /* GraphQL */ `
       }
       gameStatus
       lobbyCode
+      gameDate
     }
   }
 `;
@@ -88,6 +89,7 @@ export const updateGame = /* GraphQL */ `
       }
       gameStatus
       lobbyCode
+      gameDate
     }
   }
 `;
@@ -95,7 +97,7 @@ export const updateGame = /* GraphQL */ `
 export const deleteGame = /* GraphQL */ `
   mutation DeleteGame($input: DeleteGameInput!, $condition: ModelGameConditionInput) {
     deleteGame(input: $input, condition: $condition) {
-      
+
     }
   }
 `;
@@ -142,6 +144,7 @@ export const getGame = /* GraphQL */ `
       }
       gameStatus
       lobbyCode
+      gameDate
     }
   }
 `;
