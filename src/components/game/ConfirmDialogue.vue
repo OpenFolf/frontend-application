@@ -21,12 +21,13 @@
           <v-btn color="error" @click="dialog = false">
             {{ message.button1 }}
           </v-btn>
-          <v-btn color="primary" @click="$emit('start')">
-            <!-- <v-btn
-            color="primary"
-            :to="{ name: 'game-scorecard', path: $route.params.path }"
-            @click="$emit('start')"
-          > -->
+          <v-btn v-if="message.title === 'Start Game'" color="primary" @click="$emit('start')">
+            {{ message.button2 }}
+          </v-btn>
+          <v-btn
+            v-if="message.title === 'Kick Player'"
+            @click="$emit('deletePlayer', userToKickId)"
+          >
             {{ message.button2 }}
           </v-btn>
         </v-card-actions>

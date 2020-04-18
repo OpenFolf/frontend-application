@@ -84,6 +84,7 @@ const routes = [
     props: true,
   },
   {
+    //TODO: remove name param
     path: "/game/:path/scorecard",
     name: "game-scorecard",
     component: () => import(/* webpackChunkName: "scorecard" */ "@/views/Scorecard.vue"), // CHANGE LOCATION to COMPONENTS/GAME
