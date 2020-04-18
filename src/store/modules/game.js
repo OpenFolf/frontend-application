@@ -2,13 +2,12 @@ import { API, graphqlOperation } from "aws-amplify";
 import * as gamegraphQL from "../../graphql/custom/gamegraphQL";
 import * as playergraphQL from "../../graphql/custom/playergraphQL";
 import * as services from "../../services/index";
-//import * as graphQLmutations from "../../graphql/mutations";
-// import * as subscriptions from "../../graphql/subscriptions";
 
 const state = {
   game: {},
   gamesList: [],
   updatePlayer: {},
+  isScorecard: false,
 };
 
 const getters = {
@@ -24,6 +23,9 @@ const getters = {
   getGameStatus: (state) => {
     return state.game.gameStatus;
   },
+  getIsScorecard: (state) => {
+    return state.isScorecard;
+  },
 };
 
 const mutations = {
@@ -36,16 +38,22 @@ const mutations = {
   setUpdatePlayer: (state, payload) => {
     state.updatePlayer = payload;
   },
+  toggleIsScorecard: (state) => {
+    state.isScorecard = !state.isScorecard;
+  },
 };
 
 //BREAK: ACTIONS
 const actions = {
+  toggleIsScorecard: ({ commit }) => {
+    commit("toggleIsScorecard");
+  },
   async fetchGame(context, payload) {
-    console.log("actions>FetchGame", payload);
+    // console.log("actions>FetchGame", payload);
     try {
       const response = await API.graphql(graphqlOperation(gamegraphQL.getGame, { id: payload }));
       const game = response.data.getGame;
-      console.log("FetchGame", response);
+      // console.log("FetchGame", response);
       context.commit("setGame", game);
     } catch (e) {
       console.log("Fetch game error", e);
@@ -118,12 +126,10 @@ const actions = {
   async startGame(context) {
     // Change status of game to signal it has started //
     //Create the object to send to graphQL api, a game has to be in state for this to work
-    console.log("typppppi");
     const updateGameDetails = {
       id: context.rootState.game.game.id,
       gameStatus: "1",
     };
-    console.log(updateGameDetails.id);
 
     // update the game details with new gamestatus
     try {
