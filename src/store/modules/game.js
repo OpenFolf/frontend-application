@@ -103,7 +103,7 @@ const actions = {
       const createPlayerDetails = {
         playerUserId: context.rootState.user.user.id,
         playerGameId: payload,
-        scoreArray: ["0"],
+        scoreArray: [],
       };
 
       const response = await API.graphql(
@@ -116,6 +116,7 @@ const actions = {
   },
 
   async startGame(context) {
+    context.dispatch("fetchGame", context.rootState.game.game.id);
     // Change status of game to signal it has started //
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
