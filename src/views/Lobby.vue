@@ -14,6 +14,7 @@
       <v-container fluid fill-height class="justify-center">
         <v-row>
           <v-col class="col-12 align-content-space-between">
+            <!-- {{ $log(getGame.owner.id) }} -->
             <v-simple-table hide-actions>
               <thead class="secondary">
                 <tr>
@@ -24,7 +25,7 @@
                 <tr v-for="(player, index) in getGame.players.items" :key="index">
                   <td>
                     <!-- TODO: LAGA LOGIC! -->
-                    <v-icon v-if="!index" small color="warning" class="mr-2">fa-crown</v-icon>
+                    <v-icon v-if="isOwner" small color="warning" class="mr-2">fa-crown</v-icon>
                     {{ player.user.email }}
                   </td>
                   <td class="text-right">
@@ -50,16 +51,7 @@
           <v-btn color="info" @click="refreshLobby">Refresh</v-btn>
         </v-card>
         <ConfirmDialogue :dialog="leaveGameDialog" :message="leaveMsg" />
-
         <ConfirmDialogue :dialog="startGameDialog" :message="startGameMsg" @start="startGame" />
-        <v-container class="d-flex flex-column align-center justify-center">
-          <pre class="mb-5">{{ $log(getGame.id) || getGame.id }}</pre>
-          <v-divider />
-          <pre class="mb-5">{{ $log(getGameStatus) || getGameStatus }}</pre>
-        </v-container>
-        <!-- <v-card class="pa-1 overflow-x-auto">
-          <pre class="mb-5">{{ $log(getGame) || getGame }}</pre>
-        </v-card> -->
       </v-container>
     </v-content>
   </fragment>
@@ -76,7 +68,6 @@
         startGameDialog: false,
         leaveGameDialog: false,
         kickUserDialog: false,
-
         startGameMsg: {
           title: "Start Game",
           body: "Are you sure you want to start the game?",
@@ -117,6 +108,9 @@
     },
     computed: {
       ...mapGetters(["getGame", "getGameStatus", "getUser"]),
+      isOwner() {
+        return this.getGame.owner.id == this.getUser.id;
+      },
     },
     components: { Fragment, ConfirmDialogue },
     methods: {
@@ -124,7 +118,6 @@
       refreshLobby() {
         this.fetchGame(this.getGame.id);
       },
-
       kickUser(item) {
         const index = this.joinedUsers.indexOf(item);
         confirm("Are you sure you want to kick user?") && this.joinedUsers.splice(index, 1);
@@ -132,7 +125,7 @@
     },
     watch: {
       getGameStatus() {
-        this.$router.push({ name: "game-scorecard" });
+        this.$router.push({ name: "game-scorecard", params: { name: this.getGame.course.name } });
       },
     },
   };
