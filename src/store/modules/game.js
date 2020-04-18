@@ -118,7 +118,6 @@ const actions = {
   async startGame(context) {
     // Change status of game to signal it has started //
     //Create the object to send to graphQL api, a game has to be in state for this to work
-    console.log("typppppi");
     const updateGameDetails = {
       id: context.rootState.game.game.id,
       gameStatus: "1",
@@ -153,22 +152,12 @@ const actions = {
       } catch (e) {
         console.log("Update player error", e);
       }
-
-      context.dispatch("subscribeToPlayer", gamePlayers[i].id);
     }
-
     //Refresh state of game
     context.dispatch("fetchGame", context.rootState.game.game.id);
-
-    //subscribe a update a ollum players, subscribe a player kalla a fetch game
   },
 
   async updatePlayer(context, payload) {
-    //   //Payload example: Tad tharf ad bua til svona object
-    //   const updatePlayerDetails = {
-    //     id: "playerId",
-    //     scoreArray: ["1","0","0","0","0","0",],
-    //   };
     try {
       await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: payload }));
     } catch (e) {
@@ -203,6 +192,16 @@ const actions = {
       console.log("Game subscription: ", subscribe);
     } catch (e) {
       console.log("Game subscription error", e);
+    }
+  },
+
+  subscribeToPlayerList(context) {
+    // Get list of all players in game
+    const gamePlayers = context.rootState.game.game.players.items;
+    // Subscribe to changes on all players
+    for (var i = 0; i < gamePlayers.length; i++) {
+      context.dispatch("subscribeToPlayer", gamePlayers[i].id);
+      console.log("Subscribing to", gamePlayers[i].id);
     }
   },
 };
