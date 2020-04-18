@@ -28,6 +28,17 @@ const getters = {
 
 const mutations = {
   setGame: (state, payload) => {
+    console.log("Store>Game>Mutations>SetGame, payload", payload);
+    // Go through the array of current players in the game and find the index of the owner
+    const indexOfOwner = payload.players.items.findIndex(
+      (o) => o.user.email === payload.owner.email,
+    );
+    // Remove the owner from the list
+    const ownerElement = payload.players.items.splice(indexOfOwner, 1);
+    // Order the players still in the list alphabetically
+    payload.players.items.sort((a, b) => a.no - b.no);
+    // Add the owner back to the array, this time to the front of the list
+    payload.players.items = [...ownerElement, ...payload.players.items];
     state.game = payload;
   },
   setGamesList: (state, payload) => {
