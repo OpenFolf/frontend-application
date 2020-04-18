@@ -41,7 +41,19 @@ export const updatePlayer = /* GraphQL */ `
 export const deletePlayer = /* GraphQL */ `
   mutation DeletePlayer($input: DeletePlayerInput!, $condition: ModelPlayerConditionInput) {
     deletePlayer(input: $input, condition: $condition) {
-      
+      id
+      user {
+        id
+        email
+        username
+      }
+      game {
+        id
+        course {
+          id
+          name
+        }
+      }
     }
   }
 `;
