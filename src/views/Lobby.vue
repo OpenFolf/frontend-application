@@ -69,7 +69,6 @@
   import { Fragment } from "vue-fragment";
   import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
   import { mapGetters, mapActions } from "vuex";
-  // import Store from "../store";
   export default {
     name: "lobby",
     data() {
