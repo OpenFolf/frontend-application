@@ -1,7 +1,5 @@
 import { API, graphqlOperation } from "aws-amplify";
 import * as usergraphQL from "../../graphql/custom/usergraphQL";
-// import * as graphQLmutations from "../../graphql/mutations";
-// import * as subscriptions from "../../graphql/subscriptions";
 
 const state = {
   user: {
@@ -66,6 +64,7 @@ const mutations = {
   setUserLocation: (state, payload) => {
     state.user.location.lat = payload.lat;
     state.user.location.lng = payload.lng;
+    state.user.location.error = payload.error;
   },
   setUserGames: (state, payload) => {
     state.userGames = payload;

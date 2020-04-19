@@ -16,17 +16,12 @@ const getters = {
   getCurrentCourse: (state) => {
     return state.currentCourse;
   },
-  getCoursesDistance: (state) => {
-    // Bring in an actual user location. This is RU.
-    const userLocation = {
-      lat: 64.123782,
-      lng: -21.925765,
-    };
+  getCoursesDistance: (context, state) => {
     const listWithDistance = JSON.parse(JSON.stringify(state.courses));
     for (let item of listWithDistance) {
       item.distance = getDistanceKM(
-        userLocation.lat,
-        userLocation.lng,
+        context.rootState.user.user.location.lat,
+        context.rootState.user.user.location.lng,
         item.latitude,
         item.longitude,
       ).toFixed(1);
