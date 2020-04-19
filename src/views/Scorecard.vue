@@ -10,34 +10,35 @@
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height class="d-flex flex-column align-center justify-center">
-        <table>
-          <!-- <template v-slot:default> -->
-          <thead class="header" bold>
-            <tr>
-              <th class="title">Hole</th>
-              <th class="title ">Par</th>
-              <fragment v-for="player in getGame.players.items" :key="player.id">
-                <th class="title text-center">{{ player.user.username }}</th>
-              </fragment>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(hole, holeIndex) in getGame.course.holes.items" :key="hole.no">
-              <td class="diff text-center">{{ holeIndex + 1 }}</td>
-              <td class="diff text-center">{{ hole.redPar }}</td>
-              <fragment v-for="(player, playerIndex) in getGame.players.items" :key="playerIndex">
-                <td
-                  class="text-center"
-                  ref="player-hole"
-                  @click="activeHole(playerIndex, holeIndex)"
-                >
-                  {{ player.scoreArray[holeIndex] }}
-                </td>
-              </fragment>
-            </tr>
-          </tbody>
-          <!-- </template> -->
-        </table>
+        <v-simple-table class="mx-auto">
+          <template v-slot:default>
+            <thead class="header" bold>
+              <tr>
+                <th class="title">Hole</th>
+                <th class="title ">Par</th>
+                <fragment v-for="player in getGame.players.items" :key="player.id">
+                  <th class="title text-center">{{ player.user.username }}</th>
+                </fragment>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(hole, holeIndex) in getGame.course.holes.items" :key="hole.no">
+                <td class="diff text-center">{{ holeIndex + 1 }}</td>
+                <td class="diff text-center">{{ hole.redPar }}</td>
+                <fragment v-for="(player, playerIndex) in getGame.players.items" :key="playerIndex">
+                  <td
+                    :id="`p${playerIndex}h${holeIndex}`"
+                    :style="inputStyles(`p${playerIndex}h${holeIndex}`)"
+                    class="text-center"
+                    @click="activeHole(playerIndex, holeIndex)"
+                  >
+                    {{ player.scoreArray[holeIndex] }}
+                  </td>
+                </fragment>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
         <table class="scorecard--keyboard">
           <thead>
             <tr>
@@ -80,8 +81,8 @@
         score: 0,
         componentKey: 0,
         playerScore: [],
-        selectedHole: 0,
         selectedPlayer: 0,
+        selectedHole: 0,
       };
     },
     computed: {
@@ -100,14 +101,23 @@
     // },
 
     methods: {
-      ...mapActions(["updatePlayer", "subscribeToPlayerList", "finishGame"]),
+      ...mapActions(["updatePlayer", "subscribeToPlayerList", "finishGame", "toggleIsScorecard"]),
+
       loadHoles() {
         // calculate the total of the par scores
         this.getGame.course.holes.items.forEach((m) => {
           this.redParSum += parseInt(m.redPar);
         });
       },
-
+      activeHole(playerIndex, holeIndex) {
+        this.selectedPlayer = playerIndex;
+        this.selectedHole = holeIndex;
+      },
+      inputStyles(id) {
+        if (`p${this.selectedPlayer}h${this.selectedHole}` === id) {
+          return { background: "#808080" };
+        }
+      },
       updateScorecard() {
         const oldScore = this.getGame.players.items[this.player].scoreArray.map((x) => x);
         const payLoadObject = {
@@ -115,15 +125,6 @@
           scoreArray: oldScore,
         };
         this.updatePlayer(payLoadObject);
-      },
-      activeHole(playerIndex, holeIndex) {
-        //console.log("event", ev); // this is the event
-
-        this.selectedPlayer = playerIndex;
-        this.selectedHole = holeIndex;
-
-        console.log("holeIndex", holeIndex); // i is index of v-for
-        console.log("PlayerIndex", playerIndex);
       },
       setScore(score) {
         console.log("score", score);
@@ -139,6 +140,7 @@
     },
     watch: {
       getGameStatus() {
+        this.toggleIsScorecard();
         this.$router.push({ name: "stats" });
       },
     },
@@ -156,14 +158,14 @@
     border: 1px solid #ccc;
     text-align: center;
   }
-  t.scorecard--keyboard h {
+  .scorecard--keyboard h {
     background: lightblue;
     border-color: white;
   }
-  .diff {
-    background-color: #ccc;
-    color: #000;
-  }
+  // .diff {
+  //   background-color: #ccc;
+  //   color: #000;
+  // }
   body {
     padding: 1rem;
   }
@@ -181,7 +183,11 @@
     border-left: 1px solid var(--v-secondary-lighten1);
   }
   .theme--dark.v-data-table {
-    background-color: var(--v-secondary-darken1);
+    //background-color: var(--v-secondary-darken1);
     color: #ffffff;
   }
+
+  // tr.v-data-table__selected {
+  //   background: #7d92f5 !important;
+  // }
 </style>

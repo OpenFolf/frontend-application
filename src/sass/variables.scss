@@ -10,11 +10,21 @@ $material-light: ('background': #3fbb85);
   background-color: #3fbb85;
 }
 
+.theme--light.v-data-table tbody tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
+  background: #3fbb85;
+}
+
 $material-dark: ('background': #000000);
 
 .theme--dark.v-tabs-items {
   background-color: #000000;
 }
+
+// Remove hover in dark mode
+.theme--dark.v-data-table tbody tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
+  background: #1E1E1E;
+}
+
 
 $typoOptions: display-4,
 display-3,

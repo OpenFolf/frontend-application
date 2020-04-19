@@ -26,7 +26,15 @@
           </v-btn>
           <v-btn
             v-if="message.title === 'Kick Player'"
-            @click="$emit('deletePlayer', userToKickId)"
+            color="primary"
+            @click="$emit('removeUser', userToRemove)"
+          >
+            {{ message.button2 }}
+          </v-btn>
+          <v-btn
+            v-if="message.title === 'Leave Lobby'"
+            color="primary"
+            @click="$emit('removeUser', userToRemove)"
           >
             {{ message.button2 }}
           </v-btn>
@@ -47,6 +55,9 @@
       message: {
         type: Object,
         required: true,
+      },
+      userToRemove: {
+        type: String,
       },
     },
     data() {
