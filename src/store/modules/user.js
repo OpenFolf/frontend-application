@@ -64,7 +64,7 @@ const mutations = {
   setUserLocation: (state, payload) => {
     state.user.location.lat = payload.lat;
     state.user.location.lng = payload.lng;
-    state.user.location.error = payload.error;
+    // state.user.location.error = payload.error;
   },
   setUserGames: (state, payload) => {
     state.userGames = payload;
