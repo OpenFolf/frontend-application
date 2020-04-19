@@ -204,6 +204,8 @@ const actions = {
   },
 
   async updatePlayer(context, payload) {
+    // TODO: Create service function to update state of player array with new score, to fix scorecard update lag
+
     try {
       await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: payload }));
     } catch (e) {
