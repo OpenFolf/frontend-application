@@ -6,10 +6,11 @@ import * as services from "../../services/index";
 const state = {
   game: {},
   gamesList: [],
-  updatePlayer: {},
+  updatePlayer: {}, // DEBUG: ??? ok to delete?
   isScorecard: false,
 };
 
+// BREAK: Getters
 const getters = {
   getGame: (state) => {
     return state.game;
@@ -18,6 +19,7 @@ const getters = {
     return state.gamesList;
   },
   getUpdatePlayer: (state) => {
+    // DEBUG: ??? ok to delete?
     return state.updatePlayer;
   },
   getGameStatus: (state) => {
@@ -28,6 +30,7 @@ const getters = {
   },
 };
 
+// BREAK: Mutations
 const mutations = {
   setGame: (state, payload) => {
     console.log("Store>Game>Mutations>SetGame, payload", payload);
@@ -59,23 +62,49 @@ const actions = {
   toggleIsScorecard: ({ commit }) => {
     commit("toggleIsScorecard");
   },
+
+  //Game actions
   async fetchGame(context, payload) {
-    // console.log("actions>FetchGame", payload);
+    // Receives id of game as payload
+
+    // Fetch game from database
     try {
       const response = await API.graphql(graphqlOperation(gamegraphQL.getGame, { id: payload }));
       const game = response.data.getGame;
-      // console.log("FetchGame", response);
+      // Add fetched game to state
       context.commit("setGame", game);
     } catch (e) {
       console.log("Fetch game error", e);
     }
   },
 
+  async fetchLobbyGame(context, payload) {
+    // Functions receives lobbycode as payload
+
+    // Get games that match lobbycode and have a status of "0"
+    try {
+      const response = await API.graphql(
+        graphqlOperation(gamegraphQL.listGames, {
+          filter: { gameStatus: { eq: "0" }, lobbyCode: { eq: payload } },
+        }),
+      );
+
+      // Add list, (that should be a list of 1) to the state
+      context.commit("setGamesList", response.data.listGames.items);
+    } catch (e) {
+      console.log("Fetch Lobby game error", e);
+    }
+  },
+
   async fetchGames(context) {
+    // TODO: Rename fetGameList and fix referencing to it, maybe we should not use this function and use a more targeted query instead
+
+    // Fetches list of all games in database
     try {
       const response = await API.graphql(graphqlOperation(gamegraphQL.listGames));
       const gamesList = response.data.listGames.items;
 
+      // Add list to state
       context.commit("setGamesList", gamesList);
     } catch (e) {
       console.log("Fetch games error", e);
@@ -83,24 +112,28 @@ const actions = {
   },
 
   async createGame(context, payload) {
+    //Receives courseID as payload
     try {
+      //Generates a random 3 digit lobbycode
       const generatedCode = services.getLobbyCode();
 
+      //Create object to add to database
       const createGameDetails = {
-        gameCourseId: payload,
-        gameOwnerId: context.rootState.user.user.id,
-        gameStatus: "0",
+        gameCourseId: payload, // Course to be played
+        gameOwnerId: context.rootState.user.user.id, //User set as owner
+        gameStatus: "0", //Gamestatus initialized to "0" to signal game has not been started
         lobbyCode: generatedCode,
-        gameType: context.rootState.user.user.id + " joined", // Most recent player changes
-        gameDate: "" + Date.now(),
+        gameType: context.rootState.user.user.id + " joined", //Most recent player changes
+        gameDate: "" + Date.now(), //Stores timestamp in unix time
       };
-      // console.log("Game details console log", createGameDetails);
+      //Create game in database
       const gameResponse = await API.graphql(
         graphqlOperation(gamegraphQL.createGame, { input: createGameDetails }),
       );
-
+      //Store newly created object
       const newGame = gameResponse.data.createGame;
 
+      //Add owner as player to game
       const createPlayerDetails = {
         playerUserId: context.rootState.user.user.id,
         playerGameId: newGame.id,
@@ -113,78 +146,33 @@ const actions = {
 
       await newGame.players.items.push(playerResponse.data.createPlayer);
 
+      //Add newly created game to state
       await context.commit("setGame", newGame);
     } catch (e) {
       console.log("Create game error", e);
     }
   },
 
-  async createPlayer(context, payload) {
-    const createPlayerDetails = {
-      playerUserId: context.rootState.user.user.id,
-      playerGameId: payload,
-      scoreArray: [],
-    };
-    try {
-      await API.graphql(
-        graphqlOperation(playergraphQL.createPlayer, { input: createPlayerDetails }),
-      );
-      // Create game object to update game state
-    } catch (e) {
-      console.log("Create player error", e);
-    }
-    const updateGameDetails = {
-      id: payload,
-      gameType: context.rootState.user.user.id + " joined", // Most recent player changes
-    };
-    try {
-      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
-    } catch (e) {
-      console.log("Update game error", e);
-    }
-  },
-
-  async deletePlayer(context, payload) {
-    const playerId = payload;
-    try {
-      await API.graphql(graphqlOperation(playergraphQL.deletePlayer, { id: playerId }));
-    } catch (e) {
-      console.log("Player delete error", e);
-    }
-    const updateGameDetails = {
-      id: payload,
-      gameType: context.rootState.user.user.id + " left", // Most recent player changes
-    };
-    try {
-      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
-    } catch (e) {
-      console.log("Update game error", e);
-    }
-  },
-
   async startGame(context) {
-    // Change status of game to signal it has started //
+    //Change status of game to signal it has started //
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
       gameStatus: "1",
     };
-
-    // update the game details with new gamestatus
+    //Update the game details with new gameStatus
     try {
       await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
     } catch (e) {
-      console.log("Update gamestatus error", e);
+      console.log("Update gameStatus error", e);
     }
-
     //Get the number of holes for current game course
-    const holeCount = parseInt(context.rootState.game.game.course.holeCount, 10); //Na i thetta ur state
+    const holeCount = parseInt(context.rootState.game.game.course.holeCount, 10);
     //Create new array and initialize to zero for every hole
     const scoreInit = [];
     for (var i = 0; i < holeCount; i++) {
       scoreInit.push("0");
     }
-
     //For each player in player array call update with the newly created array
     const gamePlayers = context.rootState.game.game.players.items;
 
@@ -200,12 +188,97 @@ const actions = {
       }
     }
     //Refresh state of game
+    // TODO: Maybe not needed, subscription should take care of this, check if delete is ok
     context.dispatch("fetchGame", context.rootState.game.game.id);
   },
 
-  async updatePlayer(context, payload) {
-    // TODO: Create service function to update state of player array with new score, to fix scorecard update lag
+  async finishGame(context) {
+    //Change status of game to signal it has ended
+    //Create the object to send to graphQL api, a game has to be in state for this to work
+    const updateGameDetails = {
+      id: context.rootState.game.game.id,
+      gameStatus: "2",
+    };
+    // update the game details with new gamestatus
+    try {
+      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
+    } catch (e) {
+      console.log("Finish Game error", e);
+    }
 
+    // TODO: Calculate totalscore for each player
+
+    // TODO: Check if subscriber is still active and takes care of this
+    //Refresh state of game
+    // context.dispatch("fetchGame", context.rootState.game.game.id);
+
+    // TODO: Turn off all subscribers
+  },
+
+  //Player actions
+  async createPlayer(context, payload) {
+    //Receives gameID as payload
+    const createPlayerDetails = {
+      playerUserId: context.rootState.user.user.id, //Current user
+      playerGameId: payload, //Game to play
+      scoreArray: [], //Initialize scoreArray
+    };
+    try {
+      await API.graphql(
+        graphqlOperation(playergraphQL.createPlayer, {
+          input: createPlayerDetails,
+        }),
+      );
+    } catch (e) {
+      console.log("Create player error", e);
+    }
+    //Create object to update game details
+    const updateGameDetails = {
+      id: payload,
+      gameType: context.rootState.user.user.id + " joined", //Most recent player changes
+    };
+    try {
+      await API.graphql(
+        graphqlOperation(gamegraphQL.updateGame, {
+          input: updateGameDetails,
+        }),
+      );
+    } catch (e) {
+      console.log("Update game error", e);
+    }
+  },
+
+  async deletePlayer(context, payload) {
+    //Receives playerID as payload and deletes player from database
+    const playerId = payload;
+    try {
+      await API.graphql(
+        graphqlOperation(playergraphQL.deletePlayer, {
+          id: playerId,
+        }),
+      );
+    } catch (e) {
+      console.log("Player delete error", e);
+    }
+    //Create object to update game details
+    const updateGameDetails = {
+      id: payload,
+      gameType: context.rootState.user.user.id + " left", // Most recent player changes
+    };
+    try {
+      await API.graphql(
+        graphqlOperation(gamegraphQL.updateGame, {
+          input: updateGameDetails,
+        }),
+      );
+    } catch (e) {
+      console.log("Update game error", e);
+    }
+  },
+
+  async updatePlayer(context, payload) {
+    //Receives new score array as payload and updates score in database
+    // TODO: Create service function to update state of player array with new score, to fix scorecard update lag
     try {
       await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: payload }));
     } catch (e) {
@@ -213,7 +286,9 @@ const actions = {
     }
   },
 
+  //Subscription actions
   async subscribeToPlayer(context, payload) {
+    //Receives playerId as payload and starts subscription to any changes on that object in the database
     const playerId = payload;
     try {
       const subscription = API.graphql(
@@ -228,6 +303,7 @@ const actions = {
   },
 
   async subscribeToGame(context) {
+    //Starts a subscription to any changes on game object in the database
     const gameId = context.rootState.game.game.id;
 
     try {
@@ -251,30 +327,6 @@ const actions = {
       context.dispatch("subscribeToPlayer", gamePlayers[i].id);
       console.log("Subscribing to", gamePlayers[i].id);
     }
-  },
-
-  async finishGame(context) {
-    // Change status of game to signal it has started //
-    //Create the object to send to graphQL api, a game has to be in state for this to work
-    const updateGameDetails = {
-      id: context.rootState.game.game.id,
-      gameStatus: "2",
-    };
-
-    // update the game details with new gamestatus
-    try {
-      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
-    } catch (e) {
-      console.log("Finish Game error", e);
-    }
-
-    // TODO: Calculate totalscore for each player
-
-    // TODO: Check if subscriber is still active and takes care of this
-    //Refresh state of game
-    // context.dispatch("fetchGame", context.rootState.game.game.id);
-
-    // TODO: Turn off all subscribers
   },
 };
 
