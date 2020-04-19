@@ -5,7 +5,11 @@
         <v-col cols="12">
           <v-card color="accent" class="pa-1 overflow-x-auto">
             <v-card-title>User games</v-card-title>
-            <pre> {{ userGames }} </pre>
+            <v-btn x-large block color="error" @click="lobbyHandler">
+              <v-icon>Fetch lobby game</v-icon>
+            </v-btn>
+            <!-- <pre> {{ userGames }} </pre> -->
+            <pre> {{ game }} </pre>
           </v-card>
         </v-col>
       </v-row>
@@ -18,14 +22,20 @@
   export default {
     name: "stats",
     computed: {
-      ...mapGetters(["getUserGames"]),
+      ...mapGetters(["getUserGames", "getGamesList"]),
       userGames() {
         return this.getUserGames;
+      },
+      game() {
+        return this.getGamesList;
       },
     },
 
     methods: {
-      ...mapActions(["fetchUserGameList"]),
+      ...mapActions(["fetchUserGameList", "fetchLobbyGame"]),
+      lobbyHandler() {
+        this.fetchLobbyGame();
+      },
     },
     data() {
       return {
