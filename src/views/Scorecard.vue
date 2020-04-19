@@ -1,12 +1,20 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app>
+    <v-app-bar color="primary" app flat>
       <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
       <v-toolbar-title class="headline font-weight-bold" flat>
         / {{ getGame.course.name }}
       </v-toolbar-title>
+      <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
+        <v-btn depressed>
+          <v-icon>fa-long-arrow-alt-down</v-icon>
+        </v-btn>
+        <v-btn depressed>
+          <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
+        </v-btn>
+      </v-btn-toggle>
       <v-spacer />
-      <v-btn color="error" @click="finishGame">finish</v-btn>
+      <v-btn color="error" @click="finishGame" depressed>finish</v-btn>
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height class="d-flex flex-column align-center justify-center">
@@ -79,6 +87,7 @@
         player: 0,
         selectedPlayer: 0,
         selectedHole: 0,
+        zigZag: 0,
       };
     },
     computed: {
@@ -90,11 +99,6 @@
       this.loadHoles();
       this.subscribeToPlayerList();
     },
-    // watch: {
-    //   getGame(newValue, oldValue) {
-    //     console.log(`Watch>getGame>Updating from ${oldValue} to ${newValue}`);
-    //   },
-    // },
 
     methods: {
       ...mapActions(["updatePlayer", "subscribeToPlayerList", "finishGame", "toggleIsScorecard"]),
@@ -114,13 +118,28 @@
           return { background: "#808080" };
         }
       },
-      updateScorecard() {
-        const oldScore = this.getGame.players.items[this.player].scoreArray.map((x) => x);
-        const payLoadObject = {
-          id: this.getGame.players.items[this.player].id,
-          scoreArray: oldScore,
-        };
-        this.updatePlayer(payLoadObject);
+
+      setNextIndexActive() {
+        if (this.zigZag) {
+          if (this.selectedPlayer < this.getGame.players.items.length - 1) {
+            this.selectedPlayer++;
+          } else if (
+            this.selectedPlayer === this.getGame.players.items.length - 1 &&
+            this.selectedHole != this.getGame.course.holes.items.length - 1
+          ) {
+            this.selectedPlayer = 0;
+            this.selectedHole++;
+          } else {
+            console.log("Do you want to finish the game?");
+          }
+        } else {
+          console.log("setNextIndexActive");
+          if (this.selectedHole < this.getGame.course.holes.items.length - 1) {
+            this.selectedHole++;
+          } else {
+            console.log("Do you want to finish the game?");
+          }
+        }
       },
       setScore(score) {
         console.log("score", score);
@@ -132,6 +151,7 @@
           scoreArray: oldScore,
         };
         this.updatePlayer(payLoadObject);
+        this.setNextIndexActive();
       },
     },
     watch: {
@@ -187,7 +207,7 @@
   //   background: #7d92f5 !important;
   // }
 
-  // }
+  //
   .v-btn:hover:before {
     color: transparent;
   }
