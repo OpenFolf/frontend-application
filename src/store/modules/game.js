@@ -73,7 +73,7 @@ const actions = {
       // Add fetched game to state
       context.commit("setGame", game);
     } catch (e) {
-      console.log("Fetch game error", e);
+      throw new TypeError("Fetch game error", e);
     }
   },
 
@@ -91,7 +91,7 @@ const actions = {
       // Add list, (that should be a list of 1) to the state
       context.commit("setGamesList", response.data.listGames.items);
     } catch (e) {
-      console.log("Fetch Lobby game error", e);
+      throw new TypeError("Fetch Lobby game error", e);
     }
   },
 
@@ -106,7 +106,7 @@ const actions = {
       // Add list to state
       context.commit("setGamesList", gamesList);
     } catch (e) {
-      console.log("Fetch games error", e);
+      throw new TypeError("Fetch games error", e);
     }
   },
 
@@ -148,7 +148,7 @@ const actions = {
       //Add newly created game to state
       await context.commit("setGame", newGame);
     } catch (e) {
-      console.log("Create game error", e);
+      throw new TypeError("Create game error", e);
     }
   },
 
@@ -163,7 +163,7 @@ const actions = {
     try {
       await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
     } catch (e) {
-      console.log("Update gameStatus error", e);
+      throw new TypeError("Update gameStatus error", e);
     }
     //Get the number of holes for current game course
     const holeCount = parseInt(context.rootState.game.game.course.holeCount, 10);
@@ -183,7 +183,7 @@ const actions = {
       try {
         await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: updateScore }));
       } catch (e) {
-        console.log("Update player error", e);
+        throw new TypeError("Update player error", e);
       }
     }
     //Refresh state of game
@@ -202,7 +202,7 @@ const actions = {
     try {
       await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
     } catch (e) {
-      console.log("Finish Game error", e);
+      throw new TypeError("Finish Game error", e);
     }
 
     // TODO: Calculate totalscore for each player
@@ -229,7 +229,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Create player error", e);
+      throw new TypeError("Create player error", e);
     }
     //Create object to update game details
     const updateGameDetails = {
@@ -243,7 +243,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Update game error", e);
+      throw new TypeError("Update game error", e);
     }
   },
 
@@ -257,7 +257,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Player delete error", e);
+      throw new TypeError("Player delete error", e);
     }
     //Create object to update game details
     const updateGameDetails = {
@@ -271,7 +271,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Update game error", e);
+      throw new TypeError("Update game error", e);
     }
   },
 
@@ -281,7 +281,7 @@ const actions = {
     try {
       await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: payload }));
     } catch (e) {
-      console.log("update player error", e);
+      throw new TypeError("update player error", e);
     }
   },
 
@@ -297,7 +297,7 @@ const actions = {
       });
       console.log("Subscription", subscription);
     } catch (e) {
-      console.log("Player subscription error", e);
+      throw new TypeError("Player subscription error", e);
     }
   },
 
@@ -314,7 +314,7 @@ const actions = {
 
       console.log("Game subscription: ", subscribe);
     } catch (e) {
-      console.log("Game subscription error", e);
+      throw new TypeError("Game subscription error", e);
     }
   },
 

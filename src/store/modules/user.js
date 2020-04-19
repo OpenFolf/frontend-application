@@ -8,6 +8,8 @@ const state = {
     id: "",
   },
   userGames: [],
+  loading: false,
+  error: null,
 };
 
 const getters = {
@@ -95,7 +97,7 @@ const actions = {
       );
       context.commit("setUser", response.data.getUser);
     } catch (e) {
-      console.log("fetchUserError", e);
+      throw new TypeError("fetchUserError", e);
     }
   },
 
@@ -107,7 +109,7 @@ const actions = {
       );
       context.commit("setUserGames", response.data.getUser);
     } catch (e) {
-      console.log("fetchUserGameListError", e);
+      throw new TypeError("fetchUserGameListError", e);
     }
   },
 };

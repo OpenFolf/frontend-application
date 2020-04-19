@@ -60,7 +60,7 @@ const actions = {
       context.commit("updateCourseList", courseList);
       //console.log("response", response);
     } catch (e) {
-      console.log("Error", e);
+      throw new TypeError("Error", e);
     }
   },
 
@@ -73,7 +73,7 @@ const actions = {
 
       context.commit("updateCurrentCourse", course);
     } catch (e) {
-      console.log("Error", e);
+      throw new TypeError("Error", e);
     }
   },
 
