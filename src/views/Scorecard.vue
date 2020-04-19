@@ -47,18 +47,18 @@
           </thead>
           <tbody>
             <tr>
-              <td @click="setScore(0)">0</td>
-              <td @click="setScore(1)">1</td>
-              <td @click="setScore(2)">2</td>
-              <td @click="setScore(3)">3</td>
-              <td @click="setScore(4)">4</td>
+              <v-btn tile @click="setScore(0)">0</v-btn>
+              <v-btn tile @click="setScore(1)">1</v-btn>
+              <v-btn tile @click="setScore(2)">2</v-btn>
+              <v-btn tile @click="setScore(3)">3</v-btn>
+              <v-btn tile @click="setScore(4)">4</v-btn>
             </tr>
             <tr>
-              <td @click="setScore(5)">5</td>
-              <td @click="setScore(6)">6</td>
-              <td @click="setScore(7)">7</td>
-              <td @click="setScore(8)">8</td>
-              <td @click="setScore(9)">9</td>
+              <v-btn tile @click="setScore(5)">5</v-btn>
+              <v-btn tile @click="setScore(6)">6</v-btn>
+              <v-btn tile @click="setScore(7)">7</v-btn>
+              <v-btn tile @click="setScore(8)">8</v-btn>
+              <v-btn tile @click="setScore(9)">9</v-btn>
             </tr>
           </tbody>
         </table>
@@ -77,10 +77,6 @@
       return {
         redParSum: 0,
         player: 0,
-        holeNumber: 0,
-        score: 0,
-        componentKey: 0,
-        playerScore: [],
         selectedPlayer: 0,
         selectedHole: 0,
       };
@@ -190,4 +186,9 @@
   // tr.v-data-table__selected {
   //   background: #7d92f5 !important;
   // }
+
+  // }
+  .v-btn:hover:before {
+    color: transparent;
+  }
 </style>
