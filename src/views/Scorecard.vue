@@ -53,7 +53,13 @@
         <table class="scorecard--keyboard">
           <thead>
             <tr>
-              <th colspan="5">{{ selectedPlayer + 1 }}{{ selectedHole + 1 }}</th>
+              <th colspan="5">
+                <span>{{ getGame.players.items[selectedPlayer].user.username }} </span
+                ><span class="font-weight-light">
+                  hole nr.
+                </span>
+                <span>{{ selectedHole + 1 }}</span>
+              </th>
             </tr>
           </thead>
           <tbody>
