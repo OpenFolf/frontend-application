@@ -30,7 +30,6 @@ const getters = {
 
 const mutations = {
   setGame: (state, payload) => {
-    console.log("Store>Game>Mutations>SetGame, payload", payload);
     // Go through the array of current players in the game and find the index of the owner
     const indexOfOwner = payload.players.items.findIndex(
       (o) => o.user.email === payload.owner.email,
@@ -252,6 +251,7 @@ const actions = {
   },
 
   async finishGame(context) {
+    console.log("Store>Game>Actions>finishGame");
     // Change status of game to signal it has started //
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
@@ -273,6 +273,11 @@ const actions = {
     // context.dispatch("fetchGame", context.rootState.game.game.id);
 
     // TODO: Turn off all subscribers
+  },
+  refreshGame(context) {
+    // The refresh button works and is connected. Unable to console.log this statement, donno why, but if I for example commit to some function it will call it.
+
+    return console.log("Cl> Store>Game>Actions>refreshGame", context.rootState.game.game);
   },
 };
 

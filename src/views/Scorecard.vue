@@ -1,10 +1,12 @@
 <template>
   <fragment>
     <v-app-bar color="primary" app flat>
-      <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
-      <v-toolbar-title class="headline font-weight-bold" flat>
-        / {{ getGame.course.name }}
-      </v-toolbar-title>
+      <v-banner single-line class="text-center">
+        <span> Code: </span>
+        <span class="font-weight-bold pa-2">
+          {{ getGame.lobbyCode }}
+        </span>
+      </v-banner>
       <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
         <v-btn depressed>
           <v-icon>fa-long-arrow-alt-down</v-icon>
@@ -14,6 +16,7 @@
         </v-btn>
       </v-btn-toggle>
       <v-spacer />
+      <v-btn color="info" @click="refreshGame" depressed>refresh</v-btn>
       <v-btn color="error" @click="finishGame" depressed>finish</v-btn>
     </v-app-bar>
     <v-content>
@@ -101,7 +104,13 @@
     },
 
     methods: {
-      ...mapActions(["updatePlayer", "subscribeToPlayerList", "finishGame", "toggleIsScorecard"]),
+      ...mapActions([
+        "updatePlayer",
+        "subscribeToPlayerList",
+        "finishGame",
+        "toggleIsScorecard",
+        "refreshGame",
+      ]),
 
       loadHoles() {
         // calculate the total of the par scores
