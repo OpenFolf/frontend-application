@@ -10,6 +10,7 @@ const state = {
   isScorecard: false,
 };
 
+// BREAK: Getters
 const getters = {
   getGame: (state) => {
     return state.game;
@@ -29,6 +30,7 @@ const getters = {
   },
 };
 
+// BREAK: Mutations
 const mutations = {
   setGame: (state, payload) => {
     console.log("Store>Game>Mutations>SetGame, payload", payload);
@@ -61,6 +63,7 @@ const actions = {
     commit("toggleIsScorecard");
   },
 
+  //Game actions
   async fetchGame(context, payload) {
     // Receives id of game as payload
 
@@ -212,7 +215,7 @@ const actions = {
     // TODO: Turn off all subscribers
   },
 
-  // Players
+  //Player actions
   async createPlayer(context, payload) {
     //Receives gameID as payload
     const createPlayerDetails = {
@@ -283,7 +286,7 @@ const actions = {
     }
   },
 
-  // Subscriptions
+  //Subscription actions
   async subscribeToPlayer(context, payload) {
     //Receives playerId as payload and starts subscription to any changes on that object in the database
     const playerId = payload;
