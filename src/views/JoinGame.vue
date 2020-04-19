@@ -72,7 +72,7 @@
       ...mapActions(["fetchGames", "fetchGame", "createPlayer"]),
       async joinGameRequest() {
         console.log("gameCode", this.gameCode);
-        await this.checkLobbyCode([...this.gameCode].map((x) => x.toUpperCase()).join(""));
+        await this.checkLobbyCode(this.gameCode.toUpperCase());
         if (this.gameObject && !this.isError) {
           this.$router.push({
             name: "join-lobby",

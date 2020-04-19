@@ -37,7 +37,10 @@ String.prototype.icelandic = function() {
 
 // Replace Icelandic characters in path name with compatible characters
 export function replaceIcelandicCharacters(originalString) {
-  return originalString.icelandic();
+  return originalString
+    .icelandic()
+    .toLowerCase()
+    .replace(/\s/g, "-");
 }
 
 // Generate a random three letter sequence for the lobby code
