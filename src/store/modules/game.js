@@ -74,6 +74,12 @@ const getters = {
   getIsScorecard: (state) => {
     return state.isScorecard;
   },
+  getPlayers: (state) => {
+    return state.game.players.items;
+  },
+  getHoles: (state) => {
+    return state.game.course.holes.items;
+  },
 };
 
 // BREAK: Mutations

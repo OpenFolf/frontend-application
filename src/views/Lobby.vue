@@ -21,7 +21,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(player, index) in getGame.players.items" :key="index">
+                <tr v-for="(player, index) in getPlayers" :key="index">
                   <td>
                     <v-icon v-if="!index" small color="warning" class="mr-2">fa-crown</v-icon>
                     {{ player.user.email }}
@@ -125,12 +125,12 @@
       },
     },
     computed: {
-      ...mapGetters(["getGame", "getGameStatus", "getUser"]),
+      ...mapGetters(["getGame", "getGameStatus", "getUser", "getPlayers"]),
       isOwner() {
         return this.getUser.id === this.getGame.owner.id;
       },
       otherPlayers() {
-        return this.getGame.players.items.length <= 1;
+        return this.getPlayers.length <= 1;
       },
     },
     components: { Fragment, ConfirmDialogue },
