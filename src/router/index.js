@@ -126,7 +126,7 @@ router.beforeEach((to, from, next) => {
   if (!Store.getters.getSignedIn) {
     // redirect to auth if not at auth
     if (!to.matched[0].name == "auth") {
-      next("auth");
+      next({ name: "auth" });
     }
     next();
   }
