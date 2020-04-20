@@ -2,7 +2,7 @@
   <v-app>
     <error-boundary>
       <router-view />
-      <bottom-nav v-if="getSignedIn && !getIsScorecard" />
+      <bottom-nav v-if="getSignedIn && !getHideBottomNav" />
     </error-boundary>
   </v-app>
 </template>
@@ -18,7 +18,7 @@
       ErrorBoundary,
     },
     computed: {
-      ...mapGetters(["getSignedIn", "getIsScorecard"]),
+      ...mapGetters(["getSignedIn", "getHideBottomNav"]),
     },
   };
 </script>

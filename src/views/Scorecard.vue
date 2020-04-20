@@ -115,7 +115,7 @@
         "updatePlayer",
         "subscribeToPlayerList",
         "finishGame",
-        "toggleIsScorecard",
+        "toggleHideBottomNav",
         "refreshGame",
       ]),
       loadHoles() {
@@ -169,7 +169,7 @@
 
     watch: {
       getGameStatus() {
-        this.toggleIsScorecard();
+        this.toggleHideBottomNav();
         this.$router.push({ name: "stats" });
       },
     },
