@@ -53,7 +53,7 @@ const state = {
   },
   gamesList: [],
   updatePlayer: {}, // DEBUG: ??? ok to delete?
-  isScorecard: false,
+  hideBottomNav: false,
 };
 
 // BREAK: Getters
@@ -71,8 +71,9 @@ const getters = {
   getGameStatus: (state) => {
     return state.game.gameStatus;
   },
-  getIsScorecard: (state) => {
-    return state.isScorecard;
+  getHideBottomNav: (state) => {
+    console.log("game>actions>toggleHideBottomNav, ");
+    return state.hideBottomNav;
   },
   getPlayers: (state) => {
     return state.game.players.items;
@@ -103,15 +104,17 @@ const mutations = {
   setUpdatePlayer: (state, payload) => {
     state.updatePlayer = payload;
   },
-  toggleIsScorecard: (state) => {
-    state.isScorecard = !state.isScorecard;
+  toggleHideBottomNav: (state) => {
+    console.log("game>Mutations>toggleHideBottomNav, ");
+    state.hideBottomNav = !state.hideBottomNav;
   },
 };
 
 // BREAK: ACTIONS
 const actions = {
-  toggleIsScorecard: ({ commit }) => {
-    commit("toggleIsScorecard");
+  toggleHideBottomNav: ({ commit }) => {
+    console.log("game>actions>toggleHideBottomNav, ");
+    commit("toggleHideBottomNav");
   },
 
   //Game actions

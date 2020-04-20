@@ -12,14 +12,14 @@ const routes = [
     path: "/",
     name: "auth",
     component: Auth,
-    // // If the user is already signed in, redirect to the home menu
-    // beforeEnter: (to, from, next) => {
-    //   if (Store.getters.getSignedIn) {
-    //     next({ name: "home-menu" });
-    //   } else {
-    //     next();
-    //   }
-    // },
+    // If the user is already signed in, redirect to the home menu
+    beforeEnter: (to, from, next) => {
+      if (Store.getters.getSignedIn) {
+        next({ name: "home-menu" });
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/home",
@@ -75,6 +75,7 @@ const routes = [
     props: true,
     beforeEnter: async (to, from, next) => {
       await Store.dispatch("createGame", to.params.id);
+      Store.dispatch("toggleHideBottomNav");
       next();
     },
   },
@@ -83,6 +84,11 @@ const routes = [
     name: "join-lobby",
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
+    beforeEnter: (to, from, next) => {
+      console.log("Router>/game/:path/lobby ");
+      Store.dispatch("toggleHideBottomNav");
+      next();
+    },
   },
   {
     //TODO: remove name param
@@ -90,13 +96,6 @@ const routes = [
     name: "game-scorecard",
     component: () => import(/* webpackChunkName: "scorecard" */ "@/views/Scorecard.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
-    beforeEnter: (to, from, next) => {
-      if (!Store.getters.getGame) {
-        next({ name: "game" });
-      }
-      Store.dispatch("toggleIsScorecard");
-      next();
-    },
   },
   {
     path: "/join-game",
@@ -120,25 +119,26 @@ const router = new VueRouter({
   routes,
 });
 
-// Before routing, go through each route and check
-router.beforeEach((to, from, next) => {
-  // If not signed in
-  if (!Store.getters.getSignedIn) {
-    // redirect to auth if not at auth
-    if (!to.matched[0].name == "auth") {
-      next({ name: "auth" });
-    }
-    next();
-  }
-  // If signed in
-  else {
-    // and at auth then redirect to home-menu
-    if (to.matched[0].name == "auth") {
-      next({ name: "home-menu" });
-    }
-    // else, go wherever
-    next();
-  }
-});
+// // Before routing, go through each route and check
+// router.beforeEach((to, from, next) => {
+//   console.log("Router>beforeEach>Route", to.name);
+//   // If not signed in
+//   if (!Store.getters.getSignedIn) {
+//     // redirect to auth if not at auth
+//     if (!to.matched[0].name == "auth") {
+//       next({ name: "auth" });
+//     }
+//     next();
+//   }
+//   // If signed in
+//   else {
+//     // and at auth then redirect to home-menu
+//     if (to.matched[0].name == "auth") {
+//       next({ name: "home-menu" });
+//     }
+//     // else, go wherever
+//     next();
+//   }
+// });
 
 export default router;

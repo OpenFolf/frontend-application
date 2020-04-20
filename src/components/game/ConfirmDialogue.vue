@@ -18,7 +18,7 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" @click="dialog = false">
+          <v-btn color="error" @click="localDialog = false">
             {{ message.button1 }}
           </v-btn>
           <v-btn v-if="message.title === 'Start Game'" color="primary" @click="$emit('start')">
