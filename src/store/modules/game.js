@@ -4,7 +4,53 @@ import * as playergraphQL from "../../graphql/custom/playergraphQL";
 import * as services from "../../services/index";
 
 const state = {
-  game: {},
+  //Added to prevent render error when the scorecard is refreshed in the browser.
+  game: {
+    id: "",
+    owner: {
+      id: "",
+      username: "",
+      email: "",
+    },
+    course: {
+      id: "",
+      name: "",
+      holeCount: "",
+      holes: {
+        items: [
+          {
+            id: "",
+            no: "0",
+            redPar: "0",
+            whitePar: "0",
+            yellowPar: "0",
+            bluePar: "0",
+            redLength: "0",
+            whiteLength: "0",
+            yellowLength: "0",
+            blueLength: "0",
+          },
+        ],
+      },
+    },
+    players: {
+      items: [
+        {
+          id: "",
+          user: {
+            id: "",
+            username: "",
+            email: "",
+          },
+          totalScore: null,
+          scoreArray: [""],
+        },
+      ],
+    },
+    gameStatus: "",
+    lobbyCode: "",
+    gameDate: "",
+  },
   gamesList: [],
   updatePlayer: {}, // DEBUG: ??? ok to delete?
   isScorecard: false,
@@ -27,6 +73,12 @@ const getters = {
   },
   getIsScorecard: (state) => {
     return state.isScorecard;
+  },
+  getPlayers: (state) => {
+    return state.game.players.items;
+  },
+  getHoles: (state) => {
+    return state.game.course.holes.items;
   },
 };
 
@@ -327,6 +379,7 @@ const actions = {
       console.log("Subscribing to", gamePlayers[i].id);
     }
   },
+
   refreshGame(context) {
     // The refresh button works and is connected. Unable to console.log this statement, donno why, but if I for example commit to some function it will call it.
 
