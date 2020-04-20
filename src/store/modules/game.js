@@ -33,7 +33,6 @@ const getters = {
 // BREAK: Mutations
 const mutations = {
   setGame: (state, payload) => {
-    console.log("Store>Game>Mutations>SetGame, payload", payload);
     // Go through the array of current players in the game and find the index of the owner
     const indexOfOwner = payload.players.items.findIndex(
       (o) => o.user.email === payload.owner.email,
@@ -327,6 +326,11 @@ const actions = {
       context.dispatch("subscribeToPlayer", gamePlayers[i].id);
       console.log("Subscribing to", gamePlayers[i].id);
     }
+  },
+  refreshGame(context) {
+    // The refresh button works and is connected. Unable to console.log this statement, donno why, but if I for example commit to some function it will call it.
+
+    return console.log("Cl> Store>Game>Actions>refreshGame", context.rootState.game.game);
   },
 };
 
