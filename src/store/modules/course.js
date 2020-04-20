@@ -16,23 +16,6 @@ const getters = {
   getCurrentCourse: (state) => {
     return state.currentCourse;
   },
-  getCoursesDistance: (state) => {
-    // Bring in an actual user location. This is RU.
-    const userLocation = {
-      lat: 64.123782,
-      lng: -21.925765,
-    };
-    const listWithDistance = JSON.parse(JSON.stringify(state.courses));
-    for (let item of listWithDistance) {
-      item.distance = getDistanceKM(
-        userLocation.lat,
-        userLocation.lng,
-        item.latitude,
-        item.longitude,
-      ).toFixed(1);
-    }
-    return listWithDistance;
-  },
 };
 
 const mutations = {
@@ -40,7 +23,6 @@ const mutations = {
     state.courses = payload;
   },
   updateCurrentCourse: (state, payload) => {
-    // console.log("payload", payload);
     if (payload.holes.items.length > 0) {
       payload.holes.items.sort((a, b) => a.no - b.no);
     }
@@ -56,9 +38,16 @@ const actions = {
     try {
       const response = await API.graphql(graphqlOperation(coursegraphQL.getCourses));
       const courseList = response.data.listCourses.items;
-
+      // Add distance property for list render/filter.
+      for (let course of courseList) {
+        course.distance = getDistanceKM(
+          parseFloat(context.rootState.user.location.lat),
+          parseFloat(context.rootState.user.location.lng),
+          parseFloat(course.latitude),
+          parseFloat(course.longitude),
+        ).toFixed(1);
+      }
       context.commit("updateCourseList", courseList);
-      //console.log("response", response);
     } catch (e) {
       console.log("Error", e);
     }

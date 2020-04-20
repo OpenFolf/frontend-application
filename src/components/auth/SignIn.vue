@@ -67,6 +67,7 @@
 <script>
   import { mapGetters, mapActions } from "vuex";
   import { required, email, minLength } from "vuelidate/lib/validators";
+  import { getUserLocation } from "@/services";
   export default {
     name: "sign-in",
     props: {
@@ -105,6 +106,9 @@
                   this.setUserAuthObject(data);
                   this.setUserId(data.username);
                 }
+              })
+              .then(() => {
+                getUserLocation();
               })
               .then(() => {
                 this.fetchUser();

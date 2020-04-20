@@ -1,11 +1,14 @@
 import { API, graphqlOperation } from "aws-amplify";
 import * as usergraphQL from "../../graphql/custom/usergraphQL";
-// import * as graphQLmutations from "../../graphql/mutations";
-// import * as subscriptions from "../../graphql/subscriptions";
 
 const state = {
   user: {
     id: "",
+  },
+  location: {
+    lat: 64.128197,
+    lng: -21.885087,
+    error: 0,
   },
   userGames: [],
 };
@@ -30,7 +33,7 @@ const getters = {
     return state.user.defTee;
   },
   getUserLocation: (state) => {
-    return state.user.location;
+    return state.location;
   },
   getUserGames: (state) => {
     // TODO: Breyta gognum fyrir component, t.d. rada eftir timestamp rod, pikka ut naudsynlegar upplysingar o.s.frv.
@@ -64,8 +67,9 @@ const mutations = {
     state.user.defTee = payload;
   },
   setUserLocation: (state, payload) => {
-    state.user.location.lat = payload.lat;
-    state.user.location.lng = payload.lng;
+    state.location.lat = payload.lat;
+    state.location.lng = payload.lng;
+    state.location.error = payload.error;
   },
   setUserGames: (state, payload) => {
     state.userGames = payload;

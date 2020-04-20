@@ -3,9 +3,9 @@
     <router-link :to="{ name: 'home-menu' }">
       <v-avatar><v-icon>fa-home</v-icon></v-avatar>
     </router-link>
-    <v-toolbar-title class="headline font-weight-bold" flat
-      >/ {{ isHome ? "" : path }}</v-toolbar-title
-    >
+    <v-toolbar-title class="headline font-weight-bold" flat>
+      / {{ isHome ? "" : path }}
+    </v-toolbar-title>
     <v-spacer />
     <sign-out />
   </v-app-bar>
@@ -21,7 +21,7 @@
     data() {
       return {
         path: "",
-        isHome: true,
+        isHome: false,
       };
     },
     methods: {
@@ -36,9 +36,15 @@
         }
       },
     },
+    mounted() {
+      this.pathBar();
+    },
     watch: {
-      $route() {
-        this.pathBar();
+      immediate: true,
+      $route: {
+        handler() {
+          this.pathBar();
+        },
       },
     },
   };
