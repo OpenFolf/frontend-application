@@ -8,7 +8,8 @@
     @update:bounds="boundsUpdated"
   >
     <l-tile-layer :url="url"></l-tile-layer>
-    <l-marker :lat-lng="latLng"></l-marker>
+    <l-marker :lat-lng="courseLatLng"></l-marker>
+    <l-marker :lat-lng="userLatLng"></l-marker>
   </l-map>
 </template>
 
@@ -22,12 +23,12 @@
       LMarker,
     },
     props: {
-      lat: {
-        type: String,
+      courseLatLng: {
+        type: Array,
         required: true,
       },
-      lng: {
-        type: String,
+      userLatLng: {
+        type: Array,
         required: true,
       },
     },
@@ -35,8 +36,7 @@
       return {
         url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         zoom: 12,
-        center: [parseFloat(this.lat), parseFloat(this.lng)],
-        latLng: [parseFloat(this.lat), parseFloat(this.lng)],
+        center: [parseFloat(this.courseLatLng[0]), parseFloat(this.courseLatLng[1])],
         bounds: null,
         mapStyle: {
           height: "415px",

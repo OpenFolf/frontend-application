@@ -32,8 +32,11 @@
       <v-tabs-items v-model="currentTab" touchless>
         <v-tab-item><course-info :course="getCurrentCourse" :holeSums="holeSums"/></v-tab-item>
         <v-tab-item>
-          <course-map :lat="getCurrentCourse.latitude" :lng="getCurrentCourse.longitude"
-        /></v-tab-item>
+          <course-map
+            :course-lat-lng="[getCurrentCourse.latitude, getCurrentCourse.longitude]"
+            :user-lat-lng="[getUserLocation.lat, getUserLocation.lng]"
+          />
+        </v-tab-item>
       </v-tabs-items>
     </v-card>
   </v-content>
@@ -105,7 +108,10 @@
       },
     },
     computed: {
-      ...mapGetters(["getCurrentCourse"]),
+      ...mapGetters(["getCurrentCourse", "getUserLocation"]),
+      // getLocation() {
+      //   return [parseFloat(this.getUserLocation.lat), parseFloat(this.getUserLocation.lat)];
+      // },
     },
   };
 </script>
