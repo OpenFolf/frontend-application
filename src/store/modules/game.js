@@ -108,6 +108,9 @@ const mutations = {
     console.log("game>Mutations>toggleHideBottomNav, ");
     state.hideBottomNav = !state.hideBottomNav;
   },
+  setScoreArray: (state, payload) => {
+    state.game.players.items = payload;
+  },
 };
 
 // BREAK: ACTIONS
@@ -337,9 +340,25 @@ const actions = {
 
   async updatePlayer(context, payload) {
     //Receives new score array as payload and updates score in database
-    // TODO: Create service function to update state of player array with new score, to fix scorecard update lag
+    // TODO: Add totalscore to the payload to add to state along with new array
+    // Get list of all players in game
+    const gamePlayers = context.rootState.game.game.players.items;
+    // Update scoreArray for player to store in state
+    for (var i = 0; i < gamePlayers.length; i++) {
+      if (payload.id == gamePlayers[i].id) {
+        gamePlayers[i].scoreArray = payload.scoreArray;
+      }
+    }
+    console.log("gamePlayers: ", gamePlayers);
+    // Set new scorearray in state
+    context.commit("setScoreArray", gamePlayers);
+    // Update score for player in database
     try {
-      await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: payload }));
+      await API.graphql(
+        graphqlOperation(playergraphQL.updatePlayer, {
+          input: payload,
+        }),
+      );
     } catch (e) {
       console.log("update player error", e);
     }
