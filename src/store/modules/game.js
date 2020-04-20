@@ -408,9 +408,20 @@ const actions = {
   },
 
   refreshGame(context) {
-    // The refresh button works and is connected. Unable to console.log this statement, donno why, but if I for example commit to some function it will call it.
+    // Fetch game object again from database
+    const gameId = context.rootState.game.game.id;
+    context.dispatch("fetchGame", gameId);
+    // Subscribe to all players in game again
+    context.dispatch("subscribeToGame");
+  },
 
-    return console.log("Cl> Store>Game>Actions>refreshGame", context.rootState.game.game);
+  refreshLobby(context) {
+    // Fetch game object again from database
+    const gameId = context.rootState.game.game.id;
+    console.log("Fetching game: ", gameId);
+    context.dispatch("fetchGame", gameId);
+    // Subscribe to all players in game again
+    context.dispatch("subscribeToPlayerList");
   },
 };
 

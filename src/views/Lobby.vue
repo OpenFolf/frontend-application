@@ -135,10 +135,7 @@
     },
     components: { Fragment, ConfirmDialogue },
     methods: {
-      ...mapActions(["startGame", "fetchGame", "subscribeToGame", "deletePlayer"]),
-      refreshLobby() {
-        this.fetchGame(this.getGame.id);
-      },
+      ...mapActions(["startGame", "fetchGame", "subscribeToGame", "deletePlayer", "refreshLobby"]),
       removeUser(playerId) {
         console.log("methods>removeUser, userid", playerId);
         this.deletePlayer(playerId);
