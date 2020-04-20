@@ -73,3 +73,12 @@ export const fetchUserGameList = /* GraphQL */ `
     }
   }
 `;
+
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser($input: UpdateUserInput!, $condition: ModelUserConditionInput) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      username
+    }
+  }
+`;

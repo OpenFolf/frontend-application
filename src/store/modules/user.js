@@ -65,6 +65,8 @@ const mutations = {
   },
   setUserDefaultTee: (state, payload) => {
     state.user.defTee = payload;
+    console.log("DefTee", payload);
+    //Add to database
   },
   setUserLocation: (state, payload) => {
     state.location.lat = payload.lat;
@@ -80,15 +82,40 @@ const actions = {
   setUserId: ({ commit }, payload) => {
     commit("setUserId", payload);
   },
-  setUserName: ({ commit }, payload) => {
-    commit("setUserName", payload);
+
+  async setUserName(context, payload) {
+    // Add to database
+    const userId = context.rootState.user.user.id;
+    try {
+      await API.graphql(
+        graphqlOperation(usergraphQL.updateUser, {
+          input: { id: userId, username: payload },
+        }),
+      );
+    } catch (e) {
+      console.log("update username error: ", e);
+    }
+    context.commit("setUserName", payload);
   },
+
   setUserTheme: ({ commit }, payload) => {
     commit("setUserTheme", payload);
   },
-  setUserDefaultTee: ({ commit }, payload) => {
-    commit("setUserDefaultTee", payload);
+
+  async setUserDefaultTee(context, payload) {
+    const userId = context.rootState.user.user.id;
+    try {
+      await API.graphql(
+        graphqlOperation(usergraphQL.updateUser, {
+          input: { id: userId, defTee: payload },
+        }),
+      );
+    } catch (e) {
+      console.log("update defTee error: ", e);
+    }
+    context.commit("setUserDefaultTee", payload);
   },
+
   setUserLocation: ({ commit }, payload) => {
     commit("setUserLocation", payload);
   },
