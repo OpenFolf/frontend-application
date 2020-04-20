@@ -34,6 +34,27 @@ Vue.use(AmplifyPlugin, AmplifyModules);
 
 Vue.config.productionTip = false;
 
+// =Added 19.4 ErrorHandler=
+// Handles all Vue errors
+Vue.config.errorHandler = function(err, vm, info) {
+  console.log(`Error: ${err.toString()}\nInfo: ${info} `);
+  console.log(vm);
+};
+
+Vue.config.warnHandler = function(msg, vm, trace) {
+  console.log(`Warn: ${msg}\nTrace: ${trace}`);
+  console.log(vm);
+};
+
+// Handles error not produced in Vue such as service.js
+window.onerror = function(message, source, lineno, colno, error) {
+  console.log("Message: ", message);
+  console.log("source: ", source);
+  console.log("lineno: ", lineno);
+  console.log("colno: ", colno);
+  console.log("Exception: ", error);
+};
+
 Vue.component("l-map", LMap);
 Vue.component("l-tile-layer", LTileLayer);
 Vue.component("l-marker", LMarker);

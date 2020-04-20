@@ -1,10 +1,12 @@
 <template>
   <fragment>
     <v-app-bar color="primary" app flat>
-      <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
-      <v-toolbar-title class="headline font-weight-bold" flat>
-        / {{ getGame.course.name }}
-      </v-toolbar-title>
+      <v-banner single-line class="text-center">
+        <span> Code: </span>
+        <span class="font-weight-bold pa-2">
+          {{ getGame.lobbyCode }}
+        </span>
+      </v-banner>
       <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
         <v-btn depressed>
           <v-icon>fa-long-arrow-alt-down</v-icon>
@@ -14,6 +16,7 @@
         </v-btn>
       </v-btn-toggle>
       <v-spacer />
+      <v-btn color="info" @click="refreshGame" depressed>refresh</v-btn>
       <v-btn color="error" @click="finishGame" depressed>finish</v-btn>
     </v-app-bar>
     <v-content>
@@ -24,16 +27,16 @@
               <tr>
                 <th class="title">Hole</th>
                 <th class="title ">Par</th>
-                <fragment v-for="player in getGame.players.items" :key="player.id">
+                <fragment v-for="player in getPlayers" :key="player.id">
                   <th class="title text-center">{{ player.user.username }}</th>
                 </fragment>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(hole, holeIndex) in getGame.course.holes.items" :key="hole.no">
+              <tr v-for="(hole, holeIndex) in getHoles" :key="hole.no">
                 <td class="diff text-center">{{ holeIndex + 1 }}</td>
                 <td class="diff text-center">{{ hole.redPar }}</td>
-                <fragment v-for="(player, playerIndex) in getGame.players.items" :key="playerIndex">
+                <fragment v-for="(player, playerIndex) in getPlayers" :key="playerIndex">
                   <td
                     :id="`p${playerIndex}h${holeIndex}`"
                     :style="inputStyles(`p${playerIndex}h${holeIndex}`)"
@@ -50,7 +53,13 @@
         <table class="scorecard--keyboard">
           <thead>
             <tr>
-              <th colspan="5">{{ selectedPlayer + 1 }}{{ selectedHole + 1 }}</th>
+              <th colspan="5">
+                <span>{{ getPlayers[selectedPlayer].user.username }} </span
+                ><span class="font-weight-light">
+                  hole nr.
+                </span>
+                <span>{{ selectedHole + 1 }}</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -69,6 +78,8 @@
               <v-btn tile @click="setScore(9)">9</v-btn>
             </tr>
           </tbody>
+          <pre>{{ getPlayers }}</pre>
+          <pre>{{ getHoles }}</pre>
         </table>
       </v-container>
     </v-content>
@@ -90,8 +101,9 @@
         zigZag: 0,
       };
     },
+
     computed: {
-      ...mapGetters(["getGame", "getGameStatus"]),
+      ...mapGetters(["getGame", "getGameStatus", "getPlayers", "getHoles"]),
     },
 
     components: { Fragment },
@@ -101,11 +113,16 @@
     },
 
     methods: {
-      ...mapActions(["updatePlayer", "subscribeToPlayerList", "finishGame", "toggleIsScorecard"]),
-
+      ...mapActions([
+        "updatePlayer",
+        "subscribeToPlayerList",
+        "finishGame",
+        "toggleIsScorecard",
+        "refreshGame",
+      ]),
       loadHoles() {
         // calculate the total of the par scores
-        this.getGame.course.holes.items.forEach((m) => {
+        this.getHoles.forEach((m) => {
           this.redParSum += parseInt(m.redPar);
         });
       },
@@ -118,14 +135,13 @@
           return { background: "#808080" };
         }
       },
-
       setNextIndexActive() {
         if (this.zigZag) {
-          if (this.selectedPlayer < this.getGame.players.items.length - 1) {
+          if (this.selectedPlayer < this.getPlayers.length - 1) {
             this.selectedPlayer++;
           } else if (
-            this.selectedPlayer === this.getGame.players.items.length - 1 &&
-            this.selectedHole != this.getGame.course.holes.items.length - 1
+            this.selectedPlayer === this.getPlayers.length - 1 &&
+            this.selectedHole != this.getPlayers.length - 1
           ) {
             this.selectedPlayer = 0;
             this.selectedHole++;
@@ -134,7 +150,7 @@
           }
         } else {
           console.log("setNextIndexActive");
-          if (this.selectedHole < this.getGame.course.holes.items.length - 1) {
+          if (this.selectedHole < this.getHoles.length - 1) {
             this.selectedHole++;
           } else {
             console.log("Do you want to finish the game?");
@@ -142,18 +158,17 @@
         }
       },
       setScore(score) {
-        console.log("score", score);
-        const oldScore = this.getGame.players.items[this.selectedPlayer].scoreArray.map((x) => x);
+        const oldScore = this.getPlayers[this.selectedPlayer].scoreArray.map((x) => x);
         oldScore[this.selectedHole] = score;
-
         const payLoadObject = {
-          id: this.getGame.players.items[this.selectedPlayer].id,
+          id: this.getPlayers[this.selectedPlayer].id,
           scoreArray: oldScore,
         };
         this.updatePlayer(payLoadObject);
         this.setNextIndexActive();
       },
     },
+
     watch: {
       getGameStatus() {
         this.toggleIsScorecard();
