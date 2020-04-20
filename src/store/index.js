@@ -9,11 +9,7 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  plugins: [
-    createPersistedState({
-      key: "openFOLF",
-    }),
-  ],
+  plugins: [createPersistedState()],
   state: {},
   mutations: {},
   actions: {},
