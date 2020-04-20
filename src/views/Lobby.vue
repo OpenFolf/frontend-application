@@ -29,7 +29,7 @@
                   <td class="text-right">
                     <fragment v-if="isOwner && getUser.id !== player.user.id">
                       <ConfirmDialogue
-                        :userToRemove="player.user.id"
+                        :userToRemove="player.id"
                         :dialog="kickUserDialog"
                         :message="kickUserMsg"
                         @removeUser="removeUser"
@@ -139,9 +139,9 @@
       refreshLobby() {
         this.fetchGame(this.getGame.id);
       },
-      removeUser(userId) {
-        console.log("methods>removeUser, userid", userId);
-        this.deletePlayer(userId);
+      removeUser(playerId) {
+        console.log("methods>removeUser, userid", playerId);
+        this.deletePlayer(playerId);
       },
     },
     watch: {
