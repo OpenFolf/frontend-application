@@ -69,7 +69,7 @@
       };
     },
     methods: {
-      ...mapActions(["fetchGames", "fetchGame", "createPlayer"]),
+      ...mapActions(["fetchLobbyGame", "fetchGame", "createPlayer"]),
       async joinGameRequest() {
         console.log("gameCode", this.gameCode);
         await this.checkLobbyCode(this.gameCode.toUpperCase());
@@ -88,14 +88,24 @@
         this.isError = false;
       },
       async checkLobbyCode(code) {
-        await this.fetchGames();
+        await this.fetchLobbyGame(code);
+        // TODO: Handle the unlikely event that 2 games have the same lobbyCode?
         this.gameObject = this.getGamesList.find((x) => x.lobbyCode == code);
+        console.log("Gameobject: ", this.gameObject);
         if (!this.gameObject) {
           this.errorObj = `No game found with the lobby code ${code}`;
           this.isError = true;
         } else if (this.gameObject.gameStatus != 0) {
-          this.errorObj = `A game with the lobby code ${code} found but has already started`;
-          this.isError = true;
+          if (this.gameObject) {
+            // TODO: Check if player is part of game, similar logic as in the find function, talk to Aex and Bavis
+
+            await this.fetchGame(this.gameObject.id);
+            // TODO: Route to scorecard. Through lobby? Gamestatus watcher not working as gameStatus technically not updating. Talk to Aex
+          } else {
+            // A game has started but you are not one of the players
+            this.errorObj = `A game with the lobby code ${code} found but has already started`;
+            this.isError = true;
+          }
         } else {
           await this.createPlayer(this.gameObject.id);
           await this.fetchGame(this.gameObject.id);

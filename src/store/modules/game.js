@@ -134,17 +134,19 @@ const actions = {
 
   async fetchLobbyGame(context, payload) {
     // Functions receives lobbycode as payload
-
+    console.log("Nykominn inn i lobby, payload: ", payload);
     // Get games that match lobbycode and have a status of "0"
     try {
       const response = await API.graphql(
         graphqlOperation(gamegraphQL.listGames, {
-          filter: { gameStatus: { eq: "0" }, lobbyCode: { eq: payload } },
+          filter: { lobbyCode: { eq: payload } },
         }),
       );
+      const gamesList = response.data.listGames.items;
 
-      // Add list, (that should be a list of 1) to the state
-      context.commit("setGamesList", response.data.listGames.items);
+      // Add list to state
+      console.log(gamesList);
+      context.commit("setGamesList", gamesList);
     } catch (e) {
       console.log("Fetch Lobby game error", e);
     }
