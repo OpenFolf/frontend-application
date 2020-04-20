@@ -32,9 +32,6 @@ const getters = {
   getUserTee: (state) => {
     return state.user.defTee;
   },
-  // getUserLocation: (state) => {
-  //   return state.user.location;
-  // },
   getUserLocation: (state) => {
     return state.location;
   },
@@ -74,11 +71,6 @@ const mutations = {
     state.location.lng = payload.lng;
     state.location.error = payload.error;
   },
-  // setUserLocation: (state, payload) => {
-  //   state.user.location.lat = payload.lat;
-  //   state.user.location.lng = payload.lng;
-  //   // state.user.location.error = payload.error;
-  // },
   setUserGames: (state, payload) => {
     state.userGames = payload;
   },

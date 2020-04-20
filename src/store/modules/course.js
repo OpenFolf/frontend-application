@@ -5,7 +5,7 @@ import * as subscriptions from "../../graphql/subscriptions";
 import { getDistanceKM } from "@/services";
 
 const state = {
-  courses: [],
+  courses: null,
   currentCourse: null,
 };
 
@@ -16,32 +16,6 @@ const getters = {
   getCurrentCourse: (state) => {
     return state.currentCourse;
   },
-  getCoursesDistance: (context, state) => {
-    if (state.courses.length > 0) {
-      console.log("Course state:", state.courses);
-      const listWithDistance = state.courses.map((x) => {
-        x.distance = getDistanceKM(
-          parseFloat(64.128197), // lat, should come from store.
-          parseFloat(-21.885087), // lng, should come from store.
-          parseFloat(x.latitude),
-          parseFloat(x.longitude),
-        ).toFixed(1);
-      });
-      // const listWithDistance = JSON.parse(JSON.stringify(state.courses));
-      // const listWithDistance = [...state.courses];
-      // for (let item of listWithDistance) {
-      //   item.distance = getDistanceKM(
-      //     parseFloat(64.128197), // lat, should come from store.
-      //     parseFloat(-21.885087), // lng, should come from store.
-      //     parseFloat(item.latitude),
-      //     parseFloat(item.longitude),
-      //   ).toFixed(1);
-      // }
-      return listWithDistance;
-    } else {
-      return state.courses;
-    }
-  },
 };
 
 const mutations = {
@@ -49,7 +23,6 @@ const mutations = {
     state.courses = payload;
   },
   updateCurrentCourse: (state, payload) => {
-    // console.log("payload", payload);
     if (payload.holes.items.length > 0) {
       payload.holes.items.sort((a, b) => a.no - b.no);
     }
@@ -65,10 +38,16 @@ const actions = {
     try {
       const response = await API.graphql(graphqlOperation(coursegraphQL.getCourses));
       const courseList = response.data.listCourses.items;
-      // console.log("fetchCourseList", courseList);
-
+      // Add distance property for list render/filter.
+      for (let course of courseList) {
+        course.distance = getDistanceKM(
+          parseFloat(context.rootState.user.location.lat),
+          parseFloat(context.rootState.user.location.lng),
+          parseFloat(course.latitude),
+          parseFloat(course.longitude),
+        ).toFixed(1);
+      }
       context.commit("updateCourseList", courseList);
-      //console.log("fetchCourseList", response);
     } catch (e) {
       console.log("Error", e);
     }

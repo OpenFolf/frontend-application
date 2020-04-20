@@ -5,11 +5,11 @@
       <v-toolbar-title class="headline font-weight-bold" flat>/</v-toolbar-title>
       <v-spacer />
       <v-btn-toggle v-model="sortAlpha">
-        <v-btn depressed :value="false">
-          <v-icon>fa-sort-alpha-down</v-icon>
-        </v-btn>
         <v-btn depressed :value="true">
           <v-icon>fa-globe-europe</v-icon>
+        </v-btn>
+        <v-btn depressed :value="false">
+          <v-icon>fa-sort-alpha-down</v-icon>
         </v-btn>
       </v-btn-toggle>
     </v-app-bar>
@@ -31,7 +31,6 @@
     data() {
       return {
         courseId: "",
-        // pushed: false,
         sortAlpha: false,
       };
     },
@@ -41,9 +40,9 @@
       Fragment,
     },
     computed: {
-      ...mapGetters(["getCoursesDistance"]),
+      ...mapGetters(["getCourses"]),
       courses() {
-        const courseList = this.getCoursesDistance.map((x) => x);
+        const courseList = this.getCourses.map((x) => x);
         if (this.sortAlpha) {
           return courseList.sort(function(a, b) {
             let nameA = a.name.toUpperCase();
