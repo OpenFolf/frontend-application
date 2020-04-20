@@ -78,8 +78,6 @@
               <v-btn tile @click="setScore(9)">9</v-btn>
             </tr>
           </tbody>
-          <pre>{{ getPlayers }}</pre>
-          <pre>{{ getHoles }}</pre>
         </table>
       </v-container>
     </v-content>
