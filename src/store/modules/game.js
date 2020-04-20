@@ -307,10 +307,13 @@ const actions = {
   async deletePlayer(context, payload) {
     //Receives playerID as payload and deletes player from database
     const playerId = payload;
+    console.log("Player to delete: ", playerId);
     try {
       await API.graphql(
         graphqlOperation(playergraphQL.deletePlayer, {
-          id: playerId,
+          input: {
+            id: playerId,
+          },
         }),
       );
     } catch (e) {
@@ -318,8 +321,8 @@ const actions = {
     }
     //Create object to update game details
     const updateGameDetails = {
-      id: payload,
-      gameType: context.rootState.user.user.id + " left", // Most recent player changes
+      id: context.rootState.game.game.id,
+      gameType: playerId + " left", // Most recent player changes
     };
     try {
       await API.graphql(
