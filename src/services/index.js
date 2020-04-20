@@ -56,13 +56,11 @@ export function getUserLocation() {
   }
 
   function registerLocation(position) {
-    const location = new Object();
-    location.lat = position.coords.latitude;
-    location.lng = position.coords.longitude;
-    // location.error = false;
-    console.log("location service/success", location);
-    Store.dispatch("setUserLocation", location);
-    console.log("after...");
+    Store.dispatch("setUserLocation", {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+      error: 0,
+    });
   }
 
   function errorHandler(e) {
@@ -70,13 +68,16 @@ export function getUserLocation() {
     // Here we need to react to different reasons for geoLocation API failing.
     // The service might be blocked or the user refused. Maybe more?
     console.log("services/getUserLocation", e.message);
-    const location = new Object();
-    location.lat = 64.128197;
-    location.lng = -21.885087;
-    // location.error = true;
-    console.log("location service/failure", location);
-    Store.dispatch("setUserLocation", location);
-    console.log("after...");
+
+    const lat = 64.128197;
+    const lng = -21.885087;
+    const error = 1;
+    Store.dispatch("setUserLocation", { lat, lng, error });
+    // Store.dispatch("setUserLocation", {
+    //   lat: null,
+    //   lng: null,
+    //   error: true,
+    // });
   }
 }
 

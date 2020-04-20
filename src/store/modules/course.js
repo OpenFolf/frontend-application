@@ -17,13 +17,14 @@ const getters = {
     return state.currentCourse;
   },
   getCoursesDistance: (context, state) => {
+    // console.log("Course state:", state.courses);
     const listWithDistance = JSON.parse(JSON.stringify(state.courses));
     for (let item of listWithDistance) {
       item.distance = getDistanceKM(
-        context.rootState.user.user.location.lat,
-        context.rootState.user.user.location.lng,
-        item.latitude,
-        item.longitude,
+        parseFloat(context.rootState.user.user.location.lat),
+        parseFloat(context.rootState.user.user.location.lng),
+        parseFloat(item.latitude),
+        parseFloat(item.longitude),
       ).toFixed(1);
     }
     return listWithDistance;
@@ -53,7 +54,7 @@ const actions = {
       const courseList = response.data.listCourses.items;
 
       context.commit("updateCourseList", courseList);
-      //console.log("response", response);
+      //console.log("fetchCourseList", response);
     } catch (e) {
       console.log("Error", e);
     }

@@ -5,10 +5,10 @@
       <v-toolbar-title class="headline font-weight-bold" flat>/</v-toolbar-title>
       <v-spacer />
       <v-btn-toggle v-model="sortAlpha">
-        <v-btn depressed :value="true">
+        <v-btn depressed :value="false">
           <v-icon>fa-sort-alpha-down</v-icon>
         </v-btn>
-        <v-btn depressed :value="false">
+        <v-btn depressed :value="true">
           <v-icon>fa-globe-europe</v-icon>
         </v-btn>
       </v-btn-toggle>
@@ -31,8 +31,8 @@
     data() {
       return {
         courseId: "",
-        pushed: false,
-        sortAlpha: true,
+        // pushed: false,
+        sortAlpha: false,
       };
     },
     name: "game",
