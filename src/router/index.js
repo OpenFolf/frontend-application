@@ -85,7 +85,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
     beforeEnter: (to, from, next) => {
-      console.log("Router>/game/:path/lobby ");
       Store.dispatch("toggleHideBottomNav");
       next();
     },
@@ -95,7 +94,6 @@ const routes = [
     path: "/game/:path/scorecard",
     name: "game-scorecard",
     component: () => import(/* webpackChunkName: "scorecard" */ "@/views/Scorecard.vue"), // CHANGE LOCATION to COMPONENTS/GAME
-    props: true,
   },
   {
     path: "/join-game",

@@ -4,12 +4,9 @@
       <v-row dense>
         <v-col cols="12">
           <v-card color="accent" class="pa-1 overflow-x-auto">
-            <v-card-title>User games</v-card-title>
-            <v-btn x-large block color="error" @click="lobbyHandler">
-              <v-icon>Fetch lobby game</v-icon>
-            </v-btn>
-            <!-- <pre> {{ userGames }} </pre> -->
-            <pre> {{ game }} </pre>
+            <v-card-title>Last 200 User games</v-card-title>
+            <!-- Vel haegt ad birta fleiri eda faerri, hvad sem ykkur finnst -->
+            <pre> {{ userGames }} </pre>
           </v-card>
         </v-col>
       </v-row>
@@ -22,20 +19,14 @@
   export default {
     name: "stats",
     computed: {
-      ...mapGetters(["getUserGames", "getGamesList"]),
+      ...mapGetters(["getUserGames"]),
       userGames() {
         return this.getUserGames;
-      },
-      game() {
-        return this.getGamesList;
       },
     },
 
     methods: {
-      ...mapActions(["fetchUserGameList", "fetchLobbyGame"]),
-      lobbyHandler() {
-        this.fetchLobbyGame();
-      },
+      ...mapActions(["fetchUserGameList"]),
     },
     data() {
       return {

@@ -7,7 +7,6 @@
             <v-toolbar-title>Join Game</v-toolbar-title>
             <v-spacer />
           </v-toolbar>
-
           <v-card-text class="headline text--white text-center">
             Enter the 3-letter code
           </v-card-text>
@@ -57,7 +56,6 @@
 <script>
   import { required, minLength, maxLength } from "vuelidate/lib/validators";
   import { mapActions, mapGetters } from "vuex";
-  import { replaceIcelandicCharacters } from "../services";
   export default {
     name: "join-game",
     data() {
@@ -65,25 +63,12 @@
         gameCode: "",
         errorObj: "",
         isError: false,
-        gameObject: undefined,
       };
     },
     methods: {
-      ...mapActions(["fetchGames", "fetchGame", "createPlayer"]),
-      async joinGameRequest() {
-        console.log("gameCode", this.gameCode);
-        await this.checkLobbyCode(this.gameCode.toUpperCase());
-        if (this.gameObject && !this.isError) {
-          await this.createPlayer(this.gameObject.id);
-          await this.fetchGame(this.gameObject.id);
-          this.$router.push({
-            name: "join-lobby",
-            params: {
-              path: replaceIcelandicCharacters(this.gameObject.course.name),
-              id: this.gameObject.id,
-            },
-          });
-        }
+      ...mapActions(["joinGame"]),
+      joinGameRequest() {
+        this.joinGame(this.gameCode.toUpperCase());
       },
       clearErrorObj() {
         this.errorObj = "";
@@ -109,7 +94,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getGamesList"]),
+      ...mapGetters(["getLobbyJoinError"]),
       gameCodeErrors() {
         const errors = [];
         if (!this.$v.gameCode.$dirty) return errors;
@@ -119,6 +104,12 @@
         if (this.isError) errors.push(this.errorObj);
         this.clearErrorObj();
         return errors;
+      },
+    },
+    watch: {
+      getLobbyJoinError() {
+        this.errorObj = this.getLobbyJoinError;
+        this.isError = true;
       },
     },
   };

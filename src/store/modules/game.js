@@ -2,6 +2,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import * as gamegraphQL from "../../graphql/custom/gamegraphQL";
 import * as playergraphQL from "../../graphql/custom/playergraphQL";
 import * as services from "../../services/index";
+import Router from "@/router";
 
 const state = {
   //Added to prevent render error when the scorecard is refreshed in the browser.
@@ -50,10 +51,12 @@ const state = {
     gameStatus: "",
     lobbyCode: "",
     gameDate: "",
+    gameType: "",
   },
   gamesList: [],
   updatePlayer: {}, // DEBUG: ??? ok to delete?
   hideBottomNav: false,
+  lobbyJoinError: "",
 };
 
 // BREAK: Getters
@@ -71,6 +74,9 @@ const getters = {
   getGameStatus: (state) => {
     return state.game.gameStatus;
   },
+  getGameType: (state) => {
+    return state.game.gameType;
+  },
   getHideBottomNav: (state) => {
     console.log("game>actions>toggleHideBottomNav, ");
     return state.hideBottomNav;
@@ -80,6 +86,9 @@ const getters = {
   },
   getHoles: (state) => {
     return state.game.course.holes.items;
+  },
+  getLobbyJoinError: (state) => {
+    return state.lobbyJoinError;
   },
 };
 
@@ -105,15 +114,19 @@ const mutations = {
     state.updatePlayer = payload;
   },
   toggleHideBottomNav: (state) => {
-    console.log("game>Mutations>toggleHideBottomNav, ");
     state.hideBottomNav = !state.hideBottomNav;
+  },
+  setScoreArray: (state, payload) => {
+    state.game.players.items = payload;
+  },
+  setGameStatus: (state, payload) => {
+    state.game.gameStatus = payload;
   },
 };
 
 // BREAK: ACTIONS
 const actions = {
   toggleHideBottomNav: ({ commit }) => {
-    console.log("game>actions>toggleHideBottomNav, ");
     commit("toggleHideBottomNav");
   },
 
@@ -129,24 +142,6 @@ const actions = {
       context.commit("setGame", game);
     } catch (e) {
       console.log("Fetch game error", e);
-    }
-  },
-
-  async fetchLobbyGame(context, payload) {
-    // Functions receives lobbycode as payload
-
-    // Get games that match lobbycode and have a status of "0"
-    try {
-      const response = await API.graphql(
-        graphqlOperation(gamegraphQL.listGames, {
-          filter: { gameStatus: { eq: "0" }, lobbyCode: { eq: payload } },
-        }),
-      );
-
-      // Add list, (that should be a list of 1) to the state
-      context.commit("setGamesList", response.data.listGames.items);
-    } catch (e) {
-      console.log("Fetch Lobby game error", e);
     }
   },
 
@@ -209,6 +204,9 @@ const actions = {
 
   async startGame(context) {
     //Change status of game to signal it has started //
+    //Update state
+    // TODO: Change routing logic
+    context.commit("setGameStatus", "1");
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
@@ -216,7 +214,11 @@ const actions = {
     };
     //Update the game details with new gameStatus
     try {
-      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
+      await API.graphql(
+        graphqlOperation(gamegraphQL.updateGame, {
+          input: updateGameDetails,
+        }),
+      );
     } catch (e) {
       console.log("Update gameStatus error", e);
     }
@@ -236,7 +238,11 @@ const actions = {
         scoreArray: scoreInit,
       };
       try {
-        await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: updateScore }));
+        await API.graphql(
+          graphqlOperation(playergraphQL.updatePlayer, {
+            input: updateScore,
+          }),
+        );
       } catch (e) {
         console.log("Update player error", e);
       }
@@ -246,8 +252,84 @@ const actions = {
     context.dispatch("fetchGame", context.rootState.game.game.id);
   },
 
+  async joinGame(context, code) {
+    // Get Games from database with matching lobbycode
+    try {
+      const response = await API.graphql(
+        graphqlOperation(gamegraphQL.listGames, {
+          filter: { lobbyCode: { eq: code } },
+        }),
+      );
+      const gamesList = response.data.listGames.items;
+      // Add list to state
+      context.commit("setGamesList", gamesList);
+
+      // if gamesList length is 0 then error message 'no such game'
+      if (gamesList.length == 0) {
+        // Signal to component that no game exists with lobby code
+        context.state.lobbyJoinError = "noGame";
+      }
+
+      // Sort gamesList by time
+      gamesList.sort(function(a, b) {
+        return b.gameDate - a.gameDate;
+      });
+
+      // check gameStatus on gamesList[0]
+      // If gameStatus 0 => create player, fetch game, route to lobby
+      if (gamesList[0].gameStatus == 0) {
+        // createPlayer on this game ID
+        await context.dispatch("createPlayer", gamesList[0].id);
+        // Store game in state
+        await context.dispatch("fetchGame", gamesList[0].id);
+        // Route to lobby
+        Router.push({
+          name: "join-lobby",
+          params: {
+            path: services.replaceIcelandicCharacters(gamesList[0].course.name),
+            id: gamesList[0].id,
+          },
+        });
+      }
+
+      // If gameStatus 1 =>
+      if (gamesList[0].gameStatus == 1) {
+        // Check if player is part of game if so fetch game to state then route to scorecard
+        const gamePlayers = gamesList[0].players.items;
+        const userId = context.rootState.user.user.id;
+        let playerInGame = false;
+        // Loop through and check if user is player in game
+        for (let i = 0; i < gamePlayers.length; i++) {
+          if (gamePlayers[i].id == userId) {
+            // If he is user in game then fetch game into state and set playerInGame bool to true
+            playerInGame = true;
+          }
+        }
+        // If player in game then route to scorecard
+        if (playerInGame) {
+          context.dispatch("fetchGame", gamesList[0].id);
+          context.dispatch("toggleHideBottomNav");
+          Router.push({ name: "game-scorecard" });
+        } else {
+          // If player not part of game then error message 'Game already started'
+          // Game has already started, too late to join
+          context.state.lobbyJoinError = "playerNotInGame";
+        }
+      }
+      // if Gamestatus 2 => error message 'Game already finished'
+      if (gamesList[0].gameStatus == 2) {
+        // Game is already finished
+        context.state.lobbyJoinError = "gameOver";
+      }
+    } catch (e) {
+      console.log("Fetch Lobby game error", e);
+    }
+  },
+
   async finishGame(context) {
     //Change status of game to signal it has ended
+    //Update state
+    context.commit("setGameStatus", "2");
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
@@ -308,7 +390,9 @@ const actions = {
     try {
       await API.graphql(
         graphqlOperation(playergraphQL.deletePlayer, {
-          id: playerId,
+          input: {
+            id: playerId,
+          },
         }),
       );
     } catch (e) {
@@ -316,8 +400,8 @@ const actions = {
     }
     //Create object to update game details
     const updateGameDetails = {
-      id: payload,
-      gameType: context.rootState.user.user.id + " left", // Most recent player changes
+      id: context.rootState.game.game.id,
+      gameType: playerId + " left", // Most recent player changes
     };
     try {
       await API.graphql(
@@ -332,9 +416,25 @@ const actions = {
 
   async updatePlayer(context, payload) {
     //Receives new score array as payload and updates score in database
-    // TODO: Create service function to update state of player array with new score, to fix scorecard update lag
+    // TODO: Add totalscore to the payload to add to state along with new array
+    // Get list of all players in game
+    const gamePlayers = context.rootState.game.game.players.items;
+    // Update scoreArray for player to store in state
+    for (var i = 0; i < gamePlayers.length; i++) {
+      if (payload.id == gamePlayers[i].id) {
+        gamePlayers[i].scoreArray = payload.scoreArray;
+      }
+    }
+    console.log("gamePlayers: ", gamePlayers);
+    // Set new scorearray in state
+    context.commit("setScoreArray", gamePlayers);
+    // Update score for player in database
     try {
-      await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: payload }));
+      await API.graphql(
+        graphqlOperation(playergraphQL.updatePlayer, {
+          input: payload,
+        }),
+      );
     } catch (e) {
       console.log("update player error", e);
     }
@@ -383,10 +483,22 @@ const actions = {
     }
   },
 
+  // Refresh functions
   refreshGame(context) {
-    // The refresh button works and is connected. Unable to console.log this statement, donno why, but if I for example commit to some function it will call it.
+    // Fetch game object again from database
+    const gameId = context.rootState.game.game.id;
+    context.dispatch("fetchGame", gameId);
+    // Subscribe to all players in game again
+    context.dispatch("subscribeToGame");
+  },
 
-    return console.log("Cl> Store>Game>Actions>refreshGame", context.rootState.game.game);
+  refreshLobby(context) {
+    // Fetch game object again from database
+    const gameId = context.rootState.game.game.id;
+    console.log("Fetching game: ", gameId);
+    context.dispatch("fetchGame", gameId);
+    // Subscribe to all players in game again
+    context.dispatch("subscribeToPlayerList");
   },
 };
 
