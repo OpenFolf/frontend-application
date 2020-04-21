@@ -74,6 +74,8 @@
         console.log("gameCode", this.gameCode);
         await this.checkLobbyCode(this.gameCode.toUpperCase());
         if (this.gameObject && !this.isError) {
+          await this.createPlayer(this.gameObject.id);
+          await this.fetchGame(this.gameObject.id);
           this.$router.push({
             name: "join-lobby",
             params: {
@@ -96,9 +98,6 @@
         } else if (this.gameObject.gameStatus != 0) {
           this.errorObj = `A game with the lobby code ${code} found but has already started`;
           this.isError = true;
-        } else {
-          await this.createPlayer(this.gameObject.id);
-          await this.fetchGame(this.gameObject.id);
         }
       },
     },

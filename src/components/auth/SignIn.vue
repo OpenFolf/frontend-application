@@ -32,7 +32,7 @@
         <v-btn
           block
           :disabled="$v.email.$invalid || $v.password.$invalid || isCompleted"
-          @click="signIn"
+          @click="signInUser"
           color="primary"
           >SIGN IN
         </v-btn>
@@ -67,7 +67,7 @@
 <script>
   import { mapGetters, mapActions } from "vuex";
   import { required, email, minLength } from "vuelidate/lib/validators";
-  import { getUserLocation } from "@/services";
+
   export default {
     name: "sign-in",
     props: {
@@ -90,42 +90,24 @@
 
     methods: {
       ...mapActions([
+        "signInAction",
         "setSignedIn",
         "setUserAuthObject",
         "setUserId",
         "fetchUser",
         "fetchCourseList",
       ]),
-      signIn() {
-        this.$Amplify.Auth.signIn(this.email, this.password)
-          .then(() => {
-            this.setSignedIn(true);
-            this.$Amplify.Auth.currentAuthenticatedUser()
-              .then((data) => {
-                if (data && data.signInUserSession) {
-                  this.setUserAuthObject(data);
-                  this.setUserId(data.username);
-                }
-              })
-              .then(() => {
-                getUserLocation();
-              })
-              .then(() => {
-                this.fetchUser();
-                this.fetchCourseList();
-              })
-              .catch((e) => this.setError(e));
-          })
-          .then(() => {
-            this.$refs.signInForm.reset();
-          })
-          .catch((e) => {
-            if (e.code && e.code === "UserNotConfirmedException") {
-              this.$emit("authState", { msg: "confirmSignUp", username: this.email });
-            } else {
-              this.setError(e);
-            }
-          });
+
+      async signInUser() {
+        try {
+          await this.signInAction({ email: this.email, password: this.password });
+        } catch (e) {
+          if (e.code && e.code === "UserNotConfirmedException") {
+            this.$emit("authState", { msg: "confirmSignUp", username: this.email });
+          } else {
+            this.setError(e);
+          }
+        }
       },
       signUp() {
         this.$emit("authState", { msg: "signUp" });
@@ -158,12 +140,13 @@
       },
     },
     computed: {
-      ...mapGetters(["getSignedIn"]),
+      ...mapGetters(["getSignedIn", "errorMsg"]),
       emailErrors() {
         const errors = [];
         if (!this.$v.email.$dirty) return errors;
         !this.$v.email.email && errors.push("Must be valid e-mail");
         !this.$v.email.required && errors.push("E-mail is required");
+        if (this.errorMsg) errors.push(this.errorMsg);
         return errors;
       },
       passwordErrors() {
