@@ -40,12 +40,14 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="signUp">No account? Create one!</v-btn>
+      <v-btn x-small text @click="this.SIGN_UP">No account? Create one!</v-btn>
       <v-spacer />
     </v-card-actions>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="forgot">Forgot your password? Reset Password.</v-btn>
+      <v-btn x-small text @click="this.FORGOT_PASSWORD"
+        >Forgot your password? Reset Password.</v-btn
+      >
       <v-spacer />
     </v-card-actions>
     <v-alert
@@ -65,7 +67,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from "vuex";
+  import { mapGetters, mapActions, mapMutations } from "vuex";
   import { required, email, minLength } from "vuelidate/lib/validators";
 
   export default {
@@ -97,37 +99,34 @@
         "fetchUser",
         "fetchCourseList",
       ]),
-
+      ...mapMutations([
+        "SIGN_UP",
+        "LOG_IN",
+        "FORGOT_PASSWORD",
+        "CONFIRM_SIGN_UP",
+        "ERROR_MSG",
+        "CLEAR_ERRORS",
+      ]),
       async signInUser() {
-        try {
-          await this.signInAction({ email: this.email, password: this.password });
-        } catch (e) {
-          if (e.code && e.code === "UserNotConfirmedException") {
-            this.$emit("authState", { msg: "confirmSignUp", username: this.email });
-          } else {
-            this.setError(e);
-          }
-        }
+        this.signInAction({ email: this.email, password: this.password });
       },
-      signUp() {
-        this.$emit("authState", { msg: "signUp" });
-      },
-      forgot() {
-        this.$emit("authState", { msg: "forgotPassword", username: this.email });
-      },
-      setError(e) {
-        this.errorObj = this.$Amplify.I18n.get(e.message || e);
-        this.isError = true;
-      },
-      validate() {
-        this.$refs.signInForm.validate();
-      },
-      reset() {
-        this.$refs.signInForm.reset();
-      },
-      resetValidation() {
-        this.$refs.signInForm.resetValidation();
-      },
+      // setError(e) {
+      //   this.errorObj = this.$Amplify.I18n.get(e.message || e);
+      //   this.isError = true;
+      // },
+      // validate() {
+      //   this.$refs.signInForm.validate();
+      // },
+      // reset() {
+      //   this.$refs.signInForm.reset();
+      // },
+      // resetValidation() {
+      //   this.$refs.signInForm.resetValidation();
+      // },
+      // clearErrorObj() {
+      //   if ()
+      //   this.CLEAR_ERRORS();
+      // },
     },
     validations: {
       email: {
@@ -142,11 +141,13 @@
     computed: {
       ...mapGetters(["getSignedIn", "errorMsg"]),
       emailErrors() {
+        console.log("SignIn>EmailErrors", this.errorMsg);
         const errors = [];
         if (!this.$v.email.$dirty) return errors;
         !this.$v.email.email && errors.push("Must be valid e-mail");
         !this.$v.email.required && errors.push("E-mail is required");
-        if (this.errorMsg) errors.push(this.errorMsg);
+        if (this.errorMsg.message) errors.push(this.errorMsg.message);
+        if (this.errorMsg.message) this.CLEAR_ERRORS();
         return errors;
       },
       passwordErrors() {
@@ -154,6 +155,7 @@
         if (!this.$v.password.$dirty) return errors;
         !this.$v.password.minLength && errors.push("Password must be at least 8 characters long");
         !this.$v.password.required && errors.push("Password is required.");
+        if (this.errorMsg.message) this.CLEAR_ERRORS();
         return errors;
       },
       isComplete() {

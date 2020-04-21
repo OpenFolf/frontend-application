@@ -1,19 +1,13 @@
 <template>
   <v-card class="pa-5" color="transparent" flat>
-    <sign-in
-      v-if="!getSignedIn && signIn"
-      @authState="authHandler"
-      :userNameEmail="userNameEmail"
-    />
-    <sign-up v-if="!getSignedIn && signUp" @authState="authHandler" />
+    <sign-in v-if="!getSignedIn && this.authState == 'signIn'" :userNameEmail="userNameEmail" />
+    <sign-up v-if="!getSignedIn && this.authState == 'signUp'" />
     <confirm-sign-up
-      v-if="!getSignedIn && confirmSignUp"
-      @authState="authHandler"
+      v-if="!getSignedIn && this.authState == 'confirmSignUp'"
       :userNameEmail="userNameEmail"
     />
     <reset-password
-      v-if="!getSignedIn && resetPassword"
-      @authState="authHandler"
+      v-if="!getSignedIn && this.authState == 'resetPassword'"
       :userNameEmail="userNameEmail"
     />
   </v-card>
@@ -71,7 +65,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getSignedIn"]),
+      ...mapGetters(["getSignedIn", "authState"]),
     },
   };
 </script>

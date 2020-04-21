@@ -6,14 +6,10 @@ const state = {
   userAuthObject: null,
   signedIn: false,
   isLoading: false,
-  errorMsg: "",
-  // authState: {
-  //    signIn: false,
-  //    signUp: true,
-  //    confirmSignUp: false,
-  //    resetPassword: false,
-  //     userNameEmail: "",
-  // },
+  errorMsg: {
+    message: "",
+  },
+  authState: "signIn",
 };
 
 const getters = {
@@ -28,6 +24,10 @@ const getters = {
   errorMsg: (state) => {
     console.log("Auth>Getters>ErrorMsg");
     return state.errorMsg;
+  },
+  authState: (state) => {
+    console.log("Auth>Getters>ErrorMsg");
+    return state.authState;
   },
 };
 
@@ -53,6 +53,26 @@ const mutations = {
     console.log("Auth>mutations>ERROR_MSG");
     state.errorMsg = errorMsg;
   },
+  CLEAR_ERRORS: (state) => {
+    console.log("Auth>mutations>CLEAR_ERRORS");
+    state.errorMsg = {
+      errorMsg: {
+        message: "",
+      },
+    };
+  },
+  SIGN_UP: (state) => {
+    state.authState = "signUp";
+  },
+  LOG_IN: (state) => {
+    state.authState = "signIn";
+  },
+  FORGOT_PASSWORD: (state) => {
+    state.authState = "forgotPassword";
+  },
+  CONFIRM_SIGN_UP: (state) => {
+    state.authState = "confirmSignUp";
+  },
 };
 
 const actions = {
@@ -76,9 +96,9 @@ const actions = {
       commit("SIGN_IN", true);
     } catch (e) {
       if (e.code && e.code === "UserNotConfirmedException") {
-        this.$emit("authState", { msg: "confirmSignUp", username: this.email });
+        commit("CONFIRM_SIGN_UP");
       } else {
-        this.setError(e);
+        commit("ERROR_MSG", e);
       }
     }
     dispatch("fetchUser");
@@ -111,31 +131,6 @@ const actions = {
       this.setError(e);
     }
   },
-  // authHandler(e) {
-  // if (e.msg == "signUp") {
-  //   this.signIn = false;
-  //   this.signUp = true;
-  //   this.confirmSignUp = false;
-  //   this.resetPassword = false;
-  // } else if (e.msg == "forgotPassword") {
-  //   this.signIn = false;
-  //   this.signUp = false;
-  //   this.confirmSignUp = false;
-  //   this.resetPassword = true;
-  //   this.userNameEmail = e.username;
-  // } else if (e.msg == "signIn") {
-  //   this.signIn = true;
-  //   this.signUp = false;
-  //   this.confirmSignUp = false;
-  //   this.resetPassword = false;
-  //   this.userNameEmail = e.username;
-  // } else if (e.msg == "confirmSignUp") {
-  //   this.signIn = false;
-  //   this.signUp = false;
-  //   this.confirmSignUp = true;
-  //   this.resetPassword = false;
-  //   this.userNameEmail = e.username;
-  // }
 };
 
 export default {
