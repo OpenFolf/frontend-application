@@ -116,7 +116,6 @@
     },
     created() {
       this.fetchGame(this.getGame.id);
-      this.subscribeToGame();
     },
     props: {
       path: {
@@ -143,7 +142,15 @@
     },
     watch: {
       getGameStatus() {
-        this.$router.push({ name: "game-scorecard" });
+        if (this.getGameStatus == 1) {
+          this.$router.push({ name: "game-scorecard" });
+        }
+      },
+      getGame: {
+        immediate: true,
+        handler() {
+          this.subscribeToGame();
+        },
       },
     },
   };
