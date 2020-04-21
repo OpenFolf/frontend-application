@@ -61,14 +61,7 @@
     },
     methods: {
       ...mapActions(["signUp"]),
-      ...mapMutations([
-        "LOG_IN",
-        "SIGN_UP",
-        "FORGOT_PASSWORD",
-        "CONFIRM_SIGN_UP",
-        "ERROR_MSG",
-        "CLEAR_ERRORS",
-      ]),
+      ...mapMutations(["LOG_IN", "SIGN_UP", "CONFIRM_SIGN_UP", "ERROR_MSG", "CLEAR_ERRORS"]),
       signUpUser() {
         console.log("SignUp>SignUpUser");
         this.signUp({

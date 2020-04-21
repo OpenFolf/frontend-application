@@ -1,5 +1,5 @@
 <template>
-  <v-btn @click="signOut" small color="error">
+  <v-btn @click="signOutUser" small color="error">
     <v-icon class="mx-0">fa-sign-out-alt</v-icon>
   </v-btn>
 </template>
@@ -9,18 +9,10 @@
   export default {
     name: "sign-out",
     methods: {
-      ...mapActions(["setSignOut"]),
-      signOut() {
-        this.$Amplify.Auth.signOut()
-          .then(() => {
-            this.setSignOut();
-          })
-          .catch((e) => console.log("error", e));
-        // .catch((e) => this.setError(e));
+      ...mapActions(["signOut"]),
+      signOutUser() {
+        this.signOut();
       },
-      // setError: function(e) {
-      //   console.log("error", e);
-      // },
     },
   };
 </script>

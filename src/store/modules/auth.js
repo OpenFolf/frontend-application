@@ -26,6 +26,9 @@ const getters = {
     console.log("Auth>Getters>getSignedIn");
     return state.signedIn;
   },
+  isSignedIn: (state) => {
+    return state.user.id;
+  },
   errorMsg: (state) => {
     console.log("Auth>Getters>ErrorMsg");
     return state.errorMsg;
@@ -37,10 +40,6 @@ const getters = {
 };
 
 const mutations = {
-  setUserAuthObject: (state, user) => {
-    console.log("Auth>mutations>setUserAuthObject");
-    state.userAuthId = user;
-  },
   SIGN_IN: (state, signedIn) => {
     console.log("Auth>mutations>SIGN_IN");
     state.signedIn = signedIn;
@@ -72,24 +71,22 @@ const mutations = {
     state.authState.path = "signUp";
     if (payload.email) state.authState.email = payload.email;
   },
-
   LOG_IN: (state, payload) => {
     console.log("payload", payload);
     console.log("payload", payload.email);
     state.authState.path = "signIn";
     if (payload.email) state.authState.email = payload.email;
   },
-  FORGOT_PASSWORD: (state, payload) => {
-    console.log("payload", payload);
-    console.log("payload", payload.email);
-    state.authState.path = "forgotPassword";
-    if (payload.email) state.authState.email = payload.email;
-  },
-
   CONFIRM_SIGN_UP: (state, payload) => {
     console.log("payload", payload);
     console.log("payload", payload.email);
     state.authState.path = "confirmSignUp";
+    if (payload.email) state.authState.email = payload.email;
+  },
+  RESET_PASSWORD: (state, payload) => {
+    console.log("payload", payload);
+    console.log("payload", payload.email);
+    state.authState.path = "resetPassword";
     if (payload.email) state.authState.email = payload.email;
   },
   RESET(state) {
@@ -101,23 +98,9 @@ const mutations = {
 };
 
 const actions = {
-  // setUserAuthObject: ({ commit }, user) => {
-  //   console.log("Auth>Actions>setUserAuthObject");
-  //   commit("setUserAuthObject", user);
-  // },
-  // setSignedIn: ({ commit }, signedIn) => {
-  //   console.log("Auth>Actions>setSignedIn");
-  //   commit("setSignedIn", signedIn);
-  // },
-  setSignOut: ({ commit }) => {
-    console.log("Auth>Actions>setSignOut");
-    commit("SIGN_OUT");
-  },
-  // BREAK:
   reset({ commit }) {
     commit("RESET");
   },
-
   async signIn({ commit, dispatch }, { email, password }) {
     console.log("Auth>Actions>SignIn", email, password);
     try {
@@ -167,7 +150,7 @@ const actions = {
         commit("CONFIRM_SIGN_UP", { email: userObj.username });
         return;
       }
-      commit("LOG_IN");
+      commit("LOG_IN", { email: userObj.email });
     } catch (e) {
       if (e.code && e.code === "UserNotConfirmedException") {
         commit("CONFIRM_SIGN_UP", { email: userObj.username });
@@ -193,6 +176,32 @@ const actions = {
       await Auth.resendSignUp(email);
     } catch (e) {
       commit("ERROR_MSG", e);
+    }
+  },
+  async resetPassword({ commit }, email) {
+    console.log("resetPassword", email);
+    try {
+      await Auth.forgotPassword(email);
+    } catch (e) {
+      commit("ERROR_MSG", e);
+    }
+  },
+  async forgotPasswordSubmit({ commit }, { email, code, password }) {
+    console.log("forgotPasswordSubmit", email, code, password);
+    try {
+      await Auth.forgotPasswordSubmit(email, code, password);
+      commit("LOG_IN", { email: email });
+    } catch (e) {
+      commit("ERROR_MSG", e);
+    }
+  },
+  async signOut({ commit }) {
+    console.log("Auth>Actions>signOut");
+    try {
+      await Auth.signOut();
+      commit("SIGN_OUT");
+    } catch (e) {
+      console.log("Error in Auth>Actions>signOut", e);
     }
   },
 };

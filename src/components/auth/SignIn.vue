@@ -43,9 +43,7 @@
     </v-card-actions>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="this.FORGOT_PASSWORD"
-        >Forgot your password? Reset Password.</v-btn
-      >
+      <v-btn x-small text @click="this.RESET_PASSWORD">Forgot your password? Reset Password.</v-btn>
       <v-spacer />
     </v-card-actions>
   </v-card>
@@ -57,13 +55,6 @@
 
   export default {
     name: "sign-in",
-    props: {
-      userNameEmail: {
-        type: String,
-        required: false,
-        default: "",
-      },
-    },
     data() {
       return {
         email: "",
@@ -83,7 +74,7 @@
       ...mapMutations([
         "SIGN_UP",
         "LOG_IN",
-        "FORGOT_PASSWORD",
+        "RESET_PASSWORD",
         "CONFIRM_SIGN_UP",
         "ERROR_MSG",
         "CLEAR_ERRORS",
