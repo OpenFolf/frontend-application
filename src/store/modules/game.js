@@ -111,6 +111,9 @@ const mutations = {
   setScoreArray: (state, payload) => {
     state.game.players.items = payload;
   },
+  setGameStatus: (state, payload) => {
+    state.game.gameStatus = payload;
+  },
 };
 
 // BREAK: ACTIONS
@@ -214,6 +217,9 @@ const actions = {
 
   async startGame(context) {
     //Change status of game to signal it has started //
+    //Update state
+    // TODO: Change routing logic
+    //context.commit("setGameStatus", "2");
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
@@ -221,7 +227,11 @@ const actions = {
     };
     //Update the game details with new gameStatus
     try {
-      await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
+      await API.graphql(
+        graphqlOperation(gamegraphQL.updateGame, {
+          input: updateGameDetails,
+        }),
+      );
     } catch (e) {
       console.log("Update gameStatus error", e);
     }
@@ -241,7 +251,11 @@ const actions = {
         scoreArray: scoreInit,
       };
       try {
-        await API.graphql(graphqlOperation(playergraphQL.updatePlayer, { input: updateScore }));
+        await API.graphql(
+          graphqlOperation(playergraphQL.updatePlayer, {
+            input: updateScore,
+          }),
+        );
       } catch (e) {
         console.log("Update player error", e);
       }
@@ -253,6 +267,8 @@ const actions = {
 
   async finishGame(context) {
     //Change status of game to signal it has ended
+    //Update state
+    context.commit("setGameStatus", "2");
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
@@ -407,6 +423,7 @@ const actions = {
     }
   },
 
+  // Refresh functions
   refreshGame(context) {
     // Fetch game object again from database
     const gameId = context.rootState.game.game.id;
