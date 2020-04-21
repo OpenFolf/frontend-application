@@ -219,7 +219,7 @@ const actions = {
     //Change status of game to signal it has started //
     //Update state
     // TODO: Change routing logic
-    //context.commit("setGameStatus", "2");
+    context.commit("setGameStatus", "1");
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,

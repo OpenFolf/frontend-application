@@ -95,21 +95,22 @@
         if (!this.gameObject) {
           this.errorObj = `No game found with the lobby code ${code}`;
           this.isError = true;
-        } else if (this.gameObject.gameStatus != 0) {
+        } else if (this.gameObject.gameStatus == 1) {
           // All players registered in game
           const gamePlayers = this.gameObject.players.items;
-          var playerInGame = false;
+          let playerInGame = false;
           // Loop through and check if user is player in game
-          for (var i = 0; i < gamePlayers.length; i++) {
+          for (let i = 0; i < gamePlayers.length; i++) {
             if (gamePlayers[i].id == this.getUserId) {
               // If he is user in game then fetch game into state and set playerInGame bool to true
               playerInGame = true;
-              await this.fetchGame(this.gameObject.id);
+              this.fetchGame(this.gameObject.id);
               // TODO: Route to scorecard. Through lobby? Gamestatus watcher not working as gameStatus technically not updating. Talk to Aex
             }
           }
           // The game has been started but you are not one of the players
           if (!playerInGame) {
+            console.log("PlayerInGame", playerInGame);
             this.errorObj = `A game with the lobby code ${code} found but has already started`;
             this.isError = true;
           }
