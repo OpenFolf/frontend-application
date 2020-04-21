@@ -125,7 +125,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getGame", "getGameStatus", "getUser", "getPlayers"]),
+      ...mapGetters(["getGame", "getGameStatus", "getUser", "getPlayers", "getGameType"]),
       isOwner() {
         return this.getUser.id === this.getGame.owner.id;
       },
@@ -137,7 +137,6 @@
     methods: {
       ...mapActions(["startGame", "fetchGame", "subscribeToGame", "deletePlayer", "refreshLobby"]),
       removeUser(playerId) {
-        console.log("methods>removeUser, userid", playerId);
         this.deletePlayer(playerId);
       },
     },
@@ -145,6 +144,7 @@
       getGameStatus() {
         this.$router.push({ name: "game-scorecard" });
       },
+      getGameType() {},
     },
   };
 </script>

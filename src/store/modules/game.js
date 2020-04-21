@@ -71,6 +71,9 @@ const getters = {
   getGameStatus: (state) => {
     return state.game.gameStatus;
   },
+  getGameType: (state) => {
+    return state.game.gameType;
+  },
   getHideBottomNav: (state) => {
     console.log("game>actions>toggleHideBottomNav, ");
     return state.hideBottomNav;
@@ -310,7 +313,6 @@ const actions = {
   async deletePlayer(context, payload) {
     //Receives playerID as payload and deletes player from database
     const playerId = payload;
-    console.log("Player to delete: ", playerId);
     try {
       await API.graphql(
         graphqlOperation(playergraphQL.deletePlayer, {
