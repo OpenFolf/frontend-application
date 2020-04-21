@@ -69,7 +69,7 @@
         <v-container class="d-flex flex-column align-center justify-center">
           <pre class="mb-5">{{ $log(getGame.id) || getGame.id }}</pre>
           <v-divider />
-          <pre class="mb-5">{{ $log(getGameStatus) || getGameStatus }}</pre>
+          <pre class="mb-5">{{ $log(getGameType) || getGameType }}</pre>
         </v-container>
         <!-- <v-card class="pa-1 overflow-x-auto">
           <pre class="mb-5">{{ $log(getGame) || getGame }}</pre>
@@ -134,7 +134,14 @@
     },
     components: { Fragment, ConfirmDialogue },
     methods: {
-      ...mapActions(["startGame", "fetchGame", "subscribeToGame", "deletePlayer", "refreshLobby"]),
+      ...mapActions([
+        "startGame",
+        "fetchGame",
+        "subscribeToGame",
+        "deletePlayer",
+        "refreshLobby",
+        "toggleHideNavBar",
+      ]),
       removeUser(playerId) {
         this.deletePlayer(playerId);
       },
@@ -152,6 +159,7 @@
         },
       },
       getGameType() {
+        console.log("GameType changed");
         const gamePlayers = this.getGame.players.items;
         const userId = this.getUser.id;
         let playerInGame = false;
@@ -164,6 +172,7 @@
         }
 
         if (!playerInGame) {
+          this.toggleHideNavBar;
           this.$router.push({ name: "home-menu" });
         }
       },

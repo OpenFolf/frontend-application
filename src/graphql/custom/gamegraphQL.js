@@ -43,6 +43,7 @@ export const createGame = /* GraphQL */ `
       gameStatus
       lobbyCode
       gameDate
+      gameType
     }
   }
 `;
@@ -90,6 +91,7 @@ export const updateGame = /* GraphQL */ `
       gameStatus
       lobbyCode
       gameDate
+      gameType
     }
   }
 `;
@@ -145,6 +147,7 @@ export const getGame = /* GraphQL */ `
       gameStatus
       lobbyCode
       gameDate
+      gameType
     }
   }
 `;
@@ -171,6 +174,7 @@ export const listGames = /* GraphQL */ `
         }
         gameStatus
         lobbyCode
+        gameType
       }
       nextToken
     }

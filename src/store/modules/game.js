@@ -51,6 +51,7 @@ const state = {
     gameStatus: "",
     lobbyCode: "",
     gameDate: "",
+    gameType: "",
   },
   gamesList: [],
   updatePlayer: {}, // DEBUG: ??? ok to delete?
