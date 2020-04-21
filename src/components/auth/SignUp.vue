@@ -31,34 +31,23 @@
           block
           color="primary"
           :disabled="$v.email.$invalid || $v.password.$invalid"
-          @click="signUp"
+          @click="signUpUser"
           >Sign Up</v-btn
         >
       </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="signIn">Already have an account? Sign In!</v-btn>
+      <v-btn x-small text @click="this.LOG_IN">Already have an account? Sign In!</v-btn>
       <v-spacer />
     </v-card-actions>
-    <v-alert
-      dense
-      border="top"
-      colored-border
-      close-text="Dismiss"
-      dismissible
-      v-model="isError"
-      elevation="0"
-      class="py-5"
-      color="error"
-    >
-      {{ errorObj }}
-    </v-alert>
   </v-card>
 </template>
 
 <script>
+  import { mapGetters, mapActions, mapMutations } from "vuex";
   import { required, email, minLength } from "vuelidate/lib/validators";
+
   export default {
     name: "sign-up",
     data() {
@@ -71,38 +60,22 @@
       };
     },
     methods: {
-      signUp() {
-        this.$Amplify.Auth.signUp({
+      ...mapActions(["signUp"]),
+      ...mapMutations([
+        "LOG_IN",
+        "SIGN_UP",
+        "FORGOT_PASSWORD",
+        "CONFIRM_SIGN_UP",
+        "ERROR_MSG",
+        "CLEAR_ERRORS",
+      ]),
+      signUpUser() {
+        console.log("SignUp>SignUpUser");
+        this.signUp({
           attributes: { email: this.email },
           username: this.email,
           password: this.password,
-        })
-          .then((data) => {
-            if (data.userConfirmed === false) {
-              return this.$emit("authState", {
-                msg: "confirmSignUp",
-                username: this.email,
-              });
-            }
-            return this.$emit("authState", { msg: "signIn", username: this.email });
-          })
-          .catch((e) => this.setError(e));
-      },
-      signIn() {
-        this.$emit("authState", { msg: "signIn", username: this.email });
-      },
-      setError(e) {
-        this.errorObj = this.$Amplify.I18n.get(e.message || e);
-        this.isError = true;
-      },
-      validate() {
-        this.$refs.signUpForm.validate();
-      },
-      reset() {
-        this.$refs.signUpForm.reset();
-      },
-      resetValidation() {
-        this.$refs.signUpForm.resetValidation();
+        });
       },
     },
     validations: {
@@ -115,9 +88,18 @@
         minLength: minLength(8),
       },
     },
+    created() {
+      this.email = this.authState.email;
+    },
     computed: {
+      ...mapGetters(["errorMsg", "authState"]),
       emailErrors() {
         const errors = [];
+        if (this.errorMsg.message) {
+          errors.push(this.errorMsg.message);
+          this.CLEAR_ERRORS();
+          return errors;
+        }
         if (!this.$v.email.$dirty) return errors;
         !this.$v.email.email && errors.push("Must be valid e-mail");
         !this.$v.email.required && errors.push("E-mail is required");
@@ -128,6 +110,7 @@
         if (!this.$v.password.$dirty) return errors;
         !this.$v.password.minLength && errors.push("Password must be at least 8 characters long");
         !this.$v.password.required && errors.push("Password is required.");
+        if (this.errorMsg.message) this.CLEAR_ERRORS();
         return errors;
       },
     },

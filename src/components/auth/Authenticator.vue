@@ -1,15 +1,9 @@
 <template>
   <v-card class="pa-5" color="transparent" flat>
-    <sign-in v-if="!getSignedIn && this.authState == 'signIn'" :userNameEmail="userNameEmail" />
-    <sign-up v-if="!getSignedIn && this.authState == 'signUp'" />
-    <confirm-sign-up
-      v-if="!getSignedIn && this.authState == 'confirmSignUp'"
-      :userNameEmail="userNameEmail"
-    />
-    <reset-password
-      v-if="!getSignedIn && this.authState == 'resetPassword'"
-      :userNameEmail="userNameEmail"
-    />
+    <sign-in v-if="!getSignedIn && this.authState.path == 'signIn'" />
+    <sign-up v-if="!getSignedIn && this.authState.path == 'signUp'" />
+    <confirm-sign-up v-if="!getSignedIn && this.authState.path == 'confirmSignUp'" />
+    <reset-password v-if="!getSignedIn && this.authState.path == 'resetPassword'" />
   </v-card>
 </template>
 
@@ -27,43 +21,43 @@
       ConfirmSignUp,
       ResetPassword,
     },
-    data() {
-      return {
-        userNameEmail: "",
-        signIn: true,
-        signUp: false,
-        confirmSignUp: false,
-        resetPassword: false,
-      };
-    },
-    methods: {
-      authHandler(e) {
-        if (e.msg == "signUp") {
-          this.signIn = false;
-          this.signUp = true;
-          this.confirmSignUp = false;
-          this.resetPassword = false;
-        } else if (e.msg == "forgotPassword") {
-          this.signIn = false;
-          this.signUp = false;
-          this.confirmSignUp = false;
-          this.resetPassword = true;
-          this.userNameEmail = e.username;
-        } else if (e.msg == "signIn") {
-          this.signIn = true;
-          this.signUp = false;
-          this.confirmSignUp = false;
-          this.resetPassword = false;
-          this.userNameEmail = e.username;
-        } else if (e.msg == "confirmSignUp") {
-          this.signIn = false;
-          this.signUp = false;
-          this.confirmSignUp = true;
-          this.resetPassword = false;
-          this.userNameEmail = e.username;
-        }
-      },
-    },
+    // data() {
+    //   return {
+    //     userNameEmail: "",
+    //     signIn: true,
+    //     signUp: false,
+    //     confirmSignUp: false,
+    //     resetPassword: false,
+    //   };
+    // },
+    // methods: {
+    //   authHandler(e) {
+    //     if (e.msg == "signUp") {
+    //       this.signIn = false;
+    //       this.signUp = true;
+    //       this.confirmSignUp = false;
+    //       this.resetPassword = false;
+    //     } else if (e.msg == "forgotPassword") {
+    //       this.signIn = false;
+    //       this.signUp = false;
+    //       this.confirmSignUp = false;
+    //       this.resetPassword = true;
+    //       this.userNameEmail = e.username;
+    //     } else if (e.msg == "signIn") {
+    //       this.signIn = true;
+    //       this.signUp = false;
+    //       this.confirmSignUp = false;
+    //       this.resetPassword = false;
+    //       this.userNameEmail = e.username;
+    //     } else if (e.msg == "confirmSignUp") {
+    //       this.signIn = false;
+    //       this.signUp = false;
+    //       this.confirmSignUp = true;
+    //       this.resetPassword = false;
+    //       this.userNameEmail = e.username;
+    //     }
+    //   },
+    // },
     computed: {
       ...mapGetters(["getSignedIn", "authState"]),
     },
