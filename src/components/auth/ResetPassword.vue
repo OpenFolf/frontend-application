@@ -39,7 +39,7 @@
           />
         </template>
         <template v-if="!isSentCode">
-          <v-btn block :disabled="$v.email.$invalid" @click="submit" color="primary"
+          <v-btn block :disabled="$v.email.$invalid" @click="resetUserPassword" color="primary"
             >Send Code</v-btn
           >
         </template>
@@ -49,39 +49,27 @@
       </v-form>
     </v-card-text>
     <v-card-actions class="d-flex justify-center">
-      <template v-if="!isSentCode">
-        <v-btn x-small text @click="signIn">Back to Sign In.</v-btn>
-      </template>
       <template v-if="isSentCode">
-        <v-btn x-small text @click="submit">Resend code</v-btn>
+        <v-spacer />
+        <v-btn x-small text @click="resetUserPassword">Resend code</v-btn>
+        <v-spacer />
       </template>
     </v-card-actions>
-    <v-alert
-      dense
-      border="top"
-      colored-border
-      close-text="Dismiss"
-      dismissible
-      v-model="isError"
-      elevation="0"
-      class="py-5"
-      color="error"
-    >
-      {{ errorObj }}
-    </v-alert>
+    <v-card-actions class="d-flex justify-center">
+      <template>
+        <v-spacer />
+        <v-btn x-small text @click="this.SIGN_IN">Back to Sign In.</v-btn>
+        <v-spacer />
+      </template>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script>
+  import { mapGetters, mapMutations, mapActions } from "vuex";
   import { required, email, minLength, decimal } from "vuelidate/lib/validators";
   export default {
     name: "reset-password",
-    props: {
-      userNameEmail: {
-        type: String,
-        required: true,
-      },
-    },
     data() {
       return {
         email: "",
@@ -89,56 +77,25 @@
         code: "",
         isSentCode: false,
         showPassword: false,
-        errorObj: "",
-        isError: false,
       };
     },
+    created() {
+      this.email = this.authState.email;
+    },
     methods: {
-      submit() {
-        this.$Amplify.Auth.forgotPassword(this.email)
-          .then(() => {
-            this.isSentCode = true;
-          })
-          .catch((e) => this.setError(e));
+      ...mapMutations(["SIGN_IN", "SIGN_UP", "CLEAR_ERRORS"]),
+      ...mapActions(["resetPassword", "forgotPasswordSubmit"]),
+      resetUserPassword() {
+        if (this.resetPassword(this.email)) {
+          this.isSentCode = true;
+        }
       },
-      verify() {
-        this.$Amplify.Auth.forgotPasswordSubmit(this.email, this.code, this.password)
-          .then(() => {
-            this.$emit("authState", { msg: "signIn", username: this.email });
-          })
-          .catch((e) => this.setError(e));
-      },
-      signIn() {
-        this.$emit("authState", { msg: "signIn", username: this.email });
-      },
-      setError(e) {
-        this.errorObj = this.$Amplify.I18n.get(e.message || e);
-        this.isError = true;
-        // console.log("isError: ", this.isError);
-        // console.log("setError: ", e);
-      },
-      validate() {
-        this.$refs.resetPasswordForm.validate();
-      },
-      reset() {
-        this.$refs.resetPasswordForm.reset();
-      },
-      resetValidation() {
-        this.$refs.resetPasswordForm.resetValidation();
-      },
-    },
-    mounted() {
-      this.$nextTick(function() {
-        this.valid = false;
-        // this.validate();
-      });
-    },
-    watch: {
-      userNameEmail: {
-        immediate: true,
-        handler() {
-          this.email = this.userNameEmail;
-        },
+      async verify() {
+        await this.forgotPasswordSubmit({
+          email: this.email,
+          code: this.code,
+          password: this.password,
+        });
       },
     },
     validations: {
@@ -157,8 +114,14 @@
       },
     },
     computed: {
+      ...mapGetters(["errorMsg", "authState"]),
       emailErrors() {
         const errors = [];
+        if (this.errorMsg.message) {
+          errors.push(this.errorMsg.message);
+          this.CLEAR_ERRORS();
+          return errors;
+        }
         if (!this.$v.email.$dirty) return errors;
         !this.$v.email.email && errors.push("Must be valid e-mail");
         !this.$v.email.required && errors.push("E-mail is required");

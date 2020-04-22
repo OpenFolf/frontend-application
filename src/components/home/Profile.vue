@@ -12,13 +12,15 @@
             User Name: {{ getUserName ? getUserName : "--" }}
           </v-card-title>
           <v-text-field
-            v-model="localUserName"
+            label="User Name"
+            type="name"
+            @blur="$v.email.$touch()"
             @click:append="saveLocalUserName"
+            v-model="localUserName"
+            class="px-2"
             append-icon="fa-save"
             outlined
-            label="User Name"
             flat
-            class="px-2"
           />
           <v-divider />
           <v-card class="pa-1 my-1 d-flex flex-column justify-center" color="transparent" flat>
@@ -36,7 +38,7 @@
           <v-card class="pa-1 my-1 d-flex flex-row align-center" color="transparent" flat>
             <v-card-title class="headline">Set Theme:</v-card-title>
             <v-spacer />
-            <v-btn x-large @click="toggleTheme" class="mr-2">
+            <v-btn x-large @click="setUserTheme" class="mr-2">
               <v-icon left>fa-sun</v-icon>
               /
               <v-icon right>fa-moon</v-icon>
@@ -50,6 +52,7 @@
 
 <script>
   import { mapActions, mapGetters } from "vuex";
+  //import { required, minLength, maxLength } from "vuelidate/lib/validators";
   export default {
     name: "home-profile",
     data() {
@@ -61,14 +64,34 @@
       };
     },
     computed: {
-      ...mapGetters(["getUser", "getUserName", "getUserTee"]),
+      ...mapGetters(["getUser", "getUserName", "getUserTee", "errorMsg"]),
+      passwordErrors() {
+        const errors = [];
+        if (this.errorMsg.message) {
+          errors.push(this.errorMsg.message);
+          this.CLEAR_ERRORS();
+          return errors;
+        }
+        if (!this.$v.name.$dirty) return errors;
+        !this.$v.name.minLength && errors.push("Password must be at least 8 characters long");
+        !this.$v.name.required && errors.push("Password is required.");
+        if (this.errorMsg.message) this.CLEAR_ERRORS();
+        return errors;
+      },
     },
     methods: {
-      ...mapActions(["setUserName", "setUserDefaultTee"]),
+      ...mapActions(["setUserName", "setUserDefaultTee", "setUserTheme"]),
       saveLocalUserName() {
         this.setUserName(this.localUserName);
         this.localUserName = "";
       },
+      // validations: {
+      //   name: {
+      //     required,
+      //     minLength: minLength(2),
+      //     maxLength: maxLength(3),
+      //   },
+      // },
       // SECTION: TODO: .
       // This function should reside in the store or centralized logic.
       // Ideal would be to GET value and DISPATCH an action to toggle the theme settings.

@@ -1,5 +1,7 @@
 import { API, graphqlOperation } from "aws-amplify";
 import * as usergraphQL from "../../graphql/custom/usergraphQL";
+import vuetify from "../../plugins/vuetify";
+// import vuetify from "@/plugins/vuetify";
 
 const state = {
   user: {
@@ -80,6 +82,7 @@ const mutations = {
 
 const actions = {
   setUserId: ({ commit }, payload) => {
+    console.log("User>setUserId>");
     commit("setUserId", payload);
   },
 
@@ -98,8 +101,36 @@ const actions = {
     context.commit("setUserName", payload);
   },
 
-  setUserTheme: ({ commit }, payload) => {
-    commit("setUserTheme", payload);
+  async setUserTheme(context) {
+    const userId = context.rootState.user.user.id;
+    const userTheme = context.state.user.defMode;
+    if (userTheme == "DARK") {
+      try {
+        await API.graphql(
+          graphqlOperation(usergraphQL.updateUser, {
+            input: { id: userId, defMode: "LIGHT" },
+          }),
+        );
+      } catch (e) {
+        console.log("update to LIGHT defMode error: ", e);
+      }
+      context.commit("setUserTheme", "LIGHT");
+      console.log("Vuetify object: ", vuetify);
+      vuetify.framework.theme.isDark = false;
+    } else {
+      try {
+        await API.graphql(
+          graphqlOperation(usergraphQL.updateUser, {
+            input: { id: userId, defMode: "DARK" },
+          }),
+        );
+      } catch (e) {
+        console.log("update to DARK defMode error: ", e);
+      }
+      console.log("Vuetify object: ", vuetify);
+      context.commit("setUserTheme", "DARK");
+      vuetify.framework.theme.isDark = true;
+    }
   },
 
   async setUserDefaultTee(context, payload) {
@@ -120,6 +151,7 @@ const actions = {
     commit("setUserLocation", payload);
   },
   async fetchUser(context) {
+    console.log("User>fetchUser>");
     try {
       const response = await API.graphql(
         graphqlOperation(usergraphQL.fetchUser, { id: state.user.id }),

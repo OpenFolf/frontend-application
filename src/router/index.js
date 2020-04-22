@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Store from "@/store";
+import Store from "../store";
 import Auth from "@/views/Auth.vue";
 import Home from "@/views/Home.vue";
 import HomeMenu from "@/components/home/Menu.vue";
@@ -12,14 +12,6 @@ const routes = [
     path: "/",
     name: "auth",
     component: Auth,
-    // If the user is already signed in, redirect to the home menu
-    beforeEnter: (to, from, next) => {
-      if (Store.getters.getSignedIn) {
-        next({ name: "home-menu" });
-      } else {
-        next();
-      }
-    },
   },
   {
     path: "/home",
@@ -121,26 +113,56 @@ const router = new VueRouter({
   routes,
 });
 
-// // Before routing, go through each route and check
-// router.beforeEach((to, from, next) => {
-//   console.log("Router>beforeEach>Route", to.name);
-//   // If not signed in
-//   if (!Store.getters.getSignedIn) {
-//     // redirect to auth if not at auth
-//     if (!to.matched[0].name == "auth") {
-//       next({ name: "auth" });
-//     }
+// Before routing, go through each route and check
+router.beforeEach((to, from, next) => {
+  //console.log("Router>beforeEach>Route", to.name);
+  //console.log("Router>beforeEach>Route, store", Store.getters.signedIn);
+  // If signed in
+  if (Store.getters.signedIn) {
+    //console.log("Router>beforeEach>Route>SignedIn");
+    // and at auth then redirect to home-menu
+    if (to.matched.some((record) => record.name == "auth")) {
+      console.log("Router>beforeEach>Route>SignedIn>to.matched[0].name == 'auth'");
+      next({ name: "home-menu" });
+    }
+    // else, go wherever
+    next();
+  }
+  // If not signed in
+  else {
+    //console.log("Router>beforeEach>Route>NotSignedIn");
+    // redirect to auth if not at auth
+    if (!to.matched.some((record) => record.name == "auth")) {
+      //console.log("Router>beforeEach>Route>NotSignedIn>!to.matched[0].name == 'auth'");
+      next({ name: "auth" });
+    }
+    next();
+  }
+});
+
+// async function redirectIfNotAuth(to, from, next) {
+//   const user = await getUserState();
+//   if (user === null) {
+//     next({ name: "auth" });
+//   } else {
 //     next();
 //   }
-//   // If signed in
-//   else {
-//     // and at auth then redirect to home-menu
-//     if (to.matched[0].name == "auth") {
-//       next({ name: "home-menu" });
+// }
+
+// function getUserState() {
+//   return new Promise((resolve, reject) => {
+//     if (Store.state.user === undefined) {
+//       const unwatch = Store.watch(
+//         () => Store.state.user,
+//         (value) => {
+//           unwatch();
+//           resolve(value);
+//         },
+//       );
+//     } else {
+//       resolve(Store.state.user);
 //     }
-//     // else, go wherever
-//     next();
-//   }
-// });
+//   });
+// }
 
 export default router;

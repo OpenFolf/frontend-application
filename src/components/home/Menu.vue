@@ -8,6 +8,7 @@
 
 <script>
   import HomeMenuItem from "@/components/home/MenuItem.vue";
+  import { mapGetters } from "vuex";
   export default {
     name: "home-menu",
     components: {
@@ -70,6 +71,16 @@
           },
         ],
       };
+    },
+    computed: {
+      ...mapGetters(["signedIn"]),
+    },
+    watch: {
+      signedIn() {
+        if (!this.signedIn) {
+          this.$router.push({ name: "auth" });
+        }
+      },
     },
   };
 </script>
