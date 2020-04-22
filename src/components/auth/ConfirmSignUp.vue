@@ -64,7 +64,6 @@
       ...mapActions(["confirmSignUp", "resendSignUp"]),
       ...mapMutations(["SIGN_IN", "SIGN_UP", "CONFIRM_SIGN_UP", "ERROR_MSG", "CLEAR_ERRORS"]),
       confirm() {
-        console.log("this email", this.email, "this.confirmCode", this.confirmCode);
         this.confirmSignUp({ email: this.email, confirmCode: this.confirmCode });
       },
       resend() {
@@ -94,7 +93,6 @@
     computed: {
       ...mapGetters(["errorMsg", "authState"]),
       codeResendSuccess() {
-        console.log("this.successMessage", this.successMessage);
         const success = [];
         if (this.successMessage) {
           this.CLEAR_ERRORS();
@@ -104,7 +102,6 @@
         return success;
       },
       emailErrors() {
-        console.log("this.errorMsg.message", this.errorMsg.message);
         const errors = [];
         if (this.errorMsg.message) {
           errors.push(this.errorMsg.message);

@@ -18,33 +18,33 @@ const state = initialState();
 
 const getters = {
   signedIn: (state) => {
-    console.log("Auth>Getters>signedIn");
+    //console.log("Auth>Getters>signedIn");
     return state.signedIn;
   },
   errorMsg: (state) => {
-    console.log("Auth>Getters>ErrorMsg");
+    //console.log("Auth>Getters>ErrorMsg");
     return state.errorMsg;
   },
   authState: (state) => {
-    console.log("Auth>Getters>authState");
+    //console.log("Auth>Getters>authState");
     return state.authState;
   },
 };
 
 const mutations = {
   SIGN_OUT: (state) => {
-    console.log("Auth>mutations>SIGN_OUT");
+    //console.log("Auth>mutations>SIGN_OUT");
     state.userAuthObject = null;
     state.signedIn = false;
     sessionStorage.clear();
     router.push({ name: "auth" });
   },
   ERROR_MSG: (state, errorMsg) => {
-    console.log("Auth>mutations>ERROR_MSG: ", errorMsg);
+    //console.log("Auth>mutations>ERROR_MSG");
     state.errorMsg = errorMsg;
   },
   CLEAR_ERRORS: (state) => {
-    console.log("Auth>mutations>CLEAR_ERRORS");
+    //console.log("Auth>mutations>CLEAR_ERRORS");
     state.errorMsg = {
       errorMsg: {
         message: "",
@@ -52,26 +52,24 @@ const mutations = {
     };
   },
   SIGN_UP: (state, payload) => {
-    console.log("payload", payload);
-    console.log("payload", payload.email);
+    //console.log("Auth>mutations>SIGN_UP");
     state.authState.path = "signUp";
     if (payload.email) state.authState.email = payload.email;
   },
   SIGN_IN: (state, payload) => {
-    console.log("payload", payload);
-    console.log("payload", payload.email);
+    //console.log("Auth>mutations>SIGN_IN");
     state.authState.path = "signIn";
     if (payload.email) state.authState.email = payload.email;
   },
   CONFIRM_SIGN_UP: (state, payload) => {
-    console.log("payload", payload);
-    console.log("payload", payload.email);
+    //console.log("payload", payload);
+    //console.log("payload", payload.email);
     state.authState.path = "confirmSignUp";
     if (payload.email) state.authState.email = payload.email;
   },
   RESET_PASSWORD: (state, payload) => {
-    console.log("payload", payload);
-    console.log("payload", payload.email);
+    //console.log("payload", payload);
+    //console.log("payload", payload.email);
     state.authState.path = "resetPassword";
     if (payload.email) state.authState.email = payload.email;
   },
@@ -82,6 +80,7 @@ const mutations = {
     });
   },
   AUTHENTICATED(state, user) {
+    //console.log("payload", payload);
     state.signedIn = !!user && user.attributes && user.attributes.email_verified;
     state.userAuthObject = user;
     router.push({ name: "home-menu" });
@@ -90,11 +89,11 @@ const mutations = {
 
 const actions = {
   reset({ commit }) {
-    console.log("Auth>Actions>reset");
+    //console.log("Auth>Actions>reset");
     commit("RESET");
   },
   async signIn({ commit, dispatch }, { email, password }) {
-    console.log("Auth>Actions>SignIn", email, password);
+    //console.log("Auth>Actions>SignIn", email, password);
     try {
       await Auth.signIn(email, password);
     } catch (e) {
@@ -104,24 +103,25 @@ const actions = {
       }
       commit("ERROR_MSG", e);
     }
-    dispatch("fetchUser");
+    dispatch("fetchUserAuth");
   },
-  async fetchUser({ commit, dispatch }) {
-    console.log("Auth>Actions>fetchUser");
+  async fetchUserAuth({ commit, dispatch }) {
+    //console.log("Auth>Actions>fetchUser");
     try {
       const user = await Auth.currentAuthenticatedUser();
-      const expires =
-        user.getSignInUserSession().getIdToken().payload.exp -
-        Math.floor(new Date().getTime() / 1000);
-      console.log(`Token expires in ${expires} seconds`);
+      // const expires =
+      //   user.getSignInUserSession().getIdToken().payload.exp -
+      //   Math.floor(new Date().getTime() / 1000);
+      //console.log(`Token expires in ${expires} seconds`);
       // Don't know if we need this if we have app sync
-      setTimeout(async () => {
-        console.log("Renewing Token");
-        await dispatch("fetchUser");
-      }, expires * 1000);
+      // setTimeout(async () => {
+      //   //console.log("Renewing Token");
+      //   await dispatch("fetchUser");
+      // }, expires * 1000);
       commit("AUTHENTICATED", user);
       // Set the User id in the UserStore
       commit("setUserId", user.username);
+      commit("fetchUser");
       //TODO: Remove, find better place
       // check if set await
       getUserLocation();
@@ -131,11 +131,12 @@ const actions = {
       /// Set initialize
       commit("user", null);
       //TODO: Check if this error has to be displayed
-      console.log("Auth>Actions>fetchUser>Catch, error ", e);
+      //console.log("Auth>Actions>fetchUser>Catch, error ", e);
     }
   },
 
   async signUp({ commit }, userObj) {
+    //console.log("Auth>Actions>signUp");
     try {
       const userAuthObj = await Auth.signUp(userObj);
       if (userAuthObj.userConfirmed === false) {
@@ -152,6 +153,7 @@ const actions = {
     }
   },
   async confirmSignUp({ commit }, { email, confirmCode }) {
+    //console.log("Auth>Actions>confirmSignUp");
     try {
       await Auth.confirmSignUp(email, confirmCode);
       commit("SIGN_IN", { email: email });
@@ -160,6 +162,7 @@ const actions = {
     }
   },
   async resendSignUp({ commit }, email) {
+    //console.log("Auth>Actions>resendSignUp");
     try {
       await Auth.resendSignUp(email);
     } catch (e) {
@@ -167,7 +170,7 @@ const actions = {
     }
   },
   async resetPassword({ commit }, email) {
-    console.log("resetPassword", email);
+    //console.log("Auth>Actions>resetPassword");
     try {
       await Auth.forgotPassword(email);
     } catch (e) {
@@ -175,7 +178,7 @@ const actions = {
     }
   },
   async forgotPasswordSubmit({ commit }, { email, code, password }) {
-    console.log("forgotPasswordSubmit", email, code, password);
+    //console.log("Auth>Actions>forgotPasswordSubmit");
     try {
       await Auth.forgotPasswordSubmit(email, code, password);
       commit("SIGN_IN", { email: email });
@@ -184,12 +187,12 @@ const actions = {
     }
   },
   async signOut({ commit }) {
-    console.log("Auth>Actions>signOut");
+    //console.log("Auth>Actions>signOut");
     try {
       await Auth.signOut();
       commit("SIGN_OUT");
     } catch (e) {
-      console.log("Error in Auth>Actions>signOut", e);
+      throw new Error("Error in Auth>Actions>signOut", e);
     }
   },
 };

@@ -99,7 +99,6 @@
     computed: {
       ...mapGetters(["signedIn", "errorMsg", "authState"]),
       emailErrors() {
-        console.log("SignIn>EmailErrors", this.errorMsg);
         const errors = [];
         if (this.errorMsg.message) {
           errors.push(this.errorMsg.message);

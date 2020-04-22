@@ -80,16 +80,13 @@
       };
     },
     created() {
-      console.log("ResetPassword>Created>THis.authState.email ", this.authState.email);
       this.email = this.authState.email;
     },
     methods: {
       ...mapMutations(["SIGN_IN", "SIGN_UP", "CLEAR_ERRORS"]),
       ...mapActions(["resetPassword", "forgotPasswordSubmit"]),
       resetUserPassword() {
-        console.log("Methods>resetUserPassword");
         if (this.resetPassword(this.email)) {
-          console.log("Methods>resetUserPassword");
           this.isSentCode = true;
         }
       },
