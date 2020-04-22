@@ -57,14 +57,13 @@
           v-if="!isOwner"
           :dialog="leaveGameDialog"
           :message="leaveMsg"
-          :userToRemove="getUser.id"
+          :userToRemove="getPlayerId"
           @removeUser="removeUser"
         />
         <ConfirmDialogue
           v-if="isOwner"
           :dialog="cancelGameDialog"
           :message="cancelGameMsg"
-          :userToRemove="getUser.id"
           @cancelGame="cancelThisGame"
         />
         <ConfirmDialogue
@@ -142,6 +141,9 @@
       ...mapGetters(["getGame", "getGameStatus", "getUser", "getPlayers", "getGameType"]),
       isOwner() {
         return this.getUser.id === this.getGame.owner.id;
+      },
+      getPlayerId() {
+        return this.getPlayers.find((p) => p.user.id === this.getUser.id).id;
       },
       otherPlayers() {
         return this.getPlayers.length <= 1;
