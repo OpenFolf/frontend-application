@@ -25,6 +25,13 @@
             {{ message.button2 }}
           </v-btn>
           <v-btn
+            v-if="message.title === 'Cancel Game'"
+            color="primary"
+            @click="$emit('cancelGame')"
+          >
+            {{ message.button2 }}
+          </v-btn>
+          <v-btn
             v-if="message.title === 'Kick Player'"
             color="primary"
             @click="$emit('removeUser', userToRemove)"
