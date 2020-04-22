@@ -12,13 +12,15 @@
             User Name: {{ getUserName ? getUserName : "--" }}
           </v-card-title>
           <v-text-field
-            v-model="localUserName"
+            label="User Name"
+            type="name"
+            @blur="$v.email.$touch()"
             @click:append="saveLocalUserName"
+            v-model="localUserName"
+            class="px-2"
             append-icon="fa-save"
             outlined
-            label="User Name"
             flat
-            class="px-2"
           />
           <v-divider />
           <v-card class="pa-1 my-1 d-flex flex-column justify-center" color="transparent" flat>
@@ -50,6 +52,7 @@
 
 <script>
   import { mapActions, mapGetters } from "vuex";
+  //import { required, minLength, maxLength } from "vuelidate/lib/validators";
   export default {
     name: "home-profile",
     data() {
@@ -61,7 +64,20 @@
       };
     },
     computed: {
-      ...mapGetters(["getUser", "getUserName", "getUserTee"]),
+      ...mapGetters(["getUser", "getUserName", "getUserTee", "errorMsg"]),
+      passwordErrors() {
+        const errors = [];
+        if (this.errorMsg.message) {
+          errors.push(this.errorMsg.message);
+          this.CLEAR_ERRORS();
+          return errors;
+        }
+        if (!this.$v.name.$dirty) return errors;
+        !this.$v.name.minLength && errors.push("Password must be at least 8 characters long");
+        !this.$v.name.required && errors.push("Password is required.");
+        if (this.errorMsg.message) this.CLEAR_ERRORS();
+        return errors;
+      },
     },
     methods: {
       ...mapActions(["setUserName", "setUserDefaultTee", "setUserTheme"]),
@@ -69,6 +85,23 @@
         this.setUserName(this.localUserName);
         this.localUserName = "";
       },
+      // validations: {
+      //   name: {
+      //     required,
+      //     minLength: minLength(2),
+      //     maxLength: maxLength(3),
+      //   },
+      // },
+      // SECTION: TODO: .
+      // This function should reside in the store or centralized logic.
+      // Ideal would be to GET value and DISPATCH an action to toggle the theme settings.
+      // Also this should be saved with the user object and set during initialization.
+      toggleTheme() {
+        this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+        // this.$vuetify.theme.dark ? this.setUserTheme("DARK") : this.setUserTheme("LIGHT");
+        // This set GLOBAL THEME WITH THE USER STORE.
+      },
+      // SECTION: TODO: .
     },
     watch: {
       localTeeValue() {

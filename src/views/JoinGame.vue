@@ -74,6 +74,17 @@
         this.errorObj = "";
         this.isError = false;
       },
+      async checkLobbyCode(code) {
+        await this.fetchGames();
+        this.gameObject = this.getGamesList.find((x) => x.lobbyCode == code);
+        if (!this.gameObject) {
+          this.errorObj = `No game found with the lobby code ${code}`;
+          this.isError = true;
+        } else if (this.gameObject.gameStatus != 0) {
+          this.errorObj = `A game with the lobby code ${code} found but has already started`;
+          this.isError = true;
+        }
+      },
     },
     validations: {
       gameCode: {

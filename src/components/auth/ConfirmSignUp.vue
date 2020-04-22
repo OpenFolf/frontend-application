@@ -11,6 +11,7 @@
           type="email"
           @change="$v.email.$touch()"
           :error-messages="emailErrors"
+          :success-messages="codeResendSuccess"
           v-model="email"
           required
         />
@@ -34,86 +35,44 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="resend">Lost the code? Resend code.</v-btn>
+      <v-btn x-small text @click="resend" :disabled="$v.email.$invalid"
+        >Lost the code? Resend code.</v-btn
+      >
       <v-spacer />
     </v-card-actions>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="signIn">Back to Sign In.</v-btn>
+      <v-btn x-small text @click="this.SIGN_IN">Back to Sign In.</v-btn>
       <v-spacer />
     </v-card-actions>
-    <v-alert
-      dense
-      border="top"
-      colored-border
-      close-text="Dismiss"
-      dismissible
-      v-model="isError"
-      elevation="0"
-      class="py-5"
-      color="error"
-    >
-      {{ errorObj }}
-    </v-alert>
   </v-card>
 </template>
 
 <script>
+  import { mapGetters, mapActions, mapMutations } from "vuex";
   import { required, email, minLength, decimal } from "vuelidate/lib/validators";
   export default {
     name: "confirm-sign-up",
-    props: {
-      userNameEmail: {
-        type: String,
-        required: true,
-      },
-    },
     data() {
       return {
         email: "",
         confirmCode: "",
-        errorObj: "",
-        isError: false,
+        successMessage: "",
       };
     },
     methods: {
+      ...mapActions(["confirmSignUp", "resendSignUp"]),
+      ...mapMutations(["SIGN_IN", "SIGN_UP", "CONFIRM_SIGN_UP", "ERROR_MSG", "CLEAR_ERRORS"]),
       confirm() {
-        this.$Amplify.Auth.confirmSignUp(this.email, this.confirmCode)
-          .then(() => {
-            this.$emit("authState", { msg: "signIn", username: this.email });
-          })
-          .catch((e) => this.setError(e));
+        this.confirmSignUp({ email: this.email, confirmCode: this.confirmCode });
       },
       resend() {
-        this.$Amplify.Auth.resendSignUp(this.email)
-          .then(() => {
-            console.log("Resend success");
-          })
-          .catch((e) => this.setError(e));
+        if (this.resendSignUp(this.email)) {
+          this.successMessage = "New confirmation code successfully sent";
+        }
       },
-      signIn() {
-        this.$emit("authState", { msg: "signIn", username: this.email });
-      },
-      setError(e) {
-        this.errorObj = this.$Amplify.I18n.get(e.message || e);
-        this.isError = true;
-      },
-      validate() {
-        this.$refs.confirmSignUpForm.validate();
-      },
-      reset() {
-        this.$refs.confirmSignUpForm.reset();
-      },
-      resetValidation() {
-        this.$refs.confirmSignUpForm.resetValidation();
-      },
-    },
-    watch: {
-      userNameEmail: {
-        immediate: true,
-        handler() {
-          this.email = this.userNameEmail;
-        },
+      clearSuccessMessage() {
+        this.successMessage = "";
       },
     },
     validations: {
@@ -127,9 +86,28 @@
         decimal,
       },
     },
+    created() {
+      this.email = this.authState.email;
+    },
+
     computed: {
+      ...mapGetters(["errorMsg", "authState"]),
+      codeResendSuccess() {
+        const success = [];
+        if (this.successMessage) {
+          this.CLEAR_ERRORS();
+          success.push(this.successMessage);
+        }
+        this.clearSuccessMessage();
+        return success;
+      },
       emailErrors() {
         const errors = [];
+        if (this.errorMsg.message) {
+          errors.push(this.errorMsg.message);
+          this.CLEAR_ERRORS();
+          return errors;
+        }
         if (!this.$v.email.$dirty) return errors;
         !this.$v.email.email && errors.push("Must be valid e-mail");
         !this.$v.email.required && errors.push("E-mail is required");
