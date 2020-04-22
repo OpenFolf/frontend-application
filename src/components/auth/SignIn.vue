@@ -1,5 +1,5 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat v-if="!getSignedIn">
+  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat v-if="!signedIn">
     <v-toolbar color="primary" flat>
       <v-toolbar-title>Sign In</v-toolbar-title>
       <v-spacer />
@@ -73,7 +73,7 @@
       ]),
       ...mapMutations([
         "SIGN_UP",
-        "LOG_IN",
+        "SIGN_IN",
         "RESET_PASSWORD",
         "CONFIRM_SIGN_UP",
         "ERROR_MSG",
@@ -97,7 +97,7 @@
       this.email = this.authState.email;
     },
     computed: {
-      ...mapGetters(["getSignedIn", "errorMsg", "authState"]),
+      ...mapGetters(["signedIn", "errorMsg", "authState"]),
       emailErrors() {
         console.log("SignIn>EmailErrors", this.errorMsg);
         const errors = [];

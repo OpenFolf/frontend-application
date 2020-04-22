@@ -52,7 +52,7 @@
       <template v-if="isSentCode">
         <v-btn x-small text @click="resetUserPassword">Resend code</v-btn>
       </template>
-      <v-btn x-small text @click="this.LOG_IN">Back to Sign In.</v-btn>
+      <v-btn x-small text @click="this.SIGN_IN">Back to Sign In.</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -76,7 +76,7 @@
       this.email = this.authState.email;
     },
     methods: {
-      ...mapMutations(["LOG_IN", "SIGN_UP", "CLEAR_ERRORS"]),
+      ...mapMutations(["SIGN_IN", "SIGN_UP", "CLEAR_ERRORS"]),
       ...mapActions(["resetPassword", "forgotPasswordSubmit"]),
       resetUserPassword() {
         console.log("Methods>resetUserPassword");

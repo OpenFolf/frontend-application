@@ -42,7 +42,7 @@
     </v-card-actions>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="this.LOG_IN">Back to Sign In.</v-btn>
+      <v-btn x-small text @click="this.SIGN_IN">Back to Sign In.</v-btn>
       <v-spacer />
     </v-card-actions>
   </v-card>
@@ -62,7 +62,7 @@
     },
     methods: {
       ...mapActions(["confirmSignUp", "resendSignUp"]),
-      ...mapMutations(["LOG_IN", "SIGN_UP", "CONFIRM_SIGN_UP", "ERROR_MSG", "CLEAR_ERRORS"]),
+      ...mapMutations(["SIGN_IN", "SIGN_UP", "CONFIRM_SIGN_UP", "ERROR_MSG", "CLEAR_ERRORS"]),
       confirm() {
         console.log("this email", this.email, "this.confirmCode", this.confirmCode);
         this.confirmSignUp({ email: this.email, confirmCode: this.confirmCode });

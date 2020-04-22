@@ -38,7 +38,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="this.LOG_IN">Already have an account? Sign In!</v-btn>
+      <v-btn x-small text @click="this.SIGN_IN">Already have an account? Sign In!</v-btn>
       <v-spacer />
     </v-card-actions>
   </v-card>
@@ -61,7 +61,7 @@
     },
     methods: {
       ...mapActions(["signUp"]),
-      ...mapMutations(["LOG_IN", "SIGN_UP", "CONFIRM_SIGN_UP", "ERROR_MSG", "CLEAR_ERRORS"]),
+      ...mapMutations(["SIGN_IN", "SIGN_UP", "CONFIRM_SIGN_UP", "ERROR_MSG", "CLEAR_ERRORS"]),
       signUpUser() {
         console.log("SignUp>SignUpUser");
         this.signUp({

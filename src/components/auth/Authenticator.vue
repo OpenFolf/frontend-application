@@ -1,9 +1,9 @@
 <template>
   <v-card class="pa-5" color="transparent" flat>
-    <sign-in v-if="!getSignedIn && this.authState.path == 'signIn'" />
-    <sign-up v-if="!getSignedIn && this.authState.path == 'signUp'" />
-    <confirm-sign-up v-if="!getSignedIn && this.authState.path == 'confirmSignUp'" />
-    <reset-password v-if="!getSignedIn && this.authState.path == 'resetPassword'" />
+    <sign-in v-if="!signedIn && this.authState.path == 'signIn'" />
+    <sign-up v-if="!signedIn && this.authState.path == 'signUp'" />
+    <confirm-sign-up v-if="!signedIn && this.authState.path == 'confirmSignUp'" />
+    <reset-password v-if="!signedIn && this.authState.path == 'resetPassword'" />
   </v-card>
 </template>
 
@@ -22,7 +22,7 @@
       ResetPassword,
     },
     computed: {
-      ...mapGetters(["getSignedIn", "authState"]),
+      ...mapGetters(["signedIn", "authState"]),
     },
   };
 </script>

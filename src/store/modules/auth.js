@@ -5,7 +5,6 @@ import { getUserLocation } from "@/services";
 const initialState = () => ({
   userAuthObject: null,
   signedIn: false,
-  isLoading: false,
   errorMsg: {
     message: "",
   },
@@ -18,16 +17,13 @@ const initialState = () => ({
 const state = initialState();
 
 const getters = {
-  getUserAuthObject: (state) => {
-    console.log("Auth>Getters>getUserAuthObject");
-    return state.userAuthId;
-  },
-  getSignedIn: (state) => {
-    console.log("Auth>Getters>getSignedIn");
+  // getUserAuthObject: (state) => {
+  //   console.log("Auth>Getters>getUserAuthObject");
+  //   return state.userAuthId;
+  // },
+  signedIn: (state) => {
+    console.log("Auth>Getters>signedIn");
     return state.signedIn;
-  },
-  isSignedIn: (state) => {
-    return state.user.id;
   },
   errorMsg: (state) => {
     console.log("Auth>Getters>ErrorMsg");
@@ -40,12 +36,12 @@ const getters = {
 };
 
 const mutations = {
-  SIGN_IN: (state, signedIn) => {
-    console.log("Auth>mutations>SIGN_IN");
-    state.signedIn = signedIn;
-    //TODO: REMOVE, Should be handled elsewhere
-    router.push({ name: "home-menu" });
-  },
+  // SIGN_IN: (state, signedIn) => {
+  //   console.log("Auth>mutations>SIGN_IN");
+  //   state.signedIn = signedIn;
+  //   //TODO: REMOVE, Should be handled elsewhere
+  //   router.push({ name: "home-menu" });
+  // },
   SIGN_OUT: (state) => {
     console.log("Auth>mutations>SIGN_OUT");
     state.userAuthObject = null;
@@ -71,7 +67,7 @@ const mutations = {
     state.authState.path = "signUp";
     if (payload.email) state.authState.email = payload.email;
   },
-  LOG_IN: (state, payload) => {
+  SIGN_IN: (state, payload) => {
     console.log("payload", payload);
     console.log("payload", payload.email);
     state.authState.path = "signIn";
@@ -95,17 +91,22 @@ const mutations = {
       state[key] = newState[key];
     });
   },
+  AUTHENTICATED(state, user) {
+    state.signedIn = !!user && user.attributes && user.attributes.email_verified;
+    state.userAuthObject = user;
+    router.push({ name: "home-menu" });
+  },
 };
 
 const actions = {
   reset({ commit }) {
+    console.log("Auth>Actions>reset");
     commit("RESET");
   },
   async signIn({ commit, dispatch }, { email, password }) {
     console.log("Auth>Actions>SignIn", email, password);
     try {
       await Auth.signIn(email, password);
-      commit("SIGN_IN", true);
     } catch (e) {
       if (e.code && e.code === "UserNotConfirmedException") {
         commit("CONFIRM_SIGN_UP", { email: email });
@@ -119,9 +120,9 @@ const actions = {
   async fetchUser({ commit, dispatch }) {
     console.log("Auth>Actions>fetchUser");
     try {
-      const userAuthObj = await Auth.currentAuthenticatedUser();
+      const user = await Auth.currentAuthenticatedUser();
       const expires =
-        userAuthObj.getSignInUserSession().getIdToken().payload.exp -
+        user.getSignInUserSession().getIdToken().payload.exp -
         Math.floor(new Date().getTime() / 1000);
       console.log(`Token expires in ${expires} seconds`);
       // Don't know if we need this if we have app sync
@@ -129,15 +130,17 @@ const actions = {
         console.log("Renewing Token");
         await dispatch("fetchUser");
       }, expires * 1000);
-      commit("setUserAuthObject", userAuthObj);
+
+      commit("AUTHENTICATED", user);
       // Do we need this? hasn't the UserId been set in "setUserAutObject"
-      commit("setUserId", userAuthObj.username);
+      commit("setUserId", user.username);
 
       //TODO: Remove, find better place
       getUserLocation();
       dispatch("fetchCourseList");
     } catch (e) {
-      //commit("user", null);
+      //What was supposed to happen? Use commit("RESET") instead?
+      commit("user", null);
       //TODO: Check if this error has to be displayed
       console.log("Auth>Actions>fetchUser>Catch, error ", e);
     }
@@ -150,7 +153,7 @@ const actions = {
         commit("CONFIRM_SIGN_UP", { email: userObj.username });
         return;
       }
-      commit("LOG_IN", { email: userObj.email });
+      commit("SIGN_IN", { email: userObj.email });
     } catch (e) {
       if (e.code && e.code === "UserNotConfirmedException") {
         commit("CONFIRM_SIGN_UP", { email: userObj.username });
@@ -166,7 +169,7 @@ const actions = {
     // console.log("stringCode", stringCode);
     try {
       await Auth.confirmSignUp(email, confirmCode);
-      commit("LOG_IN", { email: email });
+      commit("SIGN_IN", { email: email });
     } catch (e) {
       commit("ERROR_MSG", e);
     }
@@ -190,7 +193,7 @@ const actions = {
     console.log("forgotPasswordSubmit", email, code, password);
     try {
       await Auth.forgotPasswordSubmit(email, code, password);
-      commit("LOG_IN", { email: email });
+      commit("SIGN_IN", { email: email });
     } catch (e) {
       commit("ERROR_MSG", e);
     }
