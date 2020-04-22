@@ -75,7 +75,7 @@ const routes = [
     props: true,
     beforeEnter: async (to, from, next) => {
       await Store.dispatch("createGame", to.params.id);
-      Store.dispatch("toggleHideBottomNav");
+      Store.dispatch("setHideBottomNav", true);
       next();
     },
   },
@@ -85,7 +85,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
     beforeEnter: (to, from, next) => {
-      Store.dispatch("toggleHideBottomNav");
+      Store.dispatch("setHideBottomNav", true);
       next();
     },
   },
@@ -94,6 +94,10 @@ const routes = [
     path: "/game/:path/scorecard",
     name: "game-scorecard",
     component: () => import(/* webpackChunkName: "scorecard" */ "@/views/Scorecard.vue"), // CHANGE LOCATION to COMPONENTS/GAME
+    beforeLeave: (to, from, next) => {
+      Store.dispatch("setHideBottomNav", false);
+      next();
+    },
   },
   {
     path: "/join-game",

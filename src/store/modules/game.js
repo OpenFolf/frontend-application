@@ -78,7 +78,6 @@ const getters = {
     return state.game.gameType;
   },
   getHideBottomNav: (state) => {
-    console.log("game>actions>toggleHideBottomNav, ");
     return state.hideBottomNav;
   },
   getPlayers: (state) => {
@@ -113,8 +112,8 @@ const mutations = {
   setUpdatePlayer: (state, payload) => {
     state.updatePlayer = payload;
   },
-  toggleHideBottomNav: (state) => {
-    state.hideBottomNav = !state.hideBottomNav;
+  setHideBottomNav: (state, payload) => {
+    state.hideBottomNav = payload;
   },
   setScoreArray: (state, payload) => {
     state.game.players.items = payload;
@@ -126,8 +125,8 @@ const mutations = {
 
 // BREAK: ACTIONS
 const actions = {
-  toggleHideBottomNav: ({ commit }) => {
-    commit("toggleHideBottomNav");
+  setHideBottomNav: ({ commit }, payload) => {
+    commit("setHideBottomNav", payload);
   },
 
   //Game actions
@@ -308,7 +307,7 @@ const actions = {
         // If player in game then route to scorecard
         if (playerInGame) {
           context.dispatch("fetchGame", gamesList[0].id);
-          context.dispatch("toggleHideBottomNav");
+          // context.dispatch("toggleHideBottomNav");
           Router.push({ name: "game-scorecard" });
         } else {
           // If player not part of game then error message 'Game already started'
