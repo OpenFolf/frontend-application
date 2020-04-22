@@ -140,7 +140,7 @@
         "subscribeToGame",
         "deletePlayer",
         "refreshLobby",
-        "toggleHideNavBar",
+        "setHideBottomNav",
       ]),
       removeUser(playerId) {
         this.deletePlayer(playerId);
@@ -172,7 +172,7 @@
         }
 
         if (!playerInGame) {
-          this.toggleHideNavBar;
+          this.setHideBottomNav(false);
           this.$router.push({ name: "home-menu" });
         }
       },
