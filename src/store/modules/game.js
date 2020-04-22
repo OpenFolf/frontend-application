@@ -349,6 +349,10 @@ const actions = {
 
     // TODO: Turn off all subscribers
   },
+  //TODO: NEW and connected to the lobby's cancelGame button
+  cancelGame(context, gameId) {
+    return console.log("Game>actions>cancelGame, gameId", context, gameId);
+  },
 
   //Player actions
   async createPlayer(context, payload) {

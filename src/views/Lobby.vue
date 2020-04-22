@@ -54,12 +54,19 @@
           <v-btn color="info" @click="refreshLobby">Refresh</v-btn>
         </v-card>
         <ConfirmDialogue
+          v-if="!isOwner"
           :dialog="leaveGameDialog"
           :message="leaveMsg"
           :userToRemove="getUser.id"
           @removeUser="removeUser"
         />
-
+        <ConfirmDialogue
+          v-if="isOwner"
+          :dialog="cancelGameDialog"
+          :message="cancelGameMsg"
+          :userToRemove="getUser.id"
+          @cancelGame="cancelThisGame"
+        />
         <ConfirmDialogue
           v-if="isOwner"
           :dialog="startGameDialog"
@@ -90,6 +97,7 @@
         startGameDialog: false,
         leaveGameDialog: false,
         kickUserDialog: false,
+        cancelGameDialog: false,
 
         startGameMsg: {
           title: "Start Game",
@@ -111,6 +119,13 @@
           body: "Are you sure you want kick the player?",
           button1: "Cancel",
           button2: "Yes",
+        },
+        cancelGameMsg: {
+          title: "Cancel Game",
+          body: "Are you want cancel the game?",
+          button1: "No",
+          button2: "Yes",
+          headerColor: "error",
         },
       };
     },
@@ -141,9 +156,14 @@
         "deletePlayer",
         "refreshLobby",
         "setHideBottomNav",
+        "cancelGame",
       ]),
       removeUser(playerId) {
         this.deletePlayer(playerId);
+      },
+      cancelThisGame() {
+        console.log("Lobby>cancelThisGame");
+        this.cancelGame(this.getGame.id);
       },
     },
     watch: {
