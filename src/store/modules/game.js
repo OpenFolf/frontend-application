@@ -299,7 +299,7 @@ const actions = {
         let playerInGame = false;
         // Loop through and check if user is player in game
         for (let i = 0; i < gamePlayers.length; i++) {
-          if (gamePlayers[i].id == userId) {
+          if (gamePlayers[i].user.id == userId) {
             // If he is user in game then fetch game into state and set playerInGame bool to true
             playerInGame = true;
           }
