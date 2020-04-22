@@ -1,6 +1,7 @@
 import router from "@/router";
 import { Auth } from "aws-amplify";
 import { getUserLocation } from "@/services";
+import Vuetify from "@/plugins/vuetify.js";
 
 const initialState = () => ({
   userAuthObject: null,
@@ -119,20 +120,25 @@ const actions = {
       //   await dispatch("fetchUser");
       // }, expires * 1000);
       commit("AUTHENTICATED", user);
-      // Set the User id in the UserStore
       commit("setUserId", user.username);
-      commit("fetchUser");
-      //TODO: Remove, find better place
-      // check if set await
-      getUserLocation();
-      dispatch("fetchCourseList");
+      dispatch("initializeUser");
     } catch (e) {
       //What was supposed to happen? Use commit("RESET") instead?
       /// Set initialize
-      commit("user", null);
+      dispatch("reset");
       //TODO: Check if this error has to be displayed
       //console.log("Auth>Actions>fetchUser>Catch, error ", e);
     }
+  },
+  async initializeUser({ dispatch, rootState }) {
+    dispatch("fetchUser");
+    if (rootState.user.defMode == "DARK") {
+      Vuetify.framework.theme.isDark = true;
+    } else {
+      Vuetify.framework.theme.isDark = false;
+    }
+    getUserLocation();
+    dispatch("fetchCourseList");
   },
 
   async signUp({ commit }, userObj) {

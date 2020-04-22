@@ -80,6 +80,7 @@ const mutations = {
 
 const actions = {
   setUserId: ({ commit }, payload) => {
+    console.log("User>setUserId>");
     commit("setUserId", payload);
   },
 
@@ -120,6 +121,7 @@ const actions = {
     commit("setUserLocation", payload);
   },
   async fetchUser(context) {
+    console.log("User>fetchUser>");
     try {
       const response = await API.graphql(
         graphqlOperation(usergraphQL.fetchUser, { id: state.user.id }),

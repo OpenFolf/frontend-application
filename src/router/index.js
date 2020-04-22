@@ -12,15 +12,6 @@ const routes = [
     path: "/",
     name: "auth",
     component: Auth,
-    // If the user is already signed in, redirect to the home menu
-    // beforeEnter: (to, from, next) => {
-    //   console.log("Store.getters.signedIn", Store.getters.signedIn);
-    //   if (Store.getters.signedIn) {
-    //     next({ name: "home-menu" });
-    //   } else {
-    //     next();
-    //   }
-    // },
   },
   {
     path: "/home",
@@ -138,7 +129,7 @@ router.beforeEach((to, from, next) => {
     //console.log("Router>beforeEach>Route>NotSignedIn");
     // redirect to auth if not at auth
     if (!to.matched.some((record) => record.name == "auth")) {
-      console.log("Router>beforeEach>Route>NotSignedIn>!to.matched[0].name == 'auth'");
+      //console.log("Router>beforeEach>Route>NotSignedIn>!to.matched[0].name == 'auth'");
       next({ name: "auth" });
     }
     next();
