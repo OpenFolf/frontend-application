@@ -98,8 +98,34 @@ const actions = {
     context.commit("setUserName", payload);
   },
 
-  setUserTheme: ({ commit }, payload) => {
-    commit("setUserTheme", payload);
+  async setUserTheme(context) {
+    const userId = context.rootState.user.user.id;
+    const userTheme = context.state.user.defMode;
+    if (userTheme == "DARK") {
+      try {
+        await API.graphql(
+          graphqlOperation(usergraphQL.updateUser, {
+            input: { id: userId, defMode: "LIGHT" },
+          }),
+        );
+      } catch (e) {
+        console.log("update to LIGHT defMode error: ", e);
+      }
+      context.commit("setUserTheme", "LIGHT");
+      //this.$vuetify.theme.dark = false;
+    } else {
+      try {
+        await API.graphql(
+          graphqlOperation(usergraphQL.updateUser, {
+            input: { id: userId, defMode: "DARK" },
+          }),
+        );
+      } catch (e) {
+        console.log("update to DARK defMode error: ", e);
+      }
+      context.commit("setUserTheme", "DARK");
+      //this.$vuetify.theme.dark = true;
+    }
   },
 
   async setUserDefaultTee(context, payload) {

@@ -36,7 +36,7 @@
           <v-card class="pa-1 my-1 d-flex flex-row align-center" color="transparent" flat>
             <v-card-title class="headline">Set Theme:</v-card-title>
             <v-spacer />
-            <v-btn x-large @click="toggleTheme" class="mr-2">
+            <v-btn x-large @click="setUserTheme" class="mr-2">
               <v-icon left>fa-sun</v-icon>
               /
               <v-icon right>fa-moon</v-icon>
@@ -64,21 +64,11 @@
       ...mapGetters(["getUser", "getUserName", "getUserTee"]),
     },
     methods: {
-      ...mapActions(["setUserName", "setUserDefaultTee"]),
+      ...mapActions(["setUserName", "setUserDefaultTee", "setUserTheme"]),
       saveLocalUserName() {
         this.setUserName(this.localUserName);
         this.localUserName = "";
       },
-      // SECTION: TODO: .
-      // This function should reside in the store or centralized logic.
-      // Ideal would be to GET value and DISPATCH an action to toggle the theme settings.
-      // Also this should be saved with the user object and set during initialization.
-      toggleTheme() {
-        this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-        // this.$vuetify.theme.dark ? this.setUserTheme("DARK") : this.setUserTheme("LIGHT");
-        // This set GLOBAL THEME WITH THE USER STORE.
-      },
-      // SECTION: TODO: .
     },
     watch: {
       localTeeValue() {
