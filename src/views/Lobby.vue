@@ -166,12 +166,13 @@
         // Loop through and check if user is player in game
         for (let i = 0; i < gamePlayers.length; i++) {
           if (gamePlayers[i].user.id == userId) {
-            // If he is user in game then fetch game into state and set playerInGame bool to true
+            // If he is user in game then set playerInGame bool to true
             playerInGame = true;
           }
         }
 
         if (!playerInGame) {
+          // If player not in game then route to homescreen
           this.toggleHideNavBar;
           this.$router.push({ name: "home-menu" });
         }
