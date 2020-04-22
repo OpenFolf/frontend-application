@@ -38,7 +38,7 @@
           <v-card class="pa-1 my-1 d-flex flex-row align-center" color="transparent" flat>
             <v-card-title class="headline">Set Theme:</v-card-title>
             <v-spacer />
-            <v-btn x-large @click="toggleTheme" class="mr-2">
+            <v-btn x-large @click="setUserTheme" class="mr-2">
               <v-icon left>fa-sun</v-icon>
               /
               <v-icon right>fa-moon</v-icon>
@@ -80,7 +80,7 @@
       },
     },
     methods: {
-      ...mapActions(["setUserName", "setUserDefaultTee"]),
+      ...mapActions(["setUserName", "setUserDefaultTee", "setUserTheme"]),
       saveLocalUserName() {
         this.setUserName(this.localUserName);
         this.localUserName = "";

@@ -140,7 +140,7 @@
         "subscribeToGame",
         "deletePlayer",
         "refreshLobby",
-        "toggleHideNavBar",
+        "setHideBottomNav",
       ]),
       removeUser(playerId) {
         this.deletePlayer(playerId);
@@ -165,14 +165,14 @@
         let playerInGame = false;
         // Loop through and check if user is player in game
         for (let i = 0; i < gamePlayers.length; i++) {
-          if (gamePlayers[i].id == userId) {
+          if (gamePlayers[i].user.id == userId) {
             // If he is user in game then fetch game into state and set playerInGame bool to true
             playerInGame = true;
           }
         }
 
         if (!playerInGame) {
-          this.toggleHideNavBar;
+          this.setHideBottomNav(false);
           this.$router.push({ name: "home-menu" });
         }
       },
