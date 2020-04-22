@@ -17,10 +17,6 @@ const initialState = () => ({
 const state = initialState();
 
 const getters = {
-  // getUserAuthObject: (state) => {
-  //   console.log("Auth>Getters>getUserAuthObject");
-  //   return state.userAuthId;
-  // },
   signedIn: (state) => {
     console.log("Auth>Getters>signedIn");
     return state.signedIn;
@@ -36,12 +32,6 @@ const getters = {
 };
 
 const mutations = {
-  // SIGN_IN: (state, signedIn) => {
-  //   console.log("Auth>mutations>SIGN_IN");
-  //   state.signedIn = signedIn;
-  //   //TODO: REMOVE, Should be handled elsewhere
-  //   router.push({ name: "home-menu" });
-  // },
   SIGN_OUT: (state) => {
     console.log("Auth>mutations>SIGN_OUT");
     state.userAuthObject = null;
@@ -116,7 +106,6 @@ const actions = {
     }
     dispatch("fetchUser");
   },
-
   async fetchUser({ commit, dispatch }) {
     console.log("Auth>Actions>fetchUser");
     try {
@@ -130,16 +119,16 @@ const actions = {
         console.log("Renewing Token");
         await dispatch("fetchUser");
       }, expires * 1000);
-
       commit("AUTHENTICATED", user);
-      // Do we need this? hasn't the UserId been set in "setUserAutObject"
+      // Set the User id in the UserStore
       commit("setUserId", user.username);
-
       //TODO: Remove, find better place
+      // check if set await
       getUserLocation();
       dispatch("fetchCourseList");
     } catch (e) {
       //What was supposed to happen? Use commit("RESET") instead?
+      /// Set initialize
       commit("user", null);
       //TODO: Check if this error has to be displayed
       console.log("Auth>Actions>fetchUser>Catch, error ", e);
@@ -163,10 +152,6 @@ const actions = {
     }
   },
   async confirmSignUp({ commit }, { email, confirmCode }) {
-    console.log("type of ", typeof email);
-    console.log("type of ", typeof confirmCode);
-    // var stringCode = confirmCode.toString();
-    // console.log("stringCode", stringCode);
     try {
       await Auth.confirmSignUp(email, confirmCode);
       commit("SIGN_IN", { email: email });

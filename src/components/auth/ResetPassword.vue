@@ -50,9 +50,17 @@
     </v-card-text>
     <v-card-actions class="d-flex justify-center">
       <template v-if="isSentCode">
+        <v-spacer />
         <v-btn x-small text @click="resetUserPassword">Resend code</v-btn>
+        <v-spacer />
       </template>
-      <v-btn x-small text @click="this.SIGN_IN">Back to Sign In.</v-btn>
+    </v-card-actions>
+    <v-card-actions class="d-flex justify-center">
+      <template>
+        <v-spacer />
+        <v-btn x-small text @click="this.SIGN_IN">Back to Sign In.</v-btn>
+        <v-spacer />
+      </template>
     </v-card-actions>
   </v-card>
 </template>

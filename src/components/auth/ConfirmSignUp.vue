@@ -124,7 +124,6 @@
         !this.$v.confirmCode.minLength &&
           errors.push("Confirmation code must be at least 6 characters long");
         !this.$v.confirmCode.required && errors.push("Confirmation code is required.");
-        // if (this.errorMsg.message) this.CLEAR_ERRORS();
         return errors;
       },
     },
