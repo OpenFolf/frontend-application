@@ -115,7 +115,7 @@
         "updatePlayer",
         "subscribeToPlayerList",
         "finishGame",
-        "toggleHideBottomNav",
+        "setHideBottomNav",
         "refreshGame",
       ]),
       loadHoles() {
@@ -169,7 +169,8 @@
 
     watch: {
       getGameStatus() {
-        this.toggleHideBottomNav();
+        // TODO: MAYBE MISSING AN IF CHECK TO SEE DIFFERENT STATUSES??
+        this.setHideBottomNav(false);
         this.$router.push({ name: "stats" });
       },
     },
