@@ -1,5 +1,7 @@
 import { API, graphqlOperation } from "aws-amplify";
 import * as usergraphQL from "../../graphql/custom/usergraphQL";
+import vuetify from "../../plugins/vuetify";
+// import vuetify from "@/plugins/vuetify";
 
 const state = {
   user: {
@@ -112,7 +114,8 @@ const actions = {
         console.log("update to LIGHT defMode error: ", e);
       }
       context.commit("setUserTheme", "LIGHT");
-      //this.$vuetify.theme.dark = false;
+      console.log("Vuetify object: ", vuetify);
+      vuetify.framework.theme.isDark = false;
     } else {
       try {
         await API.graphql(
@@ -123,8 +126,9 @@ const actions = {
       } catch (e) {
         console.log("update to DARK defMode error: ", e);
       }
+      console.log("Vuetify object: ", vuetify);
       context.commit("setUserTheme", "DARK");
-      //this.$vuetify.theme.dark = true;
+      vuetify.framework.theme.isDark = true;
     }
   },
 
