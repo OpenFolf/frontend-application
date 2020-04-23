@@ -81,6 +81,21 @@ const actions = {
     }
   },
 
+  deletePlayerRouting(context) {
+    console.log("GameType changed");
+    const gamePlayers = context.rootState.game.game.players.items;
+    const userId = context.rootState.user.user.id;
+    let isPlayerInGame = services.isPlayerInGame(userId, gamePlayers);
+
+    if (!isPlayerInGame) {
+      // route to home
+      context.dispatch("showBottomNav", true);
+      Router.push({ name: "home-menu" });
+      // clear game state
+      context.dispatch("resetGame");
+    }
+  },
+
   inGameRouting(context) {
     console.log(context);
     console.log("Router>actions>inGameRouting");
