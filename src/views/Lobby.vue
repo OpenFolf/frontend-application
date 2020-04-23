@@ -57,14 +57,13 @@
           v-if="!isOwner"
           :dialog="leaveGameDialog"
           :message="leaveMsg"
-          :userToRemove="getUser.id"
+          :userToRemove="getPlayerId"
           @removeUser="removeUser"
         />
         <ConfirmDialogue
           v-if="isOwner"
           :dialog="cancelGameDialog"
           :message="cancelGameMsg"
-          :userToRemove="getUser.id"
           @cancelGame="cancelThisGame"
         />
         <ConfirmDialogue
@@ -143,6 +142,9 @@
       isOwner() {
         return this.getUser.id === this.getGame.owner.id;
       },
+      getPlayerId() {
+        return this.getPlayers.find((p) => p.user.id === this.getUser.id).id;
+      },
       otherPlayers() {
         return this.getPlayers.length <= 1;
       },
@@ -186,7 +188,7 @@
         // Loop through and check if user is player in game
         for (let i = 0; i < gamePlayers.length; i++) {
           if (gamePlayers[i].user.id == userId) {
-            // If he is user in game then fetch game into state and set playerInGame bool to true
+            // If he is user in game then set playerInGame bool to true
             playerInGame = true;
           }
         }

@@ -4,7 +4,7 @@ import * as playergraphQL from "../../graphql/custom/playergraphQL";
 import * as services from "../../services/index";
 import Router from "@/router";
 
-const state = {
+const initialState = () => ({
   //Added to prevent render error when the scorecard is refreshed in the browser.
   game: {
     id: "",
@@ -57,7 +57,9 @@ const state = {
   updatePlayer: {}, // DEBUG: ??? ok to delete?
   hideBottomNav: false,
   lobbyJoinError: "",
-};
+});
+
+const state = initialState();
 
 // BREAK: Getters
 const getters = {
@@ -121,6 +123,13 @@ const mutations = {
   setGameStatus: (state, payload) => {
     state.game.gameStatus = payload;
   },
+  RESET_GAME(state) {
+    //console.log("Game>mutations>RESET_GAME");
+    const newState = initialState();
+    Object.keys(newState).forEach((key) => {
+      state[key] = newState[key];
+    });
+  },
 };
 
 // BREAK: ACTIONS
@@ -140,7 +149,7 @@ const actions = {
       // Add fetched game to state
       context.commit("setGame", game);
     } catch (e) {
-      console.log("Fetch game error", e);
+      throw Error("Fetch game error", e);
     }
   },
 
@@ -155,7 +164,7 @@ const actions = {
       // Add list to state
       context.commit("setGamesList", gamesList);
     } catch (e) {
-      console.log("Fetch games error", e);
+      throw Error("Fetch game list error", e);
     }
   },
 
@@ -197,8 +206,38 @@ const actions = {
       //Add newly created game to state
       await context.commit("setGame", newGame);
     } catch (e) {
-      console.log("Create game error", e);
+      throw Error("Create game error", e);
     }
+  },
+
+  async cancelGame(context) {
+    //Change status of game to signal it has been cancelled //
+    //Update state
+    context.commit("setGameStatus", "-1");
+    //Create the object to send to graphQL api, a game has to be in state for this to work
+    const updateGameDetails = {
+      id: context.rootState.game.game.id,
+      gameStatus: "-1",
+    };
+    //Update the game details with new gameStatus
+    try {
+      await API.graphql(
+        graphqlOperation(gamegraphQL.updateGame, {
+          input: updateGameDetails,
+        }),
+      );
+    } catch (e) {
+      console.log("Update gameStatus error", e);
+    }
+    //Refresh state of game
+    // TODO: Maybe not needed, subscription should take care of this, check if delete is ok
+    context.dispatch("fetchGame", context.rootState.game.game.id);
+
+    // TODO: Route players to homescreen when gameStatus changes to -1
+
+    // TODO: After routing then set game in state to an empty object or original state or something like that {}
+
+    // TODO: Set in component if owner clicks leave lobby then call this function, if player clicks leave lobby, then call delete player on himself
   },
 
   async startGame(context) {
@@ -219,7 +258,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Update gameStatus error", e);
+      throw Error("Update gameStatus error", e);
     }
     //Get the number of holes for current game course
     const holeCount = parseInt(context.rootState.game.game.course.holeCount, 10);
@@ -243,7 +282,7 @@ const actions = {
           }),
         );
       } catch (e) {
-        console.log("Update player error", e);
+        throw Error("Update player error", e);
       }
     }
     //Refresh state of game
@@ -265,8 +304,9 @@ const actions = {
 
       // if gamesList length is 0 then error message 'no such game'
       if (gamesList.length == 0) {
+        console.log("JoinGame>NoGame");
         // Signal to component that no game exists with lobby code
-        context.state.lobbyJoinError = "noGame";
+        context.commit("ERROR_MSG", { message: `No game found with the lobby code ${code}` });
       }
 
       // Sort gamesList by time
@@ -310,18 +350,19 @@ const actions = {
           // context.dispatch("toggleHideBottomNav");
           Router.push({ name: "game-scorecard" });
         } else {
-          // If player not part of game then error message 'Game already started'
           // Game has already started, too late to join
-          context.state.lobbyJoinError = "playerNotInGame";
+          context.commit("ERROR_MSG", {
+            message: `A game with the lobby code ${code} was found but has already started`,
+          });
         }
       }
       // if Gamestatus 2 => error message 'Game already finished'
       if (gamesList[0].gameStatus == 2) {
-        // Game is already finished
-        context.state.lobbyJoinError = "gameOver";
+        // Game has already finished, because there can be many games with the same code in the future, user gets error no game found
+        context.commit("ERROR_MSG", { message: `No game found with the lobby code ${code}` });
       }
     } catch (e) {
-      console.log("Fetch Lobby game error", e);
+      throw Error("Fetch Lobby game error", e);
     }
   },
 
@@ -338,7 +379,7 @@ const actions = {
     try {
       await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
     } catch (e) {
-      console.log("Finish Game error", e);
+      throw Error("Finish Game error", e);
     }
 
     // TODO: Calculate totalscore for each player
@@ -350,9 +391,6 @@ const actions = {
     // TODO: Turn off all subscribers
   },
   //TODO: NEW and connected to the lobby's cancelGame button
-  cancelGame(context, gameId) {
-    return console.log("Game>actions>cancelGame, gameId", context, gameId);
-  },
 
   //Player actions
   async createPlayer(context, payload) {
@@ -369,7 +407,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Create player error", e);
+      throw Error("Create player error", e);
     }
     //Create object to update game details
     const updateGameDetails = {
@@ -383,7 +421,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Update game error", e);
+      throw Error("Update game error", e);
     }
   },
 
@@ -399,7 +437,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Player delete error", e);
+      throw Error("Player delete error", e);
     }
     //Create object to update game details
     const updateGameDetails = {
@@ -413,7 +451,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Update game error", e);
+      throw Error("Update game error", e);
     }
   },
 
@@ -439,7 +477,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("update player error", e);
+      throw Error("update player error", e);
     }
   },
 
@@ -455,7 +493,7 @@ const actions = {
       });
       console.log("Subscription", subscription);
     } catch (e) {
-      console.log("Player subscription error", e);
+      throw Error("Player subscription error", e);
     }
   },
 
@@ -472,7 +510,7 @@ const actions = {
 
       console.log("Game subscription: ", subscribe);
     } catch (e) {
-      console.log("Game subscription error", e);
+      throw Error("Game subscription error", e);
     }
   },
 
@@ -502,6 +540,10 @@ const actions = {
     context.dispatch("fetchGame", gameId);
     // Subscribe to all players in game again
     context.dispatch("subscribeToPlayerList");
+  },
+  resetGame({ commit }) {
+    //console.log("Game>Actions>resetGame");
+    commit("RESET_GAME");
   },
 };
 

@@ -2,26 +2,37 @@
   <v-container fluid>
     <v-row dense>
       <v-col cols="12">
-        <v-card color="info" class="pa-1 overflow-x-auto" flat>
+        <v-card color="warning" class="pa-1 overflow-x-auto" flat>
+          <!-- <v-card color="afe1e3" class="pa-1 overflow-x-auto" flat> -->
           <v-btn text color="error" @click="seeDebug = !seeDebug" small>
             {{ seeDebug ? "Hide" : "Show Debug text" }}
           </v-btn>
           <pre v-if="seeDebug">{{ getUser }}</pre>
           <v-divider />
           <v-card-title class="headline">
-            User Name: {{ getUserName ? getUserName : "--" }}
+            Tee name: {{ getUserName ? getUserName : "--" }}
           </v-card-title>
-          <v-text-field
-            label="User Name"
-            type="name"
-            @blur="$v.email.$touch()"
-            @click:append="saveLocalUserName"
-            v-model="localUserName"
-            class="px-2"
-            append-icon="fa-save"
-            outlined
-            flat
-          />
+          <v-card-text>
+            <v-form ref="signInForm" color="red">
+              <v-text-field
+                label="User Name"
+                type="name"
+                @blur="$v.name.$touch()"
+                :error-messages="nameErrors"
+                v-model.lazy="name"
+                required
+              />
+              <v-btn
+                :disabled="$v.name.$invalid"
+                @click="saveLocalUserName"
+                class="px-2"
+                append-icon="fa-save"
+                color="primary"
+                outlined
+                >Save
+              </v-btn>
+            </v-form>
+          </v-card-text>
           <v-divider />
           <v-card class="pa-1 my-1 d-flex flex-column justify-center" color="transparent" flat>
             <v-card-title class="headline">Default Tee Color:</v-card-title>
@@ -51,21 +62,29 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from "vuex";
-  //import { required, minLength, maxLength } from "vuelidate/lib/validators";
+  import { mapActions, mapGetters, mapMutations } from "vuex";
+  import { required, minLength, maxLength } from "vuelidate/lib/validators";
   export default {
     name: "home-profile",
     data() {
       return {
-        localUserName: "",
+        name: "",
         localTeeValue: 3,
         localColorLabel: "YELLOW",
         seeDebug: false,
+        hasBeenSent: false,
       };
+    },
+    validations: {
+      name: {
+        required,
+        minLength: minLength(2),
+        maxLength: maxLength(3),
+      },
     },
     computed: {
       ...mapGetters(["getUser", "getUserName", "getUserTee", "errorMsg"]),
-      passwordErrors() {
+      nameErrors() {
         const errors = [];
         if (this.errorMsg.message) {
           errors.push(this.errorMsg.message);
@@ -73,25 +92,19 @@
           return errors;
         }
         if (!this.$v.name.$dirty) return errors;
-        !this.$v.name.minLength && errors.push("Password must be at least 8 characters long");
-        !this.$v.name.required && errors.push("Password is required.");
-        if (this.errorMsg.message) this.CLEAR_ERRORS();
+        !this.$v.name.minLength && errors.push("Tee name must be at least 2 characters long");
+        !this.$v.name.maxLength && errors.push("Tee name must be at most 3 characters long");
+        !this.$v.name.required && errors.push("Tee name is required.");
         return errors;
       },
     },
     methods: {
+      ...mapMutations(["CLEAR_ERRORS"]),
       ...mapActions(["setUserName", "setUserDefaultTee", "setUserTheme"]),
       saveLocalUserName() {
-        this.setUserName(this.localUserName);
-        this.localUserName = "";
+        this.setUserName(this.name);
       },
-      // validations: {
-      //   name: {
-      //     required,
-      //     minLength: minLength(2),
-      //     maxLength: maxLength(3),
-      //   },
-      // },
+
       // SECTION: TODO: .
       // This function should reside in the store or centralized logic.
       // Ideal would be to GET value and DISPATCH an action to toggle the theme settings.
