@@ -157,8 +157,9 @@
         "subscribeToGame",
         "deletePlayer",
         "refreshLobby",
-        "setHideBottomNav",
+        "showBottomNav",
         "cancelGame",
+        "inGameRouting",
       ]),
       removeUser(playerId) {
         this.deletePlayer(playerId);
@@ -170,9 +171,7 @@
     },
     watch: {
       getGameStatus() {
-        if (this.getGameStatus == 1) {
-          this.$router.push({ name: "game-scorecard" });
-        }
+        this.inGameRouting();
       },
       getGame: {
         immediate: true,
@@ -194,7 +193,7 @@
         }
 
         if (!playerInGame) {
-          this.setHideBottomNav(false);
+          this.showBottomNav(false);
           this.$router.push({ name: "home-menu" });
         }
       },

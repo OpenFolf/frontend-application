@@ -115,8 +115,9 @@
         "updatePlayer",
         "subscribeToPlayerList",
         "finishGame",
-        "setHideBottomNav",
+        "showBottomNav",
         "refreshGame",
+        "inGameRouting",
       ]),
       loadHoles() {
         // calculate the total of the par scores
@@ -169,9 +170,7 @@
 
     watch: {
       getGameStatus() {
-        // TODO: MAYBE MISSING AN IF CHECK TO SEE DIFFERENT STATUSES??
-        this.setHideBottomNav(false);
-        this.$router.push({ name: "stats" });
+        this.inGameRouting();
       },
     },
   };

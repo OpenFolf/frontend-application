@@ -53,7 +53,7 @@
     },
     methods: {
       ...mapMutations(["CLEAR_ERRORS"]),
-      ...mapActions(["joinGame"]),
+      ...mapActions(["joinGame", "defaultRouting"]),
       joinGameRequest() {
         this.joinGame(this.gameCode.toUpperCase());
       },
@@ -66,7 +66,7 @@
       },
     },
     computed: {
-      ...mapGetters(["errorMsg"]),
+      ...mapGetters(["errorMsg", "getGameStatus"]),
       gameCodeErrors() {
         const errors = [];
         console.log("this.errorMsg", this.errorMsg.message);
@@ -80,6 +80,11 @@
         !this.$v.gameCode.maxLength && errors.push("Game code must be 3 characters long");
         !this.$v.gameCode.required && errors.push("Game code is required");
         return errors;
+      },
+    },
+    watch: {
+      getGameStatus() {
+        this.defaultRouting();
       },
     },
   };

@@ -8,7 +8,7 @@
 
 <script>
   import HomeMenuItem from "@/components/home/MenuItem.vue";
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
   export default {
     name: "home-menu",
     components: {
@@ -72,14 +72,15 @@
         ],
       };
     },
+    methods: {
+      ...mapActions(["defaultRouting"]),
+    },
     computed: {
       ...mapGetters(["signedIn"]),
     },
     watch: {
       signedIn() {
-        if (!this.signedIn) {
-          this.$router.push({ name: "auth" });
-        }
+        this.defaultRouting();
       },
     },
   };
