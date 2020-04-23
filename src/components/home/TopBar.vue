@@ -13,7 +13,6 @@
 
 <script>
   import SignOut from "@/components/auth/SignOut.vue";
-  import { mapActions } from "vuex";
   export default {
     name: "home-top-bar",
     components: {
