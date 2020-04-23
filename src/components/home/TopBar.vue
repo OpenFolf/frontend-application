@@ -7,8 +7,6 @@
       / {{ isHome ? "" : path }}
     </v-toolbar-title>
     <v-spacer />
-    <v-avatar><v-icon @click="resetStore">fa-store-slash</v-icon></v-avatar>
-    <v-spacer />
     <sign-out />
   </v-app-bar>
 </template>
@@ -28,13 +26,6 @@
       };
     },
     methods: {
-      // TODO: Remove when finished testing
-      ...mapActions(["reset"]),
-      resetStore() {
-        console.log("TopBar>Methods>resetStore");
-        this.reset();
-      },
-
       pathBar() {
         let cleanPath = [...this.$route.path].filter((x) => x !== "/").join("");
         if (cleanPath.length > 4) {

@@ -3,7 +3,7 @@ import * as usergraphQL from "../../graphql/custom/usergraphQL";
 import vuetify from "../../plugins/vuetify";
 // import vuetify from "@/plugins/vuetify";
 
-const state = {
+const initialState = () => ({
   user: {
     id: "",
   },
@@ -13,7 +13,9 @@ const state = {
     error: 0,
   },
   userGames: [],
-};
+});
+
+const state = initialState();
 
 const getters = {
   getUser: (state) => {
@@ -78,11 +80,18 @@ const mutations = {
   setUserGames: (state, payload) => {
     state.userGames = payload;
   },
+  RESET_USER(state) {
+    //console.log("Auth>mutations>RESET_USER");
+    const newState = initialState();
+    Object.keys(newState).forEach((key) => {
+      state[key] = newState[key];
+    });
+  },
 };
 
 const actions = {
   setUserId: ({ commit }, payload) => {
-    console.log("User>setUserId>");
+    console.log("User>setUserId");
     commit("setUserId", payload);
   },
 
@@ -96,7 +105,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("update username error: ", e);
+      throw Error("Update username error: ", e);
     }
     context.commit("setUserName", payload);
   },
@@ -112,7 +121,7 @@ const actions = {
           }),
         );
       } catch (e) {
-        console.log("update to LIGHT defMode error: ", e);
+        throw Error("Update to LIGHT defMode error: ", e);
       }
       context.commit("setUserTheme", "LIGHT");
       console.log("Vuetify object: ", vuetify);
@@ -125,7 +134,7 @@ const actions = {
           }),
         );
       } catch (e) {
-        console.log("update to DARK defMode error: ", e);
+        throw Error("Update to DARK defMode error: ", e);
       }
       console.log("Vuetify object: ", vuetify);
       context.commit("setUserTheme", "DARK");
@@ -142,7 +151,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("update defTee error: ", e);
+      throw Error("Update defTee error: ", e);
     }
     context.commit("setUserDefaultTee", payload);
   },
@@ -151,14 +160,14 @@ const actions = {
     commit("setUserLocation", payload);
   },
   async fetchUser(context) {
-    console.log("User>fetchUser>");
+    console.log("User>fetchUser");
     try {
       const response = await API.graphql(
         graphqlOperation(usergraphQL.fetchUser, { id: state.user.id }),
       );
       context.commit("setUser", response.data.getUser);
     } catch (e) {
-      console.log("fetchUserError", e);
+      throw Error("fetchUserError", e);
     }
   },
 
@@ -170,8 +179,13 @@ const actions = {
       );
       context.commit("setUserGames", response.data.getUser);
     } catch (e) {
-      console.log("fetchUserGameListError", e);
+      throw Error("fetchUserGameListError", e);
     }
+  },
+
+  resetUser({ commit }) {
+    console.log("Auth>Actions>resetUser");
+    commit("RESET_USER");
   },
 };
 

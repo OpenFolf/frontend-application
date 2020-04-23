@@ -4,7 +4,7 @@ import * as playergraphQL from "../../graphql/custom/playergraphQL";
 import * as services from "../../services/index";
 import Router from "@/router";
 
-const state = {
+const initialState = () => ({
   //Added to prevent render error when the scorecard is refreshed in the browser.
   game: {
     id: "",
@@ -57,7 +57,9 @@ const state = {
   updatePlayer: {}, // DEBUG: ??? ok to delete?
   hideBottomNav: false,
   lobbyJoinError: "",
-};
+});
+
+const state = initialState();
 
 // BREAK: Getters
 const getters = {
@@ -121,6 +123,13 @@ const mutations = {
   setGameStatus: (state, payload) => {
     state.game.gameStatus = payload;
   },
+  RESET_GAME(state) {
+    //console.log("Game>mutations>RESET_GAME");
+    const newState = initialState();
+    Object.keys(newState).forEach((key) => {
+      state[key] = newState[key];
+    });
+  },
 };
 
 // BREAK: ACTIONS
@@ -140,7 +149,7 @@ const actions = {
       // Add fetched game to state
       context.commit("setGame", game);
     } catch (e) {
-      console.log("Fetch game error", e);
+      throw Error("Fetch game error", e);
     }
   },
 
@@ -155,7 +164,7 @@ const actions = {
       // Add list to state
       context.commit("setGamesList", gamesList);
     } catch (e) {
-      console.log("Fetch games error", e);
+      throw Error("Fetch game list error", e);
     }
   },
 
@@ -197,7 +206,7 @@ const actions = {
       //Add newly created game to state
       await context.commit("setGame", newGame);
     } catch (e) {
-      console.log("Create game error", e);
+      throw Error("Create game error", e);
     }
   },
 
@@ -219,7 +228,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Update gameStatus error", e);
+      throw Error("Update gameStatus error", e);
     }
     //Get the number of holes for current game course
     const holeCount = parseInt(context.rootState.game.game.course.holeCount, 10);
@@ -243,7 +252,7 @@ const actions = {
           }),
         );
       } catch (e) {
-        console.log("Update player error", e);
+        throw Error("Update player error", e);
       }
     }
     //Refresh state of game
@@ -321,7 +330,7 @@ const actions = {
         context.state.lobbyJoinError = "gameOver";
       }
     } catch (e) {
-      console.log("Fetch Lobby game error", e);
+      throw Error("Fetch Lobby game error", e);
     }
   },
 
@@ -338,7 +347,7 @@ const actions = {
     try {
       await API.graphql(graphqlOperation(gamegraphQL.updateGame, { input: updateGameDetails }));
     } catch (e) {
-      console.log("Finish Game error", e);
+      throw Error("Finish Game error", e);
     }
 
     // TODO: Calculate totalscore for each player
@@ -369,7 +378,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Create player error", e);
+      throw Error("Create player error", e);
     }
     //Create object to update game details
     const updateGameDetails = {
@@ -383,7 +392,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Update game error", e);
+      throw Error("Update game error", e);
     }
   },
 
@@ -399,7 +408,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Player delete error", e);
+      throw Error("Player delete error", e);
     }
     //Create object to update game details
     const updateGameDetails = {
@@ -413,7 +422,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Update game error", e);
+      throw Error("Update game error", e);
     }
   },
 
@@ -439,7 +448,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("update player error", e);
+      throw Error("update player error", e);
     }
   },
 
@@ -455,7 +464,7 @@ const actions = {
       });
       console.log("Subscription", subscription);
     } catch (e) {
-      console.log("Player subscription error", e);
+      throw Error("Player subscription error", e);
     }
   },
 
@@ -472,7 +481,7 @@ const actions = {
 
       console.log("Game subscription: ", subscribe);
     } catch (e) {
-      console.log("Game subscription error", e);
+      throw Error("Game subscription error", e);
     }
   },
 
@@ -502,6 +511,10 @@ const actions = {
     context.dispatch("fetchGame", gameId);
     // Subscribe to all players in game again
     context.dispatch("subscribeToPlayerList");
+  },
+  resetGame({ commit }) {
+    //console.log("Game>Actions>resetGame");
+    commit("RESET_GAME");
   },
 };
 
