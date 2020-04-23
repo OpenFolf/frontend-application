@@ -124,7 +124,7 @@ const actions = {
           break;
         case "-1":
           console.log("Router>actions>inGameRouting>signedIn, case -1");
-          context.dispatch("showBottomNav", false);
+          context.dispatch("showBottomNav", true);
           Router.push({ name: "home-menu" });
           break;
         default:
