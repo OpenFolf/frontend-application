@@ -56,6 +56,7 @@ const mutations = {
     state.user.id = payload;
   },
   setUserName: (state, payload) => {
+    console.log("User>mutations>setUserName, payload", payload);
     state.user.username = payload;
   },
   setUserEmail: (state, payload) => {
@@ -96,6 +97,7 @@ const actions = {
   },
 
   async setUserName(context, payload) {
+    console.log("User>actions>setUserName, payload", payload);
     // Add to database
     const userId = context.rootState.user.user.id;
     try {
@@ -105,7 +107,10 @@ const actions = {
         }),
       );
     } catch (e) {
-      throw Error("Update username error: ", e);
+      console.log("ErrorSETUSERNAME", e);
+      context.commit("ERROR_MSG", {
+        message: "User name may not contain an empty string or symbols",
+      });
     }
     context.commit("setUserName", payload);
   },
