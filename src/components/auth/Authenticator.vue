@@ -12,7 +12,7 @@
   import SignUp from "@/components/auth/SignUp.vue";
   import ConfirmSignUp from "@/components/auth/ConfirmSignUp.vue";
   import ResetPassword from "@/components/auth/ResetPassword.vue";
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
   export default {
     name: "authenticator",
     components: {
@@ -23,6 +23,14 @@
     },
     computed: {
       ...mapGetters(["signedIn", "authState"]),
+    },
+    methods: {
+      ...mapActions(["inGameRouting"]),
+    },
+    watch: {
+      signedIn() {
+        this.inGameRouting();
+      },
     },
   };
 </script>

@@ -9,9 +9,12 @@
   export default {
     name: "sign-out",
     methods: {
-      ...mapActions(["signOut"]),
+      ...mapActions(["resetAuth", "resetUser", "resetGame", "resetCourse"]),
       signOutUser() {
-        this.signOut();
+        this.resetAuth();
+        this.resetUser();
+        this.resetGame();
+        this.resetCourse();
       },
     },
   };

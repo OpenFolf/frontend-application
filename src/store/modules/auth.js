@@ -1,7 +1,5 @@
-import router from "@/router";
 import { Auth } from "aws-amplify";
 import { getUserLocation } from "@/services";
-import Vuetify from "@/plugins/vuetify.js";
 
 const initialState = () => ({
   userAuthObject: null,
@@ -38,7 +36,6 @@ const mutations = {
     state.userAuthObject = null;
     state.signedIn = false;
     sessionStorage.clear();
-    router.push({ name: "auth" });
   },
   ERROR_MSG: (state, errorMsg) => {
     //console.log("Auth>mutations>ERROR_MSG");
@@ -76,7 +73,6 @@ const mutations = {
     //console.log("Auth>mutations>AUTHENTICATED");
     state.signedIn = !!user && user.attributes && user.attributes.email_verified;
     state.userAuthObject = user;
-    router.push({ name: "home-menu" });
   },
   RESET_AUTH(state) {
     //console.log("Auth>mutations>RESET_AUTH");
@@ -124,13 +120,8 @@ const actions = {
       //console.log("Auth>Actions>fetchUser>Catch, error ", e);
     }
   },
-  async initializeUser({ dispatch, rootState }) {
-    dispatch("fetchUser");
-    if (rootState.user.defMode == "DARK") {
-      Vuetify.framework.theme.isDark = true;
-    } else {
-      Vuetify.framework.theme.isDark = false;
-    }
+  async initializeUser({ dispatch }) {
+    await dispatch("fetchUser");
     getUserLocation();
     dispatch("fetchCourseList");
   },

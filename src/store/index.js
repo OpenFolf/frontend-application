@@ -4,6 +4,7 @@ import auth from "./modules/auth";
 import course from "./modules/course";
 import user from "./modules/user";
 import game from "./modules/game";
+import route from "./modules/route";
 // import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
@@ -18,5 +19,6 @@ export default new Vuex.Store({
     course,
     user,
     game,
+    route,
   },
 });

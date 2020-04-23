@@ -89,3 +89,16 @@ export function getDistanceKM(lat1, lon1, lat2, lon2) {
     0.5 - c((lat2 - lat1) * p) / 2 + (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
   return 2 * 6371 * Math.asin(Math.sqrt(a));
 }
+
+// Check if player is in game
+export function isPlayerInGame(userId, playerArray) {
+  let playerInGame = false;
+  // Loop through and check if user is player in game
+  for (let i = 0; i < playerArray.length; i++) {
+    if (playerArray[i].user.id == userId) {
+      // If user is player in array then set as true
+      playerInGame = true;
+    }
+  }
+  return playerInGame;
+}

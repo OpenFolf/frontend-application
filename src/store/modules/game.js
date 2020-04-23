@@ -2,7 +2,6 @@ import { API, graphqlOperation } from "aws-amplify";
 import * as gamegraphQL from "../../graphql/custom/gamegraphQL";
 import * as playergraphQL from "../../graphql/custom/playergraphQL";
 import * as services from "../../services/index";
-import Router from "@/router";
 
 const initialState = () => ({
   //Added to prevent render error when the scorecard is refreshed in the browser.
@@ -55,7 +54,6 @@ const initialState = () => ({
   },
   gamesList: [],
   updatePlayer: {}, // DEBUG: ??? ok to delete?
-  hideBottomNav: false,
   lobbyJoinError: "",
 });
 
@@ -79,9 +77,7 @@ const getters = {
   getGameType: (state) => {
     return state.game.gameType;
   },
-  getHideBottomNav: (state) => {
-    return state.hideBottomNav;
-  },
+
   getPlayers: (state) => {
     return state.game.players.items;
   },
@@ -114,9 +110,7 @@ const mutations = {
   setUpdatePlayer: (state, payload) => {
     state.updatePlayer = payload;
   },
-  setHideBottomNav: (state, payload) => {
-    state.hideBottomNav = payload;
-  },
+
   setScoreArray: (state, payload) => {
     state.game.players.items = payload;
   },
@@ -134,10 +128,6 @@ const mutations = {
 
 // BREAK: ACTIONS
 const actions = {
-  setHideBottomNav: ({ commit }, payload) => {
-    commit("setHideBottomNav", payload);
-  },
-
   //Game actions
   async fetchGame(context, payload) {
     // Receives id of game as payload
@@ -321,14 +311,6 @@ const actions = {
         await context.dispatch("createPlayer", gamesList[0].id);
         // Store game in state
         await context.dispatch("fetchGame", gamesList[0].id);
-        // Route to lobby
-        Router.push({
-          name: "join-lobby",
-          params: {
-            path: services.replaceIcelandicCharacters(gamesList[0].course.name),
-            id: gamesList[0].id,
-          },
-        });
       }
 
       // If gameStatus 1 =>
@@ -347,8 +329,6 @@ const actions = {
         // If player in game then route to scorecard
         if (playerInGame) {
           context.dispatch("fetchGame", gamesList[0].id);
-          // context.dispatch("toggleHideBottomNav");
-          Router.push({ name: "game-scorecard" });
         } else {
           // Game has already started, too late to join
           context.commit("ERROR_MSG", {

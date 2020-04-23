@@ -13,8 +13,7 @@
         <v-card-title class="headline primary" primary-title>
           {{ message.title }}
         </v-card-title>
-        {{ message.body }}
-        <v-card-text> </v-card-text>
+        <v-card-text> {{ message.body }}</v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>

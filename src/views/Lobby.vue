@@ -157,8 +157,10 @@
         "subscribeToGame",
         "deletePlayer",
         "refreshLobby",
-        "setHideBottomNav",
+        "showBottomNav",
         "cancelGame",
+        "inGameRouting",
+        "deletePlayerRouting",
       ]),
       removeUser(playerId) {
         this.deletePlayer(playerId);
@@ -170,9 +172,7 @@
     },
     watch: {
       getGameStatus() {
-        if (this.getGameStatus == 1) {
-          this.$router.push({ name: "game-scorecard" });
-        }
+        this.inGameRouting();
       },
       getGame: {
         immediate: true,
@@ -181,22 +181,7 @@
         },
       },
       getGameType() {
-        console.log("GameType changed");
-        const gamePlayers = this.getGame.players.items;
-        const userId = this.getUser.id;
-        let playerInGame = false;
-        // Loop through and check if user is player in game
-        for (let i = 0; i < gamePlayers.length; i++) {
-          if (gamePlayers[i].user.id == userId) {
-            // If he is user in game then set playerInGame bool to true
-            playerInGame = true;
-          }
-        }
-
-        if (!playerInGame) {
-          this.setHideBottomNav(false);
-          this.$router.push({ name: "home-menu" });
-        }
+        this.deletePlayerRouting();
       },
     },
   };

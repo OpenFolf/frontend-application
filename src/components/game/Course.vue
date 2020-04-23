@@ -12,15 +12,7 @@
         </v-container>
       </v-toolbar>
       <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile flat>
-        <v-btn
-          large
-          outlined
-          color="white"
-          class="my-6 primary"
-          :to="{
-            name: 'game-lobby',
-            params: { path: this.path, id: this.getCurrentCourse.id },
-          }"
+        <v-btn large outlined color="white" class="my-6 primary" @click="playCourse"
           >Play Course</v-btn
         >
       </v-card>
@@ -72,14 +64,13 @@
       CourseMap,
     },
 
-    created: function() {
+    created() {
       this.calculateLengthAndTotalPar();
     },
     methods: {
-      ...mapActions(["createGame"]),
+      ...mapActions(["createGame", "defaultRouting"]),
       async playCourse() {
         await this.createGame(this.getCurrentCourse.id);
-        this.$router.push();
       },
       swipe(direction) {
         this.dir = direction;
@@ -109,10 +100,12 @@
       },
     },
     computed: {
-      ...mapGetters(["getCurrentCourse", "getUserLocation"]),
-      // getLocation() {
-      //   return [parseFloat(this.getUserLocation.lat), parseFloat(this.getUserLocation.lat)];
-      // },
+      ...mapGetters(["getCurrentCourse", "getUserLocation", "getGameStatus"]),
+    },
+    watch: {
+      getGameStatus() {
+        this.defaultRouting();
+      },
     },
   };
 </script>

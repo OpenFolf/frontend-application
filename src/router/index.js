@@ -65,36 +65,29 @@ const routes = [
     name: "game-lobby",
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
-    beforeEnter: async (to, from, next) => {
-      await Store.dispatch("createGame", to.params.id);
-      Store.dispatch("setHideBottomNav", true);
-      next();
-    },
   },
   {
     path: "/game/:path/lobby",
     name: "join-lobby",
     component: () => import(/* webpackChunkName: "lobby" */ "@/views/Lobby.vue"), // CHANGE LOCATION to COMPONENTS/GAME
     props: true,
-    beforeEnter: (to, from, next) => {
-      Store.dispatch("setHideBottomNav", true);
-      next();
-    },
   },
   {
     //TODO: remove name param
     path: "/game/:path/scorecard",
     name: "game-scorecard",
     component: () => import(/* webpackChunkName: "scorecard" */ "@/views/Scorecard.vue"), // CHANGE LOCATION to COMPONENTS/GAME
-    beforeLeave: (to, from, next) => {
-      Store.dispatch("setHideBottomNav", false);
-      next();
-    },
   },
   {
     path: "/join-game",
     name: "join-game",
     component: () => import(/* webpackChunkName: "join-game" */ "@/views/JoinGame.vue"),
+  },
+  {
+    path: "/game-end-stats",
+    name: "game-end-stats",
+    component: () =>
+      import(/* webpackChunkName: "game-end-stats" */ "@/components/game/GameEndStats.vue"),
   },
   {
     path: "/stats",
