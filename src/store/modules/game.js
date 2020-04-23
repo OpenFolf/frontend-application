@@ -201,6 +201,36 @@ const actions = {
     }
   },
 
+  async cancelGame(context) {
+    //Change status of game to signal it has been cancelled //
+    //Update state
+    context.commit("setGameStatus", "-1");
+    //Create the object to send to graphQL api, a game has to be in state for this to work
+    const updateGameDetails = {
+      id: context.rootState.game.game.id,
+      gameStatus: "-1",
+    };
+    //Update the game details with new gameStatus
+    try {
+      await API.graphql(
+        graphqlOperation(gamegraphQL.updateGame, {
+          input: updateGameDetails,
+        }),
+      );
+    } catch (e) {
+      console.log("Update gameStatus error", e);
+    }
+    //Refresh state of game
+    // TODO: Maybe not needed, subscription should take care of this, check if delete is ok
+    context.dispatch("fetchGame", context.rootState.game.game.id);
+
+    // TODO: Route players to homescreen when gameStatus changes to -1
+
+    // TODO: After routing then set game in state to an empty object or original state or something like that {}
+
+    // TODO: Set in component if owner clicks leave lobby then call this function, if player clicks leave lobby, then call delete player on himself
+  },
+
   async startGame(context) {
     //Change status of game to signal it has started //
     //Update state
@@ -350,9 +380,6 @@ const actions = {
     // TODO: Turn off all subscribers
   },
   //TODO: NEW and connected to the lobby's cancelGame button
-  cancelGame(context, gameId) {
-    return console.log("Game>actions>cancelGame, gameId", context, gameId);
-  },
 
   //Player actions
   async createPlayer(context, payload) {
