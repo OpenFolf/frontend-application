@@ -55,6 +55,8 @@ const initialState = () => ({
   gamesList: [],
   updatePlayer: {}, // DEBUG: ??? ok to delete?
   lobbyJoinError: "",
+  gameSubscription: "",
+  playerSubscription: [],
 });
 
 const state = initialState();
@@ -479,18 +481,49 @@ const actions = {
 
   async subscribeToGame(context) {
     //Starts a subscription to any changes on game object in the database
-    const gameId = context.rootState.game.game.id;
+
+    const gameId = context.state.game.id;
 
     try {
-      const subscribe = API.graphql(
+      context.state.gameSubscription = API.graphql(
         graphqlOperation(gamegraphQL.onUpdateGame, { id: gameId }),
       ).subscribe({
         next: () => context.dispatch("fetchGame", gameId),
       });
 
-      console.log("Game subscription: ", subscribe);
+      console.log("Game subscription: ", context.state.gameSubscription);
     } catch (e) {
       throw Error("Game subscription error", e);
+    }
+  },
+
+  browserStateListenGame(context, payload) {
+    // Dispatch-a herna browser state lsitener
+    console.log("Maettur inn i browser functionid: ", payload);
+    const func = function() {
+      if (document.visibilityState == "hidden") {
+        context.state.gameSubscription.unsubscribe();
+        console.log("Unsubscribe: ", context.state.gameSubscription);
+      } else {
+        try {
+          context.state.gameSubscription = API.graphql(
+            graphqlOperation(gamegraphQL.onUpdateGame, { id: context.state.game.id }),
+          ).subscribe({
+            next: () => context.dispatch("fetchGame", context.state.game.id),
+          });
+          console.log("Game re-subscription: ", context.state.gameSubscription);
+        } catch (e) {
+          throw Error("Game re-subscription error", e);
+        }
+      }
+    };
+
+    if (payload == 1) {
+      console.log("Calling remove listener");
+      document.removeEventListener("visibilitychange", func);
+    } else {
+      console.log("Calling add listener");
+      document.addEventListener("visibilitychange", func);
     }
   },
 

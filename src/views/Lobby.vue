@@ -130,6 +130,11 @@
     },
     created() {
       this.fetchGame(this.getGame.id);
+      this.subscribeToGame();
+      this.browserStateListenGame();
+    },
+    destroyed() {
+      this.browserStateListenGame(1);
     },
     props: {
       path: {
@@ -161,6 +166,7 @@
         "cancelGame",
         "inGameRouting",
         "deletePlayerRouting",
+        "browserStateListenGame",
       ]),
       removeUser(playerId) {
         this.deletePlayer(playerId);
@@ -173,12 +179,6 @@
     watch: {
       getGameStatus() {
         this.inGameRouting();
-      },
-      getGame: {
-        immediate: true,
-        handler() {
-          this.subscribeToGame();
-        },
       },
       getGameType() {
         this.deletePlayerRouting();
