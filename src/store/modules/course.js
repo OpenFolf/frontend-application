@@ -4,10 +4,10 @@ import * as graphQLmutations from "../../graphql/mutations";
 import * as subscriptions from "../../graphql/subscriptions";
 import { getDistanceKM } from "@/services";
 
-const state = {
+const initialState = () => ({
   courses: null,
   currentCourse: null,
-};
+});
 
 const getters = {
   getCourses: (state) => {
@@ -17,6 +17,8 @@ const getters = {
     return state.currentCourse;
   },
 };
+
+const state = initialState();
 
 const mutations = {
   updateCourseList: (state, payload) => {
@@ -30,6 +32,13 @@ const mutations = {
   },
   newCourse: (state, payload) => {
     state.courses.unshift(payload);
+  },
+  RESET_COURSE(state) {
+    console.log("Course>mutations>RESET_COURSE");
+    const newState = initialState();
+    Object.keys(newState).forEach((key) => {
+      state[key] = newState[key];
+    });
   },
 };
 
@@ -49,7 +58,7 @@ const actions = {
       }
       context.commit("updateCourseList", courseList);
     } catch (e) {
-      console.log("Error", e);
+      throw Error("Error, unable to fetch course list", e);
     }
   },
 
@@ -62,7 +71,7 @@ const actions = {
 
       context.commit("updateCurrentCourse", course);
     } catch (e) {
-      console.log("Error", e);
+      throw Error("Error, unable to fetch course", e);
     }
   },
 
@@ -70,12 +79,14 @@ const actions = {
     const courseDetails = {
       name: payload,
     };
-
-    const newCourse = await API.graphql(
-      graphqlOperation(graphQLmutations.createCourse, { input: courseDetails }),
-    );
-
-    context.commit("newCourse", newCourse.data);
+    try {
+      const newCourse = await API.graphql(
+        graphqlOperation(graphQLmutations.createCourse, { input: courseDetails }),
+      );
+      context.commit("newCourse", newCourse.data);
+    } catch (e) {
+      throw Error("Error, unable to add a new course", e);
+    }
   },
 
   async subscribeCourses(context) {
@@ -84,6 +95,10 @@ const actions = {
     });
 
     console.log(courses);
+  },
+  resetCourse({ commit }) {
+    console.log("Course>Actions>resetCourses");
+    commit("RESET_COURSE");
   },
 };
 

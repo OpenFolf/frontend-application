@@ -63,36 +63,31 @@ const mutations = {
     if (payload.email) state.authState.email = payload.email;
   },
   CONFIRM_SIGN_UP: (state, payload) => {
-    //console.log("payload", payload);
-    //console.log("payload", payload.email);
+    //console.log("Auth>mutations>CONFIRM_SIGN_UP");
     state.authState.path = "confirmSignUp";
     if (payload.email) state.authState.email = payload.email;
   },
   RESET_PASSWORD: (state, payload) => {
-    //console.log("payload", payload);
-    //console.log("payload", payload.email);
+    //console.log("Auth>mutations>RESET_PASSWORD");
     state.authState.path = "resetPassword";
     if (payload.email) state.authState.email = payload.email;
   },
-  RESET(state) {
+  AUTHENTICATED(state, user) {
+    //console.log("Auth>mutations>AUTHENTICATED");
+    state.signedIn = !!user && user.attributes && user.attributes.email_verified;
+    state.userAuthObject = user;
+    router.push({ name: "home-menu" });
+  },
+  RESET_AUTH(state) {
+    //console.log("Auth>mutations>RESET_AUTH");
     const newState = initialState();
     Object.keys(newState).forEach((key) => {
       state[key] = newState[key];
     });
   },
-  AUTHENTICATED(state, user) {
-    //console.log("payload", payload);
-    state.signedIn = !!user && user.attributes && user.attributes.email_verified;
-    state.userAuthObject = user;
-    router.push({ name: "home-menu" });
-  },
 };
 
 const actions = {
-  reset({ commit }) {
-    //console.log("Auth>Actions>reset");
-    commit("RESET");
-  },
   async signIn({ commit, dispatch }, { email, password }) {
     //console.log("Auth>Actions>SignIn", email, password);
     try {
@@ -123,9 +118,8 @@ const actions = {
       commit("setUserId", user.username);
       dispatch("initializeUser");
     } catch (e) {
-      //What was supposed to happen? Use commit("RESET") instead?
-      /// Set initialize
-      dispatch("reset");
+      //What was supposed to happen? Use commit("RESET_AUTH") instead?
+      dispatch("resetUser");
       //TODO: Check if this error has to be displayed
       //console.log("Auth>Actions>fetchUser>Catch, error ", e);
     }
@@ -198,8 +192,12 @@ const actions = {
       await Auth.signOut();
       commit("SIGN_OUT");
     } catch (e) {
-      throw new Error("Error in Auth>Actions>signOut", e);
+      throw Error("Error in Auth>Actions>signOut", e);
     }
+  },
+  resetAuth({ commit }) {
+    //console.log("Auth>Actions>resetAuth");
+    commit("RESET_AUTH");
   },
 };
 
