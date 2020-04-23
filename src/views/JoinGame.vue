@@ -33,18 +33,6 @@
               >
                 Join Game
               </v-btn>
-              <v-alert
-                dense
-                border="left"
-                colored-border
-                close-text="Dismiss"
-                dismissible
-                v-model="isError"
-                elevation="0"
-                color="error"
-              >
-                {{ errorObj }}
-              </v-alert>
             </v-form>
           </v-container>
         </v-card>
@@ -55,35 +43,19 @@
 
 <script>
   import { required, minLength, maxLength } from "vuelidate/lib/validators";
-  import { mapActions, mapGetters } from "vuex";
+  import { mapActions, mapGetters, mapMutations } from "vuex";
   export default {
     name: "join-game",
     data() {
       return {
         gameCode: "",
-        errorObj: "",
-        isError: false,
       };
     },
     methods: {
+      ...mapMutations(["CLEAR_ERRORS"]),
       ...mapActions(["joinGame"]),
       joinGameRequest() {
         this.joinGame(this.gameCode.toUpperCase());
-      },
-      clearErrorObj() {
-        this.errorObj = "";
-        this.isError = false;
-      },
-      async checkLobbyCode(code) {
-        await this.fetchGames();
-        this.gameObject = this.getGamesList.find((x) => x.lobbyCode == code);
-        if (!this.gameObject) {
-          this.errorObj = `No game found with the lobby code ${code}`;
-          this.isError = true;
-        } else if (this.gameObject.gameStatus != 0) {
-          this.errorObj = `A game with the lobby code ${code} found but has already started`;
-          this.isError = true;
-        }
       },
     },
     validations: {
@@ -94,22 +66,20 @@
       },
     },
     computed: {
-      ...mapGetters(["getLobbyJoinError"]),
+      ...mapGetters(["errorMsg"]),
       gameCodeErrors() {
         const errors = [];
+        console.log("this.errorMsg", this.errorMsg.message);
+        if (this.errorMsg.message) {
+          errors.push(this.errorMsg.message);
+          this.CLEAR_ERRORS();
+          return errors;
+        }
         if (!this.$v.gameCode.$dirty) return errors;
         !this.$v.gameCode.minLength && errors.push("Game code must be 3 characters long");
         !this.$v.gameCode.maxLength && errors.push("Game code must be 3 characters long");
         !this.$v.gameCode.required && errors.push("Game code is required");
-        if (this.isError) errors.push(this.errorObj);
-        this.clearErrorObj();
         return errors;
-      },
-    },
-    watch: {
-      getLobbyJoinError() {
-        this.errorObj = this.getLobbyJoinError;
-        this.isError = true;
       },
     },
   };

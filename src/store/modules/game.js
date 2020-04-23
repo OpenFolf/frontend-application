@@ -274,8 +274,9 @@ const actions = {
 
       // if gamesList length is 0 then error message 'no such game'
       if (gamesList.length == 0) {
+        console.log("JoinGame>NoGame");
         // Signal to component that no game exists with lobby code
-        context.state.lobbyJoinError = "noGame";
+        context.commit("ERROR_MSG", { message: `No game found with the lobby code ${code}` });
       }
 
       // Sort gamesList by time
@@ -319,15 +320,16 @@ const actions = {
           // context.dispatch("toggleHideBottomNav");
           Router.push({ name: "game-scorecard" });
         } else {
-          // If player not part of game then error message 'Game already started'
           // Game has already started, too late to join
-          context.state.lobbyJoinError = "playerNotInGame";
+          context.commit("ERROR_MSG", {
+            message: `A game with the lobby code ${code} was found but has already started`,
+          });
         }
       }
       // if Gamestatus 2 => error message 'Game already finished'
       if (gamesList[0].gameStatus == 2) {
-        // Game is already finished
-        context.state.lobbyJoinError = "gameOver";
+        // Game has already finished, because there can be many games with the same code in the future, user gets error no game found
+        context.commit("ERROR_MSG", { message: `No game found with the lobby code ${code}` });
       }
     } catch (e) {
       throw Error("Fetch Lobby game error", e);
