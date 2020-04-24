@@ -2,27 +2,10 @@
   <fragment>
     <v-app-bar color="primary" app flat id="scorecard-topbar" width="100%">
       <v-toolbar-title class="headline font-weight-bold" flat>
-        {{ getGame.course.name }} / {{ getGame.lobbyCode }}
+        Game Code: {{ getGame.lobbyCode }}
       </v-toolbar-title>
       <v-spacer />
-      <v-toolbar-items>
-        <v-overflow-btn
-          class=""
-          :items="dropdown_font"
-          label="MENU"
-          filled
-          target="#scorecard-topbar"
-        />
-      </v-toolbar-items>
-      <v-speed-dial
-        v-model="fab"
-        top="true"
-        right="true"
-        bottom="false"
-        left="false"
-        direction="bottom"
-        transition="slide-y-transition"
-      >
+      <v-speed-dial v-model="fab" top right direction="bottom" transition="slide-y-transition">
         <template v-slot:activator>
           <v-btn v-model="fab" color="info">
             <v-icon v-if="fab">fa-times-circle</v-icon>
@@ -75,33 +58,39 @@
           <v-col cols="12">
             <v-card color="accent" class="fill-height overflow-x-auto overflow-y-auto">
               <v-simple-table class="">
-                <template v-slot:default>
-                  <thead class="header" bold>
-                    <tr>
-                      <th class="title">Hole</th>
-                      <th class="title ">Par</th>
-                      <fragment v-for="player in getPlayers" :key="player.id">
-                        <th class="title text-center">{{ player.user.username }}</th>
-                      </fragment>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(hole, holeIndex) in getHoles" :key="hole.no">
-                      <td class="diff text-center">{{ holeIndex + 1 }}</td>
-                      <td class="diff text-center">{{ hole.redPar }}</td>
-                      <fragment v-for="(player, playerIndex) in getPlayers" :key="playerIndex">
-                        <td
-                          :id="`p${playerIndex}h${holeIndex}`"
-                          :style="inputStyles(`p${playerIndex}h${holeIndex}`)"
-                          class="text-center"
-                          @click="activeHole(playerIndex, holeIndex)"
-                        >
-                          {{ player.scoreArray[holeIndex] }}
-                        </td>
-                      </fragment>
-                    </tr>
-                  </tbody>
-                </template>
+                <thead class="header" bold>
+                  <tr>
+                    <!-- <th class="title">Hole</th>
+                      <th class="title ">Par</th> -->
+                    <!-- <template v-for="player in getPlayers" :key="player.id"> -->
+                    <th
+                      v-for="player in getPlayers"
+                      :key="player.id"
+                      class="title font-weight-bold text-center"
+                    >
+                      {{ player.user.username }}
+                    </th>
+                    <!-- </template> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(hole, holeIndex) in getHoles" :key="hole.no">
+                    <!-- <td class="diff text-center">{{ holeIndex + 1 }}</td>
+                      <td class="diff text-center">{{ hole.redPar }}</td> -->
+                    <!-- <template v-for="(player, playerIndex) in getPlayers" :key="playerIndex"> -->
+                    <td
+                      v-for="(player, playerIndex) in getPlayers"
+                      :key="playerIndex"
+                      :id="`p${playerIndex}h${holeIndex}`"
+                      :style="inputStyles(`p${playerIndex}h${holeIndex}`)"
+                      class="text-center headline font-weight-bold"
+                      @click="activeHole(playerIndex, holeIndex)"
+                    >
+                      {{ player.scoreArray[holeIndex] }}
+                    </td>
+                    <!-- </template> -->
+                  </tr>
+                </tbody>
               </v-simple-table>
             </v-card>
           </v-col>
