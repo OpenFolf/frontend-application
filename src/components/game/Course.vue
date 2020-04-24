@@ -66,11 +66,15 @@
 
     created() {
       this.calculateLengthAndTotalPar();
+      this.bottomNavHandler(true);
     },
     methods: {
-      ...mapActions(["createGame", "defaultRouting"]),
+      ...mapActions(["createGame", "defaultRouting", "showBottomNav"]),
       async playCourse() {
         await this.createGame(this.getCurrentCourse.id);
+      },
+      bottomNavHandler(payload) {
+        this.showBottomNav(payload);
       },
       swipe(direction) {
         this.dir = direction;

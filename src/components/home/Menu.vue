@@ -72,8 +72,14 @@
         ],
       };
     },
+    created() {
+      this.bottomNavHandler(true);
+    },
     methods: {
-      ...mapActions(["defaultRouting"]),
+      ...mapActions(["defaultRouting", "showBottomNav"]),
+      bottomNavHandler(payload) {
+        this.showBottomNav(payload);
+      },
     },
     computed: {
       ...mapGetters(["signedIn"]),

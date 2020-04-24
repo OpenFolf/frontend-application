@@ -1,5 +1,3 @@
-// import { API, graphqlOperation } from "aws-amplify";
-// import * as usergraphQL from "../../graphql/custom/usergraphQL";
 import Router from "@/router";
 import * as services from "../../services/index";
 
@@ -25,33 +23,11 @@ const actions = {
   },
 
   defaultRouting(context) {
-    console.log(context);
-    console.log("Router>actions>defaultRouting");
-    console.log(
-      "Router>actions>defaultRouting, context.rootState.auth.signedIn ",
-      context.rootState.auth.signedIn,
-    );
-    console.log(
-      "Router>actions>defaultRouting, context.rootState.game.game ",
-      context.rootState.game.game,
-    );
-    // TODO: Add watcher on gameStatus that calls this function, put watcher on Home, JoinGame, Course, Stats, etc.
-
-    // If not signedIn then route to sign in page
-
-    // If gameStatus "0" route user to lobby and sets nav bar as false
-    // If gameStatus "1" then route user to scorecard set nav bar as false
-
-    // If gameStatus "-1" then route to home, then re-initialize game object in state set nav bar as true
-    //
     if (context.rootState.auth.signedIn) {
-      console.log("Router>actions>defaultRouting>signedIn");
       const gameStatus = context.rootState.game.game.gameStatus;
       const game = context.rootState.game.game;
       switch (gameStatus) {
         case "0":
-          console.log("Router>actions>defaultRouting>signedIn, case 0");
-          context.dispatch("showBottomNav", false);
           Router.push({
             name: "join-lobby",
             params: {
@@ -61,13 +37,9 @@ const actions = {
           });
           break;
         case "1":
-          console.log("Router>actions>defaultRouting>signedIn, case 1");
-          context.dispatch("showBottomNav", false);
           Router.push({ name: "game-scorecard" });
           break;
         case "-1":
-          console.log("Router>actions>defaultRouting>signedIn, case 2");
-          context.dispatch("showBottomNav", true);
           Router.push({ name: "home-menu" });
           break;
         default:
@@ -85,40 +57,24 @@ const actions = {
     console.log("GameType changed");
     const gamePlayers = context.rootState.game.game.players.items;
     const userId = context.rootState.user.user.id;
-    let isPlayerInGame = services.isPlayerInGame(userId, gamePlayers);
+    let isUserStillInGame = services.isPlayerInGame(userId, gamePlayers);
 
-    if (!isPlayerInGame) {
-      // route to home
-      context.dispatch("showBottomNav", true);
-      Router.push({ name: "home-menu" });
+    if (!isUserStillInGame) {
+      // Router.push({ name: "home-menu" });
       // clear game state
       context.dispatch("resetGame");
     }
   },
 
   inGameRouting(context) {
-    console.log(context);
-    console.log("Router>actions>inGameRouting");
-    // TODO: Add watcher on gameStatus that calls this function, put watcher on Lobby and Scorecard
-    // If not signedIn then route to sign in page
-    // If gameStatus " " then route to home nva bar true
-    // If gameStatus "0" route user to lobby nav bar false
-    // If gameStatus "1" then route user to scorecard nav bar false
-    // If gameStatus "2" then open finish game modal, then route user to stats, then re-initialize game object in state nav bar true
-    // If gameStatus "-1" then open the game has been cancelled modal then route to home, then re-initialize game object in state nav bar true
     if (context.rootState.auth.signedIn) {
-      console.log("Router>actions>inGameRouting>signedIn");
       const gameStatus = context.rootState.game.game.gameStatus;
       const game = context.rootState.game.game;
       switch (gameStatus) {
         case "":
-          console.log("Router>actions>inGameRouting>signedIn, case ''");
-          context.dispatch("showBottomNav", true);
           Router.push({ name: "home-menu" });
           break;
         case "0":
-          console.log("Router>actions>inGameRouting>signedIn, case 0");
-          context.dispatch("showBottomNav", false);
           Router.push({
             name: "join-lobby",
             params: {
@@ -128,22 +84,15 @@ const actions = {
           });
           break;
         case "1":
-          console.log("Router>actions>inGameRouting>signedIn, case 1");
-          context.dispatch("showBottomNav", false);
           Router.push({ name: "game-scorecard" });
           break;
         case "2":
-          console.log("Router>actions>inGameRouting>signedIn, case 2");
-          context.dispatch("showBottomNav", true);
           Router.push({ name: "game-end-stats" });
           break;
         case "-1":
-          console.log("Router>actions>inGameRouting>signedIn, case -1");
-          context.dispatch("showBottomNav", true);
           Router.push({ name: "home-menu" });
           break;
         default:
-          console.log("Router>actions>inGameRouting>signedIn, case default");
           break;
       }
     } else {

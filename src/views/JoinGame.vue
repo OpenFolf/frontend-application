@@ -51,11 +51,17 @@
         gameCode: "",
       };
     },
+    created() {
+      this.bottomNavHandler(true);
+    },
     methods: {
       ...mapMutations(["CLEAR_ERRORS"]),
-      ...mapActions(["joinGame", "defaultRouting"]),
+      ...mapActions(["joinGame", "defaultRouting", "showBottomNav"]),
       joinGameRequest() {
         this.joinGame(this.gameCode.toUpperCase());
+      },
+      bottomNavHandler(payload) {
+        this.showBottomNav(payload);
       },
     },
     validations: {
