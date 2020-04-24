@@ -26,7 +26,10 @@
     },
 
     methods: {
-      ...mapActions(["fetchUserGameList"]),
+      ...mapActions(["fetchUserGameList", "showBottomNav"]),
+      bottomNavHandler(payload) {
+        this.showBottomNav(payload);
+      },
     },
     data() {
       return {
@@ -40,6 +43,7 @@
     },
     created() {
       this.fetchUserGameList();
+      this.bottomNavHandler(true);
     },
   };
 </script>

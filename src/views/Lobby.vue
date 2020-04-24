@@ -132,6 +132,7 @@
       this.fetchGame(this.getGame.id);
       this.subscribeToGame();
       this.browserStateListenGame();
+      this.bottomNavHandler(false);
     },
     destroyed() {
       this.browserStateListenGame(1);
@@ -174,6 +175,9 @@
       cancelThisGame() {
         console.log("Lobby>cancelThisGame");
         this.cancelGame(this.getGame.id);
+      },
+      bottomNavHandler(payload) {
+        this.showBottomNav(payload);
       },
     },
     watch: {

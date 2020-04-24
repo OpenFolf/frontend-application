@@ -108,6 +108,7 @@
     created() {
       this.loadHoles();
       this.subscribeToPlayerList();
+      this.bottomNavHandler(false);
     },
 
     methods: {
@@ -119,6 +120,9 @@
         "refreshGame",
         "inGameRouting",
       ]),
+      bottomNavHandler(payload) {
+        this.showBottomNav(payload);
+      },
       loadHoles() {
         // calculate the total of the par scores
         this.getHoles.forEach((m) => {

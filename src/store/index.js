@@ -5,12 +5,16 @@ import course from "./modules/course";
 import user from "./modules/user";
 import game from "./modules/game";
 import route from "./modules/route";
-// import createPersistedState from "vuex-persistedstate";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  // plugins: [createPersistedState()],
+  plugins: [
+    createPersistedState({
+      storage: window.sessionStorage,
+    }),
+  ],
   state: {},
   mutations: {},
   actions: {},
