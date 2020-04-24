@@ -1,53 +1,76 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app flat>
+    <v-app-bar color="primary" app flat id="scorecard-topbar" width="100%">
       <v-toolbar-title class="headline font-weight-bold" flat>
         {{ getGame.course.name }} / {{ getGame.lobbyCode }}
       </v-toolbar-title>
-      <!-- <v-banner single-line class="text-center">
-        <span> Code: </span>
-        <span class="font-weight-bold pa-2">
-          {{ getGame.lobbyCode }}
-        </span>
-      </v-banner> -->
+      <v-spacer />
+      <v-toolbar-items>
+        <v-overflow-btn
+          class=""
+          :items="dropdown_font"
+          label="MENU"
+          filled
+          target="#scorecard-topbar"
+        />
+      </v-toolbar-items>
       <v-speed-dial
         v-model="fab"
-        top="false"
-        right="false"
+        top="true"
+        right="true"
         bottom="false"
         left="false"
         direction="bottom"
         transition="slide-y-transition"
       >
         <template v-slot:activator>
-          <v-btn v-model="fab" color="warning" fab>
+          <v-btn v-model="fab" color="info">
             <v-icon v-if="fab">fa-times-circle</v-icon>
             <v-icon v-else>fa-bars</v-icon>
           </v-btn>
         </template>
-        <v-btn @click="refreshGame" fab small color="green">
+        <v-btn @click="refreshGame" small color="green">
           <v-icon>fa-sync-alt</v-icon>
         </v-btn>
-        <v-btn @click="finishGame" fab small color="red">
+        <v-btn @click="finishGame" small color="red">
           <v-icon>fa-skull-crossbones</v-icon>
         </v-btn>
       </v-speed-dial>
     </v-app-bar>
-    <!-- <v-content>
-      <v-container fluid>
-        <v-row dense>
-          <v-col cols="12">
-            <v-card color="accent" class="pa-1 overflow-x-auto">
-              <v-card-title>Last 200 User games</v-card-title>
-              <pre> {{ userGames }} </pre>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content> -->
-
+    <v-app-bar class="d-flex justify-center align-center" height="180px" bottom app>
+      <v-card flat color="primary" width="100%" class="">
+        <v-card-title class="font-weight-bold headline">
+          {{ getPlayers[selectedPlayer].user.username }}
+          hole nr.
+          {{ selectedHole + 1 }}
+          <v-spacer />
+          <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
+            <v-btn depressed>
+              <v-icon>fa-long-arrow-alt-down</v-icon>
+            </v-btn>
+            <v-btn depressed>
+              <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
+            </v-btn>
+          </v-btn-toggle>
+        </v-card-title>
+        <v-card-actions>
+          <v-btn class="font-weight-bold headline" @click="setScore(0)" depressed>0</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(1)" depressed>1</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(2)" depressed>2</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(3)" depressed>3</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(4)" depressed>4</v-btn>
+        </v-card-actions>
+        <v-card-actions>
+          <v-btn class="font-weight-bold headline" @click="setScore(5)" depressed>5</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(6)" depressed>6</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(7)" depressed>7</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(8)" depressed>8</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(9)" depressed>9</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-app-bar>
     <v-content>
-      <v-container fluid>
+      <v-container>
         <v-row dense>
           <v-col cols="12">
             <v-card color="accent" class="fill-height overflow-x-auto overflow-y-auto">
@@ -85,38 +108,6 @@
         </v-row>
       </v-container>
     </v-content>
-    <v-footer class="ma-0 pa-0 pb-2" absolute>
-      <v-card flat color="primary" width="100%" class="">
-        <v-card-title class="font-weight-bold headline">
-          {{ getPlayers[selectedPlayer].user.username }}
-          hole nr.
-          {{ selectedHole + 1 }}
-          <v-spacer />
-          <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
-            <v-btn depressed>
-              <v-icon>fa-long-arrow-alt-down</v-icon>
-            </v-btn>
-            <v-btn depressed>
-              <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
-            </v-btn>
-          </v-btn-toggle>
-        </v-card-title>
-        <v-card-actions>
-          <v-btn class="font-weight-bold headline" @click="setScore(0)" depressed>0</v-btn>
-          <v-btn class="font-weight-bold headline" @click="setScore(1)" depressed>1</v-btn>
-          <v-btn class="font-weight-bold headline" @click="setScore(2)" depressed>2</v-btn>
-          <v-btn class="font-weight-bold headline" @click="setScore(3)" depressed>3</v-btn>
-          <v-btn class="font-weight-bold headline" @click="setScore(4)" depressed>4</v-btn>
-        </v-card-actions>
-        <v-card-actions>
-          <v-btn class="font-weight-bold headline" @click="setScore(5)" depressed>5</v-btn>
-          <v-btn class="font-weight-bold headline" @click="setScore(6)" depressed>6</v-btn>
-          <v-btn class="font-weight-bold headline" @click="setScore(7)" depressed>7</v-btn>
-          <v-btn class="font-weight-bold headline" @click="setScore(8)" depressed>8</v-btn>
-          <v-btn class="font-weight-bold headline" @click="setScore(9)" depressed>9</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-footer>
   </fragment>
 </template>
 
@@ -133,6 +124,8 @@
         selectedPlayer: 0,
         selectedHole: 0,
         zigZag: 0,
+        dropdown_font: ["Arial", "Calibri", "Courier", "Verdana"],
+        fab: false,
       };
     },
 

@@ -6,15 +6,15 @@
           <router-link :to="{ name: 'game' }">
             <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
           </router-link>
-          <v-toolbar-title class="headline font-weight-bold">{{
-            "/ " + getCurrentCourse.name
-          }}</v-toolbar-title>
+          <v-toolbar-title class="headline font-weight-bold">
+            {{ "/ " + getCurrentCourse.name }}
+          </v-toolbar-title>
         </v-container>
       </v-toolbar>
       <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile flat>
-        <v-btn large outlined color="white" class="my-6 primary" @click="playCourse"
-          >Play Course</v-btn
-        >
+        <v-btn large outlined color="white" class="my-6 primary" @click="playCourse">
+          Play Course
+        </v-btn>
       </v-card>
       <v-tabs v-model="currentTab" background-color="secondary" color="white" grow>
         <v-tab v-for="tab in tabs" :key="tab" class="white--text">
