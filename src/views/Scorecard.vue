@@ -1,86 +1,122 @@
 <template>
   <fragment>
     <v-app-bar color="primary" app flat>
-      <v-banner single-line class="text-center">
+      <v-toolbar-title class="headline font-weight-bold" flat>
+        {{ getGame.course.name }} / {{ getGame.lobbyCode }}
+      </v-toolbar-title>
+      <!-- <v-banner single-line class="text-center">
         <span> Code: </span>
         <span class="font-weight-bold pa-2">
           {{ getGame.lobbyCode }}
         </span>
-      </v-banner>
-      <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
-        <v-btn depressed>
-          <v-icon>fa-long-arrow-alt-down</v-icon>
+      </v-banner> -->
+      <v-speed-dial
+        v-model="fab"
+        top="false"
+        right="false"
+        bottom="false"
+        left="false"
+        direction="bottom"
+        transition="slide-y-transition"
+      >
+        <template v-slot:activator>
+          <v-btn v-model="fab" color="warning" fab>
+            <v-icon v-if="fab">fa-times-circle</v-icon>
+            <v-icon v-else>fa-bars</v-icon>
+          </v-btn>
+        </template>
+        <v-btn @click="refreshGame" fab small color="green">
+          <v-icon>fa-sync-alt</v-icon>
         </v-btn>
-        <v-btn depressed>
-          <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
+        <v-btn @click="finishGame" fab small color="red">
+          <v-icon>fa-skull-crossbones</v-icon>
         </v-btn>
-      </v-btn-toggle>
-      <v-spacer />
-      <v-btn color="info" @click="refreshGame" depressed>refresh</v-btn>
-      <v-btn color="error" @click="finishGame" depressed>finish</v-btn>
+      </v-speed-dial>
     </v-app-bar>
+    <!-- <v-content>
+      <v-container fluid>
+        <v-row dense>
+          <v-col cols="12">
+            <v-card color="accent" class="pa-1 overflow-x-auto">
+              <v-card-title>Last 200 User games</v-card-title>
+              <pre> {{ userGames }} </pre>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content> -->
+
     <v-content>
-      <v-container fluid fill-height class="d-flex flex-column align-center justify-center">
-        <v-simple-table class="mx-auto">
-          <template v-slot:default>
-            <thead class="header" bold>
-              <tr>
-                <th class="title">Hole</th>
-                <th class="title ">Par</th>
-                <fragment v-for="player in getPlayers" :key="player.id">
-                  <th class="title text-center">{{ player.user.username }}</th>
-                </fragment>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(hole, holeIndex) in getHoles" :key="hole.no">
-                <td class="diff text-center">{{ holeIndex + 1 }}</td>
-                <td class="diff text-center">{{ hole.redPar }}</td>
-                <fragment v-for="(player, playerIndex) in getPlayers" :key="playerIndex">
-                  <td
-                    :id="`p${playerIndex}h${holeIndex}`"
-                    :style="inputStyles(`p${playerIndex}h${holeIndex}`)"
-                    class="text-center"
-                    @click="activeHole(playerIndex, holeIndex)"
-                  >
-                    {{ player.scoreArray[holeIndex] }}
-                  </td>
-                </fragment>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-        <table class="scorecard--keyboard">
-          <thead>
-            <tr>
-              <th colspan="5">
-                <span>{{ getPlayers[selectedPlayer].user.username }} </span
-                ><span class="font-weight-light">
-                  hole nr.
-                </span>
-                <span>{{ selectedHole + 1 }}</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <v-btn tile @click="setScore(0)">0</v-btn>
-              <v-btn tile @click="setScore(1)">1</v-btn>
-              <v-btn tile @click="setScore(2)">2</v-btn>
-              <v-btn tile @click="setScore(3)">3</v-btn>
-              <v-btn tile @click="setScore(4)">4</v-btn>
-            </tr>
-            <tr>
-              <v-btn tile @click="setScore(5)">5</v-btn>
-              <v-btn tile @click="setScore(6)">6</v-btn>
-              <v-btn tile @click="setScore(7)">7</v-btn>
-              <v-btn tile @click="setScore(8)">8</v-btn>
-              <v-btn tile @click="setScore(9)">9</v-btn>
-            </tr>
-          </tbody>
-        </table>
+      <v-container fluid>
+        <v-row dense>
+          <v-col cols="12">
+            <v-card color="accent" class="fill-height overflow-x-auto overflow-y-auto">
+              <v-simple-table class="">
+                <template v-slot:default>
+                  <thead class="header" bold>
+                    <tr>
+                      <th class="title">Hole</th>
+                      <th class="title ">Par</th>
+                      <fragment v-for="player in getPlayers" :key="player.id">
+                        <th class="title text-center">{{ player.user.username }}</th>
+                      </fragment>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(hole, holeIndex) in getHoles" :key="hole.no">
+                      <td class="diff text-center">{{ holeIndex + 1 }}</td>
+                      <td class="diff text-center">{{ hole.redPar }}</td>
+                      <fragment v-for="(player, playerIndex) in getPlayers" :key="playerIndex">
+                        <td
+                          :id="`p${playerIndex}h${holeIndex}`"
+                          :style="inputStyles(`p${playerIndex}h${holeIndex}`)"
+                          class="text-center"
+                          @click="activeHole(playerIndex, holeIndex)"
+                        >
+                          {{ player.scoreArray[holeIndex] }}
+                        </td>
+                      </fragment>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-container>
     </v-content>
+    <v-footer class="ma-0 pa-0 pb-2" absolute>
+      <v-card flat color="primary" width="100%" class="">
+        <v-card-title class="font-weight-bold headline">
+          {{ getPlayers[selectedPlayer].user.username }}
+          hole nr.
+          {{ selectedHole + 1 }}
+          <v-spacer />
+          <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
+            <v-btn depressed>
+              <v-icon>fa-long-arrow-alt-down</v-icon>
+            </v-btn>
+            <v-btn depressed>
+              <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
+            </v-btn>
+          </v-btn-toggle>
+        </v-card-title>
+        <v-card-actions>
+          <v-btn class="font-weight-bold headline" @click="setScore(0)" depressed>0</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(1)" depressed>1</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(2)" depressed>2</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(3)" depressed>3</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(4)" depressed>4</v-btn>
+        </v-card-actions>
+        <v-card-actions>
+          <v-btn class="font-weight-bold headline" @click="setScore(5)" depressed>5</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(6)" depressed>6</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(7)" depressed>7</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(8)" depressed>8</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(9)" depressed>9</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-footer>
   </fragment>
 </template>
 
