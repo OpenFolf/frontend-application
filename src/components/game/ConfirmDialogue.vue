@@ -1,11 +1,12 @@
 <template>
-  <!-- <div class="text-center"> -->
   <v-dialog v-model="localDialog" width="300" overlay-opacity="0.7">
     <template v-slot:activator="{ on }">
       <template v-if="message.icon">
         <v-icon color="error" small v-on="on"> {{ message.icon }} </v-icon>
       </template>
-      <v-btn v-on="on" :color="message.headerColor" v-else> {{ message.title }} </v-btn>
+      <v-btn block large class="font-weight-bold" v-on="on" :color="message.headerColor" v-else>
+        {{ message.title }}
+      </v-btn>
     </template>
     <v-card>
       <v-card-title class="headline primary font-weight-bold" primary-title>
@@ -47,7 +48,6 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <!-- </div> -->
 </template>
 
 <script>

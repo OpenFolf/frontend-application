@@ -9,17 +9,18 @@
         params: { path: pathName, id: content.id },
       }"
     >
-      <v-card-title class="headline mb-3">
-        {{ content.name }} - {{ content.distance }} KM
+      <v-card-title class="title mb-3">
+        {{ content.name }} <br />
+        {{ content.distance }} KM
         <v-spacer />
         <v-icon large>fa-angle-right</v-icon>
       </v-card-title>
-      <v-card-subtitle>
+      <!-- <v-card-subtitle>
         <v-avatar v-if="content.red" class="mx-1" tile size="14" color="red"></v-avatar>
         <v-avatar v-if="content.white" class="mx-1" tile size="14" color="white"></v-avatar>
         <v-avatar v-if="content.blue" class="mx-1" tile size="14" color="blue"></v-avatar>
         <v-avatar v-if="content.yellow" class="mx-1" tile size="14" color="yellow"></v-avatar>
-      </v-card-subtitle>
+      </v-card-subtitle> -->
     </v-card>
   </v-col>
 </template>
