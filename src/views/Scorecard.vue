@@ -26,7 +26,7 @@
         </v-btn>
       </v-speed-dial>
     </v-app-bar>
-    <v-app-bar class="d-flex justify-center align-center" height="180px" bottom app>
+    <v-app-bar class="d-flex justify-center align-center" height="194px" bottom app>
       <v-card flat color="primary" width="100%" class="">
         <v-card-title class="mb-0 font-weight-bold headline">
           <v-spacer />
