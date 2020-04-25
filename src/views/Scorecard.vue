@@ -136,6 +136,7 @@
       this.loadHoles();
       this.subscribeToPlayerList();
       this.selectedPar = this.getHoles[0].redPar;
+      this.bottomNavHandler(false);
     },
     methods: {
       ...mapActions([
@@ -146,6 +147,9 @@
         "refreshGame",
         "inGameRouting",
       ]),
+      bottomNavHandler(payload) {
+        this.showBottomNav(payload);
+      },
       loadHoles() {
         // calculate the total of the par scores
         this.getHoles.forEach((m) => {

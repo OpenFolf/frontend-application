@@ -140,6 +140,7 @@
     },
     created() {
       this.fetchGame(this.getGame.id);
+      this.bottomNavHandler(false);
     },
     props: {
       path: {
@@ -178,6 +179,9 @@
       cancelThisGame() {
         console.log("Lobby>cancelThisGame");
         this.cancelGame(this.getGame.id);
+      },
+      bottomNavHandler(payload) {
+        this.showBottomNav(payload);
       },
     },
     watch: {

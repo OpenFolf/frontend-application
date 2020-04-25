@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
   import CourseListItem from "@/components/game/CourseListItem.vue";
   import { Fragment } from "vue-fragment";
   export default {
@@ -39,6 +39,15 @@
     components: {
       CourseListItem,
       Fragment,
+    },
+    created() {
+      this.bottomNavHandler(true);
+    },
+    methods: {
+      ...mapActions(["showBottomNav"]),
+      bottomNavHandler(payload) {
+        this.showBottomNav(payload);
+      },
     },
     computed: {
       ...mapGetters(["getCourses"]),
