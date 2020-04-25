@@ -26,7 +26,7 @@
 
 <script>
   import { mapGetters, mapActions } from "vuex";
-  import CourseListItem from "@/components/game/CourseListItem.vue";
+  import CourseListItem from "../components/game/CourseListItem.vue";
   import { Fragment } from "vue-fragment";
   export default {
     data() {

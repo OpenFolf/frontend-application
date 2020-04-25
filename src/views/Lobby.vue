@@ -82,7 +82,7 @@
 
 <script>
   import { Fragment } from "vue-fragment";
-  import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
+  import ConfirmDialogue from "../components/game/ConfirmDialogue";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "lobby",
