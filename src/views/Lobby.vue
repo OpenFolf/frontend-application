@@ -130,12 +130,15 @@
     },
     created() {
       this.fetchGame(this.getGame.id);
-      this.subscribeToGame();
-      this.browserStateListenGame();
       this.bottomNavHandler(false);
+      // Subscription
+      this.subscribeToGame();
+      window.addEventListener("blur", this.unSubscribeToGame);
+      window.addEventListener("focus", this.subscribeToGame);
     },
-    destroyed() {
-      this.browserStateListenGame(1);
+    beforeDestroy() {
+      window.removeEventListener("blur", this.unSubscribeToGame);
+      window.removeEventListener("focus", this.subscribeToGame);
     },
     props: {
       path: {
@@ -168,6 +171,7 @@
         "inGameRouting",
         "deletePlayerRouting",
         "browserStateListenGame",
+        "unSubscribeToGame",
       ]),
       removeUser(playerId) {
         this.deletePlayer(playerId);
@@ -178,6 +182,12 @@
       },
       bottomNavHandler(payload) {
         this.showBottomNav(payload);
+      },
+      subscribeHandler() {
+        this.subscribeToGame();
+      },
+      unSubscribeHandler() {
+        this.unSubscribeHandler();
       },
     },
     watch: {

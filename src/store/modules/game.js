@@ -126,6 +126,12 @@ const mutations = {
       state[key] = newState[key];
     });
   },
+  setGameSubscription(state, payload) {
+    state.gameSubscription = payload;
+  },
+  pushPlayerSubscription(state, payload) {
+    state.playerSubscription.push(payload);
+  },
 };
 
 // BREAK: ACTIONS
@@ -473,6 +479,9 @@ const actions = {
       ).subscribe({
         next: () => context.dispatch("fetchGame", context.rootState.game.game.id),
       });
+      // Push to subscription array
+      context.commit("pushPlayerSubscription", subscription);
+
       console.log("Subscription", subscription);
     } catch (e) {
       throw Error("Player subscription error", e);
@@ -485,55 +494,52 @@ const actions = {
     const gameId = context.state.game.id;
 
     try {
-      context.state.gameSubscription = API.graphql(
+      const gameSubscription = API.graphql(
         graphqlOperation(gamegraphQL.onUpdateGame, { id: gameId }),
       ).subscribe({
         next: () => context.dispatch("fetchGame", gameId),
       });
 
-      console.log("Game subscription: ", context.state.gameSubscription);
+      context.commit("setGameSubscription", gameSubscription);
+
+      console.log("Game subscription: ", gameSubscription);
     } catch (e) {
       throw Error("Game subscription error", e);
     }
   },
 
-  browserStateListenGame(context, payload) {
-    // Dispatch-a herna browser state lsitener
-    console.log("Maettur inn i browser functionid: ", payload);
-    const func = function() {
-      if (document.visibilityState == "hidden") {
-        context.state.gameSubscription.unsubscribe();
-        console.log("Unsubscribe: ", context.state.gameSubscription);
-      } else {
-        try {
-          context.state.gameSubscription = API.graphql(
-            graphqlOperation(gamegraphQL.onUpdateGame, { id: context.state.game.id }),
-          ).subscribe({
-            next: () => context.dispatch("fetchGame", context.state.game.id),
-          });
-          console.log("Game re-subscription: ", context.state.gameSubscription);
-        } catch (e) {
-          throw Error("Game re-subscription error", e);
-        }
-      }
-    };
+  async unSubscribeToGame(context) {
+    //Unsubscribes to any changes on game object in the database
+    try {
+      context.state.gameSubscription.unsubscribe();
 
-    if (payload == 1) {
-      console.log("Calling remove listener");
-      document.removeEventListener("visibilitychange", func);
-    } else {
-      console.log("Calling add listener");
-      document.addEventListener("visibilitychange", func);
+      console.log("Game un-subscription: ", context.state.gameSubscription);
+    } catch (e) {
+      throw Error("Game un-subscription error", e);
     }
   },
 
   subscribeToPlayerList(context) {
+    // Start by subscribing to game
+    context.dispatch("subscribeToGame");
     // Get list of all players in game
     const gamePlayers = context.rootState.game.game.players.items;
     // Subscribe to changes on all players
-    for (var i = 0; i < gamePlayers.length; i++) {
+    for (let i = 0; i < gamePlayers.length; i++) {
       context.dispatch("subscribeToPlayer", gamePlayers[i].id);
       console.log("Subscribing to", gamePlayers[i].id);
+    }
+  },
+
+  unSubscribeToPlayerList(context) {
+    // Start by un-subscribing to game
+    context.dispatch("unSubscribeToGame");
+    // Get list of all players in game
+    const playerSubscriptions = context.state.playerSubscription;
+    // Subscribe to changes on all players
+    for (let i = 0; i < playerSubscriptions.length; i++) {
+      playerSubscriptions[i].unsubscribe();
+      console.log("Un-Subscribing to", playerSubscriptions[i]);
     }
   },
 
