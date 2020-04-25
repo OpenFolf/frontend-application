@@ -109,8 +109,13 @@
       this.loadHoles();
       this.subscribeToPlayerList();
       this.bottomNavHandler(false);
+      window.addEventListener("blur", this.unSubscribeToPlayerList);
+      window.addEventListener("focus", this.subscribeToPlayerList);
     },
-
+    beforeDestroy() {
+      window.removeEventListener("blur", this.unSubscribeToPlayerList);
+      window.removeEventListener("focus", this.subscribeToPlayerList);
+    },
     methods: {
       ...mapActions([
         "updatePlayer",
@@ -119,6 +124,7 @@
         "showBottomNav",
         "refreshGame",
         "inGameRouting",
+        "unSubscribeToPlayerList",
       ]),
       bottomNavHandler(payload) {
         this.showBottomNav(payload);

@@ -43,18 +43,15 @@ const actions = {
           Router.push({ name: "home-menu" });
           break;
         default:
-          console.log("Router>actions>defaultRouting>signedIn, case default");
           break;
       }
     } else {
       // go to sign in
-      console.log("Router>actions>defaultRouting>NOTsignedIn");
       Router.push({ name: "auth" });
     }
   },
 
   deletePlayerRouting(context) {
-    console.log("GameType changed");
     const gamePlayers = context.rootState.game.game.players.items;
     const userId = context.rootState.user.user.id;
     let isUserStillInGame = services.isPlayerInGame(userId, gamePlayers);
