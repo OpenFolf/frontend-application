@@ -6,10 +6,10 @@
       <v-spacer />
 
       <v-btn-toggle v-model="sortAlpha" mandatory dense>
-        <v-btn depressed>
+        <v-btn text depressed>
           <v-icon>fa-globe-europe</v-icon>
         </v-btn>
-        <v-btn depressed>
+        <v-btn text depressed>
           <v-icon>fa-sort-alpha-down</v-icon>
         </v-btn>
       </v-btn-toggle>
