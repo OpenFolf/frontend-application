@@ -93,7 +93,7 @@ const getters = {
 
 // BREAK: Mutations
 const mutations = {
-  setGame: (state, payload) => {
+  SET_GAME: (state, payload) => {
     // Go through the array of current players in the game and find the index of the owner
     const indexOfOwner = payload.players.items.findIndex(
       (o) => o.user.email === payload.owner.email,
@@ -106,7 +106,7 @@ const mutations = {
     payload.players.items = [...ownerElement, ...payload.players.items];
     state.game = payload;
   },
-  setGamesList: (state, payload) => {
+  SET_GAMESLIST: (state, payload) => {
     state.gamesList = payload;
   },
   setUpdatePlayer: (state, payload) => {
@@ -145,7 +145,7 @@ const actions = {
       const response = await API.graphql(graphqlOperation(gamegraphQL.getGame, { id: payload }));
       const game = response.data.getGame;
       // Add fetched game to state
-      context.commit("setGame", game);
+      context.commit("SET_GAME", game);
     } catch (e) {
       throw Error("Fetch game error", e);
     }
@@ -160,7 +160,7 @@ const actions = {
       const gamesList = response.data.listGames.items;
 
       // Add list to state
-      context.commit("setGamesList", gamesList);
+      context.commit("SET_GAMESLIST", gamesList);
     } catch (e) {
       throw Error("Fetch game list error", e);
     }
@@ -202,7 +202,7 @@ const actions = {
       await newGame.players.items.push(playerResponse.data.createPlayer);
 
       //Add newly created game to state
-      await context.commit("setGame", newGame);
+      await context.commit("SET_GAME", newGame);
     } catch (e) {
       throw Error("Create game error", e);
     }
@@ -298,7 +298,7 @@ const actions = {
       );
       const gamesList = response.data.listGames.items;
       // Add list to state
-      context.commit("setGamesList", gamesList);
+      context.commit("SET_GAMESLIST", gamesList);
 
       // if gamesList length is 0 then error message 'no such game'
       if (gamesList.length == 0) {
