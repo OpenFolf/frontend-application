@@ -12,11 +12,11 @@
             <v-icon v-else>fa-bars</v-icon>
           </v-btn>
         </template>
-        <v-btn fab @click="refreshGame" small color="green">
+        <!-- <v-btn fab @click="refreshGame" small color="green">
           <v-icon>fa-sync-alt</v-icon>
-        </v-btn>
-        <v-btn fab @click="finishGame" small color="red">
-          <v-icon>fa-skull-crossbones</v-icon>
+        </v-btn> -->
+        <v-btn @click="finishGame" small color="red">
+          Finish game
         </v-btn>
         <v-btn fab small color="blue" @click="lng">
           <v-icon>fa-long-arrow-alt-down</v-icon>
@@ -40,7 +40,7 @@
           />
           <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span> |
           <span class="mx-2">Par :</span>
-          <v-avatar tile color="red" class="font-weight-bold display-1">
+          <v-avatar color="red" class="font-weight-bold display-1">
             {{ selectedPar == "0" ? "-" : selectedPar }}
           </v-avatar>
           <v-spacer />
@@ -82,7 +82,9 @@
                       :key="player.id"
                       class="title font-weight-bold text-center"
                     >
-                      {{ player.user.username }}
+                      <v-badge color="error" :content="player.totalScore" bottom>
+                        {{ player.user.username }} {{ $log(player.id) }}
+                      </v-badge>
                     </th>
                   </tr>
                 </thead>
@@ -96,7 +98,7 @@
                       class="text-center headline font-weight-bold"
                       @click="activeHole(playerIndex, holeIndex, hole.redPar)"
                     >
-                      {{ player.scoreArray[holeIndex] }}
+                      {{ player.scoreArray[holeIndex] == "0" ? "-" : player.scoreArray[holeIndex] }}
                     </td>
                   </tr>
                 </tbody>
@@ -122,14 +124,13 @@
         selectedHole: 0,
         selectedPar: 0,
         zigZag: 0,
-        dropdown_font: ["Arial", "Calibri", "Courier", "Verdana"],
         fab: false,
         lng: "",
         zig: "",
       };
     },
     computed: {
-      ...mapGetters(["getGame", "getGameStatus", "getPlayers", "getHoles"]),
+      ...mapGetters(["getGame", "getGameStatus", "getPlayers", "getHoles", "getTo"]),
     },
     components: { Fragment },
     created() {

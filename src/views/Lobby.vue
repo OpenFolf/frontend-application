@@ -42,22 +42,7 @@
                 </tr>
 
                 <tr>
-                  <td v-if="otherPlayers" colspan="2">
-                    <v-skeleton-loader type="list-item"></v-skeleton-loader>
-                  </td>
-                </tr>
-                <tr>
-                  <td v-if="otherPlayers" colspan="2">
-                    <v-skeleton-loader type="list-item"></v-skeleton-loader>
-                  </td>
-                </tr>
-                <tr>
-                  <td v-if="otherPlayers" colspan="2">
-                    <v-skeleton-loader type="list-item"></v-skeleton-loader>
-                  </td>
-                </tr>
-                <tr>
-                  <td v-if="otherPlayers" colspan="2">
+                  <td colspan="2">
                     <v-skeleton-loader type="list-item"></v-skeleton-loader>
                   </td>
                 </tr>
