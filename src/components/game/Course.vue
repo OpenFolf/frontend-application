@@ -13,12 +13,12 @@
       </v-toolbar>
       <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile flat>
         <v-btn large outlined color="white" class="my-6 primary" @click="playCourse">
-          Play Course
+          <v-icon class="mr-2">fa-play</v-icon> <span class="font-weight-bold"> Course</span>
         </v-btn>
       </v-card>
       <v-tabs v-model="currentTab" background-color="secondary" color="white" grow>
         <v-tab v-for="tab in tabs" :key="tab" class="white--text">
-          {{ tab }}
+          <span class="font-weight-bold">{{ tab }}</span>
         </v-tab>
       </v-tabs>
       <v-tabs-items v-model="currentTab" touchless>

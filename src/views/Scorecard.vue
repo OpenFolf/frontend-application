@@ -60,7 +60,7 @@
           <v-btn class="font-weight-bold headline" @click="setScore(3)" depressed>3</v-btn>
           <v-btn class="font-weight-bold headline" @click="setScore(4)" depressed>4</v-btn>
         </v-card-actions>
-        <v-card-actions>
+        <v-card-actions class="mb-3">
           <v-btn class="font-weight-bold headline" @click="setScore(5)" depressed>5</v-btn>
           <v-btn class="font-weight-bold headline" @click="setScore(6)" depressed>6</v-btn>
           <v-btn class="font-weight-bold headline" @click="setScore(7)" depressed>7</v-btn>
@@ -88,9 +88,6 @@
                 </thead>
                 <tbody>
                   <tr v-for="(hole, holeIndex) in getHoles" :key="hole.no">
-                    <!-- <td class="diff text-center">{{ holeIndex + 1 }}</td>
-                      <td class="diff text-center">{{ hole.redPar }}</td> -->
-                    <!-- <template v-for="(player, playerIndex) in getPlayers" :key="playerIndex"> -->
                     <td
                       v-for="(player, playerIndex) in getPlayers"
                       :key="playerIndex"
@@ -198,7 +195,6 @@
         this.setNextIndexActive();
       },
     },
-
     watch: {
       getGameStatus() {
         this.inGameRouting();
@@ -207,43 +203,8 @@
   };
 </script>
 
-<style lang="scss" scoped>
-  .scorecard--keyboard {
-    margin-top: 2rem;
-  }
-  .scorecard--keyboard td,
-  .scorecard--keyboard th {
-    width: 4rem;
-    height: 2rem;
-    border: 1px solid #ccc;
-    text-align: center;
-  }
-  .scorecard--keyboard h {
-    background: lightblue;
-    border-color: white;
-  }
-  body {
-    padding: 1rem;
-  }
-  .header {
-    background-color: var(--v-primary-base);
-  }
-  .footer {
-    background-color: var(--v-primary-base);
-  }
-
-  table th + th {
-    border-left: 1px solid var(--v-primary-lighten1);
-  }
-  table td + td {
-    border-left: 1px solid var(--v-secondary-lighten1);
-  }
-  .theme--dark.v-data-table {
-    //background-color: var(--v-secondary-darken1);
-    color: #ffffff;
-  }
-
-  .v-btn:hover:before {
-    color: transparent;
+<style scoped>
+  th {
+    background-color: #005737;
   }
 </style>
