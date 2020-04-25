@@ -193,6 +193,7 @@ const actions = {
         playerUserId: context.rootState.user.user.id,
         playerGameId: newGame.id,
         scoreArray: [],
+        totalScore: "0",
       };
 
       const playerResponse = await API.graphql(
@@ -387,6 +388,7 @@ const actions = {
       playerUserId: context.rootState.user.user.id, //Current user
       playerGameId: payload, //Game to play
       scoreArray: [], //Initialize scoreArray
+      totalScore: "0",
     };
     try {
       await API.graphql(
@@ -446,18 +448,23 @@ const actions = {
   async updatePlayer(context, payload) {
     //Receives new score array as payload and updates score in database
     // TODO: Add totalscore to the payload to add to state along with new array
+
+    const sum = payload.scoreArray.reduce((acc, cur) => parseInt(acc) + parseInt(cur));
+
     // Get list of all players in game
     const gamePlayers = context.rootState.game.game.players.items;
     // Update scoreArray for player to store in state
     for (var i = 0; i < gamePlayers.length; i++) {
       if (payload.id == gamePlayers[i].id) {
         gamePlayers[i].scoreArray = payload.scoreArray;
+        gamePlayers[i].totalScore = sum;
       }
     }
     console.log("gamePlayers: ", gamePlayers);
     // Set new scorearray in state
     context.commit("setScoreArray", gamePlayers);
     // Update score for player in database
+    payload.totalScore = sum;
     try {
       await API.graphql(
         graphqlOperation(playergraphQL.updatePlayer, {
