@@ -141,6 +141,14 @@
     created() {
       this.fetchGame(this.getGame.id);
       this.bottomNavHandler(false);
+      // Subscription
+      this.subscribeToGame();
+      window.addEventListener("blur", this.unSubscribeToGame);
+      window.addEventListener("focus", this.subscribeToGame);
+    },
+    beforeDestroy() {
+      window.removeEventListener("blur", this.unSubscribeToGame);
+      window.removeEventListener("focus", this.subscribeToGame);
     },
     props: {
       path: {
@@ -172,6 +180,8 @@
         "cancelGame",
         "inGameRouting",
         "deletePlayerRouting",
+        "browserStateListenGame",
+        "unSubscribeToGame",
       ]),
       removeUser(playerId) {
         this.deletePlayer(playerId);
@@ -183,16 +193,16 @@
       bottomNavHandler(payload) {
         this.showBottomNav(payload);
       },
+      subscribeHandler() {
+        this.subscribeToGame();
+      },
+      unSubscribeHandler() {
+        this.unSubscribeHandler();
+      },
     },
     watch: {
       getGameStatus() {
         this.inGameRouting();
-      },
-      getGame: {
-        immediate: true,
-        handler() {
-          this.subscribeToGame();
-        },
       },
       getGameType() {
         this.deletePlayerRouting();
