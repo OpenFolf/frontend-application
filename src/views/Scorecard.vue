@@ -2,29 +2,21 @@
   <fragment>
     <v-app-bar color="primary" app flat id="scorecard-topbar" width="100%">
       <v-toolbar-title class="headline font-weight-bold" flat>
-        Game Code: {{ getGame.lobbyCode }}
+        {{ getGame.lobbyCode }}
       </v-toolbar-title>
       <v-spacer />
-      <v-speed-dial v-model="fab" top right direction="bottom" transition="slide-y-transition">
-        <template v-slot:activator>
-          <v-btn fab v-model="fab" color="info">
-            <v-icon v-if="fab">fa-times-circle</v-icon>
-            <v-icon v-else>fa-bars</v-icon>
-          </v-btn>
-        </template>
-        <!-- <v-btn fab @click="refreshGame" small color="green">
-          <v-icon>fa-sync-alt</v-icon>
-        </v-btn> -->
-        <v-btn @click="finishGame" small color="red">
-          Finish game
-        </v-btn>
-        <v-btn fab small color="blue" @click="lng">
+
+      <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
+        <v-btn depressed>
           <v-icon>fa-long-arrow-alt-down</v-icon>
         </v-btn>
-        <v-btn fab small color="orange" @click="zig">
+        <v-btn depressed>
           <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
         </v-btn>
-      </v-speed-dial>
+      </v-btn-toggle>
+      <v-btn @click="finishGame" small color="purple">
+        <span class="font-weight-bold title">end game</span>
+      </v-btn>
     </v-app-bar>
     <v-app-bar class="d-flex justify-center align-center" height="194px" bottom app>
       <v-card flat color="primary" width="100%" class="">
@@ -44,14 +36,6 @@
             {{ selectedPar == "0" ? "-" : selectedPar }}
           </v-avatar>
           <v-spacer />
-          <!-- <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
-            <v-btn depressed>
-              <v-icon>fa-long-arrow-alt-down</v-icon>
-            </v-btn>
-            <v-btn depressed>
-              <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
-            </v-btn>
-          </v-btn-toggle> -->
         </v-card-title>
         <v-card-actions>
           <v-btn class="font-weight-bold headline" @click="setScore(0)" depressed>0</v-btn>
@@ -83,7 +67,7 @@
                       class="title font-weight-bold text-center"
                     >
                       <v-badge color="error" :content="player.totalScore" bottom>
-                        {{ player.user.username }} {{ $log(player.id) }}
+                        {{ player.user.username }}
                       </v-badge>
                     </th>
                   </tr>
