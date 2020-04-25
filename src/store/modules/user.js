@@ -11,7 +11,35 @@ const initialState = () => ({
     lng: -21.885087,
     error: 0,
   },
-  userGames: [],
+  userGames: [
+    {
+      id: "",
+      scoreArray: [""],
+      totalScore: "",
+      game: {
+        gameStatus: "",
+        gameDate: "",
+        owner: {
+          id: "",
+          username: "",
+          email: "",
+        },
+        players: {
+          items: [
+            {
+              user: {
+                id: "",
+                username: "",
+                email: "",
+              },
+              totalScore: "",
+              scoreArray: [""],
+            },
+          ],
+        },
+      },
+    },
+  ],
 });
 
 const state = initialState();
@@ -38,13 +66,20 @@ const getters = {
   getUserLocation: (state) => {
     return state.location;
   },
-  getUserGames: (state) => {
+  getUserHistory: (state) => {
+    return state.userGames;
+  },
+  getUserHistoryGameListItem: (state) => {
     // TODO: Breyta gognum fyrir component, t.d. rada eftir timestamp rod, pikka ut naudsynlegar upplysingar o.s.frv.
 
     // Add some brilliant code here
-
+    console.log("getUserHistoryGameListItem");
+    console.log("state.userGames", state.userGames);
     return state.userGames;
   },
+  // getUserHistoryGameListItemPlayerItem: (state) => {
+  //   return state.userGames.gamesPlayed.items.game.players.items;
+  // },
 };
 
 const mutations = {
@@ -78,7 +113,10 @@ const mutations = {
     state.location.error = payload.error;
   },
   setUserGames: (state, payload) => {
-    state.userGames = payload;
+    console.log("setUserGames>payload", payload);
+    //sort the games by date
+
+    state.userGames = payload.gamesPlayed.items.sort((a, b) => a.game.gameDate - b.game.gameDate);
   },
   RESET_USER(state) {
     //console.log("Auth>mutations>RESET_USER");
@@ -193,7 +231,7 @@ const actions = {
   },
 
   resetUser({ commit }) {
-    console.log("Auth>Actions>resetUser");
+    console.log("User>Actions>resetUser");
     commit("RESET_USER");
   },
 };
