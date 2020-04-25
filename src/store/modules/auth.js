@@ -56,6 +56,7 @@ const mutations = {
   },
   SIGN_IN: (state, payload) => {
     console.log("Auth>mutations>SIGN_IN");
+    console.log("Auth>mutations>SIGN_IN, payload ", payload);
     state.authState.path = "signIn";
     if (payload.email) state.authState.email = payload.email;
   },
@@ -85,37 +86,29 @@ const mutations = {
 
 const actions = {
   async signIn({ commit, dispatch }, { email, password }) {
-    console.log("Auth>Actions>SignIn", email, password);
+    console.log("Auth>Actions>SignIn, email: ", email, "password", password);
     try {
-      await Auth.signIn(email, password);
+      var callback = await Auth.signIn(email, password);
+      console.log("Auth>Actions>SignIn>, callback from Auth.signIn ", callback);
+      dispatch("fetchUserAuth");
     } catch (e) {
       if (e.code && e.code === "UserNotConfirmedException") {
         commit("CONFIRM_SIGN_UP", { email: email });
         return;
       }
+      console.log("Auth>Actions>SignIn, catch", e);
       commit("ERROR_MSG", e);
     }
-    dispatch("fetchUserAuth");
   },
   async fetchUserAuth({ commit, dispatch }) {
     console.log("Auth>Actions>fetchUser");
     try {
       const user = await Auth.currentAuthenticatedUser();
-      // const expires =
-      //   user.getSignInUserSession().getIdToken().payload.exp -
-      //   Math.floor(new Date().getTime() / 1000);
-      //console.log(`Token expires in ${expires} seconds`);
-      // Don't know if we need this if we have app sync
-      // setTimeout(async () => {
-      //   console.log("Renewing Token");
-      //   await dispatch("fetchUser");
-      // }, expires * 1000);
       commit("AUTHENTICATED", user);
       commit("setUserId", user.username);
       dispatch("initializeUser");
     } catch (e) {
-      //What was supposed to happen? Use commit("RESET_AUTH") instead?
-      dispatch("resetUser");
+      dispatch("resetAuth");
       //TODO: Check if this error has to be displayed
       console.log("Auth>Actions>fetchUser>Catch, error ", e);
     }

@@ -13,6 +13,7 @@
           @blur="$v.email.$touch()"
           :error-messages="emailErrors"
           v-model="email"
+          @keyup.enter="signInUser"
           required
         />
         <v-text-field
@@ -24,7 +25,7 @@
           :type="showPassword ? 'text' : 'password'"
           :append-icon="showPassword ? 'fa-eye' : 'fa-eye-slash'"
           @click:append="showPassword = !showPassword"
-          @keyup.enter="signIn"
+          @keyup.enter="signInUser"
           required
         />
         <v-btn
@@ -115,7 +116,7 @@
         if (!this.$v.password.$dirty) return errors;
         !this.$v.password.minLength && errors.push("Password must be at least 8 characters long");
         !this.$v.password.required && errors.push("Password is required.");
-        if (this.errorMsg.message) this.CLEAR_ERRORS();
+
         return errors;
       },
     },
