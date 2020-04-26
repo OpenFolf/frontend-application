@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app flat id="scorecard-topbar" width="100%">
+    <v-app-bar color="primary" app flat width="100%">
       <v-toolbar-title class="headline font-weight-bold" flat>
         {{ getGame.lobbyCode }}
       </v-toolbar-title>
@@ -18,7 +18,7 @@
         <span class="font-weight-bold title">end game</span>
       </v-btn>
     </v-app-bar>
-    <v-app-bar class="d-flex justify-center align-center" height="194px" bottom app>
+    <v-app-bar class="d-flex justify-center align-center" height="194px" bottom="true" app>
       <v-card flat color="primary" width="100%" class="">
         <v-card-title class="mb-0 font-weight-bold headline">
           <v-spacer />
