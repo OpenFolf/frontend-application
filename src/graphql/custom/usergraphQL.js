@@ -43,12 +43,23 @@ export const fetchUserGameList = /* GraphQL */ `
     getUser(id: $id) {
       id
       username
+      defMode
       gamesPlayed {
         items {
           id
           scoreArray
           totalScore
           game {
+            id
+            course {
+              name
+              holes {
+                items {
+                  no
+                  redPar
+                }
+              }
+            }
             gameStatus
             gameDate
             owner {
