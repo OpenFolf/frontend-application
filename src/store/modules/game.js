@@ -513,6 +513,8 @@ const actions = {
     } catch (e) {
       throw Error("Game subscription error", e);
     }
+
+    context.commit("fetchGame", gameId);
   },
 
   async unSubscribeToGame(context) {
