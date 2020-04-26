@@ -22,10 +22,10 @@
           </thead>
 
           <tbody>
-            <tr v-for="(hole, holeIndex) in gameItem[0].scoreArray" :key="holeIndex">
+            <tr v-for="(hole, holeIndex) in game.course.par" :key="holeIndex">
               <td class="diff text-center">{{ holeIndex }}</td>
               <td class="text-center">
-                {{ game.course.redPar[0].redPar }}
+                {{ game.course.par[0].redPar }}
               </td>
               <fragment v-for="(player, playerIndex) in gameItem" :key="playerIndex">
                 <td class="text-center">
@@ -48,7 +48,6 @@
           </thead>
         </template>
       </v-simple-table>
-      <pre>{{ getCourses }}</pre>
     </v-card>
   </v-dialog>
 </template>
@@ -70,7 +69,7 @@
       };
     },
     computed: {
-      ...mapGetters(["getUserGames", "getCourses"]),
+      ...mapGetters(["getUserGames"]),
       userGames() {
         return this.getUserGames;
       },
