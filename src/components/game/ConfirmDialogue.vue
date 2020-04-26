@@ -5,7 +5,7 @@
         <v-icon color="error" small v-on="on"> {{ message.icon }} </v-icon>
       </template>
       <template v-if="message.title === 'End Game'">
-        <v-btn @click="finishGame" small color="purple" class="ml-2" v-on="on">
+        <v-btn small color="purple" class="ml-2" v-on="on">
           <span class="font-weight-bold title">end game</span>
         </v-btn>
       </template>
