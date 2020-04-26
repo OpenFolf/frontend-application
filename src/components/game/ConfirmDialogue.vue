@@ -4,6 +4,11 @@
       <template v-if="message.icon">
         <v-icon color="error" small v-on="on"> {{ message.icon }} </v-icon>
       </template>
+      <template v-if="message.title === 'End Game'">
+        <v-btn @click="finishGame" small color="purple" class="ml-2" v-on="on">
+          <span class="font-weight-bold title">end game</span>
+        </v-btn>
+      </template>
       <v-btn block large class="font-weight-bold" v-on="on" :color="message.headerColor" v-else>
         {{ message.title }}
       </v-btn>
@@ -52,6 +57,15 @@
           v-if="message.title === 'Leave Lobby'"
           color="primary"
           @click="$emit('removeUser', userToRemove)"
+        >
+          {{ message.button2 }}
+        </v-btn>
+        <v-btn
+          large
+          class="font-weight-bold"
+          v-if="message.title === 'End Game'"
+          color="primary"
+          @click="$emit('finishGame')"
         >
           {{ message.button2 }}
         </v-btn>

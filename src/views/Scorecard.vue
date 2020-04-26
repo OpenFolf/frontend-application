@@ -14,9 +14,11 @@
           <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
         </v-btn>
       </v-btn-toggle>
-      <v-btn @click="finishGame" small color="purple" class="ml-2">
+      <confirm-dialogue :dialog="endGameDialog" :message="endGameMsg" @finishGame="finishGame" />
+      <!-- <v-btn @click="finishGame" small color="purple" class="ml-2">
+
         <span class="font-weight-bold title">end game</span>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-content>
       <v-container>
@@ -101,6 +103,7 @@
 
 <script>
   import { Fragment } from "vue-fragment";
+  import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "game-scorecard",
@@ -115,12 +118,20 @@
         fab: false,
         lng: "",
         zig: "",
+        endGameDialog: false,
+        endGameMsg: {
+          title: "End Game",
+          body: "Are you want to end the game?",
+          button1: "No",
+          button2: "Yes",
+          headerColor: "error",
+        },
       };
     },
     computed: {
       ...mapGetters(["getGame", "getGameStatus", "getPlayers", "getHoles", "getTo"]),
     },
-    components: { Fragment },
+    components: { Fragment, ConfirmDialogue },
     created() {
       this.loadHoles();
       this.subscribeToPlayerList();
