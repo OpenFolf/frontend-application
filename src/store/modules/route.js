@@ -84,7 +84,7 @@ const actions = {
           Router.push({ name: "game-scorecard" });
           break;
         case "2":
-          Router.push({ name: "game-end-stats" });
+          Router.push({ name: "stats" });
           break;
         case "-1":
           Router.push({ name: "home-menu" });

@@ -14,6 +14,7 @@
           @blur="$v.email.$touch()"
           :error-messages="emailErrors"
           v-model="email"
+          @keyup.enter="signUpUser"
           required
         />
         <v-text-field

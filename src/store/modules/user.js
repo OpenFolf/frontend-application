@@ -12,7 +12,35 @@ const initialState = () => ({
     lng: -21.885087,
     error: 0,
   },
-  userGames: [],
+  userGames: [
+    {
+      id: "",
+      scoreArray: [""],
+      totalScore: "",
+      game: {
+        gameStatus: "",
+        gameDate: "",
+        owner: {
+          id: "",
+          username: "",
+          email: "",
+        },
+        players: {
+          items: [
+            {
+              user: {
+                id: "",
+                username: "",
+                email: "",
+              },
+              totalScore: "",
+              scoreArray: [""],
+            },
+          ],
+        },
+      },
+    },
+  ],
 });
 
 const state = initialState();
@@ -42,6 +70,9 @@ const getters = {
   getUserGames: (state) => {
     return state.userGames;
   },
+  // getUserHistoryGameListItemPlayerItem: (state) => {
+  //   return state.userGames.gamesPlayed.items.game.players.items;
+  // },
 };
 
 const mutations = {

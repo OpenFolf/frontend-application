@@ -130,7 +130,7 @@ export function reorganizeGameList(userGameList) {
     gameObject.userTotalScore = userGameList[i].totalScore;
     gameObject.gameStatus = userGameList[i].game.gameStatus;
     gameObject.gameDate = new Date(parseInt(userGameList[i].game.gameDate)).toLocaleDateString(
-      "en-GB",
+      "da-DK",
     ); //Change to date
     gameObject.gameOwner = {
       ownerId: userGameList[i].game.owner.id,
