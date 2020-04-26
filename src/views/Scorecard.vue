@@ -18,7 +18,7 @@
         <span class="font-weight-bold title">end game</span>
       </v-btn>
     </v-app-bar>
-    <v-app-bar class="d-flex justify-center align-center" height="194px" bottom="true" app>
+    <!-- <v-app-bar class="d-flex justify-center align-center" height="194px" bottom="true" app>
       <v-card flat color="primary" width="100%" class="">
         <v-card-title class="mb-0 font-weight-bold headline">
           <v-spacer />
@@ -52,7 +52,7 @@
           <v-btn class="font-weight-bold headline" @click="setScore(9)" depressed>9</v-btn>
         </v-card-actions>
       </v-card>
-    </v-app-bar>
+    </v-app-bar> -->
     <v-content>
       <v-container>
         <v-row dense>
@@ -92,6 +92,46 @@
         </v-row>
       </v-container>
     </v-content>
+    <v-bottom-navigation
+      class="d-flex justify-center align-center"
+      height="194px"
+      app
+      background-color="#005737"
+    >
+      <v-card flat color="primary" width="100%" class="">
+        <v-card-title class="mb-0 font-weight-bold headline">
+          <v-spacer />
+          <v-icon class="mr-2">fa-user</v-icon>
+          <span class="mr-2">{{ getPlayers[selectedPlayer].user.username }} |</span>
+          <v-img
+            :src="require('@/assets/basket_white.png')"
+            max-width="2rem"
+            height="2rem"
+            contain
+          />
+          <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span> |
+          <span class="mx-2">Par :</span>
+          <v-avatar color="red" class="font-weight-bold display-1">
+            {{ selectedPar == "0" ? "-" : selectedPar }}
+          </v-avatar>
+          <v-spacer />
+        </v-card-title>
+        <v-card-actions>
+          <v-btn class="font-weight-bold headline" @click="setScore(0)" depressed>0</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(1)" depressed>1</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(2)" depressed>2</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(3)" depressed>3</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(4)" depressed>4</v-btn>
+        </v-card-actions>
+        <v-card-actions class="mb-3">
+          <v-btn class="font-weight-bold headline" @click="setScore(5)" depressed>5</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(6)" depressed>6</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(7)" depressed>7</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(8)" depressed>8</v-btn>
+          <v-btn class="font-weight-bold headline" @click="setScore(9)" depressed>9</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-bottom-navigation>
   </fragment>
 </template>
 
