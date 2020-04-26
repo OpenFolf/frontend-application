@@ -1,6 +1,7 @@
 import { API, graphqlOperation } from "aws-amplify";
 import * as usergraphQL from "../../graphql/custom/usergraphQL";
 import Vuetify from "../../plugins/vuetify";
+import * as services from "../../services/index";
 
 const initialState = () => ({
   user: {
@@ -39,10 +40,6 @@ const getters = {
     return state.location;
   },
   getUserGames: (state) => {
-    // TODO: Breyta gognum fyrir component, t.d. rada eftir timestamp rod, pikka ut naudsynlegar upplysingar o.s.frv.
-
-    // Add some brilliant code here
-
     return state.userGames;
   },
 };
@@ -78,7 +75,9 @@ const mutations = {
     state.location.error = payload.error;
   },
   setUserGames: (state, payload) => {
-    state.userGames = payload;
+    const gameObjectList = services.reorganizeGameList(payload.gamesPlayed.items);
+
+    state.userGames = gameObjectList;
   },
   RESET_USER(state) {
     //console.log("Auth>mutations>RESET_USER");
@@ -181,20 +180,16 @@ const actions = {
   },
 
   async fetchUserGameList(context) {
-    console.log("User ID", state.user.id);
+    console.log("Fetch UserGamesList User ID", state.user.id);
+    let response = {};
     try {
-      const response = await API.graphql(
+      response = await API.graphql(
         graphqlOperation(usergraphQL.fetchUserGameList, { id: state.user.id }),
       );
-      context.commit("setUserGames", response.data.getUser);
     } catch (e) {
       throw Error("fetchUserGameListError", e);
     }
-  },
-
-  resetUser({ commit }) {
-    console.log("Auth>Actions>resetUser");
-    commit("RESET_USER");
+    context.commit("setUserGames", response.data.getUser);
   },
 };
 
