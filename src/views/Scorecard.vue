@@ -168,19 +168,14 @@
             this.selectedPlayer++;
           } else if (
             this.selectedPlayer === this.getPlayers.length - 1 &&
-            this.selectedHole != this.getPlayers.length - 1
+            this.selectedHole != this.getGame.course.holeCount - 1
           ) {
             this.selectedPlayer = 0;
             this.selectedHole++;
-          } else {
-            console.log("Do you want to finish the game?");
           }
         } else {
-          console.log("setNextIndexActive");
           if (this.selectedHole < this.getHoles.length - 1) {
             this.selectedHole++;
-          } else {
-            console.log("Do you want to finish the game?");
           }
         }
       },
