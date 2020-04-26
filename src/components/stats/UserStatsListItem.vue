@@ -1,11 +1,11 @@
 <template>
   <v-dialog v-model="localModalVisible" overlay-opacity="0.7">
     <v-card color="secondary" ripple flat class="mb-2" @click="$emit('close')">
-      <!-- <v-card-title>{{ getUserHistory[gameListIndex].id }} </v-card-title> -->
-      <v-card-title>[CourseName]</v-card-title>
-      <v-card-subtitle>{{ getUserHistory[gameListIndex].game.gameDate }}</v-card-subtitle>
+      <!-- <v-card-title>{{ getUserGames[gameListIndex].id }} </v-card-title> -->
+      <v-card-title>{{ getUserGames[gameListIndex].course.courseName }}</v-card-title>
+      <v-card-subtitle>{{ getUserGames[gameListIndex].gameDate }}</v-card-subtitle>
+      <v-card-text>Players: </v-card-text>
       <v-card-text v-for="players in gameItem" :key="players.id">
-        Date:{{ game.gameDate }} Tee name: {{ players.user.username }} Email:
         {{ players.user.email }}
       </v-card-text>
 
@@ -24,7 +24,9 @@
           <tbody>
             <tr v-for="(hole, holeIndex) in gameItem[0].scoreArray" :key="holeIndex">
               <td class="diff text-center">{{ holeIndex }}</td>
-              <td class="diff text-center">par?</td>
+              <td class="text-center">
+                {{ game.course.redPar[0].redPar }}
+              </td>
               <fragment v-for="(player, playerIndex) in gameItem" :key="playerIndex">
                 <td class="text-center">
                   {{ player.scoreArray[holeIndex] }}
@@ -36,10 +38,10 @@
           <thead class="header" bold>
             <tr>
               <th class="title text-center">Total:</th>
-              <th class="title text-center">totalPar?</th>
-              <fragment v-for="players in gameItem" :key="players.id">
+              <th class="title text-center">{{ game.course.totalPar }}</th>
+              <fragment v-for="(player, playerIndex) in gameItem" :key="playerIndex">
                 <th class="title text-center">
-                  {{ players.totalScore }}
+                  {{ player.totalScore }}
                 </th>
               </fragment>
             </tr>
@@ -68,15 +70,15 @@
       };
     },
     computed: {
-      ...mapGetters(["getUserHistory", "getCourses"]),
+      ...mapGetters(["getUserGames", "getCourses"]),
       userGames() {
-        return this.getUserHistory;
+        return this.getUserGames;
       },
       game() {
-        return this.getUserHistory[this.gameListIndex].game;
+        return this.getUserGames[this.gameListIndex];
       },
       gameItem() {
-        return this.getUserHistory[this.gameListIndex].game.players.items;
+        return this.getUserGames[this.gameListIndex].players;
       },
     },
     components: {

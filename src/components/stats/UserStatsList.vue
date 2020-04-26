@@ -15,18 +15,18 @@
             ripple
             flat
             class="mb-2"
-            v-for="(gameList, gameListIndex) in getUserHistory"
+            v-for="(gameList, gameListIndex) in getUserGames"
             :key="gameList.id"
             @click="openModal(gameListIndex)"
           >
-            <v-card-title>[Course Name], </v-card-title>
-            <v-card-subtitle>{{ gameList.game.gameDate }}</v-card-subtitle>
+            <v-card-title>{{ gameList.course.courseName }} </v-card-title>
+            <v-card-subtitle>{{ gameList.gameDate }}</v-card-subtitle>
             <v-card-text class="bold"
               >Players:
-              <span v-for="players in gameList.game.players.items" :key="players.id">
-                {{ players.user.username }}
-                {{ players.totalScore }}
-              </span>
+              <v-card-text v-for="players in gameList.players" :key="players.id">
+                {{ players.user.email }}
+                Score: {{ players.totalScore }}
+              </v-card-text>
             </v-card-text>
           </v-card>
         </v-col>
@@ -48,9 +48,10 @@
     },
     components: { UserStatsListItem },
     computed: {
-      ...mapGetters(["getUserHistory", "getUserHistoryGameListItem"]),
+      ...mapGetters(["getUserGames"]),
       userGames() {
-        return this.getUserHistory;
+        console.log("GetUserGames ", this.userGames);
+        return this.getUserGames;
       },
       humanReadableDate(epoch) {
         return new Date(epoch * 1000).toLocaleString("da-DK");

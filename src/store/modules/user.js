@@ -67,19 +67,7 @@ const getters = {
   getUserLocation: (state) => {
     return state.location;
   },
-<<<<<<< HEAD
-  getUserHistory: (state) => {
-    return state.userGames;
-  },
-  getUserHistoryGameListItem: (state) => {
-    // TODO: Breyta gognum fyrir component, t.d. rada eftir timestamp rod, pikka ut naudsynlegar upplysingar o.s.frv.
-
-    // Add some brilliant code here
-    console.log("getUserHistoryGameListItem");
-    console.log("state.userGames", state.userGames);
-=======
   getUserGames: (state) => {
->>>>>>> d4d78350185148fc35f156add298bdacf77d4b2e
     return state.userGames;
   },
   // getUserHistoryGameListItemPlayerItem: (state) => {
@@ -118,16 +106,9 @@ const mutations = {
     state.location.error = payload.error;
   },
   setUserGames: (state, payload) => {
-<<<<<<< HEAD
-    console.log("setUserGames>payload", payload);
-    //sort the games by date
-
-    state.userGames = payload;
-=======
     const gameObjectList = services.reorganizeGameList(payload.gamesPlayed.items);
 
     state.userGames = gameObjectList;
->>>>>>> d4d78350185148fc35f156add298bdacf77d4b2e
   },
   RESET_USER(state) {
     //console.log("Auth>mutations>RESET_USER");
@@ -236,26 +217,10 @@ const actions = {
       response = await API.graphql(
         graphqlOperation(usergraphQL.fetchUserGameList, { id: state.user.id }),
       );
-<<<<<<< HEAD
-      response.data.getUser.gamesPlayed.items.sort((a, b) => a.game.gameDate - b.game.gameDate);
-      response.data.getUser.gamesPlayed.items.forEach((m, i, a) => {
-        a[i].game.gameDate = new Date(m.game.gameDate * 1).toLocaleString("da-DK");
-      });
-      context.commit("setUserGames", response.data.getUser.gamesPlayed.items);
-    } catch (e) {
-      throw Error("fetchUserGameListError", e);
-    }
-  },
-
-  resetUser({ commit }) {
-    console.log("User>Actions>resetUser");
-    commit("RESET_USER");
-=======
     } catch (e) {
       throw Error("fetchUserGameListError", e);
     }
     context.commit("setUserGames", response.data.getUser);
->>>>>>> d4d78350185148fc35f156add298bdacf77d4b2e
   },
 };
 
