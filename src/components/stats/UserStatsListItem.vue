@@ -1,8 +1,9 @@
 <template>
   <v-dialog v-model="localModalVisible" overlay-opacity="0.7">
     <v-card color="secondary" ripple flat class="mb-2" @click="$emit('close')">
-      <v-card-title>{{ getUserHistory[gameListIndex].id }} </v-card-title>
-
+      <!-- <v-card-title>{{ getUserHistory[gameListIndex].id }} </v-card-title> -->
+      <v-card-title>[CourseName]</v-card-title>
+      <v-card-subtitle>{{ getUserHistory[gameListIndex].game.gameDate }}</v-card-subtitle>
       <v-card-text v-for="players in gameItem" :key="players.id">
         Date:{{ game.gameDate }} Tee name: {{ players.user.username }} Email:
         {{ players.user.email }}
@@ -45,6 +46,7 @@
           </thead>
         </template>
       </v-simple-table>
+      <pre>{{ getCourses }}</pre>
     </v-card>
   </v-dialog>
 </template>
@@ -66,7 +68,7 @@
       };
     },
     computed: {
-      ...mapGetters(["getUserHistory", "getUserHistoryGameListItem"]),
+      ...mapGetters(["getUserHistory", "getCourses"]),
       userGames() {
         return this.getUserHistory;
       },

@@ -19,11 +19,14 @@
             :key="gameList.id"
             @click="openModal(gameListIndex)"
           >
-            <v-card-title>[Course Name], {{ gameList.game.gameDate }} </v-card-title>
-            <v-card-text>Players:</v-card-text>
-            <v-card-text v-for="players in gameList.game.players.items" :key="players.id">
-              {{ players.user.username }}
-              {{ players.totalScore }}
+            <v-card-title>[Course Name], </v-card-title>
+            <v-card-subtitle>{{ gameList.game.gameDate }}</v-card-subtitle>
+            <v-card-text class="bold"
+              >Players:
+              <span v-for="players in gameList.game.players.items" :key="players.id">
+                {{ players.user.username }}
+                {{ players.totalScore }}
+              </span>
             </v-card-text>
           </v-card>
         </v-col>
@@ -49,7 +52,11 @@
       userGames() {
         return this.getUserHistory;
       },
+      humanReadableDate(epoch) {
+        return new Date(epoch * 1000).toLocaleString("da-DK");
+      },
     },
+
     methods: {
       openModal(gameListIndex) {
         this.modalIndex = gameListIndex;

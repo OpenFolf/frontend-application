@@ -116,7 +116,7 @@ const mutations = {
     console.log("setUserGames>payload", payload);
     //sort the games by date
 
-    state.userGames = payload.gamesPlayed.items.sort((a, b) => a.game.gameDate - b.game.gameDate);
+    state.userGames = payload;
   },
   RESET_USER(state) {
     //console.log("Auth>mutations>RESET_USER");
@@ -224,7 +224,11 @@ const actions = {
       const response = await API.graphql(
         graphqlOperation(usergraphQL.fetchUserGameList, { id: state.user.id }),
       );
-      context.commit("setUserGames", response.data.getUser);
+      response.data.getUser.gamesPlayed.items.sort((a, b) => a.game.gameDate - b.game.gameDate);
+      response.data.getUser.gamesPlayed.items.forEach((m, i, a) => {
+        a[i].game.gameDate = new Date(m.game.gameDate * 1).toLocaleString("da-DK");
+      });
+      context.commit("setUserGames", response.data.getUser.gamesPlayed.items);
     } catch (e) {
       throw Error("fetchUserGameListError", e);
     }
