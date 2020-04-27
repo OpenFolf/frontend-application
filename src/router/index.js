@@ -84,12 +84,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "join-game" */ "@/views/JoinGame.vue"),
   },
   {
-    path: "/game-end-stats",
-    name: "game-end-stats",
-    component: () =>
-      import(/* webpackChunkName: "game-end-stats" */ "@/components/game/GameEndStats.vue"),
-  },
-  {
     path: "/stats",
     name: "stats",
     component: () => import(/* webpackChunkName: "stats" */ "@/views/Stats.vue"),
@@ -132,30 +126,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
-// async function redirectIfNotAuth(to, from, next) {
-//   const user = await getUserState();
-//   if (user === null) {
-//     next({ name: "auth" });
-//   } else {
-//     next();
-//   }
-// }
-
-// function getUserState() {
-//   return new Promise((resolve, reject) => {
-//     if (Store.state.user === undefined) {
-//       const unwatch = Store.watch(
-//         () => Store.state.user,
-//         (value) => {
-//           unwatch();
-//           resolve(value);
-//         },
-//       );
-//     } else {
-//       resolve(Store.state.user);
-//     }
-//   });
-// }
 
 export default router;

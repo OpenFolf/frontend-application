@@ -39,7 +39,7 @@
         center: [parseFloat(this.courseLatLng[0]), parseFloat(this.courseLatLng[1])],
         bounds: null,
         mapStyle: {
-          height: "415px",
+          height: "400px",
           width: "100%",
         },
         heightVal: "",
