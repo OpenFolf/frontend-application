@@ -2,12 +2,12 @@
   <v-container class="fill-height">
     <v-row>
       <v-col class="d-flex flex-column justify-center">
-        <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat>
+        <v-card outlined width="400px" class="mx-auto my-5 font-weight-bold" flat>
           <v-toolbar color="primary" flat>
-            <v-toolbar-title>Join Game</v-toolbar-title>
+            <v-toolbar-title class="white--text">Join Game</v-toolbar-title>
             <v-spacer />
           </v-toolbar>
-          <v-card-text class="headline text--white text-center">
+          <v-card-text class="headline font-weight-bold text-center">
             Enter the 3-letter code
           </v-card-text>
           <v-container>
@@ -31,7 +31,7 @@
                 @click="joinGameRequest"
                 color="primary"
               >
-                Join Game
+                <span class="font-weight-bold">Join Game</span>
               </v-btn>
             </v-form>
           </v-container>

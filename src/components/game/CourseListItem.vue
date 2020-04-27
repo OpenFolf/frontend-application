@@ -1,7 +1,7 @@
 <template>
   <v-col cols="12">
     <v-card
-      color="secondary"
+      color="accent"
       ripple
       flat
       :to="{
@@ -10,13 +10,13 @@
       }"
     >
       <v-card-title class="mb-3">
-        <span class="headline font-weight-bold">{{ content.name }}</span>
+        <span class="white--text headline font-weight-bold">{{ content.name }}</span>
         <v-spacer />
-        <v-icon large>fa-angle-right</v-icon>
+        <v-icon dark large>fa-angle-right</v-icon>
       </v-card-title>
       <v-card-subtitle>
-        <v-icon class="mr-2">fa-map-marker-alt</v-icon
-        ><span class="title font-weight-bold">{{ content.distance }} KM</span>
+        <v-icon dark class="mr-2">fa-map-marker-alt</v-icon>
+        <span class="title white--text font-weight-bold">{{ content.distance }} KM</span>
       </v-card-subtitle>
     </v-card>
   </v-col>

@@ -1,20 +1,20 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app flat width="100%">
+    <v-app-bar dark color="primary" app flat width="100%">
       <v-toolbar-title class="headline font-weight-bold" flat>
         {{ getGame.lobbyCode }}
       </v-toolbar-title>
       <v-spacer />
 
-      <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
-        <v-btn depressed>
+      <v-btn-toggle v-model="zigZag" mandatory dense>
+        <v-btn color="blue" depressed>
           <v-icon>fa-long-arrow-alt-down</v-icon>
         </v-btn>
-        <v-btn depressed>
+        <v-btn color="blue" depressed>
           <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
         </v-btn>
       </v-btn-toggle>
-      <v-btn @click="finishGame" small color="purple" class="ml-2">
+      <v-btn @click="finishGame" color="red" class="ml-2">
         <span class="font-weight-bold title">end game</span>
       </v-btn>
     </v-app-bar>
@@ -32,7 +32,7 @@
                       class="title font-weight-bold text-center"
                     >
                       <v-badge color="error" :content="player.totalScore" bottom>
-                        {{ player.user.username }}
+                        <span class="white--text">{{ player.user.username }}</span>
                       </v-badge>
                     </th>
                   </tr>
@@ -57,7 +57,7 @@
         </v-row>
       </v-container>
     </v-content>
-    <v-bottom-navigation height="194px" app background-color="#005737">
+    <v-bottom-navigation dark height="194px" app background-color="#005737">
       <v-card flat color="primary" width="100%">
         <v-card-title class="mb-0 font-weight-bold headline">
           <v-spacer />
