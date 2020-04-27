@@ -1,10 +1,11 @@
 <template>
   <v-content>
     <v-card class="ma-0 pa-0" color="transparent" tile flat>
-      <v-toolbar color="primary" flat>
+      <v-toolbar color="primary" dark flat>
         <v-container class="ma-0 pa-0 d-flex flex-row justify-start align-center full-width">
           <router-link :to="{ name: 'game' }">
-            <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
+            <v-avatar><v-icon>fa-play</v-icon></v-avatar>
+            <!-- <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar> -->
           </router-link>
           <v-toolbar-title class="headline font-weight-bold">
             {{ "/ " + getCurrentCourse.name }}

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="primary" app>
+  <v-app-bar color="primary" dark app>
     <router-link :to="{ name: 'home-menu' }">
       <v-avatar><v-icon>fa-home</v-icon></v-avatar>
     </router-link>

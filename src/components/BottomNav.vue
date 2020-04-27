@@ -2,6 +2,7 @@
   <v-bottom-navigation
     class="d-flex justify-space-around align-center"
     app
+    dark
     shift
     background-color="primary"
   >
