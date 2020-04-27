@@ -8,6 +8,7 @@
 </template>
 
 <script>
+  import { mapActions } from "vuex";
   import TopBar from "@/components/home/TopBar.vue";
   import { Fragment } from "vue-fragment";
   export default {
@@ -15,6 +16,13 @@
     components: {
       TopBar,
       Fragment,
+    },
+    created() {
+      this.resetGame();
+      this.resetCourse();
+    },
+    methods: {
+      ...mapActions(["resetGame", "resetCourse"]),
     },
   };
 </script>

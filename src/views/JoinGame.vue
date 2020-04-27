@@ -60,6 +60,7 @@
     components: { Fragment },
     created() {
       this.bottomNavHandler(true);
+      this.defaultRouting();
     },
     methods: {
       ...mapMutations(["CLEAR_ERRORS"]),

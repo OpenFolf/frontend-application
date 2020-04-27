@@ -144,7 +144,7 @@
       window.addEventListener("blur", this.unSubscribeToPlayerList);
       window.addEventListener("focus", this.subscribeToPlayerList);
       this.isDark = this.$vuetify.theme.dark;
-     
+      this.inGameRouting("scorecard");
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToPlayerList);

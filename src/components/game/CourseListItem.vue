@@ -41,9 +41,5 @@
     methods: {
       ...mapActions(["fetchCourse"]),
     },
-    beforeLeave(to, from, next) {
-      this.fetchCourse(to.params.id);
-      next();
-    },
   };
 </script>

@@ -228,9 +228,6 @@ const actions = {
     } catch (e) {
       console.log("Update gameStatus error", e);
     }
-    //Refresh state of game
-    // TODO: Maybe not needed, subscription should take care of this, check if delete is ok
-    context.dispatch("fetchGame", context.rootState.game.game.id);
 
     // TODO: Route players to homescreen when gameStatus changes to -1
 
@@ -569,9 +566,9 @@ const actions = {
     // Subscribe to all players in game again
     context.dispatch("subscribeToPlayerList");
   },
-  resetGame({ commit }) {
+  resetGame(context) {
     //console.log("Game>Actions>resetGame");
-    commit("RESET_GAME");
+    context.commit("RESET_GAME");
   },
 };
 

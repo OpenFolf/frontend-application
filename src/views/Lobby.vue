@@ -139,9 +139,7 @@
       this.subscribeToGame();
       window.addEventListener("blur", this.unSubscribeToGame);
       window.addEventListener("focus", this.subscribeToGame);
-      console.log("Window.browser obj", window)
-    
-      this.inGameRouting();
+      this.inGameRouting("lobby");
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToGame);

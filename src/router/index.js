@@ -56,7 +56,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "game-course" */ "@/components/game/Course.vue"),
     props: true,
     beforeEnter: async (to, from, next) => {
-      await Store.dispatch("fetchCourse", to.params.id);
+      if (Store.getters.getCurrentCourse) {
+        await Store.dispatch("fetchCourse", Store.getters.getCurrentCourse.id);
+      } else {
+        await Store.dispatch("fetchCourse", to.params.id);
+      }
       next();
     },
   },

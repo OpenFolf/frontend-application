@@ -56,7 +56,7 @@ const mutations = {
   },
   SIGN_IN: (state, payload) => {
     console.log("Auth>mutations>SIGN_IN");
-    console.log("Auth>mutations>SIGN_IN, payload ", payload);
+    // console.log("Auth>mutations>SIGN_IN, payload ", payload);
     state.authState.path = "signIn";
     if (payload.email) state.authState.email = payload.email;
   },
@@ -86,7 +86,7 @@ const mutations = {
 
 const actions = {
   async signIn({ commit, dispatch }, { email, password }) {
-    console.log("Auth>Actions>SignIn, email: ", email, "password", password);
+    // console.log("Auth>Actions>SignIn, email: ", email, "password", password);
     try {
       var callback = await Auth.signIn(email, password);
       console.log("Auth>Actions>SignIn>, callback from Auth.signIn ", callback);

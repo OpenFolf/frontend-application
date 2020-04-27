@@ -22,7 +22,7 @@ const actions = {
     commit("showBottomNav", payload);
   },
 
-  defaultRouting(context) {
+  defaultRouting(context, payload) {
     if (context.rootState.auth.signedIn) {
       const gameStatus = context.rootState.game.game.gameStatus;
       const game = context.rootState.game.game;
@@ -40,13 +40,14 @@ const actions = {
           Router.push({ name: "game-scorecard" });
           break;
         case "-1":
-          Router.push({ name: "home-menu" });
+          if (payload != "course") {
+            Router.push({ name: "home-menu" });
+          }
           break;
         default:
           break;
       }
     } else {
-      // go to sign in
       Router.push({ name: "auth" });
     }
   },
@@ -63,7 +64,7 @@ const actions = {
     }
   },
 
-  inGameRouting(context) {
+  inGameRouting(context, payload) {
     if (context.rootState.auth.signedIn) {
       const gameStatus = context.rootState.game.game.gameStatus;
       const game = context.rootState.game.game;
@@ -72,19 +73,25 @@ const actions = {
           Router.push({ name: "home-menu" });
           break;
         case "0":
-          Router.push({
-            name: "join-lobby",
-            params: {
-              path: services.replaceIcelandicCharacters(game.course.name),
-              id: game.id,
-            },
-          });
+          if (payload != "lobby") {
+            Router.push({
+              name: "join-lobby",
+              params: {
+                path: services.replaceIcelandicCharacters(game.course.name),
+                id: game.id,
+              },
+            });
+          }
           break;
         case "1":
-          Router.push({ name: "game-scorecard" });
+          if (payload != "scorecard") {
+            Router.push({ name: "game-scorecard" });
+          }
           break;
         case "2":
-          Router.push({ name: "stats" });
+          if (payload != "stats") {
+            Router.push({ name: "stats" });
+          }
           break;
         case "-1":
           Router.push({ name: "home-menu" });

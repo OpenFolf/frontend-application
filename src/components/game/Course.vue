@@ -69,6 +69,7 @@
     created() {
       this.calculateLengthAndTotalPar();
       this.bottomNavHandler(true);
+      this.defaultRouting("course");
     },
     methods: {
       ...mapActions(["createGame", "defaultRouting", "showBottomNav"]),
@@ -110,7 +111,7 @@
     },
     watch: {
       getGameStatus() {
-        this.defaultRouting();
+        this.defaultRouting("course");
       },
     },
   };
