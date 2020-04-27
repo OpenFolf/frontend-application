@@ -228,9 +228,6 @@ const actions = {
     } catch (e) {
       console.log("Update gameStatus error", e);
     }
-    //Refresh state of game
-    // TODO: Maybe not needed, subscription should take care of this, check if delete is ok
-    context.dispatch("fetchGame", context.rootState.game.game.id);
 
     // TODO: Route players to homescreen when gameStatus changes to -1
 
@@ -327,14 +324,8 @@ const actions = {
         // Check if player is part of game if so fetch game to state then route to scorecard
         const gamePlayers = gamesList[0].players.items;
         const userId = context.rootState.user.user.id;
-        let playerInGame = false;
-        // Loop through and check if user is player in game
-        for (let i = 0; i < gamePlayers.length; i++) {
-          if (gamePlayers[i].user.id == userId) {
-            // If he is user in game then fetch game into state and set playerInGame bool to true
-            playerInGame = true;
-          }
-        }
+        let playerInGame = services.isPlayerInGame(userId, gamePlayers);
+
         // If player in game then route to scorecard
         if (playerInGame) {
           context.dispatch("fetchGame", gamesList[0].id);
@@ -569,9 +560,9 @@ const actions = {
     // Subscribe to all players in game again
     context.dispatch("subscribeToPlayerList");
   },
-  resetGame({ commit }) {
+  resetGame(context) {
     //console.log("Game>Actions>resetGame");
-    commit("RESET_GAME");
+    context.commit("RESET_GAME");
   },
 };
 

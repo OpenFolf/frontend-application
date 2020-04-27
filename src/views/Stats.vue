@@ -24,7 +24,7 @@
       Fragment,
     },
     methods: {
-      ...mapActions(["fetchUserGameList", "showBottomNav"]),
+      ...mapActions(["fetchUserGameList", "showBottomNav", "resetGame", "resetCourse"]),
       bottomNavHandler(payload) {
         this.showBottomNav(payload);
       },
@@ -32,6 +32,8 @@
     created() {
       this.fetchUserGameList();
       this.bottomNavHandler(true);
+      this.resetGame();
+      this.resetCourse();
     },
   };
 </script>

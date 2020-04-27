@@ -167,6 +167,7 @@ export const listGames = /* GraphQL */ `
         players {
           items {
             user {
+              id
               username
               email
             }

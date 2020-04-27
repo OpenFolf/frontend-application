@@ -215,11 +215,11 @@ const actions = {
   },
 
   async fetchUserGameList(context) {
-    console.log("Fetch UserGamesList User ID", state.user.id);
+    console.log("Fetch UserGamesList User ID", context.rootState.user.user.id);
     let response = {};
     try {
       response = await API.graphql(
-        graphqlOperation(usergraphQL.fetchUserGameList, { id: state.user.id }),
+        graphqlOperation(usergraphQL.fetchUserGameList, { id: context.rootState.user.user.id }),
       );
     } catch (e) {
       throw Error("fetchUserGameListError", e);

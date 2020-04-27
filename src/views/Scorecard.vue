@@ -9,6 +9,7 @@
           <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
         </v-btn>
       </v-btn-toggle> -->
+      <span class="font-weight-bold title mr-2">{{ getGame.lobbyCode }}</span>
       <v-btn depressed @click="zigZag = !zigZag" class="mr-2 font-weight-bold">
         {{ zigZag ? "|" : "Z" }}
       </v-btn>
@@ -144,6 +145,7 @@
       window.addEventListener("blur", this.unSubscribeToPlayerList);
       window.addEventListener("focus", this.subscribeToPlayerList);
       this.isDark = this.$vuetify.theme.dark;
+      this.inGameRouting("scorecard");
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToPlayerList);
