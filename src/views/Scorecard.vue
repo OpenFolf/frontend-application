@@ -1,20 +1,23 @@
 <template>
   <fragment>
     <v-app-bar dark color="primary" app flat width="100%">
-      <v-toolbar-title class="headline font-weight-bold" flat>
-        {{ getGame.lobbyCode }}
-      </v-toolbar-title>
-      <v-spacer />
-
-      <v-switch v-model="isDark" :label="isDarkModeLabel"></v-switch>
-      <v-btn-toggle v-model="zigZag" mandatory dense>
+      <!-- <v-btn-toggle v-model="zigZag" mandatory dense>
         <v-btn color="blue" depressed>
           <v-icon>fa-long-arrow-alt-down</v-icon>
         </v-btn>
         <v-btn color="blue" depressed>
           <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
         </v-btn>
-      </v-btn-toggle>
+      </v-btn-toggle> -->
+      <v-btn depressed @click="zigZag = !zigZag" class="mr-2 font-weight-bold">
+        {{ zigZag ? "|" : "Z" }}
+      </v-btn>
+      <v-btn :color="isDark ? 'warning' : 'accent'" depressed @click="isDark = !isDark">
+        <v-icon :color="isDark ? 'black' : 'white'" dark>
+          {{ isDark ? "fa-sun" : "fa-moon" }}
+        </v-icon>
+      </v-btn>
+      <v-spacer />
       <confirm-dialogue :dialog="endGameDialog" :message="endGameMsg" @finishGame="finishGame" />
     </v-app-bar>
     <v-content>
@@ -61,14 +64,16 @@
         <v-card-title class="mb-0 font-weight-bold headline">
           <v-spacer />
           <v-icon class="mr-2">fa-user</v-icon>
-          <span class="mr-2">{{ getPlayers[selectedPlayer].user.username }} |</span>
+          <span class="mr-2">{{ getPlayers[selectedPlayer].user.username }}</span>
+          <v-spacer />
           <v-img
             :src="require('@/assets/basket_white.png')"
             max-width="2rem"
             height="2rem"
             contain
           />
-          <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span> |
+          <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span>
+          <v-spacer />
           <span class="mx-2">Par :</span>
           <v-avatar color="red" class="font-weight-bold display-1">
             {{ selectedPar == "0" ? "-" : selectedPar }}
@@ -106,6 +111,7 @@
     name: "game-scorecard",
     data() {
       return {
+        buttonSpacer: "  /  ",
         redParSum: 0,
         player: 0,
         selectedPlayer: 0,
@@ -128,9 +134,6 @@
     },
     computed: {
       ...mapGetters(["getGame", "getGameStatus", "getPlayers", "getHoles", "getTo"]),
-      isDarkModeLabel() {
-        return this.$vuetify.theme.dark ? "Dark" : "Light";
-      },
     },
     components: { Fragment, ConfirmDialogue },
     created() {
