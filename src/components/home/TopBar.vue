@@ -1,10 +1,11 @@
 <template>
   <v-app-bar color="primary" dark app>
-    <router-link :to="{ name: 'home-menu' }">
-      <v-avatar><v-icon>fa-home</v-icon></v-avatar>
-    </router-link>
+    <!-- <router-link :to="{ name: 'home-menu' }"> -->
+    <!-- <v-avatar><v-icon>fa-home</v-icon></v-avatar> -->
+    <!-- </router-link> -->
+    <!-- <v-spacer /> -->
     <v-toolbar-title class="headline font-weight-bold" flat>
-      / {{ isHome ? "" : path }}
+      Home {{ isHome ? "" : "/ " + path }}
     </v-toolbar-title>
     <v-spacer />
     <sign-out />

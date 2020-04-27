@@ -2,8 +2,8 @@
   <fragment>
     <v-app-bar color="primary" dark app hide-on-scroll>
       <!-- <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar> -->
-      <v-avatar><v-icon>fa-play</v-icon></v-avatar>
-      <v-toolbar-title class="headline font-weight-bold" flat>/</v-toolbar-title>
+      <!-- <v-avatar><v-icon>fa-play</v-icon></v-avatar> -->
+      <v-toolbar-title class="headline font-weight-bold" flat>Select Course</v-toolbar-title>
       <v-spacer />
 
       <v-btn-toggle v-model="sortAlpha" mandatory>

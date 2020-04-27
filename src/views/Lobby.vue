@@ -1,16 +1,21 @@
 <template>
   <fragment>
     <v-app-bar color="primary" dark app flat>
-      <v-avatar><v-icon>fa-play</v-icon></v-avatar>
+      <!-- <v-avatar><v-icon>fa-play</v-icon></v-avatar> -->
       <!-- <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar> -->
       <v-toolbar-title class="white--text headline font-weight-bold" flat>
-        / {{ getGame.course.name }} / Lobby
+        Lobby
       </v-toolbar-title>
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height class="justify-center">
         <v-row>
           <v-col cols="12" class="align-content-space-between">
+            <v-card class="d-flex justify-center" color="secondary">
+              <v-card-title class="white--text headline text-center font-weight-bold" flat>
+                <span class="headline font-weight-bold mx-3">{{ getGame.course.name }}</span>
+              </v-card-title>
+            </v-card>
             <v-card class="d-flex justify-center" color="info">
               <v-card-title class="white--text headline text-center font-weight-bold" flat>
                 CODE: <span class="display-2 font-weight-bold mx-3">{{ getGame.lobbyCode }}</span>
