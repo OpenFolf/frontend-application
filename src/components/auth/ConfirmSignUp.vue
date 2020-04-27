@@ -1,7 +1,7 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat>
+  <v-card outlined width="400px" class="mx-auto my-5 font-weight-bold" flat>
     <v-toolbar color="primary" flat>
-      <v-toolbar-title>Confirm Sign Up</v-toolbar-title>
+      <v-toolbar-title class="white--text">Confirm Sign Up</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
     <v-card-text>
@@ -29,15 +29,16 @@
           :disabled="$v.email.$invalid || $v.confirmCode.$invalid"
           @click="confirm"
           color="primary"
-          >CONFIRM
+        >
+          <span class="font-weight-bold">CONFIRM</span>
         </v-btn>
       </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn x-small text @click="resend" :disabled="$v.email.$invalid"
-        >Lost the code? Resend code.</v-btn
-      >
+      <v-btn x-small text @click="resend" :disabled="$v.email.$invalid">
+        Lost the code? Resend code.
+      </v-btn>
       <v-spacer />
     </v-card-actions>
     <v-card-actions>

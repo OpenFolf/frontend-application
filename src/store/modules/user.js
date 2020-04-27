@@ -125,6 +125,10 @@ const actions = {
     commit("setUserId", payload);
   },
 
+  resetUser({ commit }) {
+    console.log("Course>Actions>resetUser");
+    commit("RESET_USER");
+  },
   async setUserName(context, payload) {
     console.log("User>actions>setUserName, payload", payload);
     // Add to database

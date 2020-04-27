@@ -1,7 +1,7 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat>
+  <v-card outlined width="400px" class="mx-auto my-5 font-weight-bold" flat>
     <v-toolbar color="primary" flat>
-      <v-toolbar-title>Reset Password</v-toolbar-title>
+      <v-toolbar-title class="white--text">Reset Password</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
     <v-card-text>
@@ -39,12 +39,14 @@
           />
         </template>
         <template v-if="!isSentCode">
-          <v-btn block :disabled="$v.email.$invalid" @click="resetUserPassword" color="primary"
-            >Send Code</v-btn
-          >
+          <v-btn block :disabled="$v.email.$invalid" @click="resetUserPassword" color="primary">
+            <span class="font-weight-bold">Send Code</span>
+          </v-btn>
         </template>
         <template v-if="isSentCode">
-          <v-btn block :disabled="$v.code.$invalid" @click="verify" color="primary">Submit</v-btn>
+          <v-btn block :disabled="$v.code.$invalid" @click="verify" color="primary">
+            <span class="font-weight-bold">Submit</span>
+          </v-btn>
         </template>
       </v-form>
     </v-card-text>

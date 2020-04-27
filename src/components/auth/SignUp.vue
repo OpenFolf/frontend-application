@@ -1,7 +1,7 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat>
+  <v-card outlined width="400px" class="mx-auto my-5 font-weight-bold" flat>
     <v-toolbar color="primary" flat>
-      <v-toolbar-title>Sign Up</v-toolbar-title>
+      <v-toolbar-title class="white--text">Sign Up</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
     <v-card-text>
@@ -33,8 +33,9 @@
           color="primary"
           :disabled="$v.email.$invalid || $v.password.$invalid"
           @click="signUpUser"
-          >Sign Up</v-btn
         >
+          <span class="font-weight-bold">Sign Up</span>
+        </v-btn>
       </v-form>
     </v-card-text>
     <v-card-actions>

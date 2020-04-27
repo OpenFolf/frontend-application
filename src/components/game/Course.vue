@@ -1,19 +1,21 @@
 <template>
   <v-content>
     <v-card class="ma-0 pa-0" color="transparent" tile flat>
-      <v-toolbar color="primary" flat>
+      <v-toolbar color="primary" dark flat>
         <v-container class="ma-0 pa-0 d-flex flex-row justify-start align-center full-width">
-          <router-link :to="{ name: 'game' }">
-            <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
-          </router-link>
+          <!-- <router-link :to="{ name: 'game' }"> -->
+          <!-- <v-avatar><v-icon>fa-play</v-icon></v-avatar> -->
+          <!-- <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar> -->
+          <!-- </router-link> -->
           <v-toolbar-title class="headline font-weight-bold">
-            {{ "/ " + getCurrentCourse.name }}
+            {{ getCurrentCourse.name }}
           </v-toolbar-title>
         </v-container>
       </v-toolbar>
       <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile flat>
-        <v-btn large outlined color="white" class="my-6 primary" @click="playCourse">
-          <v-icon class="mr-2">fa-play</v-icon> <span class="font-weight-bold"> Course</span>
+        <v-btn large class="my-8 primary" @click="playCourse">
+          <!-- <v-icon class="mr-2">fa-play</v-icon> <span class="font-weight-bold"> Course</span> -->
+          <span class="font-weight-bold">Play Course</span>
         </v-btn>
       </v-card>
       <v-tabs v-model="currentTab" background-color="secondary" color="white" grow>

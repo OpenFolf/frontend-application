@@ -514,7 +514,7 @@ const actions = {
       throw Error("Game subscription error", e);
     }
 
-    context.commit("fetchGame", gameId);
+    context.dispatch("fetchGame", gameId);
   },
 
   async unSubscribeToGame(context) {

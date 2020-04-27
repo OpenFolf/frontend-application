@@ -1,24 +1,24 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app flat width="100%">
-      <v-toolbar-title class="headline font-weight-bold" flat>
-        {{ getGame.lobbyCode }}
-      </v-toolbar-title>
-      <v-spacer />
-
-      <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
-        <v-btn depressed>
+    <v-app-bar dark color="primary" app flat width="100%">
+      <!-- <v-btn-toggle v-model="zigZag" mandatory dense>
+        <v-btn color="blue" depressed>
           <v-icon>fa-long-arrow-alt-down</v-icon>
         </v-btn>
-        <v-btn depressed>
+        <v-btn color="blue" depressed>
           <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
         </v-btn>
-      </v-btn-toggle>
+      </v-btn-toggle> -->
+      <v-btn depressed @click="zigZag = !zigZag" class="mr-2 font-weight-bold">
+        {{ zigZag ? "|" : "Z" }}
+      </v-btn>
+      <v-btn :color="isDark ? 'warning' : 'accent'" depressed @click="isDark = !isDark">
+        <v-icon :color="isDark ? 'black' : 'white'" dark>
+          {{ isDark ? "fa-sun" : "fa-moon" }}
+        </v-icon>
+      </v-btn>
+      <v-spacer />
       <confirm-dialogue :dialog="endGameDialog" :message="endGameMsg" @finishGame="finishGame" />
-      <!-- <v-btn @click="finishGame" small color="purple" class="ml-2">
-
-        <span class="font-weight-bold title">end game</span>
-      </v-btn> -->
     </v-app-bar>
     <v-content>
       <v-container>
@@ -34,7 +34,7 @@
                       class="title font-weight-bold text-center"
                     >
                       <v-badge color="error" :content="player.totalScore" bottom>
-                        {{ player.user.username }}
+                        <span class="white--text">{{ player.user.username }}</span>
                       </v-badge>
                     </th>
                   </tr>
@@ -59,19 +59,21 @@
         </v-row>
       </v-container>
     </v-content>
-    <v-bottom-navigation height="194px" app background-color="#005737">
+    <v-bottom-navigation dark height="194px" app background-color="#005737">
       <v-card flat color="primary" width="100%">
         <v-card-title class="mb-0 font-weight-bold headline">
           <v-spacer />
           <v-icon class="mr-2">fa-user</v-icon>
-          <span class="mr-2">{{ getPlayers[selectedPlayer].user.username }} |</span>
+          <span class="mr-2">{{ getPlayers[selectedPlayer].user.username }}</span>
+          <v-spacer />
           <v-img
             :src="require('@/assets/basket_white.png')"
             max-width="2rem"
             height="2rem"
             contain
           />
-          <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span> |
+          <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span>
+          <v-spacer />
           <span class="mx-2">Par :</span>
           <v-avatar color="red" class="font-weight-bold display-1">
             {{ selectedPar == "0" ? "-" : selectedPar }}
@@ -109,6 +111,7 @@
     name: "game-scorecard",
     data() {
       return {
+        buttonSpacer: "  /  ",
         redParSum: 0,
         player: 0,
         selectedPlayer: 0,
@@ -118,10 +121,11 @@
         fab: false,
         lng: "",
         zig: "",
+        isDark: "",
         endGameDialog: false,
         endGameMsg: {
           title: "End Game",
-          body: "Are you want to end the game?",
+          body: "Are you sure you want to end the game? This will end the game for all players.",
           button1: "No",
           button2: "Yes",
           headerColor: "error",
@@ -139,6 +143,7 @@
       this.bottomNavHandler(false);
       window.addEventListener("blur", this.unSubscribeToPlayerList);
       window.addEventListener("focus", this.subscribeToPlayerList);
+      this.isDark = this.$vuetify.theme.dark;
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToPlayerList);
@@ -153,6 +158,7 @@
         "refreshGame",
         "inGameRouting",
         "unSubscribeToPlayerList",
+        "setUserTheme",
       ]),
       bottomNavHandler(payload) {
         this.showBottomNav(payload);
@@ -204,6 +210,9 @@
     watch: {
       getGameStatus() {
         this.inGameRouting();
+      },
+      isDark() {
+        this.setUserTheme();
       },
     },
   };
