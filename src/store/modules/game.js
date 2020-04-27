@@ -324,14 +324,8 @@ const actions = {
         // Check if player is part of game if so fetch game to state then route to scorecard
         const gamePlayers = gamesList[0].players.items;
         const userId = context.rootState.user.user.id;
-        let playerInGame = false;
-        // Loop through and check if user is player in game
-        for (let i = 0; i < gamePlayers.length; i++) {
-          if (gamePlayers[i].user.id == userId) {
-            // If he is user in game then fetch game into state and set playerInGame bool to true
-            playerInGame = true;
-          }
-        }
+        let playerInGame = services.isPlayerInGame(userId, gamePlayers);
+
         // If player in game then route to scorecard
         if (playerInGame) {
           context.dispatch("fetchGame", gamesList[0].id);
