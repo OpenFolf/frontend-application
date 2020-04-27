@@ -182,7 +182,7 @@
         this.deletePlayer(playerId);
       },
       cancelThisGame() {
-        console.log("Lobby>cancelThisGame");
+        //console.log("Lobby>cancelThisGame");
         this.cancelGame(this.getGame.id);
       },
       bottomNavHandler(payload) {

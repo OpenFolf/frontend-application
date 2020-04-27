@@ -106,14 +106,14 @@ const router = new VueRouter({
 
 // Before routing, go through each route and check
 router.beforeEach((to, from, next) => {
-  //console.log("Router>beforeEach>Route", to.name);
-  //console.log("Router>beforeEach>Route, store", Store.getters.signedIn);
+  ////console.log("Router>beforeEach>Route", to.name);
+  ////console.log("Router>beforeEach>Route, store", Store.getters.signedIn);
   // If signed in
   if (Store.getters.signedIn) {
-    //console.log("Router>beforeEach>Route>SignedIn");
+    ////console.log("Router>beforeEach>Route>SignedIn");
     // and at auth then redirect to home-menu
     if (to.matched.some((record) => record.name == "auth")) {
-      console.log("Router>beforeEach>Route>SignedIn>to.matched[0].name == 'auth'");
+      //console.log("Router>beforeEach>Route>SignedIn>to.matched[0].name == 'auth'");
       next({ name: "home-menu" });
     }
     // else, go wherever
@@ -121,10 +121,10 @@ router.beforeEach((to, from, next) => {
   }
   // If not signed in
   else {
-    //console.log("Router>beforeEach>Route>NotSignedIn");
+    ////console.log("Router>beforeEach>Route>NotSignedIn");
     // redirect to auth if not at auth
     if (!to.matched.some((record) => record.name == "auth")) {
-      //console.log("Router>beforeEach>Route>NotSignedIn>!to.matched[0].name == 'auth'");
+      ////console.log("Router>beforeEach>Route>NotSignedIn>!to.matched[0].name == 'auth'");
       next({ name: "auth" });
     }
     next();

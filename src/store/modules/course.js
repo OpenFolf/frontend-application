@@ -34,7 +34,7 @@ const mutations = {
     state.courses.unshift(payload);
   },
   RESET_COURSE(state) {
-    // console.log("Course>mutations>RESET_COURSE");
+    // //console.log("Course>mutations>RESET_COURSE");
     // const newState = initialState();
     // Object.keys(newState).forEach((key) => {
     //   state[key] = newState[key];
@@ -91,14 +91,15 @@ const actions = {
   },
 
   async subscribeCourses(context) {
-    const courses = API.graphql(graphqlOperation(subscriptions.onCreateCourse)).subscribe({
+    // const courses = API.graphql(graphqlOperation(subscriptions.onCreateCourse)).subscribe({
+    API.graphql(graphqlOperation(subscriptions.onCreateCourse)).subscribe({
       next: (coursesData) => context.commit("updateCourseList", coursesData.value.data),
     });
 
-    console.log(courses);
+    //console.log(courses);
   },
   resetCourse({ commit }) {
-    console.log("Course>Actions>resetCourses");
+    //console.log("Course>Actions>resetCourses");
     commit("RESET_COURSE");
   },
 };

@@ -2,7 +2,7 @@ const AWS = require("aws-sdk");
 const dynamodb = new AWS.DynamoDB({ region: "eu-west-2", apiVersion: "2012-08-10" });
 
 exports.handler = (event, context, callback) => {
-  const scorecardFunc = function () {
+  const scorecardFunc = function() {
     const str = event.request.userAttributes.email;
     const retVal = str.substring(0, 3);
 
@@ -33,10 +33,10 @@ exports.handler = (event, context, callback) => {
   };
   dynamodb.putItem(params, function(err, data) {
     if (err) {
-      console.log(err);
+      //console.log(err);
       callback(err);
     } else {
-      console.log(data);
+      //console.log(data);
       callback(null, event);
     }
   });

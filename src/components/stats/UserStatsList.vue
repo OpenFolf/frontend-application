@@ -50,7 +50,7 @@
     computed: {
       ...mapGetters(["getUserGames"]),
       userGames() {
-        console.log("GetUserGames ", this.userGames);
+        //console.log("GetUserGames ", this.userGames);
         return this.getUserGames;
       },
       humanReadableDate(epoch) {
