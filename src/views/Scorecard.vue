@@ -6,6 +6,7 @@
       </v-toolbar-title>
       <v-spacer />
 
+      <v-switch v-model="isDark" :label="isDarkModeLabel"></v-switch>
       <v-btn-toggle v-model="zigZag" mandatory dense>
         <v-btn color="blue" depressed>
           <v-icon>fa-long-arrow-alt-down</v-icon>
@@ -14,6 +15,7 @@
           <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
         </v-btn>
       </v-btn-toggle>
+      <!-- <ConfirmDialogue :dialog="endGameDialog" :message="endGameMsg" @start="finishGame" /> -->
       <v-btn @click="finishGame" color="red" class="ml-2">
         <span class="font-weight-bold title">end game</span>
       </v-btn>
@@ -101,6 +103,7 @@
 
 <script>
   import { Fragment } from "vue-fragment";
+  // import ConfirmDialogue from "../components/game/ConfirmDialogue";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "game-scorecard",
@@ -115,12 +118,24 @@
         fab: false,
         lng: "",
         zig: "",
+        isDark: "",
+        endGameDialog: false,
+        endGameMsg: {
+          title: "End Game?",
+          body: "Are you sure you want to end the game?\nThis will end the game for all players.",
+          button1: "Cancel",
+          button2: "Start",
+          headerColor: "primary",
+        },
       };
     },
     computed: {
       ...mapGetters(["getGame", "getGameStatus", "getPlayers", "getHoles", "getTo"]),
+      isDarkModeLabel() {
+        return this.$vuetify.theme.dark ? "Dark" : "Light";
+      },
     },
-    components: { Fragment },
+    components: { Fragment /*ConfirmDialogue*/ },
     created() {
       this.loadHoles();
       this.subscribeToPlayerList();
@@ -128,6 +143,7 @@
       this.bottomNavHandler(false);
       window.addEventListener("blur", this.unSubscribeToPlayerList);
       window.addEventListener("focus", this.subscribeToPlayerList);
+      this.isDark = this.$vuetify.theme.dark;
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToPlayerList);
@@ -142,6 +158,7 @@
         "refreshGame",
         "inGameRouting",
         "unSubscribeToPlayerList",
+        "setUserTheme",
       ]),
       bottomNavHandler(payload) {
         this.showBottomNav(payload);
@@ -198,6 +215,9 @@
     watch: {
       getGameStatus() {
         this.inGameRouting();
+      },
+      isDark() {
+        this.setUserTheme();
       },
     },
   };

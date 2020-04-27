@@ -4,7 +4,7 @@
       <v-avatar><v-icon>fa-play</v-icon></v-avatar>
       <!-- <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar> -->
       <v-toolbar-title class="white--text headline font-weight-bold" flat>
-        / {{ getGame.course.name }}
+        / {{ getGame.course.name }} / Lobby
       </v-toolbar-title>
     </v-app-bar>
     <v-content>
@@ -13,7 +13,7 @@
           <v-col cols="12" class="align-content-space-between">
             <v-card class="d-flex justify-center" color="info">
               <v-card-title class="white--text headline text-center font-weight-bold" flat>
-                Lobby: <span class="display-2 font-weight-bold mx-3">{{ getGame.lobbyCode }}</span>
+                CODE: <span class="display-2 font-weight-bold mx-3">{{ getGame.lobbyCode }}</span>
               </v-card-title>
             </v-card>
             <v-simple-table hide-actions>
@@ -97,7 +97,6 @@
         leaveGameDialog: false,
         kickUserDialog: false,
         cancelGameDialog: false,
-
         startGameMsg: {
           title: "Start Game",
           body: "Are you sure you want to start the game?",
