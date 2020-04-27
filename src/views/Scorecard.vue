@@ -15,10 +15,7 @@
           <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
         </v-btn>
       </v-btn-toggle>
-      <!-- <ConfirmDialogue :dialog="endGameDialog" :message="endGameMsg" @start="finishGame" /> -->
-      <v-btn @click="finishGame" color="red" class="ml-2">
-        <span class="font-weight-bold title">end game</span>
-      </v-btn>
+      <confirm-dialogue :dialog="endGameDialog" :message="endGameMsg" @finishGame="finishGame" />
     </v-app-bar>
     <v-content>
       <v-container>
@@ -103,7 +100,7 @@
 
 <script>
   import { Fragment } from "vue-fragment";
-  // import ConfirmDialogue from "../components/game/ConfirmDialogue";
+  import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "game-scorecard",
@@ -121,11 +118,11 @@
         isDark: "",
         endGameDialog: false,
         endGameMsg: {
-          title: "End Game?",
-          body: "Are you sure you want to end the game?\nThis will end the game for all players.",
-          button1: "Cancel",
-          button2: "Start",
-          headerColor: "primary",
+          title: "End Game",
+          body: "Are you sure you want to end the game? This will end the game for all players.",
+          button1: "No",
+          button2: "Yes",
+          headerColor: "error",
         },
       };
     },
@@ -135,7 +132,7 @@
         return this.$vuetify.theme.dark ? "Dark" : "Light";
       },
     },
-    components: { Fragment /*ConfirmDialogue*/ },
+    components: { Fragment, ConfirmDialogue },
     created() {
       this.loadHoles();
       this.subscribeToPlayerList();
@@ -185,19 +182,14 @@
             this.selectedPlayer++;
           } else if (
             this.selectedPlayer === this.getPlayers.length - 1 &&
-            this.selectedHole != this.getPlayers.length - 1
+            this.selectedHole != this.getGame.course.holeCount - 1
           ) {
             this.selectedPlayer = 0;
             this.selectedHole++;
-          } else {
-            console.log("Do you want to finish the game?");
           }
         } else {
-          console.log("setNextIndexActive");
           if (this.selectedHole < this.getHoles.length - 1) {
             this.selectedHole++;
-          } else {
-            console.log("Do you want to finish the game?");
           }
         }
       },

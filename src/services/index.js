@@ -120,9 +120,11 @@ export function reorganizeGameList(userGameList) {
   for (let i = 0; i < userGameList.length; i++) {
     const gameObject = {};
     // Sort holes by no.
-    const redHoleObjects = userGameList[i].game.course.holes.items.sort((a, b) =>
+
+    const holeObjects = userGameList[i].game.course.holes.items.sort((a, b) =>
       parseInt(a.no) > parseInt(b.no) ? 1 : -1,
     );
+
     // Put together a new gameObject
     gameObject.userPlayerId = userGameList[i].id; //Player Id of current user in this gameObject
     gameObject.gameId = userGameList[i].game.id;
@@ -139,8 +141,8 @@ export function reorganizeGameList(userGameList) {
     };
     gameObject.course = {
       courseName: userGameList[i].game.course.name,
-      redPar: redHoleObjects,
-      totalPar: calcPar(redHoleObjects, "redPar"),
+      par: holeObjects,
+      totalPar: calcPar(holeObjects, "redPar"),
     };
     gameObject.players = userGameList[i].game.players.items;
     //Push object onto array
