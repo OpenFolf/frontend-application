@@ -1,52 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 
+$body-font-family: "Raleway", sans-serif !important;
 
-$body-font-family: 'Raleway',
-sans-serif;
+$material-light: (
+  "background": #ffffff,
+);
 
-$material-light: ('background': #3fbb85);
-
-.theme--light.v-tabs-items {
-  background-color: #3fbb85;
-}
-
-.theme--light.v-data-table tbody tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
-  background: #3fbb85;
-}
-
-$material-dark: ('background': #000000);
-
-.theme--dark.v-tabs-items {
-  background-color: #000000;
-}
-
-// Remove hover in dark mode
-.theme--dark.v-data-table tbody tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
-  background: #1E1E1E;
-}
-
-
-$typoOptions: display-4,
-display-3,
-display-2,
-display-1,
-headline,
-title,
-subtitle-1,
-subtitle-2,
-body-1,
-body-2,
-caption,
-overline;
-
-#app {
-  font-family: $body-font-family, 'Raleway', sans-serif !important;
-
-  @each $typoOption in $typoOptions {
-    .#{$typoOption} {
-      font-family: $body-font-family,
-        'Raleway',
-        sans-serif !important;
-    }
-  }
-}
+$material-dark: (
+  "background": #000000,
+);
