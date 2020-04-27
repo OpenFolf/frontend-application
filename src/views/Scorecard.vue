@@ -144,6 +144,7 @@
       window.addEventListener("blur", this.unSubscribeToPlayerList);
       window.addEventListener("focus", this.subscribeToPlayerList);
       this.isDark = this.$vuetify.theme.dark;
+     
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToPlayerList);
