@@ -10,7 +10,7 @@
       }"
     >
       <v-card-title class="mb-3">
-        <span class="white--text display-1 ">{{ content.name }}</span>
+        <span class="white--text headline ">{{ content.name }}</span>
         <v-spacer />
         <v-icon dark large>fa-angle-right</v-icon>
       </v-card-title>
