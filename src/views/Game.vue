@@ -35,9 +35,10 @@
     },
     created() {
       this.bottomNavHandler(true);
+      this.resetCourse();
     },
     methods: {
-      ...mapActions(["showBottomNav"]),
+      ...mapActions(["showBottomNav", "resetCourse"]),
       bottomNavHandler(payload) {
         this.showBottomNav(payload);
       },

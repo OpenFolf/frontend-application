@@ -60,6 +60,9 @@ const getters = {
   getEmail: (state) => {
     return state.user.email;
   },
+  getIsUserDark: (state) => {
+    return state.user.defMode == "DARK";
+  },
   getCurrentGame: (state) => {
     return state.user.currentGame;
   },
@@ -157,6 +160,7 @@ const actions = {
     const userId = context.rootState.user.user.id;
     const userTheme = context.state.user.defMode;
     if (userTheme == "DARK") {
+      context.commit("setUserTheme", "LIGHT");
       try {
         await API.graphql(
           graphqlOperation(usergraphQL.updateUser, {
@@ -170,6 +174,7 @@ const actions = {
       //console.log("Vuetify object: ", Vuetify);
       Vuetify.framework.theme.isDark = false;
     } else {
+      context.commit("setUserTheme", "DARK");
       try {
         await API.graphql(
           graphqlOperation(usergraphQL.updateUser, {

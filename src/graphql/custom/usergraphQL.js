@@ -57,6 +57,7 @@ export const fetchUserGameList = /* GraphQL */ `
                 items {
                   no
                   redPar
+                  whitePar
                 }
               }
             }

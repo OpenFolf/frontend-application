@@ -4,9 +4,9 @@
       <v-btn color="#7CAA98" depressed @click="zigZag = !zigZag" class="mr-2 font-weight-bold">
         {{ zigZag ? "|" : "Z" }}
       </v-btn>
-      <v-btn :color="isDark ? 'accent' : 'warning'" depressed @click="isDark = !isDark">
-        <v-icon :color="isDark ? 'white' : 'black'">
-          {{ isDark ? "fa-moon" : "fa-sun" }}
+      <v-btn :color="getIsUserDark ? 'accent' : 'warning'" depressed @click="setUserTheme">
+        <v-icon :color="getIsUserDark ? 'white' : 'black'">
+          {{ getIsUserDark ? "fa-moon" : "fa-sun" }}
         </v-icon>
       </v-btn>
       <v-spacer />
@@ -69,7 +69,7 @@
           <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span>
           <v-spacer />
           <span class="mx-2">Par :</span>
-          <v-avatar color="red" class="font-weight-bold display-1">
+          <v-avatar :color="colorHandler" class="font-weight-bold display-1 text--black">
             {{ selectedPar == "0" ? "-" : selectedPar }}
           </v-avatar>
           <v-spacer />
@@ -115,7 +115,6 @@
         fab: false,
         lng: "",
         zig: "",
-        isDark: "",
         endGameDialog: false,
         endGameMsg: {
           title: "End Game",
@@ -127,17 +126,34 @@
       };
     },
     computed: {
-      ...mapGetters(["getGame", "getGameStatus", "getPlayers", "getHoles", "getTo"]),
+      ...mapGetters([
+        "getGame",
+        "getGameStatus",
+        "getPlayers",
+        "getHoles",
+        "getUser",
+        "getTo",
+        "getIsUserDark",
+      ]),
+      colorHandler() {
+        return this.getHoles[0].whitePar > 0 ? "white" : "red";
+      },
+      localSelectedPar() {
+        if (this.getHoles[0].whitePar > 0) {
+          return this.getHoles[0].whitePar;
+        } else {
+          return this.getHoles[0].redPar;
+        }
+      },
     },
     components: { Fragment, ConfirmDialogue },
     created() {
       this.loadHoles();
       this.subscribeToPlayerList();
-      this.selectedPar = this.getHoles[0].redPar;
+      this.selectedPar = this.localSelectedPar;
       this.bottomNavHandler(false);
       window.addEventListener("blur", this.unSubscribeToPlayerList);
       window.addEventListener("focus", this.subscribeToPlayerList);
-      this.isDark = this.$vuetify.theme.dark;
       this.inGameRouting("scorecard");
     },
     beforeDestroy() {
@@ -205,9 +221,6 @@
     watch: {
       getGameStatus() {
         this.inGameRouting();
-      },
-      isDark() {
-        this.setUserTheme();
       },
     },
   };

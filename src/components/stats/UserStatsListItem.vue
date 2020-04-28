@@ -16,7 +16,7 @@
           </v-toolbar-title>
           <br />
           <v-toolbar-title class=" white--text title ">
-            {{ ` gameList.gameDate` }}
+            {{ gameList.gameDate }}
           </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -57,9 +57,13 @@
           </thead>
           <tbody>
             <tr v-for="(hole, holeIndex) in game.course.par" :key="holeIndex">
-              <td class="text-center">{{ holeIndex }}</td>
+              <td class="text-center">{{ holeIndex + 1 }}</td>
               <td class="text-center">
-                {{ game.course.par[0].redPar }}
+                {{
+                  game.course.par[0].whitePar > 0
+                    ? game.course.par[0].whitePar
+                    : game.course.par[0].redPar
+                }}
               </td>
               <td class="text-center" v-for="(player, playerIndex) in gameItem" :key="playerIndex">
                 {{ player.scoreArray[holeIndex] }}
