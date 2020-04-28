@@ -69,7 +69,7 @@
           <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span>
           <v-spacer />
           <span class="mx-2">Par :</span>
-          <v-avatar :color="colorHandler" class="font-weight-bold display-1 text--black">
+          <v-avatar :color="colorHandler" :class="textColorHandler">
             {{ selectedPar == "0" ? "-" : selectedPar }}
           </v-avatar>
           <v-spacer />
@@ -137,6 +137,11 @@
       ]),
       colorHandler() {
         return this.getHoles[0].whitePar > 0 ? "white" : "red";
+      },
+      textColorHandler() {
+        return this.getHoles[0].whitePar > 0
+          ? "font-weight-bold display-1 black--text"
+          : "font-weight-bold display-1";
       },
       localSelectedPar() {
         if (this.getHoles[0].whitePar > 0) {
