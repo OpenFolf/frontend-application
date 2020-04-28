@@ -10,7 +10,7 @@
 <script>
   import { mapGetters } from "vuex";
   import BottomNav from "@/components/BottomNav.vue";
-  import ErrorBoundary from "../src/components/errorBoundary/error-boundary";
+  import ErrorBoundary from "./components/errorBoundary/error-boundary";
   export default {
     name: "App",
     components: {

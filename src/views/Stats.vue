@@ -1,14 +1,11 @@
 <template>
   <fragment>
     <v-app-bar color="primary" dark app>
-      <!-- <v-avatar><v-icon>fa-chart-bar</v-icon></v-avatar> -->
       <v-toolbar-title class="headline font-weight-bold" flat>Stats</v-toolbar-title>
       <v-spacer />
     </v-app-bar>
     <v-content>
-      <v-row dense>
-        <user-stats-list />
-      </v-row>
+      <user-stats-list />
     </v-content>
   </fragment>
 </template>

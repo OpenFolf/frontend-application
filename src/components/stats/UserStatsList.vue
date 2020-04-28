@@ -1,38 +1,40 @@
 <template>
-  <v-content>
-    <v-container fluid>
-      <v-row dense>
-        <v-col cols="12">
-          <user-stats-list-item
-            v-if="modalVisible"
-            @close="modalVisible = false"
-            :modalVisible="modalVisible"
-            :gameListIndex="modalIndex"
-          >
-          </user-stats-list-item>
-          <v-card
-            color="secondary"
-            ripple
-            flat
-            class="mb-2"
-            v-for="(gameList, gameListIndex) in getUserGames"
-            :key="gameList.id"
-            @click="openModal(gameListIndex)"
-          >
-            <v-card-title>{{ gameList.course.courseName }} </v-card-title>
-            <v-card-subtitle>{{ gameList.gameDate }}</v-card-subtitle>
-            <v-card-text class="bold"
-              >Players:
-              <v-card-text v-for="players in gameList.players" :key="players.id">
-                {{ players.user.email }}
-                Score: {{ players.totalScore }}
-              </v-card-text>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-content>
+  <v-container fluid>
+    <v-row dense>
+      <v-col cols="12">
+        <user-stats-list-item
+          v-if="modalVisible"
+          @close="modalVisible = false"
+          :modalVisible="modalVisible"
+          :gameListIndex="modalIndex"
+        />
+        <v-card
+          color="secondary"
+          ripple
+          flat
+          class="mb-2"
+          v-for="(gameList, gameListIndex) in getUserGames"
+          :key="gameList.id"
+          @click="openModal(gameListIndex)"
+        >
+          <v-card-title class="white--text font-weight-bold headline">
+            {{ gameList.course.courseName }}
+          </v-card-title>
+          <v-card-subtitle class="white--text font-weight-bold title">
+            {{ gameList.gameDate }}
+          </v-card-subtitle>
+          <v-card-text class="white--text font-weight-bold">
+            Players:
+            <ul>
+              <li v-for="players in gameList.players" :key="players.id">
+                {{ players.user.username }} - Score: {{ players.totalScore }}
+              </li>
+            </ul>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -50,7 +52,6 @@
     computed: {
       ...mapGetters(["getUserGames"]),
       userGames() {
-        //console.log("GetUserGames ", this.userGames);
         return this.getUserGames;
       },
       humanReadableDate(epoch) {

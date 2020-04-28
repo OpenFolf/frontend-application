@@ -1,14 +1,20 @@
 <template>
   <v-dialog v-model="localModalVisible" overlay-opacity="0.7">
-    <v-card color="secondary" ripple flat class="mb-2" @click="$emit('close')">
-      <!-- <v-card-title>{{ getUserGames[gameListIndex].id }} </v-card-title> -->
-      <v-card-title>{{ getUserGames[gameListIndex].course.courseName }}</v-card-title>
-      <v-card-subtitle>{{ getUserGames[gameListIndex].gameDate }}</v-card-subtitle>
-      <v-card-text>Players: </v-card-text>
-      <v-card-text v-for="players in gameItem" :key="players.id">
-        {{ players.user.email }}
+    <v-card color="#7CAA98" ripple flat class="mb-2" @click="$emit('close')">
+      <v-card-title class="font-weight-bold">
+        {{ getUserGames[gameListIndex].course.courseName }}
+      </v-card-title>
+      <v-card-subtitle class="font-weight-bold">
+        {{ getUserGames[gameListIndex].gameDate }}
+      </v-card-subtitle>
+      <v-card-text class="font-weight-bold"
+        >Players:
+        <ul>
+          <li class="font-weight-bold" v-for="players in gameItem" :key="players.id">
+            {{ players.user.username }}
+          </li>
+        </ul>
       </v-card-text>
-
       <v-simple-table class="mx-auto">
         <template v-slot:default>
           <thead class="header" bold>
@@ -20,7 +26,6 @@
               </fragment>
             </tr>
           </thead>
-
           <tbody>
             <tr v-for="(hole, holeIndex) in game.course.par" :key="holeIndex">
               <td class="diff text-center">{{ holeIndex }}</td>
@@ -34,7 +39,6 @@
               </fragment>
             </tr>
           </tbody>
-
           <thead class="header" bold>
             <tr>
               <th class="title text-center">Total:</th>
