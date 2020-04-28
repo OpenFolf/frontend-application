@@ -67,7 +67,7 @@ export function getUserLocation() {
     // TODO: .
     // Here we need to react to different reasons for geoLocation API failing.
     // The service might be blocked or the user refused. Maybe more?
-    console.log("services/getUserLocation().errorHandler()", e.message);
+    console.log("services/getUserLocation", e.message);
 
     const lat = 64.128197;
     const lng = -21.885087;
@@ -107,14 +107,14 @@ export function reorganizeGameList(userGameList) {
   // Function that goes through list of user games and re-organizes
   const statsList = [];
   // Function that calculates objects by certain value
-  const calcPar = function(items, prop) {
+  var calcPar = function(items, prop) {
     return items.reduce(function(a, b) {
       return parseInt(a) + parseInt(b[prop]);
     }, 0);
   };
   // Sort gamesList by time
   userGameList.sort(function(a, b) {
-    return b.game.gameDate - a.game.gameDate;
+    return parseInt(b.game.gameDate) - parseInt(a.game.gameDate);
   });
   // Loop through all game objects and re-organize
   for (let i = 0; i < userGameList.length; i++) {

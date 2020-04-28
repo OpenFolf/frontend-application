@@ -109,7 +109,9 @@ const mutations = {
   },
   setUserGames: (state, payload) => {
     const gameObjectList = services.reorganizeGameList(payload.gamesPlayed.items);
+
     if (gameObjectList.length) {
+      console.log("setUserGames> gameObjectList", gameObjectList);
       state.userGames = gameObjectList;
     }
   },

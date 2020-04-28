@@ -16,7 +16,7 @@
           </v-toolbar-title>
           <br />
           <v-toolbar-title class=" white--text title ">
-            {{ ` ${gameList.gameDate}` }}
+            {{ ` gameList.gameDate` }}
           </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
