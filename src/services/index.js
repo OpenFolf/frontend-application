@@ -102,3 +102,51 @@ export function isPlayerInGame(userId, playerArray) {
   }
   return playerInGame;
 }
+
+export function reorganizeGameList(userGameList) {
+  // Function that goes through list of user games and re-organizes
+  const statsList = [];
+  // Function that calculates objects by certain value
+  var calcPar = function(items, prop) {
+    return items.reduce(function(a, b) {
+      return parseInt(a) + parseInt(b[prop]);
+    }, 0);
+  };
+  // Sort gamesList by time
+  userGameList.sort(function(a, b) {
+    return b.game.gameDate - a.game.gameDate;
+  });
+  // Loop through all game objects and re-organize
+  for (let i = 0; i < userGameList.length; i++) {
+    const gameObject = {};
+    // Sort holes by no.
+
+    const holeObjects = userGameList[i].game.course.holes.items.sort((a, b) =>
+      parseInt(a.no) > parseInt(b.no) ? 1 : -1,
+    );
+
+    // Put together a new gameObject
+    gameObject.userPlayerId = userGameList[i].id; //Player Id of current user in this gameObject
+    gameObject.gameId = userGameList[i].game.id;
+    gameObject.scoreArray = userGameList[i].scoreArray;
+    gameObject.userTotalScore = userGameList[i].totalScore;
+    gameObject.gameStatus = userGameList[i].game.gameStatus;
+    gameObject.gameDate = new Date(parseInt(userGameList[i].game.gameDate)).toLocaleDateString(
+      "da-DK",
+    ); //Change to date
+    gameObject.gameOwner = {
+      ownerId: userGameList[i].game.owner.id,
+      ownerUsername: userGameList[i].game.owner.username,
+      ownerEmail: userGameList[i].game.owner.email,
+    };
+    gameObject.course = {
+      courseName: userGameList[i].game.course.name,
+      par: holeObjects,
+      totalPar: calcPar(holeObjects, "redPar"),
+    };
+    gameObject.players = userGameList[i].game.players.items;
+    //Push object onto array
+    statsList.push(gameObject);
+  }
+  return statsList;
+}

@@ -1,15 +1,16 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app hide-on-scroll>
-      <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar>
-      <v-toolbar-title class="headline font-weight-bold" flat>/</v-toolbar-title>
+    <v-app-bar color="primary" dark app hide-on-scroll>
+      <!-- <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar> -->
+      <!-- <v-avatar><v-icon>fa-play</v-icon></v-avatar> -->
+      <v-toolbar-title class="headline font-weight-bold" flat>Select Course</v-toolbar-title>
       <v-spacer />
 
-      <v-btn-toggle v-model="sortAlpha" mandatory dense>
-        <v-btn depressed>
+      <v-btn-toggle v-model="sortAlpha" mandatory>
+        <v-btn color="blue" depressed>
           <v-icon>fa-globe-europe</v-icon>
         </v-btn>
-        <v-btn depressed>
+        <v-btn color="blue" depressed>
           <v-icon>fa-sort-alpha-down</v-icon>
         </v-btn>
       </v-btn-toggle>
@@ -26,7 +27,7 @@
 
 <script>
   import { mapGetters, mapActions } from "vuex";
-  import CourseListItem from "@/components/game/CourseListItem.vue";
+  import CourseListItem from "../components/game/CourseListItem.vue";
   import { Fragment } from "vue-fragment";
   export default {
     data() {

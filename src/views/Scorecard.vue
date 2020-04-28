@@ -1,116 +1,151 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app flat>
-      <v-banner single-line class="text-center">
-        <span> Code: </span>
-        <span class="font-weight-bold pa-2">
-          {{ getGame.lobbyCode }}
-        </span>
-      </v-banner>
-      <v-btn-toggle color="accent" v-model="zigZag" mandatory dense>
-        <v-btn depressed>
+    <v-app-bar dark color="primary" app flat width="100%">
+      <!-- <v-btn-toggle v-model="zigZag" mandatory dense>
+        <v-btn color="blue" depressed>
           <v-icon>fa-long-arrow-alt-down</v-icon>
         </v-btn>
-        <v-btn depressed>
+        <v-btn color="blue" depressed>
           <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
         </v-btn>
-      </v-btn-toggle>
+      </v-btn-toggle> -->
+      <span class="font-weight-bold title mr-2">{{ getGame.lobbyCode }}</span>
+      <v-btn depressed @click="zigZag = !zigZag" class="mr-2 font-weight-bold">
+        {{ zigZag ? "|" : "Z" }}
+      </v-btn>
+      <v-btn :color="isDark ? 'warning' : 'accent'" depressed @click="isDark = !isDark">
+        <v-icon :color="isDark ? 'black' : 'white'" dark>
+          {{ isDark ? "fa-sun" : "fa-moon" }}
+        </v-icon>
+      </v-btn>
       <v-spacer />
-      <v-btn color="info" @click="refreshGame" depressed>refresh</v-btn>
-      <v-btn color="error" @click="finishGame" depressed>finish</v-btn>
+      <confirm-dialogue :dialog="endGameDialog" :message="endGameMsg" @finishGame="finishGame" />
     </v-app-bar>
     <v-content>
-      <v-container fluid fill-height class="d-flex flex-column align-center justify-center">
-        <v-simple-table class="mx-auto">
-          <template v-slot:default>
-            <thead class="header" bold>
-              <tr>
-                <th class="title">Hole</th>
-                <th class="title ">Par</th>
-                <fragment v-for="player in getPlayers" :key="player.id">
-                  <th class="title text-center">{{ player.user.username }}</th>
-                </fragment>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(hole, holeIndex) in getHoles" :key="hole.no">
-                <td class="diff text-center">{{ holeIndex + 1 }}</td>
-                <td class="diff text-center">{{ hole.redPar }}</td>
-                <fragment v-for="(player, playerIndex) in getPlayers" :key="playerIndex">
-                  <td
-                    :id="`p${playerIndex}h${holeIndex}`"
-                    :style="inputStyles(`p${playerIndex}h${holeIndex}`)"
-                    class="text-center"
-                    @click="activeHole(playerIndex, holeIndex)"
-                  >
-                    {{ player.scoreArray[holeIndex] }}
-                  </td>
-                </fragment>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-        <table class="scorecard--keyboard">
-          <thead>
-            <tr>
-              <th colspan="5">
-                <span>{{ getPlayers[selectedPlayer].user.username }} </span
-                ><span class="font-weight-light">
-                  hole nr.
-                </span>
-                <span>{{ selectedHole + 1 }}</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <v-btn tile @click="setScore(0)">0</v-btn>
-              <v-btn tile @click="setScore(1)">1</v-btn>
-              <v-btn tile @click="setScore(2)">2</v-btn>
-              <v-btn tile @click="setScore(3)">3</v-btn>
-              <v-btn tile @click="setScore(4)">4</v-btn>
-            </tr>
-            <tr>
-              <v-btn tile @click="setScore(5)">5</v-btn>
-              <v-btn tile @click="setScore(6)">6</v-btn>
-              <v-btn tile @click="setScore(7)">7</v-btn>
-              <v-btn tile @click="setScore(8)">8</v-btn>
-              <v-btn tile @click="setScore(9)">9</v-btn>
-            </tr>
-          </tbody>
-        </table>
+      <v-container>
+        <v-row dense>
+          <v-col cols="12">
+            <v-card color="accent" class="fill-height overflow-x-auto overflow-y-auto">
+              <v-simple-table class="">
+                <thead class="header" bold>
+                  <tr>
+                    <th
+                      v-for="player in getPlayers"
+                      :key="player.id"
+                      class="title font-weight-bold text-center"
+                    >
+                      <v-badge color="error" :content="player.totalScore" bottom>
+                        <span class="white--text">{{ player.user.username }}</span>
+                      </v-badge>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(hole, holeIndex) in getHoles" :key="hole.no">
+                    <td
+                      v-for="(player, playerIndex) in getPlayers"
+                      :key="playerIndex"
+                      :id="`p${playerIndex}h${holeIndex}`"
+                      :style="inputStyles(`p${playerIndex}h${holeIndex}`)"
+                      class="text-center headline font-weight-bold"
+                      @click="activeHole(playerIndex, holeIndex, hole.redPar)"
+                    >
+                      {{ player.scoreArray[holeIndex] == "0" ? "-" : player.scoreArray[holeIndex] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-container>
     </v-content>
+    <v-bottom-navigation dark height="194px" app background-color="#005737">
+      <v-card flat color="primary" width="100%">
+        <v-card-title class="mb-0 font-weight-bold headline">
+          <v-spacer />
+          <v-icon class="mr-2">fa-user</v-icon>
+          <span class="mr-2">{{ getPlayers[selectedPlayer].user.username }}</span>
+          <v-spacer />
+          <v-img
+            :src="require('@/assets/basket_white.png')"
+            max-width="2rem"
+            height="2rem"
+            contain
+          />
+          <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span>
+          <v-spacer />
+          <span class="mx-2">Par :</span>
+          <v-avatar color="red" class="font-weight-bold display-1">
+            {{ selectedPar == "0" ? "-" : selectedPar }}
+          </v-avatar>
+          <v-spacer />
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(0)" depressed>0</v-btn>
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(1)" depressed>1</v-btn>
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(2)" depressed>2</v-btn>
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(3)" depressed>3</v-btn>
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(4)" depressed>4</v-btn>
+          <v-spacer />
+        </v-card-actions>
+        <v-card-actions class="mb-3">
+          <v-spacer />
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(5)" depressed>5</v-btn>
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(6)" depressed>6</v-btn>
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(7)" depressed>7</v-btn>
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(8)" depressed>8</v-btn>
+          <v-btn outlined class="font-weight-bold headline" @click="setScore(9)" depressed>9</v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-bottom-navigation>
   </fragment>
 </template>
 
 <script>
   import { Fragment } from "vue-fragment";
+  import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "game-scorecard",
-
     data() {
       return {
+        buttonSpacer: "  /  ",
         redParSum: 0,
         player: 0,
         selectedPlayer: 0,
         selectedHole: 0,
+        selectedPar: 0,
         zigZag: 0,
+        fab: false,
+        lng: "",
+        zig: "",
+        isDark: "",
+        endGameDialog: false,
+        endGameMsg: {
+          title: "End Game",
+          body: "Are you sure you want to end the game? This will end the game for all players.",
+          button1: "No",
+          button2: "Yes",
+          headerColor: "error",
+        },
       };
     },
-
     computed: {
-      ...mapGetters(["getGame", "getGameStatus", "getPlayers", "getHoles"]),
+      ...mapGetters(["getGame", "getGameStatus", "getPlayers", "getHoles", "getTo"]),
     },
-
-    components: { Fragment },
+    components: { Fragment, ConfirmDialogue },
     created() {
       this.loadHoles();
       this.subscribeToPlayerList();
+      this.selectedPar = this.getHoles[0].redPar;
       this.bottomNavHandler(false);
       window.addEventListener("blur", this.unSubscribeToPlayerList);
       window.addEventListener("focus", this.subscribeToPlayerList);
+      this.isDark = this.$vuetify.theme.dark;
+      this.inGameRouting("scorecard");
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToPlayerList);
@@ -125,6 +160,7 @@
         "refreshGame",
         "inGameRouting",
         "unSubscribeToPlayerList",
+        "setUserTheme",
       ]),
       bottomNavHandler(payload) {
         this.showBottomNav(payload);
@@ -135,9 +171,10 @@
           this.redParSum += parseInt(m.redPar);
         });
       },
-      activeHole(playerIndex, holeIndex) {
+      activeHole(playerIndex, holeIndex, holePar) {
         this.selectedPlayer = playerIndex;
         this.selectedHole = holeIndex;
+        this.selectedPar = holePar;
       },
       inputStyles(id) {
         if (`p${this.selectedPlayer}h${this.selectedHole}` === id) {
@@ -150,19 +187,14 @@
             this.selectedPlayer++;
           } else if (
             this.selectedPlayer === this.getPlayers.length - 1 &&
-            this.selectedHole != this.getPlayers.length - 1
+            this.selectedHole != this.getGame.course.holeCount - 1
           ) {
             this.selectedPlayer = 0;
             this.selectedHole++;
-          } else {
-            console.log("Do you want to finish the game?");
           }
         } else {
-          console.log("setNextIndexActive");
           if (this.selectedHole < this.getHoles.length - 1) {
             this.selectedHole++;
-          } else {
-            console.log("Do you want to finish the game?");
           }
         }
       },
@@ -177,61 +209,19 @@
         this.setNextIndexActive();
       },
     },
-
     watch: {
       getGameStatus() {
         this.inGameRouting();
+      },
+      isDark() {
+        this.setUserTheme();
       },
     },
   };
 </script>
 
-<style lang="scss" scoped>
-  .scorecard--keyboard {
-    margin-top: 2rem;
-  }
-  .scorecard--keyboard td,
-  .scorecard--keyboard th {
-    width: 4rem;
-    height: 2rem;
-    border: 1px solid #ccc;
-    text-align: center;
-  }
-  .scorecard--keyboard h {
-    background: lightblue;
-    border-color: white;
-  }
-  // .diff {
-  //   background-color: #ccc;
-  //   color: #000;
-  // }
-  body {
-    padding: 1rem;
-  }
-  .header {
-    background-color: var(--v-primary-base);
-  }
-  .footer {
-    background-color: var(--v-primary-base);
-  }
-
-  table th + th {
-    border-left: 1px solid var(--v-primary-lighten1);
-  }
-  table td + td {
-    border-left: 1px solid var(--v-secondary-lighten1);
-  }
-  .theme--dark.v-data-table {
-    //background-color: var(--v-secondary-darken1);
-    color: #ffffff;
-  }
-
-  // tr.v-data-table__selected {
-  //   background: #7d92f5 !important;
-  // }
-
-  //
-  .v-btn:hover:before {
-    color: transparent;
+<style scoped>
+  th {
+    background-color: #005737;
   }
 </style>

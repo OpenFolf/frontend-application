@@ -1,5 +1,5 @@
 <template>
-  <v-btn @click="signOutUser" small color="error">
+  <v-btn @click="signOutUser" color="error">
     <v-icon class="mx-0">fa-sign-out-alt</v-icon>
   </v-btn>
 </template>

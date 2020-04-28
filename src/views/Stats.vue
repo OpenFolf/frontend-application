@@ -1,49 +1,37 @@
 <template>
-  <v-content>
-    <v-container fluid>
-      <v-row dense>
-        <v-col cols="12">
-          <v-card color="accent" class="pa-1 overflow-x-auto">
-            <v-card-title>Last 200 User games</v-card-title>
-            <!-- Vel haegt ad birta fleiri eda faerri, hvad sem ykkur finnst -->
-            <pre> {{ userGames }} </pre>
-          </v-card>
-        </v-col>
+  <fragment>
+    <v-app-bar color="primary" dark app>
+      <v-toolbar-title class="headline font-weight-bold" flat>Stats</v-toolbar-title>
+    </v-app-bar>
+    <v-content>
+      <v-row>
+        <user-stats-list-item />
       </v-row>
-    </v-container>
-  </v-content>
+    </v-content>
+  </fragment>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from "vuex";
+  import { mapActions } from "vuex";
+  import { Fragment } from "vue-fragment";
+  import UserStatsListItem from "../components/stats/UserStatsListItem.vue";
   export default {
     name: "stats",
-    computed: {
-      ...mapGetters(["getUserGames"]),
-      userGames() {
-        return this.getUserGames;
-      },
+    components: {
+      UserStatsListItem,
+      Fragment,
     },
-
     methods: {
-      ...mapActions(["fetchUserGameList", "showBottomNav"]),
+      ...mapActions(["fetchUserGameList", "showBottomNav", "resetGame", "resetCourse"]),
       bottomNavHandler(payload) {
         this.showBottomNav(payload);
       },
     },
-    data() {
-      return {
-        courseId: "",
-        pushed: false,
-        gameId: "",
-        createGameCourseId: "",
-        playerGameId: "",
-        playerSubscribeId: "",
-      };
-    },
     created() {
       this.fetchUserGameList();
       this.bottomNavHandler(true);
+      this.resetGame();
+      this.resetCourse();
     },
   };
 </script>

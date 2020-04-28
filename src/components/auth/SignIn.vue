@@ -1,7 +1,7 @@
 <template>
-  <v-card width="400px" class="mx-auto my-5 font-weight-bold" flat v-if="!signedIn">
+  <v-card width="400px" outlined class="mx-auto my-5 font-weight-bold" flat v-if="!signedIn">
     <v-toolbar color="primary" flat>
-      <v-toolbar-title>Sign In</v-toolbar-title>
+      <v-toolbar-title class="white--text">Sign In</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
     <v-card-text>
@@ -13,6 +13,7 @@
           @blur="$v.email.$touch()"
           :error-messages="emailErrors"
           v-model="email"
+          @keyup.enter="signInUser"
           required
         />
         <v-text-field
@@ -24,7 +25,7 @@
           :type="showPassword ? 'text' : 'password'"
           :append-icon="showPassword ? 'fa-eye' : 'fa-eye-slash'"
           @click:append="showPassword = !showPassword"
-          @keyup.enter="signIn"
+          @keyup.enter="signInUser"
           required
         />
         <v-btn
@@ -32,7 +33,8 @@
           :disabled="$v.email.$invalid || $v.password.$invalid"
           @click="signInUser"
           color="primary"
-          >SIGN IN
+        >
+          <span class="font-weight-bold"> SIGN IN</span>
         </v-btn>
       </v-form>
     </v-card-text>
@@ -115,7 +117,7 @@
         if (!this.$v.password.$dirty) return errors;
         !this.$v.password.minLength && errors.push("Password must be at least 8 characters long");
         !this.$v.password.required && errors.push("Password is required.");
-        if (this.errorMsg.message) this.CLEAR_ERRORS();
+
         return errors;
       },
     },

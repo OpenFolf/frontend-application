@@ -193,6 +193,7 @@ const actions = {
         playerUserId: context.rootState.user.user.id,
         playerGameId: newGame.id,
         scoreArray: [],
+        totalScore: "0",
       };
 
       const playerResponse = await API.graphql(
@@ -227,9 +228,6 @@ const actions = {
     } catch (e) {
       console.log("Update gameStatus error", e);
     }
-    //Refresh state of game
-    // TODO: Maybe not needed, subscription should take care of this, check if delete is ok
-    context.dispatch("fetchGame", context.rootState.game.game.id);
 
     // TODO: Route players to homescreen when gameStatus changes to -1
 
@@ -326,14 +324,8 @@ const actions = {
         // Check if player is part of game if so fetch game to state then route to scorecard
         const gamePlayers = gamesList[0].players.items;
         const userId = context.rootState.user.user.id;
-        let playerInGame = false;
-        // Loop through and check if user is player in game
-        for (let i = 0; i < gamePlayers.length; i++) {
-          if (gamePlayers[i].user.id == userId) {
-            // If he is user in game then fetch game into state and set playerInGame bool to true
-            playerInGame = true;
-          }
-        }
+        let playerInGame = services.isPlayerInGame(userId, gamePlayers);
+
         // If player in game then route to scorecard
         if (playerInGame) {
           context.dispatch("fetchGame", gamesList[0].id);
@@ -387,6 +379,7 @@ const actions = {
       playerUserId: context.rootState.user.user.id, //Current user
       playerGameId: payload, //Game to play
       scoreArray: [], //Initialize scoreArray
+      totalScore: "0",
     };
     try {
       await API.graphql(
@@ -446,18 +439,23 @@ const actions = {
   async updatePlayer(context, payload) {
     //Receives new score array as payload and updates score in database
     // TODO: Add totalscore to the payload to add to state along with new array
+
+    const sum = payload.scoreArray.reduce((acc, cur) => parseInt(acc) + parseInt(cur));
+
     // Get list of all players in game
     const gamePlayers = context.rootState.game.game.players.items;
     // Update scoreArray for player to store in state
     for (var i = 0; i < gamePlayers.length; i++) {
       if (payload.id == gamePlayers[i].id) {
         gamePlayers[i].scoreArray = payload.scoreArray;
+        gamePlayers[i].totalScore = sum;
       }
     }
     console.log("gamePlayers: ", gamePlayers);
     // Set new scorearray in state
     context.commit("setScoreArray", gamePlayers);
     // Update score for player in database
+    payload.totalScore = sum;
     try {
       await API.graphql(
         graphqlOperation(playergraphQL.updatePlayer, {
@@ -506,6 +504,8 @@ const actions = {
     } catch (e) {
       throw Error("Game subscription error", e);
     }
+
+    context.dispatch("fetchGame", gameId);
   },
 
   async unSubscribeToGame(context) {
@@ -560,9 +560,9 @@ const actions = {
     // Subscribe to all players in game again
     context.dispatch("subscribeToPlayerList");
   },
-  resetGame({ commit }) {
+  resetGame(context) {
     //console.log("Game>Actions>resetGame");
-    commit("RESET_GAME");
+    context.commit("RESET_GAME");
   },
 };
 

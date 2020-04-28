@@ -34,11 +34,12 @@ const mutations = {
     state.courses.unshift(payload);
   },
   RESET_COURSE(state) {
-    console.log("Course>mutations>RESET_COURSE");
-    const newState = initialState();
-    Object.keys(newState).forEach((key) => {
-      state[key] = newState[key];
-    });
+    // console.log("Course>mutations>RESET_COURSE");
+    // const newState = initialState();
+    // Object.keys(newState).forEach((key) => {
+    //   state[key] = newState[key];
+    // });
+    state.currentCourse = "";
   },
 };
 

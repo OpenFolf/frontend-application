@@ -1,23 +1,36 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" app flat>
-      <v-toolbar-title>{{ getGame.course.name ? getGame.course.name : "ERROR" }} </v-toolbar-title>
-      <v-spacer />
-      <v-banner single-line class="text-center">
-        <span> Lobby Code: </span>
-        <span class="font-weight-bold pa-2">
-          {{ getGame.lobbyCode }}
-        </span>
-      </v-banner>
+    <v-app-bar color="primary" dark app flat>
+      <!-- <v-avatar><v-icon>fa-play</v-icon></v-avatar> -->
+      <!-- <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar> -->
+      <v-toolbar-title class="white--text headline font-weight-bold" flat>
+        Lobby
+      </v-toolbar-title>
     </v-app-bar>
     <v-content>
       <v-container fluid fill-height class="justify-center">
         <v-row>
-          <v-col class="col-12 align-content-space-between">
+          <v-col cols="12" class="align-content-space-between">
+            <v-card class="d-flex justify-center" color="secondary">
+              <v-card-title class="white--text headline text-center font-weight-bold" flat>
+                <span class="headline font-weight-bold mx-3">{{ getGame.course.name }}</span>
+              </v-card-title>
+            </v-card>
+            <v-card class="d-flex justify-center" color="info">
+              <v-card-title class="white--text headline text-center font-weight-bold" flat>
+                CODE: <span class="display-2 font-weight-bold mx-3">{{ getGame.lobbyCode }}</span>
+              </v-card-title>
+            </v-card>
             <v-simple-table hide-actions>
               <thead class="secondary">
                 <tr>
-                  <th class="table-text  text-center title rounded" colspan="2">Players</th>
+                  <th
+                    class="white--text text-center rounded headline font-weight-bold"
+                    flat
+                    colspan="2"
+                  >
+                    Players
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -27,59 +40,51 @@
                     {{ player.user.email }}
                   </td>
                   <td class="text-right">
-                    <fragment v-if="isOwner && getUser.id !== player.user.id">
+                    <template v-if="isOwner && getUser.id !== player.user.id">
                       <ConfirmDialogue
                         :userToRemove="player.id"
                         :dialog="kickUserDialog"
                         :message="kickUserMsg"
                         @removeUser="removeUser"
                       />
-                    </fragment>
+                    </template>
                   </td>
                 </tr>
 
-                <td v-if="otherPlayers" colspan="2">
-                  <v-data-table
-                    class=""
-                    loading
-                    loading-text="Waiting for other users to join"
-                    hide-default-footer
-                  />
-                </td>
+                <tr>
+                  <td colspan="2">
+                    <v-skeleton-loader type="list-item"></v-skeleton-loader>
+                  </td>
+                </tr>
               </tbody>
             </v-simple-table>
+            <v-card flat>
+              <v-card-actions>
+                <ConfirmDialogue
+                  v-if="!isOwner"
+                  :dialog="leaveGameDialog"
+                  :message="leaveMsg"
+                  :userToRemove="getPlayerId"
+                  @removeUser="removeUser"
+                />
+                <ConfirmDialogue
+                  v-if="isOwner"
+                  :dialog="startGameDialog"
+                  :message="startGameMsg"
+                  @start="startGame"
+                />
+              </v-card-actions>
+              <v-card-actions>
+                <ConfirmDialogue
+                  v-if="isOwner"
+                  :dialog="cancelGameDialog"
+                  :message="cancelGameMsg"
+                  @cancelGame="cancelThisGame"
+                />
+              </v-card-actions>
+            </v-card>
           </v-col>
         </v-row>
-        <v-card flat>
-          <v-btn color="info" @click="refreshLobby">Refresh</v-btn>
-        </v-card>
-        <ConfirmDialogue
-          v-if="!isOwner"
-          :dialog="leaveGameDialog"
-          :message="leaveMsg"
-          :userToRemove="getPlayerId"
-          @removeUser="removeUser"
-        />
-        <ConfirmDialogue
-          v-if="isOwner"
-          :dialog="cancelGameDialog"
-          :message="cancelGameMsg"
-          @cancelGame="cancelThisGame"
-        />
-        <ConfirmDialogue
-          v-if="isOwner"
-          :dialog="startGameDialog"
-          :message="startGameMsg"
-          @start="startGame"
-        />
-        <v-container class="d-flex flex-column align-center justify-center">
-          <pre class="mb-5">{{ $log(getGame.id) || getGame.id }}</pre>
-          <v-divider />
-          <pre class="mb-5">{{ $log(getGameType) || getGameType }}</pre>
-        </v-container>
-        <!-- <v-card class="pa-1 overflow-x-auto">
-          <pre class="mb-5">{{ $log(getGame) || getGame }}</pre>
-        </v-card> -->
       </v-container>
     </v-content>
   </fragment>
@@ -87,7 +92,7 @@
 
 <script>
   import { Fragment } from "vue-fragment";
-  import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
+  import ConfirmDialogue from "../components/game/ConfirmDialogue";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "lobby",
@@ -97,7 +102,6 @@
         leaveGameDialog: false,
         kickUserDialog: false,
         cancelGameDialog: false,
-
         startGameMsg: {
           title: "Start Game",
           body: "Are you sure you want to start the game?",
@@ -135,6 +139,7 @@
       this.subscribeToGame();
       window.addEventListener("blur", this.unSubscribeToGame);
       window.addEventListener("focus", this.subscribeToGame);
+      this.inGameRouting("lobby");
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToGame);

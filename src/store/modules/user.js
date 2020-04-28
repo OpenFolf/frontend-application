@@ -1,6 +1,7 @@
 import { API, graphqlOperation } from "aws-amplify";
 import * as usergraphQL from "../../graphql/custom/usergraphQL";
 import Vuetify from "../../plugins/vuetify";
+import * as services from "../../services/index";
 
 const initialState = () => ({
   user: {
@@ -11,7 +12,35 @@ const initialState = () => ({
     lng: -21.885087,
     error: 0,
   },
-  userGames: [],
+  userGames: [
+    {
+      id: "",
+      scoreArray: [""],
+      totalScore: "",
+      game: {
+        gameStatus: "",
+        gameDate: "",
+        owner: {
+          id: "",
+          username: "",
+          email: "",
+        },
+        players: {
+          items: [
+            {
+              user: {
+                id: "",
+                username: "",
+                email: "",
+              },
+              totalScore: "",
+              scoreArray: [""],
+            },
+          ],
+        },
+      },
+    },
+  ],
 });
 
 const state = initialState();
@@ -39,12 +68,11 @@ const getters = {
     return state.location;
   },
   getUserGames: (state) => {
-    // TODO: Breyta gognum fyrir component, t.d. rada eftir timestamp rod, pikka ut naudsynlegar upplysingar o.s.frv.
-
-    // Add some brilliant code here
-
     return state.userGames;
   },
+  // getUserHistoryGameListItemPlayerItem: (state) => {
+  //   return state.userGames.gamesPlayed.items.game.players.items;
+  // },
 };
 
 const mutations = {
@@ -78,7 +106,9 @@ const mutations = {
     state.location.error = payload.error;
   },
   setUserGames: (state, payload) => {
-    state.userGames = payload;
+    const gameObjectList = services.reorganizeGameList(payload.gamesPlayed.items);
+
+    state.userGames = gameObjectList;
   },
   RESET_USER(state) {
     //console.log("Auth>mutations>RESET_USER");
@@ -95,6 +125,10 @@ const actions = {
     commit("setUserId", payload);
   },
 
+  resetUser({ commit }) {
+    console.log("Course>Actions>resetUser");
+    commit("RESET_USER");
+  },
   async setUserName(context, payload) {
     console.log("User>actions>setUserName, payload", payload);
     // Add to database
@@ -181,20 +215,16 @@ const actions = {
   },
 
   async fetchUserGameList(context) {
-    console.log("User ID", state.user.id);
+    console.log("Fetch UserGamesList User ID", context.rootState.user.user.id);
+    let response = {};
     try {
-      const response = await API.graphql(
-        graphqlOperation(usergraphQL.fetchUserGameList, { id: state.user.id }),
+      response = await API.graphql(
+        graphqlOperation(usergraphQL.fetchUserGameList, { id: context.rootState.user.user.id }),
       );
-      context.commit("setUserGames", response.data.getUser);
     } catch (e) {
       throw Error("fetchUserGameListError", e);
     }
-  },
-
-  resetUser({ commit }) {
-    console.log("Auth>Actions>resetUser");
-    commit("RESET_USER");
+    context.commit("setUserGames", response.data.getUser);
   },
 };
 

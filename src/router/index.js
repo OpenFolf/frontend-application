@@ -56,7 +56,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "game-course" */ "@/components/game/Course.vue"),
     props: true,
     beforeEnter: async (to, from, next) => {
-      await Store.dispatch("fetchCourse", to.params.id);
+      if (Store.getters.getCurrentCourse) {
+        await Store.dispatch("fetchCourse", Store.getters.getCurrentCourse.id);
+      } else {
+        await Store.dispatch("fetchCourse", to.params.id);
+      }
       next();
     },
   },
@@ -82,12 +86,6 @@ const routes = [
     path: "/join-game",
     name: "join-game",
     component: () => import(/* webpackChunkName: "join-game" */ "@/views/JoinGame.vue"),
-  },
-  {
-    path: "/game-end-stats",
-    name: "game-end-stats",
-    component: () =>
-      import(/* webpackChunkName: "game-end-stats" */ "@/components/game/GameEndStats.vue"),
   },
   {
     path: "/stats",
@@ -132,30 +130,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
-// async function redirectIfNotAuth(to, from, next) {
-//   const user = await getUserState();
-//   if (user === null) {
-//     next({ name: "auth" });
-//   } else {
-//     next();
-//   }
-// }
-
-// function getUserState() {
-//   return new Promise((resolve, reject) => {
-//     if (Store.state.user === undefined) {
-//       const unwatch = Store.watch(
-//         () => Store.state.user,
-//         (value) => {
-//           unwatch();
-//           resolve(value);
-//         },
-//       );
-//     } else {
-//       resolve(Store.state.user);
-//     }
-//   });
-// }
 
 export default router;
