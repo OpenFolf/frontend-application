@@ -2,10 +2,11 @@
   <fragment>
     <v-app-bar color="primary" dark app>
       <v-toolbar-title class="headline font-weight-bold" flat>Stats</v-toolbar-title>
-      <v-spacer />
     </v-app-bar>
     <v-content>
-      <user-stats-list />
+      <v-row>
+        <user-stats-list-item />
+      </v-row>
     </v-content>
   </fragment>
 </template>
@@ -13,11 +14,11 @@
 <script>
   import { mapActions } from "vuex";
   import { Fragment } from "vue-fragment";
-  import UserStatsList from "../components/stats/UserStatsList";
+  import UserStatsListItem from "../components/stats/UserStatsListItem.vue";
   export default {
     name: "stats",
     components: {
-      UserStatsList,
+      UserStatsListItem,
       Fragment,
     },
     methods: {
