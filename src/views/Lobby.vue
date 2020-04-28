@@ -1,7 +1,7 @@
 <template>
   <fragment>
     <v-app-bar color="primary" dark app flat>
-      <v-toolbar-title class="white--text headline font-weight-bold" flat>
+      <v-toolbar-title class="display-1 font-weight-bold" flat>
         Lobby
       </v-toolbar-title>
     </v-app-bar>

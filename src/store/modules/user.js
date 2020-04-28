@@ -14,31 +14,33 @@ const initialState = () => ({
   },
   userGames: [
     {
-      id: "",
-      scoreArray: [""],
-      totalScore: "",
-      game: {
-        gameStatus: "",
-        gameDate: "",
-        owner: {
-          id: "",
-          username: "",
-          email: "",
-        },
-        players: {
-          items: [
-            {
-              user: {
-                id: "",
-                username: "",
-                email: "",
-              },
-              totalScore: "",
-              scoreArray: [""],
-            },
-          ],
-        },
+      userPlayerId: "",
+      gameId: "",
+      scoreArray: [],
+      userTotalScore: "",
+      gameStatus: "",
+      gameDate: "",
+      gameOwner: {
+        ownerId: "",
+        ownerUsername: "",
+        ownerEmail: "",
       },
+      course: {
+        courseName: "",
+        par: [{ no: "", redPar: "" }],
+        totalPar: 0,
+      },
+      players: [
+        {
+          user: {
+            id: "",
+            username: "",
+            email: "",
+          },
+          totalScore: "",
+          scoreArray: [],
+        },
+      ],
     },
   ],
 });
@@ -107,8 +109,9 @@ const mutations = {
   },
   setUserGames: (state, payload) => {
     const gameObjectList = services.reorganizeGameList(payload.gamesPlayed.items);
-
-    state.userGames = gameObjectList;
+    if (gameObjectList.length) {
+      state.userGames = gameObjectList;
+    }
   },
   RESET_USER(state) {
     ////console.log("Auth>mutations>RESET_USER");
