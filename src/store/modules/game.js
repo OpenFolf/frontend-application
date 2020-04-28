@@ -53,14 +53,12 @@ const initialState = () => ({
     gameType: "",
   },
   gamesList: [],
-  updatePlayer: {}, // DEBUG: ??? ok to delete?
   lobbyJoinError: "",
   gameSubscription: "",
   playerSubscription: [],
 });
 
 const state = initialState();
-
 // BREAK: Getters
 const getters = {
   getGame: (state) => {
@@ -69,17 +67,12 @@ const getters = {
   getGamesList: (state) => {
     return state.gamesList;
   },
-  getUpdatePlayer: (state) => {
-    // DEBUG: ??? ok to delete?
-    return state.updatePlayer;
-  },
   getGameStatus: (state) => {
     return state.game.gameStatus;
   },
   getGameType: (state) => {
     return state.game.gameType;
   },
-
   getPlayers: (state) => {
     return state.game.players.items;
   },
@@ -90,10 +83,9 @@ const getters = {
     return state.lobbyJoinError;
   },
 };
-
 // BREAK: Mutations
 const mutations = {
-  setGame: (state, payload) => {
+  SET_GAME: (state, payload) => {
     // Go through the array of current players in the game and find the index of the owner
     const indexOfOwner = payload.players.items.findIndex(
       (o) => o.user.email === payload.owner.email,
@@ -106,72 +98,50 @@ const mutations = {
     payload.players.items = [...ownerElement, ...payload.players.items];
     state.game = payload;
   },
-  setGamesList: (state, payload) => {
+  SET_GAMESLIST: (state, payload) => {
     state.gamesList = payload;
   },
-  setUpdatePlayer: (state, payload) => {
-    state.updatePlayer = payload;
-  },
-
-  setScoreArray: (state, payload) => {
+  SET_SCORE_ARRAY: (state, payload) => {
     state.game.players.items = payload;
   },
-  setGameStatus: (state, payload) => {
+  SET_GAME_STATUS: (state, payload) => {
     state.game.gameStatus = payload;
   },
   RESET_GAME(state) {
     //console.log("Game>mutations>RESET_GAME");
+    // Reset the game object
     const newState = initialState();
     Object.keys(newState).forEach((key) => {
       state[key] = newState[key];
     });
   },
-  setGameSubscription(state, payload) {
+  SET_GAME_SUBSCRIPTION(state, payload) {
     state.gameSubscription = payload;
   },
-  pushPlayerSubscription(state, payload) {
+  PUSH_PLAYER_SUBSCRIPTION(state, payload) {
     state.playerSubscription.push(payload);
   },
 };
-
 // BREAK: ACTIONS
 const actions = {
   //Game actions
   async fetchGame(context, payload) {
     // Receives id of game as payload
-
     // Fetch game from database
     try {
       const response = await API.graphql(graphqlOperation(gamegraphQL.getGame, { id: payload }));
       const game = response.data.getGame;
       // Add fetched game to state
-      context.commit("setGame", game);
+      context.commit("SET_GAME", game);
     } catch (e) {
       throw Error("Fetch game error", e);
     }
   },
-
-  async fetchGames(context) {
-    // TODO: Rename fetGameList and fix referencing to it, maybe we should not use this function and use a more targeted query instead
-
-    // Fetches list of all games in database
-    try {
-      const response = await API.graphql(graphqlOperation(gamegraphQL.listGames));
-      const gamesList = response.data.listGames.items;
-
-      // Add list to state
-      context.commit("setGamesList", gamesList);
-    } catch (e) {
-      throw Error("Fetch game list error", e);
-    }
-  },
-
   async createGame(context, payload) {
     //Receives courseID as payload
     try {
       //Generates a random 3 digit lobbycode
       const generatedCode = services.getLobbyCode();
-
       //Create object to add to database
       const createGameDetails = {
         gameCourseId: payload, // Course to be played
@@ -187,7 +157,6 @@ const actions = {
       );
       //Store newly created object
       const newGame = gameResponse.data.createGame;
-
       //Add owner as player to game
       const createPlayerDetails = {
         playerUserId: context.rootState.user.user.id,
@@ -195,24 +164,22 @@ const actions = {
         scoreArray: [],
         totalScore: "0",
       };
-
+      // Create player in database
       const playerResponse = await API.graphql(
         graphqlOperation(playergraphQL.createPlayer, { input: createPlayerDetails }),
       );
-
+      // Add new player to new game object
       await newGame.players.items.push(playerResponse.data.createPlayer);
-
       //Add newly created game to state
-      await context.commit("setGame", newGame);
+      await context.commit("SET_GAME", newGame);
     } catch (e) {
       throw Error("Create game error", e);
     }
   },
-
   async cancelGame(context) {
     //Change status of game to signal it has been cancelled //
     //Update state
-    context.commit("setGameStatus", "-1");
+    context.commit("SET_GAME_STATUS", "-1");
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
@@ -228,19 +195,11 @@ const actions = {
     } catch (e) {
       console.log("Update gameStatus error", e);
     }
-
-    // TODO: Route players to homescreen when gameStatus changes to -1
-
-    // TODO: After routing then set game in state to an empty object or original state or something like that {}
-
-    // TODO: Set in component if owner clicks leave lobby then call this function, if player clicks leave lobby, then call delete player on himself
   },
-
   async startGame(context) {
     //Change status of game to signal it has started //
     //Update state
-    // TODO: Change routing logic
-    context.commit("setGameStatus", "1");
+    context.commit("SET_GAME_STATUS", "1");
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
@@ -263,9 +222,9 @@ const actions = {
     for (var i = 0; i < holeCount; i++) {
       scoreInit.push("0");
     }
-    //For each player in player array call update with the newly created array
+    // Store array of players in game
     const gamePlayers = context.rootState.game.game.players.items;
-
+    //For each player in player array call update with the newly created array
     for (i = 0; i < gamePlayers.length; i++) {
       const updateScore = {
         id: gamePlayers[i].id,
@@ -282,10 +241,8 @@ const actions = {
       }
     }
     //Refresh state of game
-    // TODO: Maybe not needed, subscription should take care of this, check if delete is ok
     context.dispatch("fetchGame", context.rootState.game.game.id);
   },
-
   async joinGame(context, code) {
     // Get Games from database with matching lobbycode
     try {
@@ -296,20 +253,17 @@ const actions = {
       );
       const gamesList = response.data.listGames.items;
       // Add list to state
-      context.commit("setGamesList", gamesList);
-
+      context.commit("SET_GAMESLIST", gamesList);
       // if gamesList length is 0 then error message 'no such game'
       if (gamesList.length == 0) {
         console.log("JoinGame>NoGame");
         // Signal to component that no game exists with lobby code
         context.commit("ERROR_MSG", { message: `No game found with the lobby code ${code}` });
       }
-
       // Sort gamesList by time
       gamesList.sort(function(a, b) {
         return b.gameDate - a.gameDate;
       });
-
       // check gameStatus on gamesList[0]
       // If gameStatus 0 => create player, fetch game, route to lobby
       if (gamesList[0].gameStatus == 0) {
@@ -318,14 +272,12 @@ const actions = {
         // Store game in state
         await context.dispatch("fetchGame", gamesList[0].id);
       }
-
       // If gameStatus 1 =>
       if (gamesList[0].gameStatus == 1) {
         // Check if player is part of game if so fetch game to state then route to scorecard
         const gamePlayers = gamesList[0].players.items;
         const userId = context.rootState.user.user.id;
         let playerInGame = services.isPlayerInGame(userId, gamePlayers);
-
         // If player in game then route to scorecard
         if (playerInGame) {
           context.dispatch("fetchGame", gamesList[0].id);
@@ -345,11 +297,10 @@ const actions = {
       throw Error("Fetch Lobby game error", e);
     }
   },
-
   async finishGame(context) {
     //Change status of game to signal it has ended
     //Update state
-    context.commit("setGameStatus", "2");
+    context.commit("SET_GAME_STATUS", "2");
     //Create the object to send to graphQL api, a game has to be in state for this to work
     const updateGameDetails = {
       id: context.rootState.game.game.id,
@@ -361,17 +312,12 @@ const actions = {
     } catch (e) {
       throw Error("Finish Game error", e);
     }
-
-    // TODO: Calculate totalscore for each player
-
-    // TODO: Check if subscriber is still active and takes care of this
-    //Refresh state of game
-    // context.dispatch("fetchGame", context.rootState.game.game.id);
-
-    // TODO: Turn off all subscribers
+    // TODO: Turn off all subscribers, check if needed
   },
-  //TODO: NEW and connected to the lobby's cancelGame button
-
+  resetGame(context) {
+    //console.log("Game>Actions>resetGame");
+    context.commit("RESET_GAME");
+  },
   //Player actions
   async createPlayer(context, payload) {
     //Receives gameID as payload
@@ -405,7 +351,6 @@ const actions = {
       throw Error("Update game error", e);
     }
   },
-
   async deletePlayer(context, payload) {
     //Receives playerID as payload and deletes player from database
     const playerId = payload;
@@ -435,16 +380,13 @@ const actions = {
       throw Error("Update game error", e);
     }
   },
-
   async updatePlayer(context, payload) {
     //Receives new score array as payload and updates score in database
-    // TODO: Add totalscore to the payload to add to state along with new array
-
+    // Calculate totalscore to the payload to add to state along with new array
     const sum = payload.scoreArray.reduce((acc, cur) => parseInt(acc) + parseInt(cur));
-
     // Get list of all players in game
     const gamePlayers = context.rootState.game.game.players.items;
-    // Update scoreArray for player to store in state
+    // Update scoreArray and totalScore for player to store in state
     for (var i = 0; i < gamePlayers.length; i++) {
       if (payload.id == gamePlayers[i].id) {
         gamePlayers[i].scoreArray = payload.scoreArray;
@@ -453,7 +395,7 @@ const actions = {
     }
     console.log("gamePlayers: ", gamePlayers);
     // Set new scorearray in state
-    context.commit("setScoreArray", gamePlayers);
+    context.commit("SET_SCORE_ARRAY", gamePlayers);
     // Update score for player in database
     payload.totalScore = sum;
     try {
@@ -466,7 +408,6 @@ const actions = {
       throw Error("update player error", e);
     }
   },
-
   //Subscription actions
   async subscribeToPlayer(context, payload) {
     //Receives playerId as payload and starts subscription to any changes on that object in the database
@@ -478,47 +419,40 @@ const actions = {
         next: () => context.dispatch("fetchGame", context.rootState.game.game.id),
       });
       // Push to subscription array
-      context.commit("pushPlayerSubscription", subscription);
-
-      console.log("Subscription", subscription);
+      context.commit("PUSH_PLAYER_SUBSCRIPTION", subscription);
+      // console.log("Subscription", subscription);
     } catch (e) {
       throw Error("Player subscription error", e);
     }
   },
-
   async subscribeToGame(context) {
     //Starts a subscription to any changes on game object in the database
-
     const gameId = context.state.game.id;
-
+    // Start graphQL subscription
     try {
       const gameSubscription = API.graphql(
         graphqlOperation(gamegraphQL.onUpdateGame, { id: gameId }),
       ).subscribe({
         next: () => context.dispatch("fetchGame", gameId),
       });
-
-      context.commit("setGameSubscription", gameSubscription);
-
-      console.log("Game subscription: ", gameSubscription);
+      // Store subscription in state
+      context.commit("SET_GAME_SUBSCRIPTION", gameSubscription);
+      //console.log("Game subscription: ", gameSubscription);
     } catch (e) {
       throw Error("Game subscription error", e);
     }
-
+    // Fetch newest info on gameObject
     context.dispatch("fetchGame", gameId);
   },
-
   async unSubscribeToGame(context) {
     //Unsubscribes to any changes on game object in the database
     try {
       context.state.gameSubscription.unsubscribe();
-
-      console.log("Game un-subscription: ", context.state.gameSubscription);
+      // console.log("Game un-subscription: ", context.state.gameSubscription);
     } catch (e) {
       throw Error("Game un-subscription error", e);
     }
   },
-
   subscribeToPlayerList(context) {
     // Start by subscribing to game
     context.dispatch("subscribeToGame");
@@ -527,10 +461,9 @@ const actions = {
     // Subscribe to changes on all players
     for (let i = 0; i < gamePlayers.length; i++) {
       context.dispatch("subscribeToPlayer", gamePlayers[i].id);
-      console.log("Subscribing to", gamePlayers[i].id);
+      // console.log("Subscribing to", gamePlayers[i].id);
     }
   },
-
   unSubscribeToPlayerList(context) {
     // Start by un-subscribing to game
     context.dispatch("unSubscribeToGame");
@@ -539,11 +472,10 @@ const actions = {
     // Subscribe to changes on all players
     for (let i = 0; i < playerSubscriptions.length; i++) {
       playerSubscriptions[i].unsubscribe();
-      console.log("Un-Subscribing to", playerSubscriptions[i]);
+      // console.log("Un-Subscribing to", playerSubscriptions[i]);
     }
   },
-
-  // Refresh functions
+  // Refresh actions
   refreshGame(context) {
     // Fetch game object again from database
     const gameId = context.rootState.game.game.id;
@@ -551,7 +483,6 @@ const actions = {
     // Subscribe to all players in game again
     context.dispatch("subscribeToGame");
   },
-
   refreshLobby(context) {
     // Fetch game object again from database
     const gameId = context.rootState.game.game.id;
@@ -559,10 +490,6 @@ const actions = {
     context.dispatch("fetchGame", gameId);
     // Subscribe to all players in game again
     context.dispatch("subscribeToPlayerList");
-  },
-  resetGame(context) {
-    //console.log("Game>Actions>resetGame");
-    context.commit("RESET_GAME");
   },
 };
 
