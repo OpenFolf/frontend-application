@@ -40,7 +40,11 @@ const mutations = {
     state.currentCourse = payload;
   },
   RESET_COURSE(state) {
-    // console.log("Course>mutations>RESET_COURSE");
+    // //console.log("Course>mutations>RESET_COURSE");
+    // const newState = initialState();
+    // Object.keys(newState).forEach((key) => {
+    //   state[key] = newState[key];
+    // });
     state.currentCourse = "";
   },
 };
@@ -70,8 +74,31 @@ const actions = {
       throw Error("Error, unable to fetch course", e);
     }
   },
+
+  async addCourse(context, payload) {
+    const courseDetails = {
+      name: payload,
+    };
+    try {
+      const newCourse = await API.graphql(
+        graphqlOperation(graphQLmutations.createCourse, { input: courseDetails }),
+      );
+      context.commit("newCourse", newCourse.data);
+    } catch (e) {
+      throw Error("Error, unable to add a new course", e);
+    }
+  },
+
+  async subscribeCourses(context) {
+    // const courses = API.graphql(graphqlOperation(subscriptions.onCreateCourse)).subscribe({
+    API.graphql(graphqlOperation(subscriptions.onCreateCourse)).subscribe({
+      next: (coursesData) => context.commit("updateCourseList", coursesData.value.data),
+    });
+
+    //console.log(courses);
+  },
   resetCourse({ commit }) {
-    console.log("Course>Actions>resetCourses");
+    //console.log("Course>Actions>resetCourses");
     commit("RESET_COURSE");
   },
 };

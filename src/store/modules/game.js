@@ -193,7 +193,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      console.log("Update gameStatus error", e);
+      //console.log("Update gameStatus error", e);
     }
   },
   async startGame(context) {
@@ -256,7 +256,7 @@ const actions = {
       context.commit("SET_GAMESLIST", gamesList);
       // if gamesList length is 0 then error message 'no such game'
       if (gamesList.length == 0) {
-        console.log("JoinGame>NoGame");
+        //console.log("JoinGame>NoGame");
         // Signal to component that no game exists with lobby code
         context.commit("ERROR_MSG", { message: `No game found with the lobby code ${code}` });
       }
@@ -393,7 +393,7 @@ const actions = {
         gamePlayers[i].totalScore = sum;
       }
     }
-    console.log("gamePlayers: ", gamePlayers);
+    //console.log("gamePlayers: ", gamePlayers);
     // Set new scorearray in state
     context.commit("SET_SCORE_ARRAY", gamePlayers);
     // Update score for player in database
@@ -486,7 +486,7 @@ const actions = {
   refreshLobby(context) {
     // Fetch game object again from database
     const gameId = context.rootState.game.game.id;
-    console.log("Fetching game: ", gameId);
+    //console.log("Fetching game: ", gameId);
     context.dispatch("fetchGame", gameId);
     // Subscribe to all players in game again
     context.dispatch("subscribeToPlayerList");

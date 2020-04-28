@@ -1,8 +1,6 @@
 <template>
   <fragment>
     <v-app-bar color="primary" dark app flat>
-      <!-- <v-avatar><v-icon>fa-play</v-icon></v-avatar> -->
-      <!-- <v-avatar><v-icon>fa-flag-checkered</v-icon></v-avatar> -->
       <v-toolbar-title class="white--text headline font-weight-bold" flat>
         Lobby
       </v-toolbar-title>
@@ -50,10 +48,9 @@
                     </template>
                   </td>
                 </tr>
-
                 <tr>
                   <td colspan="2">
-                    <v-skeleton-loader type="list-item"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item" />
                   </td>
                 </tr>
               </tbody>
@@ -135,7 +132,6 @@
     created() {
       this.fetchGame(this.getGame.id);
       this.bottomNavHandler(false);
-      // Subscription
       this.subscribeToGame();
       window.addEventListener("blur", this.unSubscribeToGame);
       window.addEventListener("focus", this.subscribeToGame);
@@ -182,7 +178,6 @@
         this.deletePlayer(playerId);
       },
       cancelThisGame() {
-        console.log("Lobby>cancelThisGame");
         this.cancelGame(this.getGame.id);
       },
       bottomNavHandler(payload) {

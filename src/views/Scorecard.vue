@@ -1,23 +1,16 @@
 <template>
   <fragment>
     <v-app-bar dark color="primary" app flat width="100%">
-      <!-- <v-btn-toggle v-model="zigZag" mandatory dense>
-        <v-btn color="blue" depressed>
-          <v-icon>fa-long-arrow-alt-down</v-icon>
-        </v-btn>
-        <v-btn color="blue" depressed>
-          <v-img :src="require('@/assets/zigzagprimary.png')" height="25" width="25" contain />
-        </v-btn>
-      </v-btn-toggle> -->
-      <span class="font-weight-bold title mr-2">{{ getGame.lobbyCode }}</span>
-      <v-btn depressed @click="zigZag = !zigZag" class="mr-2 font-weight-bold">
+      <v-btn color="#7CAA98" depressed @click="zigZag = !zigZag" class="mr-2 font-weight-bold">
         {{ zigZag ? "|" : "Z" }}
       </v-btn>
-      <v-btn :color="isDark ? 'warning' : 'accent'" depressed @click="isDark = !isDark">
-        <v-icon :color="isDark ? 'black' : 'white'" dark>
-          {{ isDark ? "fa-sun" : "fa-moon" }}
+      <v-btn :color="isDark ? 'accent' : 'warning'" depressed @click="isDark = !isDark">
+        <v-icon :color="isDark ? 'white' : 'black'">
+          {{ isDark ? "fa-moon" : "fa-sun" }}
         </v-icon>
       </v-btn>
+      <v-spacer />
+      <span class="font-weight-bold headline mr-2">{{ getGame.lobbyCode }}</span>
       <v-spacer />
       <confirm-dialogue :dialog="endGameDialog" :message="endGameMsg" @finishGame="finishGame" />
     </v-app-bar>

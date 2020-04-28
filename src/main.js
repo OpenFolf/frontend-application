@@ -24,9 +24,7 @@ Icon.Default.mergeOptions({
 });
 
 //TODO: Remove
-Vue.prototype.$log = console.log;
-
-Vue.use(Vuelidate);
+Vue.prototype.$log = Vue.use(Vuelidate); //console.log;
 
 Amplify.configure(awsconfig);
 Vue.use(Auth);

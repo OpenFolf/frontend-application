@@ -83,7 +83,7 @@
       ...mapGetters(["errorMsg", "getGameStatus"]),
       gameCodeErrors() {
         const errors = [];
-        console.log("this.errorMsg", this.errorMsg.message);
+        //console.log("this.errorMsg", this.errorMsg.message);
         if (this.errorMsg.message) {
           errors.push(this.errorMsg.message);
           this.CLEAR_ERRORS();
