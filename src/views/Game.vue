@@ -1,7 +1,7 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" dark app hide-on-scroll>
-      <v-toolbar-title class="headline font-weight-bold" flat>Select Course</v-toolbar-title>
+    <v-app-bar color="primary" dark app hide-on-scroll flat>
+      <v-toolbar-title class="display-1 font-weight-bold">Select Course</v-toolbar-title>
       <v-spacer />
       <v-btn @click="sortAlpha = !sortAlpha" color="#7CAA98" depressed>
         <v-icon>{{ sortAlpha ? "fa-globe-europe" : "fa-sort-alpha-down" }}</v-icon>
@@ -35,9 +35,10 @@
     },
     created() {
       this.bottomNavHandler(true);
+      this.resetCourse();
     },
     methods: {
-      ...mapActions(["showBottomNav"]),
+      ...mapActions(["showBottomNav", "resetCourse"]),
       bottomNavHandler(payload) {
         this.showBottomNav(payload);
       },

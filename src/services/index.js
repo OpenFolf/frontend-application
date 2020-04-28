@@ -67,7 +67,7 @@ export function getUserLocation() {
     // TODO: .
     // Here we need to react to different reasons for geoLocation API failing.
     // The service might be blocked or the user refused. Maybe more?
-    console.log("services/getUserLocation().errorHandler()", e.message);
+    console.log("services/getUserLocation", e.message);
 
     const lat = 64.128197;
     const lng = -21.885087;
@@ -107,14 +107,14 @@ export function reorganizeGameList(userGameList) {
   // Function that goes through list of user games and re-organizes
   const statsList = [];
   // Function that calculates objects by certain value
-  const calcPar = function(items, prop) {
+  var calcPar = function(items, prop) {
     return items.reduce(function(a, b) {
       return parseInt(a) + parseInt(b[prop]);
     }, 0);
   };
   // Sort gamesList by time
   userGameList.sort(function(a, b) {
-    return b.game.gameDate - a.game.gameDate;
+    return parseInt(b.game.gameDate) - parseInt(a.game.gameDate);
   });
   // Loop through all game objects and re-organize
   for (let i = 0; i < userGameList.length; i++) {
@@ -124,6 +124,15 @@ export function reorganizeGameList(userGameList) {
     const holeObjects = userGameList[i].game.course.holes.items.sort((a, b) =>
       parseInt(a.no) > parseInt(b.no) ? 1 : -1,
     );
+    const playerObjects = userGameList[i].game.players.items.sort(
+      (a, b) => parseInt(a.totalScore) > parseInt(b.totalScore),
+    );
+    let par = 0;
+    if (holeObjects[0].whitePar > 0) {
+      par = calcPar(holeObjects, "whitePar");
+    } else {
+      par = calcPar(holeObjects, "redPar");
+    }
 
     // Put together a new gameObject
     gameObject.userPlayerId = userGameList[i].id; //Player Id of current user in this gameObject
@@ -142,9 +151,9 @@ export function reorganizeGameList(userGameList) {
     gameObject.course = {
       courseName: userGameList[i].game.course.name,
       par: holeObjects,
-      totalPar: calcPar(holeObjects, "redPar"),
+      totalPar: par,
     };
-    gameObject.players = userGameList[i].game.players.items;
+    gameObject.players = playerObjects;
     //Push object onto array
     statsList.push(gameObject);
   }

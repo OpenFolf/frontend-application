@@ -14,31 +14,33 @@ const initialState = () => ({
   },
   userGames: [
     {
-      id: "",
-      scoreArray: [""],
-      totalScore: "",
-      game: {
-        gameStatus: "",
-        gameDate: "",
-        owner: {
-          id: "",
-          username: "",
-          email: "",
-        },
-        players: {
-          items: [
-            {
-              user: {
-                id: "",
-                username: "",
-                email: "",
-              },
-              totalScore: "",
-              scoreArray: [""],
-            },
-          ],
-        },
+      userPlayerId: "",
+      gameId: "",
+      scoreArray: [],
+      userTotalScore: "",
+      gameStatus: "",
+      gameDate: "",
+      gameOwner: {
+        ownerId: "",
+        ownerUsername: "",
+        ownerEmail: "",
       },
+      course: {
+        courseName: "",
+        par: [{ no: "", redPar: "" }],
+        totalPar: 0,
+      },
+      players: [
+        {
+          user: {
+            id: "",
+            username: "",
+            email: "",
+          },
+          totalScore: "",
+          scoreArray: [],
+        },
+      ],
     },
   ],
 });
@@ -57,6 +59,9 @@ const getters = {
   },
   getEmail: (state) => {
     return state.user.email;
+  },
+  getIsUserDark: (state) => {
+    return state.user.defMode == "DARK";
   },
   getCurrentGame: (state) => {
     return state.user.currentGame;
@@ -108,7 +113,10 @@ const mutations = {
   setUserGames: (state, payload) => {
     const gameObjectList = services.reorganizeGameList(payload.gamesPlayed.items);
 
-    state.userGames = gameObjectList;
+    if (gameObjectList.length) {
+      console.log("setUserGames> gameObjectList", gameObjectList);
+      state.userGames = gameObjectList;
+    }
   },
   RESET_USER(state) {
     ////console.log("Auth>mutations>RESET_USER");
@@ -152,6 +160,7 @@ const actions = {
     const userId = context.rootState.user.user.id;
     const userTheme = context.state.user.defMode;
     if (userTheme == "DARK") {
+      context.commit("setUserTheme", "LIGHT");
       try {
         await API.graphql(
           graphqlOperation(usergraphQL.updateUser, {
@@ -165,6 +174,7 @@ const actions = {
       //console.log("Vuetify object: ", Vuetify);
       Vuetify.framework.theme.isDark = false;
     } else {
+      context.commit("setUserTheme", "DARK");
       try {
         await API.graphql(
           graphqlOperation(usergraphQL.updateUser, {

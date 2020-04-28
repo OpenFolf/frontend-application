@@ -3,47 +3,67 @@
     <template v-slot:activator="{ on }">
       <v-card
         v-on="on"
-        color="secondary"
+        color="addedColor"
         flat
-        width="90%"
-        class="mt-3 mx-auto"
+        class="mb-2"
         v-for="(gameList, gameListIndex) in getUserGames"
         :key="gameList.id"
         @click.stop="openModal(gameListIndex)"
       >
-        <v-card-title class="addedColor white--text mb-4">
-          <h4>{{ gameList.course.courseName }} - {{ gameList.gameDate }}</h4>
-        </v-card-title>
-        <v-card-text
-          v-for="players in gameList.players"
-          :key="players.id"
-          class="d-flex justify-space-between bold"
-        >
-          <span class="text-left"> {{ players.user.email }} </span>
-          <span class="text-left"> Score: {{ players.totalScore }} </span>
+        <v-toolbar flat color="secondary">
+          <v-toolbar-title class=" white--text headline ">
+            {{ gameList.course.courseName }} -
+          </v-toolbar-title>
+          <br />
+          <v-toolbar-title class=" white--text title ">
+            {{ gameList.gameDate }}
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-card-text>
+          <ul class="white--text pl-0">
+            <li
+              v-for="players in gameList.players"
+              :key="players.id"
+              class="d-flex flex-row justify-space-between title"
+            >
+              <span> {{ players.user.email }} </span>
+              <span> Score: {{ players.totalScore }} </span>
+            </li>
+          </ul>
         </v-card-text>
       </v-card>
     </template>
-    <v-card color="secondary" flat class="mb-2" @click="dialog = false">
-      <v-card-title>{{ getUserGames[modalIndex].course.courseName }}</v-card-title>
-      <v-card-subtitle>{{ getUserGames[modalIndex].gameDate }}</v-card-subtitle>
+    <v-card color="secondary" flat @click="dialog = false">
+      <v-card-title class="font-weight-bold title white--text"
+        >{{ getUserGames[modalIndex].course.courseName }} -
+        {{ getUserGames[modalIndex].gameDate }}</v-card-title
+      >
+
       <v-simple-table class="mx-auto" dense>
         <template v-slot:default>
           <thead class="header" bold>
             <tr>
-              <th class="title text-center">Hole</th>
-              <th class="title text-center">Par</th>
+              <th class="title text-center white--text">Hole</th>
+              <th class="title text-center  white--text">Par</th>
 
-              <th v-for="teeName in gameItem" :key="teeName.id" class="title text-center">
+              <th
+                v-for="teeName in gameItem"
+                :key="teeName.id"
+                class="title text-center  white--text"
+              >
                 {{ teeName.user.username }}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(hole, holeIndex) in game.course.par" :key="holeIndex">
-              <td class="text-center">{{ holeIndex }}</td>
+              <td class="text-center">{{ holeIndex + 1 }}</td>
               <td class="text-center">
-                {{ game.course.par[0].redPar }}
+                {{
+                  game.course.par[0].whitePar > 0
+                    ? game.course.par[0].whitePar
+                    : game.course.par[0].redPar
+                }}
               </td>
               <td class="text-center" v-for="(player, playerIndex) in gameItem" :key="playerIndex">
                 {{ player.scoreArray[holeIndex] }}
@@ -52,10 +72,10 @@
           </tbody>
           <tfoot class="footer" bold>
             <tr>
-              <th class="title text-center">Total:</th>
-              <th class="title text-center">{{ game.course.totalPar }}</th>
+              <th class="title text-center  white--text">Total:</th>
+              <th class="title text-center  white--text">{{ game.course.totalPar }}</th>
               <th
-                class="title text-center"
+                class="title text-center  white--text"
                 v-for="(player, playerIndex) in gameItem"
                 :key="playerIndex"
               >

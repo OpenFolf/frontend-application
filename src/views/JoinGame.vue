@@ -1,7 +1,7 @@
 <template>
   <fragment>
-    <v-app-bar color="primary" dark app>
-      <v-toolbar-title class="headline font-weight-bold" flat>Join Game</v-toolbar-title>
+    <v-app-bar color="primary" dark app flat>
+      <v-toolbar-title class="display-1 font-weight-bold">Join Game</v-toolbar-title>
       <v-spacer />
     </v-app-bar>
     <v-content>

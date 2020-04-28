@@ -91,6 +91,10 @@ const routes = [
     path: "/stats",
     name: "stats",
     component: () => import(/* webpackChunkName: "stats" */ "@/views/Stats.vue"),
+    beforeEnter: async (to, from, next) => {
+      await Store.dispatch("fetchUserGameList");
+      next();
+    },
   },
   {
     path: "*",

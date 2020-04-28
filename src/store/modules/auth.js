@@ -119,7 +119,6 @@ const actions = {
 
     getUserLocation();
     dispatch("fetchCourseList");
-    dispatch("fetchUserGameList");
   },
 
   async signUp({ commit }, userObj) {
