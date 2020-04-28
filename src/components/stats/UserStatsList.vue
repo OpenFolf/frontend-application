@@ -1,42 +1,46 @@
 <template>
-  <v-content>
-    <v-container fluid>
-      <v-row dense>
-        <v-col cols="12">
-          <user-stats-list-item
-            v-if="modalVisible"
-            @close="modalVisible = false"
-            :modalVisible="modalVisible"
-            :gameListIndex="modalIndex"
-          >
-          </user-stats-list-item>
-          <v-card
-            color="secondary"
-            ripple
-            flat
-            class="mb-2"
-            v-for="(gameList, gameListIndex) in getUserGames"
-            :key="gameList.id"
-            @click="openModal(gameListIndex)"
-          >
-            <v-card-title>{{ gameList.course.courseName }} </v-card-title>
-            <v-card-subtitle>{{ gameList.gameDate }}</v-card-subtitle>
-            <v-card-text class="bold"
-              >Players:
-              <v-card-text v-for="players in gameList.players" :key="players.id">
-                {{ players.user.email }}
-                Score: {{ players.totalScore }}
-              </v-card-text>
+  <v-container>
+    <v-row dense>
+      <v-col cols="12">
+        <user-stats-list-item
+          v-if="modalVisible"
+          @close="modalVisible = false"
+          :modalVisible="modalVisible"
+          :gameListIndex="modalIndex"
+        >
+        </user-stats-list-item>
+        <v-card
+          color="secondary"
+          ripple
+          flat
+          app
+          width="100%"
+          class="mb-2"
+          v-for="(gameList, gameListIndex) in getUserGames"
+          :key="gameList.id"
+          @click="openModal(gameListIndex)"
+        >
+          <v-card-title class="addedColor white--text">
+            <h4>{{ gameList.course.courseName }} - {{ gameList.gameDate }}</h4>
+          </v-card-title>
+
+          <v-card-text class="bold">
+            <v-card-text
+              v-for="players in gameList.players"
+              :key="players.id"
+              class="d-flex justify-space-between"
+              ><span class="text-left"> {{ players.user.email }} </span
+              ><span class="text-left"> Score: {{ players.totalScore }} </span>
             </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-content>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-  import UserStatsListItem from "./UserStatsListItem";
+  import UserStatsListItem from "./UserStatsListItem.vue";
   import { mapGetters } from "vuex";
   export default {
     name: "user-stats-list",
@@ -49,13 +53,6 @@
     components: { UserStatsListItem },
     computed: {
       ...mapGetters(["getUserGames"]),
-      userGames() {
-        console.log("GetUserGames ", this.userGames);
-        return this.getUserGames;
-      },
-      humanReadableDate(epoch) {
-        return new Date(epoch * 1000).toLocaleString("da-DK");
-      },
     },
 
     methods: {

@@ -16,7 +16,7 @@
 <script>
   import { mapActions } from "vuex";
   import { Fragment } from "vue-fragment";
-  import UserStatsList from "../components/stats/UserStatsList";
+  import UserStatsList from "../components/stats/UserStatsList.vue";
   export default {
     name: "stats",
     components: {

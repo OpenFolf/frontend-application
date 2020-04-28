@@ -1,15 +1,15 @@
 <template>
   <v-dialog v-model="localModalVisible" overlay-opacity="0.7">
-    <v-card color="secondary" ripple flat class="mb-2" @click="$emit('close')">
+    <v-card color="secondary" flat class="mb-2" @click="$emit('close')">
       <!-- <v-card-title>{{ getUserGames[gameListIndex].id }} </v-card-title> -->
       <v-card-title>{{ getUserGames[gameListIndex].course.courseName }}</v-card-title>
       <v-card-subtitle>{{ getUserGames[gameListIndex].gameDate }}</v-card-subtitle>
-      <v-card-text>Players: </v-card-text>
+      <!-- 
       <v-card-text v-for="players in gameItem" :key="players.id">
         {{ players.user.email }}
-      </v-card-text>
+      </v-card-text> -->
 
-      <v-simple-table class="mx-auto">
+      <v-simple-table class="mx-auto" dense>
         <template v-slot:default>
           <thead class="header" bold>
             <tr>
@@ -23,7 +23,7 @@
 
           <tbody>
             <tr v-for="(hole, holeIndex) in game.course.par" :key="holeIndex">
-              <td class="diff text-center">{{ holeIndex }}</td>
+              <td class="text-center">{{ holeIndex }}</td>
               <td class="text-center">
                 {{ game.course.par[0].redPar }}
               </td>
@@ -35,7 +35,7 @@
             </tr>
           </tbody>
 
-          <thead class="header" bold>
+          <tfoot class="footer" bold>
             <tr>
               <th class="title text-center">Total:</th>
               <th class="title text-center">{{ game.course.totalPar }}</th>
@@ -45,7 +45,7 @@
                 </th>
               </fragment>
             </tr>
-          </thead>
+          </tfoot>
         </template>
       </v-simple-table>
     </v-card>
@@ -86,3 +86,24 @@
     methods: {},
   };
 </script>
+
+<style lang="scss" scoped>
+  table th + th {
+    border-left: thin solid rgba(255, 255, 255, 0.12);
+  }
+  table td + td {
+    border-left: thin solid rgba(255, 255, 255, 0.12);
+  }
+  table td {
+    border-bottom: thin solid rgba(255, 255, 255, 0.12);
+  }
+  .v-btn:hover:before {
+    color: transparent;
+  }
+  .header {
+    background-color: var(--v-primary-base);
+  }
+  .footer {
+    background-color: var(--v-primary-base);
+  }
+</style>
