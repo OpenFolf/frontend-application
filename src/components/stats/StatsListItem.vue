@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="400" overlay-opacity="0.7">
+  <!-- <v-dialog v-model="dialog" width="400" overlay-opacity="0.7">
     <template v-slot:activator="{ on }">
       <h1>Typpi1</h1>
       <h1>Typpi2</h1>
@@ -94,14 +94,64 @@
         </template>
       </v-simple-table>
     </v-card>
-  </v-dialog>
+  </v-dialog> -->
+
+  <v-col cols="12">
+    <v-card
+      :to="{
+        name: 'stats-item',
+        params: { id: 4 },
+      }"
+      class="font-weight-bold"
+      flat
+      ripple
+      outlined
+    >
+      <v-card color="addedColor" flat>
+        <v-card-actions class="d-flex flex-column">
+          <span class="font-weight-bold headline">{{ userGame.course.courseName }}</span>
+          <span class="">{{ userGame.gameDate }}</span>
+        </v-card-actions>
+      </v-card>
+      <v-card-text>
+        <v-list flat>
+          <v-subheader>REPORTS</v-subheader>
+          <v-list-item-group v-model="item" color="primary">
+            <v-list-item v-for="(item, i) in items" :key="i">
+              <v-list-item-icon>
+                <v-icon v-text="item.icon"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+        <ul>
+          <li
+            v-for="players in userGame.players"
+            :key="players.id"
+            class="d-flex flex-row justify-space-between"
+          >
+            <span> {{ players.user.username }} </span>
+            <span> Score: {{ players.totalScore }} </span>
+          </li>
+        </ul>
+      </v-card-text>
+    </v-card>
+  </v-col>
 </template>
 
 <script>
   import { mapGetters } from "vuex";
   export default {
-    name: "user-stats-list-item",
-
+    name: "stats-list-item",
+    props: {
+      userGame: {
+        type: Object,
+        required: true,
+      },
+    },
     data() {
       return {
         dialog: false,
@@ -133,24 +183,3 @@
     },
   };
 </script>
-
-<style lang="scss" scoped>
-  table th + th {
-    border-left: thin solid rgba(255, 255, 255, 0.12);
-  }
-  table td + td {
-    border-left: thin solid rgba(255, 255, 255, 0.12);
-  }
-  table td {
-    border-bottom: thin solid rgba(255, 255, 255, 0.12);
-  }
-  .v-btn:hover:before {
-    color: transparent;
-  }
-  .header {
-    background-color: var(--v-primary-base);
-  }
-  .footer {
-    background-color: var(--v-primary-base);
-  }
-</style>
