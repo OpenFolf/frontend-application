@@ -172,7 +172,7 @@ const actions = {
       }
       context.commit("setUserTheme", "LIGHT");
       //console.log("Vuetify object: ", Vuetify);
-      Vuetify.framework.theme.isDark = false;
+      Vuetify.framework.theme.dark = false;
     } else {
       context.commit("setUserTheme", "DARK");
       try {
@@ -186,7 +186,7 @@ const actions = {
       }
       //console.log("Vuetify object: ", Vuetify);
       context.commit("setUserTheme", "DARK");
-      Vuetify.framework.theme.isDark = true;
+      Vuetify.framework.theme.dark = true;
     }
   },
 
@@ -214,9 +214,9 @@ const actions = {
         graphqlOperation(usergraphQL.fetchUser, { id: state.user.id }),
       );
       if (response.data.getUser.defMode == "DARK") {
-        Vuetify.framework.theme.isDark = true;
+        Vuetify.framework.theme.dark = true;
       } else {
-        Vuetify.framework.theme.isDark = false;
+        Vuetify.framework.theme.dark = false;
       }
       context.commit("setUser", response.data.getUser);
     } catch (e) {

@@ -104,6 +104,35 @@ const actions = {
       Router.push({ name: "auth" });
     }
   },
+
+  scorecardRouting(context, payload) {
+    if (context.rootState.auth.signedIn) {
+      const gameStatus = context.rootState.game.game.gameStatus;
+      switch (gameStatus) {
+        case "":
+          Router.push({ name: "home-menu" });
+          break;
+        case "1":
+          if (payload != "scorecard") {
+            Router.push({ name: "game-scorecard" });
+          }
+          break;
+        case "2":
+          if (payload != "stats") {
+            Router.push({ name: "stats" });
+          }
+          break;
+        case "-1":
+          Router.push({ name: "home-menu" });
+          break;
+        default:
+          break;
+      }
+    } else {
+      // go to sign in
+      Router.push({ name: "auth" });
+    }
+  },
 };
 
 export default {

@@ -69,7 +69,7 @@
           <span class="display-1 font-weight-bold mr-2">{{ selectedHole + 1 }}</span>
           <v-spacer />
           <span class="mx-2">Par :</span>
-          <v-avatar :color="colorHandler" class="font-weight-bold display-1 text--black">
+          <v-avatar :color="colorHandler" :class="textColorHandler">
             {{ selectedPar == "0" ? "-" : selectedPar }}
           </v-avatar>
           <v-spacer />
@@ -145,6 +145,11 @@
           return this.getHoles[0].redPar;
         }
       },
+      textColorHandler() {
+        return this.getHoles[0].whitePar > 0
+          ? "font-weight-bold display-1 black--text"
+          : "font-weight-bold display-1";
+      },
     },
     components: { Fragment, ConfirmDialogue },
     created() {
@@ -154,7 +159,7 @@
       this.bottomNavHandler(false);
       window.addEventListener("blur", this.unSubscribeToPlayerList);
       window.addEventListener("focus", this.subscribeToPlayerList);
-      this.inGameRouting("scorecard");
+      this.scorecardRouting("scorecard");
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToPlayerList);
@@ -167,7 +172,7 @@
         "finishGame",
         "showBottomNav",
         "refreshGame",
-        "inGameRouting",
+        "scorecardRouting",
         "unSubscribeToPlayerList",
         "setUserTheme",
       ]),
@@ -220,7 +225,7 @@
     },
     watch: {
       getGameStatus() {
-        this.inGameRouting();
+        this.scorecardRouting();
       },
     },
   };

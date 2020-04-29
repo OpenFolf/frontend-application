@@ -134,15 +134,18 @@ export function reorganizeGameList(userGameList) {
       par = calcPar(holeObjects, "redPar");
     }
 
+    const date = new Date(parseInt(userGameList[i].game.gameDate)).toDateString().slice(4);
+    const time = new Date(parseInt(userGameList[i].game.gameDate)).toTimeString().split(" ")[0];
+    gameObject.gameDate = `${date} - ${time}`;
     // Put together a new gameObject
     gameObject.userPlayerId = userGameList[i].id; //Player Id of current user in this gameObject
     gameObject.gameId = userGameList[i].game.id;
     gameObject.scoreArray = userGameList[i].scoreArray;
     gameObject.userTotalScore = userGameList[i].totalScore;
     gameObject.gameStatus = userGameList[i].game.gameStatus;
-    gameObject.gameDate = new Date(parseInt(userGameList[i].game.gameDate)).toLocaleDateString(
-      "da-DK",
-    ); //Change to date
+    // gameObject.gameDate = new Date(parseInt(userGameList[i].game.gameDate)).toLocaleDateString(
+    //   "da-DK",
+    // ); //Change to date
     gameObject.gameOwner = {
       ownerId: userGameList[i].game.owner.id,
       ownerUsername: userGameList[i].game.owner.username,

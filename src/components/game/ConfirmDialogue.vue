@@ -1,10 +1,7 @@
 <template>
   <v-dialog v-model="localDialog" width="300" overlay-opacity="0.7">
     <template v-slot:activator="{ on }">
-      <!-- <template v-if="message.icon"> -->
       <v-icon v-if="message.icon" color="error" small v-on="on">{{ message.icon }}</v-icon>
-      <!-- </template> -->
-      <!-- <template v-if="message.title === 'End Game'"> -->
       <v-btn
         v-if="message.title === 'End Game'"
         depressed
@@ -14,8 +11,14 @@
       >
         end game
       </v-btn>
-      <!-- </template> -->
-      <v-btn block large class="font-weight-bold" v-on="on" :color="message.headerColor" v-else>
+      <v-btn
+        block
+        large
+        class="font-weight-bold"
+        v-on="on"
+        :color="message.headerColor"
+        v-else-if="message.title != 'Kick Player'"
+      >
         {{ message.title }}
       </v-btn>
     </template>

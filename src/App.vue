@@ -22,3 +22,9 @@
     },
   };
 </script>
+
+<style lang="css">
+  .v-menu__content {
+    box-shadow: none;
+  }
+</style>
