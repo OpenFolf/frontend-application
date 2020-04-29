@@ -154,7 +154,7 @@
       this.bottomNavHandler(false);
       window.addEventListener("blur", this.unSubscribeToPlayerList);
       window.addEventListener("focus", this.subscribeToPlayerList);
-      this.inGameRouting("scorecard");
+      this.scorecardRouting("scorecard");
     },
     beforeDestroy() {
       window.removeEventListener("blur", this.unSubscribeToPlayerList);
@@ -167,7 +167,7 @@
         "finishGame",
         "showBottomNav",
         "refreshGame",
-        "inGameRouting",
+        "scorecardRouting",
         "unSubscribeToPlayerList",
         "setUserTheme",
       ]),
@@ -220,7 +220,7 @@
     },
     watch: {
       getGameStatus() {
-        this.inGameRouting();
+        this.scorecardRouting();
       },
     },
   };
