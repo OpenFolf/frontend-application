@@ -8,7 +8,7 @@
       :gameListIndex="modalIndex"
     >
     </user-stats-list-item> -->
-    <v-dialog v-model="dialog" width="400" overlay-opacity="0.7">
+    <v-dialog v-model="dialog" overlay-opacity="0.7">
       <v-card color="secondary" flat @click="dialog = false">
         <v-card-title class="font-weight-bold title white--text"
           >{{ getUserGames[modalIndex].course.courseName }} -

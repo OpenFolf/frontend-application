@@ -9,12 +9,13 @@
   >
     <l-tile-layer :url="url"></l-tile-layer>
     <l-marker :lat-lng="courseLatLng"></l-marker>
-    <l-marker :lat-lng="userLatLng"></l-marker>
+    <l-marker v-if="!getUserLocationError" :lat-lng="userLatLng"></l-marker>
   </l-map>
 </template>
 
 <script>
   import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+  import { mapGetters } from "vuex";
   export default {
     name: "game-course-map",
     components: {
@@ -44,6 +45,9 @@
         },
         heightVal: "",
       };
+    },
+    computed: {
+      ...mapGetters(["getUserLocationError"]),
     },
     methods: {
       logg() {

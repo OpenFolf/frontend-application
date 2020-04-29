@@ -73,7 +73,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getUserName", "getUserTheme", "errorMsg", "getIsUserDark"]),
+      ...mapGetters(["getUserName", "getUserTheme", "errorMsg", "getIsUserDark", "signedIn"]),
       nameErrors() {
         const errors = [];
         if (this.errorMsg.message) {
@@ -91,9 +91,14 @@
     methods: {
       // TODO: @ARNAR - NO MUTATIONS FROM COMPONENTS, ONLY DISPATCH
       ...mapMutations(["CLEAR_ERRORS"]),
-      ...mapActions(["setUserName", "setUserTheme"]),
+      ...mapActions(["setUserName", "setUserTheme", "signOutRouting"]),
       saveLocalUserName() {
         this.setUserName(this.name.toUpperCase());
+      },
+    },
+    watch: {
+      signedIn() {
+        this.signOutRouting();
       },
     },
   };

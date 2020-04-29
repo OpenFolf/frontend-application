@@ -1,8 +1,43 @@
 <template>
   <v-container fluid>
-    <v-row dense>
-      <home-menu-item v-for="item in contentList" :key="item.id" :content="item" />
-    </v-row>
+    <home-menu-item v-for="item in contentList" :key="item.id" :content="item" />
+    <v-col cols="12">
+      <v-btn color="amber " block x-large dark @click.stop="dialog = true">
+        <span class="headline">
+          Play now!
+        </span>
+      </v-btn>
+
+      <v-dialog v-model="dialog" overlay-opacity="0.7">
+        <v-card>
+          <v-card-title class="headline">How to openFOLF?</v-card-title>
+
+          <v-card-text>
+            IN PROGRESS - NOT READY Press the play button and select the course you wish to play and
+            start a game lobby your friends can join.
+          </v-card-text>
+
+          <v-card color="secondary"
+            ><v-card-actions class="d-flex flex-column">
+              <span class="mb-3">Play a Game</span>
+              <v-btn block @click="dialog = false" color="primary"> <v-icon>fa-play</v-icon></v-btn>
+            </v-card-actions></v-card
+          >
+          <v-card-text
+            >Already have a lobby code? Press the join button and enter your code.</v-card-text
+          >
+          <v-card color="secondary">
+            <v-card-actions class="d-flex flex-column">
+              <span class="mb-3">Join a Game</span>
+              <v-btn block @click="dialog = false" color="primary">
+                <v-icon>fa-compress-alt</v-icon>
+              </v-btn></v-card-actions
+            >
+          </v-card>
+          <v-text>When all players have entered the lobby start the game.</v-text>
+        </v-card>
+      </v-dialog>
+    </v-col>
   </v-container>
 </template>
 
@@ -16,6 +51,7 @@
     },
     data() {
       return {
+        dialog: false,
         contentList: [
           {
             id: 1,
@@ -31,7 +67,7 @@
             id: 2,
             color: "success",
             title: "Disc Golf Rules",
-            subtitle: "Do you know how to play Disc Golf? Read the official PDGA rules.",
+            subtitle: "Do you know how to play Disc Golf? Read them here.",
             buttonText: "See Rules",
             routerPath: {
               name: "home-rules",

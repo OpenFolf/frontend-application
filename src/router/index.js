@@ -28,20 +28,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "profile" */ "@/components/home/Profile.vue"),
       },
       {
-        path: "/home/privacy",
-        name: "home-privacy",
-        component: () => import(/* webpackChunkName: "privacy" */ "@/components/home/Privacy.vue"),
-      },
-      {
         path: "/home/rules",
         name: "home-rules",
         component: () => import(/* webpackChunkName: "rules" */ "@/components/home/Rules.vue"),
-      },
-      {
-        path: "/home/location",
-        name: "home-location",
-        component: () =>
-          import(/* webpackChunkName: "location" */ "@/components/home/Location.vue"),
       },
     ],
   },
