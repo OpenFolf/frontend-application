@@ -18,7 +18,7 @@
           <span class="font-weight-bold">{{ tab }}</span>
         </v-tab>
       </v-tabs>
-      <v-tabs-items v-model="currentTab">
+      <v-tabs-items v-model="currentTab" touchless>
         <v-tab-item><course-info :course="getCurrentCourse" :holeSums="holeSums"/></v-tab-item>
         <v-tab-item>
           <course-map

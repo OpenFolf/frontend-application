@@ -3,7 +3,7 @@
     <v-app-bar color="primary" dark app hide-on-scroll flat>
       <v-toolbar-title class="display-1 font-weight-bold">Select Course</v-toolbar-title>
       <v-spacer />
-      <v-btn @click="sortAlpha = !sortAlpha" color="#7CAA98" depressed>
+      <v-btn v-if="!getUserLocationError" @click="sortAlpha = !sortAlpha" color="#7CAA98" depressed>
         <v-icon>{{ sortAlpha ? "fa-globe-europe" : "fa-sort-alpha-down" }}</v-icon>
       </v-btn>
     </v-app-bar>
@@ -36,6 +36,10 @@
     created() {
       this.bottomNavHandler(true);
       this.resetCourse();
+      if (this.getUserLocationError) {
+        console.log("Kemur");
+        this.sortAlpha = true;
+      }
     },
     methods: {
       ...mapActions(["showBottomNav", "resetCourse"]),
@@ -44,7 +48,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getCourses"]),
+      ...mapGetters(["getCourses", "getUserLocationError"]),
       courses() {
         const courseList = this.getCourses.map((x) => x);
         if (this.sortAlpha) {

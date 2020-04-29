@@ -72,6 +72,9 @@ const getters = {
   getUserLocation: (state) => {
     return state.location;
   },
+  getUserLocationError: (state) => {
+    return state.location.error;
+  },
   getUserGames: (state) => {
     return state.userGames;
   },
