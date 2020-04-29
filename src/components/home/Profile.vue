@@ -102,7 +102,7 @@
       ...mapMutations(["CLEAR_ERRORS"]),
       ...mapActions(["setUserName", "setUserDefaultTee", "setUserTheme"]),
       saveLocalUserName() {
-        this.setUserName(this.name);
+        this.setUserName(this.name.toUpperCase());
       },
 
       // SECTION: TODO: .
