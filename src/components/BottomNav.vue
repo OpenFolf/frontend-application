@@ -4,6 +4,7 @@
     app
     dark
     shift
+    flat
     background-color="primary"
   >
     <v-btn :to="{ name: 'home-menu' }">
