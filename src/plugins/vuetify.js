@@ -19,7 +19,7 @@ export default new Vuetify({
         info: "#008B9C",
         success: "#00A76C",
         warning: "#EEE683",
-        addedColor: "#009C99",
+        addedColor: "#95B0B5",
       },
       dark: {
         primary: "#005737",
@@ -29,7 +29,7 @@ export default new Vuetify({
         info: "#008B9C",
         success: "#00A76C",
         warning: "#EEE683",
-        addedColor: "#009C99",
+        addedColor: "#95B0B5",
       },
     },
   },

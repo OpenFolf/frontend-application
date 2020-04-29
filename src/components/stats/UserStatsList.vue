@@ -9,8 +9,8 @@
     >
     </user-stats-list-item> -->
     <v-dialog v-model="dialog" overlay-opacity="0.7">
-      <v-card color="secondary" flat @click="dialog = false">
-        <v-card-title class="font-weight-bold title white--text"
+      <v-card color="secondary" @click="dialog = false">
+        <v-card-title flat class="font-weight-bold title white--text"
           >{{ getUserGames[modalIndex].course.courseName }} -
           {{ getUserGames[modalIndex].gameDate }}</v-card-title
         >

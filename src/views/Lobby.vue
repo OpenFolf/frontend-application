@@ -39,7 +39,7 @@
                   </td>
                   <td class="text-right">
                     <template v-if="isOwner && getUser.id !== player.user.id">
-                      <ConfirmDialogue
+                      <confirm-dialogue
                         :userToRemove="player.id"
                         :dialog="kickUserDialog"
                         :message="kickUserMsg"
@@ -57,14 +57,14 @@
             </v-simple-table>
             <v-card flat>
               <v-card-actions>
-                <ConfirmDialogue
+                <confirm-dialogue
                   v-if="!isOwner"
                   :dialog="leaveGameDialog"
                   :message="leaveMsg"
                   :userToRemove="getPlayerId"
                   @removeUser="removeUser"
                 />
-                <ConfirmDialogue
+                <confirm-dialogue
                   v-if="isOwner"
                   :dialog="startGameDialog"
                   :message="startGameMsg"
@@ -72,7 +72,7 @@
                 />
               </v-card-actions>
               <v-card-actions>
-                <ConfirmDialogue
+                <confirm-dialogue
                   v-if="isOwner"
                   :dialog="cancelGameDialog"
                   :message="cancelGameMsg"
@@ -89,7 +89,7 @@
 
 <script>
   import { Fragment } from "vue-fragment";
-  import ConfirmDialogue from "../components/game/ConfirmDialogue";
+  import ConfirmDialogue from "../components/game/ConfirmDialogue.vue";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "lobby",
@@ -104,7 +104,7 @@
           body: "Are you sure you want to start the game?",
           button1: "Cancel",
           button2: "Start",
-          headerColor: "primary",
+          headerColor: "success",
         },
         leaveMsg: {
           title: "Leave Lobby",
