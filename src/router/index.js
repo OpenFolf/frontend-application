@@ -49,6 +49,10 @@ const routes = [
     path: "/game",
     name: "game",
     component: () => import(/* webpackChunkName: "game" */ "@/views/Game.vue"),
+    beforeEnter: async (to, from, next) => {
+      await Store.dispatch("fetchCourseList");
+      next();
+    },
   },
   {
     path: "/game/:path",

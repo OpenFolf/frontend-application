@@ -52,8 +52,14 @@ export function getLobbyCode() {
 // Reach out to geoLocation API for user location
 export function getUserLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(registerLocation, errorHandler);
+    navigator.geolocation.getCurrentPosition(registerLocation, errorHandler, options);
   }
+
+  const options = {
+    enableHighAccuracy: true,
+    maximumAge: 3000,
+    timeout: 27000,
+  };
 
   function registerLocation(position) {
     Store.dispatch("setUserLocation", {
@@ -61,6 +67,12 @@ export function getUserLocation() {
       lng: position.coords.longitude,
       error: 0,
     });
+    console.log(
+      "services/getUserLocation",
+      position.coords.latitude,
+      " ",
+      position.coords.longitude,
+    );
   }
 
   function errorHandler(e) {
@@ -69,8 +81,8 @@ export function getUserLocation() {
     // The service might be blocked or the user refused. Maybe more?
     console.log("services/getUserLocation", e.message);
 
-    const lat = 64.128197;
-    const lng = -21.885087;
+    const lat = 64.123777;
+    const lng = -21.926144;
     const error = 1;
     Store.dispatch("setUserLocation", { lat, lng, error });
     // Store.dispatch("setUserLocation", {

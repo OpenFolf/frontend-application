@@ -70,7 +70,7 @@ const actions = {
     }
   },
   resetCourse({ commit }) {
-    console.log("Course>Actions>resetCourses");
+    console.log("Course>Actions>resetCourse");
     commit("RESET_COURSE");
   },
 };
