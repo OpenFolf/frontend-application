@@ -9,32 +9,40 @@
       </v-btn>
 
       <v-dialog v-model="dialog" overlay-opacity="0.7">
-        <v-card>
+        <v-card color="accent">
           <v-card-title class="headline">How to openFOLF?</v-card-title>
 
           <v-card-text>
-            IN PROGRESS - NOT READY Press the play button and select the course you wish to play and
-            start a game lobby your friends can join.
+            Press the play button and select the course you wish to play and start a game lobby your
+            friends can join.
           </v-card-text>
 
-          <v-card color="secondary"
+          <v-card color="secondary mr-2 ml-2 mb-2"
             ><v-card-actions class="d-flex flex-column">
               <span class="mb-3">Play a Game</span>
-              <v-btn block @click="dialog = false" color="primary"> <v-icon>fa-play</v-icon></v-btn>
-            </v-card-actions></v-card
-          >
-          <v-card-text
-            >Already have a lobby code? Press the join button and enter your code.</v-card-text
-          >
-          <v-card color="secondary">
+              <v-btn block @click="dialog = false" color="primary" :to="{ name: 'game' }">
+                <v-icon>fa-play</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+
+          <v-card-text class="mt-2">
+            Want to join another players game lobby? Press the join button and enter your lobby
+            code.
+          </v-card-text>
+
+          <v-card color="secondary mr-2 ml-2 mb-2">
             <v-card-actions class="d-flex flex-column">
               <span class="mb-3">Join a Game</span>
-              <v-btn block @click="dialog = false" color="primary">
+              <v-btn block @click="dialog = false" color="primary" :to="{ name: 'join-game' }">
                 <v-icon>fa-compress-alt</v-icon>
-              </v-btn></v-card-actions
-            >
+              </v-btn>
+            </v-card-actions>
           </v-card>
-          <v-text>When all players have entered the lobby start the game.</v-text>
+
+          <v-card-text>
+            When all players have entered the game lobby start the game.
+          </v-card-text>
         </v-card>
       </v-dialog>
     </v-col>
