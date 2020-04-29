@@ -118,7 +118,7 @@ const actions = {
     await dispatch("fetchUser");
 
     getUserLocation();
-    dispatch("fetchCourseList");
+    // dispatch("fetchCourseList");
   },
 
   async signUp({ commit }, userObj) {

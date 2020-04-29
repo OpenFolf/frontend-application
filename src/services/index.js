@@ -69,8 +69,8 @@ export function getUserLocation() {
     // The service might be blocked or the user refused. Maybe more?
     console.log("services/getUserLocation", e.message);
 
-    const lat = 64.128197;
-    const lng = -21.885087;
+    const lat = 64.123777;
+    const lng = -21.926144;
     const error = 1;
     Store.dispatch("setUserLocation", { lat, lng, error });
     // Store.dispatch("setUserLocation", {
