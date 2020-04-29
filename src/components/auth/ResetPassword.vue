@@ -39,12 +39,12 @@
           />
         </template>
         <template v-if="!isSentCode">
-          <v-btn block :disabled="$v.email.$invalid" @click="resetUserPassword" color="primary">
+          <v-btn block :disabled="$v.email.$invalid" @click="resetUserPassword" color="success">
             <span class="font-weight-bold">Send Code</span>
           </v-btn>
         </template>
         <template v-if="isSentCode">
-          <v-btn block :disabled="$v.code.$invalid" @click="verify" color="primary">
+          <v-btn block :disabled="$v.code.$invalid" @click="verify" color="success">
             <span class="font-weight-bold">Submit</span>
           </v-btn>
         </template>
