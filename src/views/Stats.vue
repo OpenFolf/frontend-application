@@ -6,9 +6,7 @@
     <v-content>
       <v-container fluid class="mt-0 pt-0">
         <v-row>
-          <v-col cols="12">
-            <user-stats-list-item />
-          </v-col>
+          <user-stats-list />
         </v-row>
       </v-container>
     </v-content>
@@ -18,11 +16,11 @@
 <script>
   import { mapActions } from "vuex";
   import { Fragment } from "vue-fragment";
-  import UserStatsListItem from "../components/stats/UserStatsListItem.vue";
+  import UserStatsList from "../components/stats/UserStatsList.vue";
   export default {
     name: "stats",
     components: {
-      UserStatsListItem,
+      UserStatsList,
       Fragment,
     },
     methods: {

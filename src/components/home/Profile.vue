@@ -2,57 +2,50 @@
   <v-container fluid>
     <v-row dense>
       <v-col cols="12">
-        <v-card color="addedColor" class="pa-1 overflow-x-auto" flat>
-          <!-- <v-card color="afe1e3" class="pa-1 overflow-x-auto" flat> -->
-          <v-btn text color="waring" @click="seeDebug = !seeDebug" small>
-            {{ seeDebug ? "Hide" : "Show Debug text" }}
-          </v-btn>
-          <pre v-if="seeDebug">{{ getUser }}</pre>
+        <v-card color="amber" class="pa-1 overflow-x-auto" flat>
+          <v-card-title class="headline">
+            <span class="font-weight-bold title">Tee name:</span>
+            <span class="display-1 ml-3"> {{ getUserName }}</span>
+          </v-card-title>
           <v-divider />
           <v-card-title class="headline">
-            Tee name: {{ getUserName ? getUserName : "--" }}
+            <span class="headline">Choose a 3 letter Tee name:</span>
           </v-card-title>
           <v-card-text>
-            <v-form ref="signInForm" color="red">
+            <v-form @submit.prevent ref="signInForm" color="red">
               <v-text-field
-                label="User Name"
+                label="Tee Name"
                 type="name"
                 @blur="$v.name.$touch()"
                 :error-messages="nameErrors"
                 v-model.lazy="name"
                 required
+                outlined
               />
               <v-btn
                 :disabled="$v.name.$invalid"
                 @click="saveLocalUserName"
+                block
                 class="px-2"
                 append-icon="fa-save"
                 color="primary"
-                outlined
                 >Save
               </v-btn>
             </v-form>
           </v-card-text>
           <v-divider />
-          <v-card class="pa-1 my-1 d-flex flex-column justify-center" color="transparent" flat>
-            <v-card-title class="headline">Default Tee Color:</v-card-title>
-            <v-btn-toggle mandatory v-model="localTeeValue" class="mb-2 mx-auto">
-              <v-btn :value="0" text color="blue">blue</v-btn>
-              <v-btn :value="1" text color="white">white</v-btn>
-              <v-btn :value="2" text color="red">red</v-btn>
-              <v-btn :value="3" text color="yellow">yellow</v-btn>
-            </v-btn-toggle>
-          </v-card>
-
-          <v-divider />
-
           <v-card class="pa-1 my-1 d-flex flex-row align-center" color="transparent" flat>
             <v-card-title class="headline">Set Theme:</v-card-title>
             <v-spacer />
-            <v-btn x-large @click="setUserTheme" class="mr-2">
-              <v-icon left>fa-sun</v-icon>
-              /
-              <v-icon right>fa-moon</v-icon>
+            <v-btn
+              x-large
+              :color="!getIsUserDark ? 'accent' : 'warning'"
+              depressed
+              @click="setUserTheme"
+            >
+              <v-icon :color="!getIsUserDark ? 'white' : 'black'">
+                {{ !getIsUserDark ? "fa-moon" : "fa-sun" }}
+              </v-icon>
             </v-btn>
           </v-card>
         </v-card>
@@ -62,6 +55,7 @@
 </template>
 
 <script>
+  // TODO: @ARNAR - NO MUTATONS, ONLY DISPATCH
   import { mapActions, mapGetters, mapMutations } from "vuex";
   import { required, minLength, maxLength } from "vuelidate/lib/validators";
   export default {
@@ -69,10 +63,6 @@
     data() {
       return {
         name: "",
-        localTeeValue: 3,
-        localColorLabel: "YELLOW",
-        seeDebug: false,
-        hasBeenSent: false,
       };
     },
     validations: {
@@ -83,7 +73,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getUser", "getUserName", "getUserTee", "errorMsg"]),
+      ...mapGetters(["getUserName", "getUserTheme", "errorMsg", "getIsUserDark"]),
       nameErrors() {
         const errors = [];
         if (this.errorMsg.message) {
@@ -99,54 +89,11 @@
       },
     },
     methods: {
+      // TODO: @ARNAR - NO MUTATIONS FROM COMPONENTS, ONLY DISPATCH
       ...mapMutations(["CLEAR_ERRORS"]),
-      ...mapActions(["setUserName", "setUserDefaultTee", "setUserTheme"]),
+      ...mapActions(["setUserName", "setUserTheme"]),
       saveLocalUserName() {
         this.setUserName(this.name.toUpperCase());
-      },
-
-      // SECTION: TODO: .
-      // This function should reside in the store or centralized logic.
-      // Ideal would be to GET value and DISPATCH an action to toggle the theme settings.
-      // Also this should be saved with the user object and set during initialization.
-      toggleTheme() {
-        this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-        // this.$vuetify.theme.dark ? this.setUserTheme("DARK") : this.setUserTheme("LIGHT");
-        // This set GLOBAL THEME WITH THE USER STORE.
-      },
-      // SECTION: TODO: .
-    },
-    watch: {
-      localTeeValue() {
-        switch (this.localTeeValue) {
-          case 0:
-            this.setUserDefaultTee("BLUE");
-            break;
-          case 1:
-            this.setUserDefaultTee("WHITE");
-            break;
-          case 2:
-            this.setUserDefaultTee("RED");
-            break;
-          case 3:
-            this.setUserDefaultTee("YELLOW");
-            break;
-        }
-      },
-      localColorLabel: {
-        immediate: true,
-        handler() {
-          let colorLabel = this.$store.getters.getUserTee;
-          if (colorLabel === "BLUE") {
-            this.localTeeValue = 0;
-          } else if (colorLabel === "WHITE") {
-            this.localTeeValue = 1;
-          } else if (colorLabel === "RED") {
-            this.localTeeValue = 2;
-          } else {
-            this.localTeeValue = 3;
-          }
-        },
       },
     },
   };
