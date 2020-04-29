@@ -267,10 +267,20 @@ const actions = {
       // check gameStatus on gamesList[0]
       // If gameStatus 0 => create player, fetch game, route to lobby
       if (gamesList[0].gameStatus == 0) {
-        // createPlayer on this game ID
-        await context.dispatch("createPlayer", gamesList[0].id);
-        // Store game in state
-        await context.dispatch("fetchGame", gamesList[0].id);
+        // Check if user is part of game if so fetch game to state then route to lobby
+        const gamePlayers = gamesList[0].players.items;
+        const userId = context.rootState.user.user.id;
+        let playerInGame = services.isPlayerInGame(userId, gamePlayers);
+
+        if (playerInGame) {
+          // Fetch game object and trigger routing to lobby
+          await context.dispatch("fetchGame", gamesList[0].id);
+        } else {
+          // createPlayer on this game ID
+          await context.dispatch("createPlayer", gamesList[0].id);
+          // Store game in state which triggers routing to lobby
+          await context.dispatch("fetchGame", gamesList[0].id);
+        }
       }
       // If gameStatus 1 =>
       if (gamesList[0].gameStatus == 1) {
