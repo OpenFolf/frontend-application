@@ -2,9 +2,9 @@
   <v-container fluid>
     <v-row dense>
       <v-col cols="12">
-        <v-card color="warning" class="pa-1 overflow-x-auto" flat>
+        <v-card color="addedColor" class="pa-1 overflow-x-auto" flat>
           <!-- <v-card color="afe1e3" class="pa-1 overflow-x-auto" flat> -->
-          <v-btn text color="error" @click="seeDebug = !seeDebug" small>
+          <v-btn text color="waring" @click="seeDebug = !seeDebug" small>
             {{ seeDebug ? "Hide" : "Show Debug text" }}
           </v-btn>
           <pre v-if="seeDebug">{{ getUser }}</pre>

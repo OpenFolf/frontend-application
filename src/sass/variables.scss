@@ -3,7 +3,7 @@
 $body-font-family: "Raleway",
 sans-serif !important;
 
-$material-light: ("background": #ffffff,
+$material-light: ("background": #e3ffe3,
 );
 
 $material-dark: ("background": #000000,
@@ -27,4 +27,8 @@ $material-dark: ("background": #000000,
 .theme--light.v-tabs-items {
   background-color: transparent;
   color: none;
+}
+
+.v-btn--contained {
+  box-shadow: none;
 }

@@ -20,11 +20,11 @@
           </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
-          <ul class="white--text pl-0">
+          <ul class="white--text pl-0 ">
             <li
               v-for="players in gameList.players"
               :key="players.id"
-              class="d-flex flex-row justify-space-between title"
+              class="d-flex flex-row justify-space-between subtitle-1 font-weight-medium"
             >
               <span> {{ players.user.email }} </span>
               <span> Score: {{ players.totalScore }} </span>
