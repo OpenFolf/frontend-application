@@ -2,7 +2,7 @@
   <v-container fluid>
     <home-menu-item v-for="item in contentList" :key="item.id" :content="item" />
     <v-col cols="12">
-      <v-btn color="amber " block x-large dark @click.stop="dialog = true">
+      <v-btn color="success" block x-large dark @click.stop="dialog = true">
         <span class="headline">
           Play now!
         </span>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import HomeMenuItem from "@/components/home/MenuItem.vue";
+  import HomeMenuItem from "./MenuItem.vue";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "home-menu",
@@ -73,7 +73,7 @@
           },
           {
             id: 2,
-            color: "success",
+            color: "addedColor",
             title: "Disc Golf Rules",
             subtitle: "Do you know how to play Disc Golf? Read them here.",
             buttonText: "See Rules",
