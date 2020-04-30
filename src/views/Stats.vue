@@ -8,7 +8,7 @@
         <v-row>
           <user-stats-list v-if="getUserGames[0].gameId" />
           <v-col cols="12" v-else>
-            <v-card>
+            <v-card flat>
               <v-card-title> No statistics yet. Start playing! </v-card-title>
             </v-card>
           </v-col>
@@ -20,6 +20,7 @@
 
 <script>
   import { mapActions, mapGetters } from "vuex";
+  import { getUserLocation } from "../services";
   import { Fragment } from "vue-fragment";
   import UserStatsList from "../components/stats/UserStatsList.vue";
   export default {
@@ -42,6 +43,7 @@
       this.bottomNavHandler(true);
       this.resetGame();
       this.resetCourse();
+      getUserLocation();
     },
   };
 </script>

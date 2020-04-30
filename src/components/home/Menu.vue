@@ -51,6 +51,7 @@
 
 <script>
   import HomeMenuItem from "./MenuItem.vue";
+  import { getUserLocation } from "../../services";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "home-menu",
@@ -86,6 +87,7 @@
     },
     created() {
       this.bottomNavHandler(true);
+      getUserLocation();
     },
     methods: {
       ...mapActions(["defaultRouting", "showBottomNav"]),
