@@ -4,9 +4,9 @@
       <v-btn color="#7CAA98" depressed @click="zigZag = !zigZag" class="mr-2 font-weight-bold">
         {{ zigZag ? "|" : "Z" }}
       </v-btn>
-      <v-btn :color="getIsUserDark ? 'accent' : 'warning'" depressed @click="setUserTheme">
-        <v-icon :color="getIsUserDark ? 'white' : 'black'">
-          {{ getIsUserDark ? "fa-moon" : "fa-sun" }}
+      <v-btn :color="!getIsUserDark ? 'accent' : 'warning'" depressed @click="setUserTheme">
+        <v-icon :color="!getIsUserDark ? 'white' : 'black'">
+          {{ !getIsUserDark ? "fa-moon" : "fa-sun" }}
         </v-icon>
       </v-btn>
       <v-spacer />

@@ -30,7 +30,7 @@
         />
         <v-btn
           block
-          color="primary"
+          color="success"
           :disabled="$v.email.$invalid || $v.password.$invalid"
           @click="signUpUser"
         >

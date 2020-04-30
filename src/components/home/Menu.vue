@@ -17,8 +17,8 @@
             friends can join.
           </v-card-text>
 
-          <v-card color="secondary mr-2 ml-2 mb-2"
-            ><v-card-actions class="d-flex flex-column">
+          <v-card color="secondary mr-2 ml-2 mb-2" flat>
+            <v-card-actions class="d-flex flex-column">
               <span class="mb-3">Play a Game</span>
               <v-btn block @click="dialog = false" color="primary" :to="{ name: 'game' }">
                 <v-icon>fa-play</v-icon>
@@ -31,7 +31,7 @@
             code.
           </v-card-text>
 
-          <v-card color="secondary mr-2 ml-2 mb-2">
+          <v-card color="secondary mr-2 ml-2 mb-2" flat>
             <v-card-actions class="d-flex flex-column">
               <span class="mb-3">Join a Game</span>
               <v-btn block @click="dialog = false" color="primary" :to="{ name: 'join-game' }">
@@ -51,6 +51,7 @@
 
 <script>
   import HomeMenuItem from "./MenuItem.vue";
+  import { getUserLocation } from "../../services";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "home-menu",
@@ -86,6 +87,7 @@
     },
     created() {
       this.bottomNavHandler(true);
+      getUserLocation();
     },
     methods: {
       ...mapActions(["defaultRouting", "showBottomNav"]),
