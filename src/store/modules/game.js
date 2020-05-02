@@ -96,6 +96,10 @@ const mutations = {
     payload.players.items.sort((a, b) => a.no - b.no);
     // Add the owner back to the array, this time to the front of the list
     payload.players.items = [...ownerElement, ...payload.players.items];
+
+    // Sort by hole number
+    payload.course.holes.items.sort((a, b) => (parseInt(a.no) > parseInt(b.no) ? 1 : -1));
+
     state.game = payload;
   },
   SET_GAMESLIST: (state, payload) => {

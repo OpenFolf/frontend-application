@@ -37,7 +37,6 @@
       this.bottomNavHandler(true);
       this.resetCourse();
       if (this.getUserLocationError) {
-        console.log("Kemur");
         this.sortAlpha = true;
       }
     },

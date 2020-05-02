@@ -31,12 +31,10 @@ exports.handler = (event, context, callback) => {
     },
     TableName: "User-2ktwvesmrfadlbqu76uyitfmqi-prod",
   };
-  dynamodb.putItem(params, function(err, data) {
+  dynamodb.putItem(params, function(err) {
     if (err) {
-      //console.log(err);
       callback(err);
     } else {
-      //console.log(data);
       callback(null, event);
     }
   });
