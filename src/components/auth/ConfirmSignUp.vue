@@ -28,7 +28,7 @@
           block
           :disabled="$v.email.$invalid || $v.confirmCode.$invalid"
           @click="confirm"
-          color="primary"
+          color="success"
         >
           <span class="font-weight-bold">CONFIRM</span>
         </v-btn>

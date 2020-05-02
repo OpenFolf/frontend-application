@@ -1,13 +1,57 @@
 <template>
   <v-container fluid>
-    <v-row dense>
-      <home-menu-item v-for="item in contentList" :key="item.id" :content="item" />
-    </v-row>
+    <home-menu-item v-for="item in contentList" :key="item.id" :content="item" />
+    <v-col cols="12">
+      <v-btn color="success" block x-large dark @click.stop="dialog = true">
+        <span class="headline">
+          Play now!
+        </span>
+      </v-btn>
+
+      <v-dialog v-model="dialog" overlay-opacity="0.7">
+        <v-card color="accent">
+          <v-card-title class="headline">How to openFOLF?</v-card-title>
+
+          <v-card-text>
+            Press the play button and select the course you wish to play and start a game lobby your
+            friends can join.
+          </v-card-text>
+
+          <v-card color="secondary mr-2 ml-2 mb-2" flat>
+            <v-card-actions class="d-flex flex-column">
+              <span class="mb-3">Play a Game</span>
+              <v-btn block @click="dialog = false" color="primary" :to="{ name: 'game' }">
+                <v-icon>fa-play</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+
+          <v-card-text class="mt-2">
+            Want to join another players game lobby? Press the join button and enter your lobby
+            code.
+          </v-card-text>
+
+          <v-card color="secondary mr-2 ml-2 mb-2" flat>
+            <v-card-actions class="d-flex flex-column">
+              <span class="mb-3">Join a Game</span>
+              <v-btn block @click="dialog = false" color="primary" :to="{ name: 'join-game' }">
+                <v-icon>fa-compress-alt</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+
+          <v-card-text>
+            When all players have entered the game lobby start the game.
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </v-col>
   </v-container>
 </template>
 
 <script>
-  import HomeMenuItem from "@/components/home/MenuItem.vue";
+  import HomeMenuItem from "./MenuItem.vue";
+  import { getUserLocation } from "../../services";
   import { mapGetters, mapActions } from "vuex";
   export default {
     name: "home-menu",
@@ -16,6 +60,7 @@
     },
     data() {
       return {
+        dialog: false,
         contentList: [
           {
             id: 1,
@@ -29,9 +74,9 @@
           },
           {
             id: 2,
-            color: "success",
+            color: "addedColor",
             title: "Disc Golf Rules",
-            subtitle: "Do you know how to play Disc Golf? Read the official PDGA rules.",
+            subtitle: "Do you know how to play Disc Golf? Read them here.",
             buttonText: "See Rules",
             routerPath: {
               name: "home-rules",
@@ -42,6 +87,7 @@
     },
     created() {
       this.bottomNavHandler(true);
+      getUserLocation();
     },
     methods: {
       ...mapActions(["defaultRouting", "showBottomNav"]),

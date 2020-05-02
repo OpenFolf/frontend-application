@@ -1,20 +1,15 @@
 <template>
   <v-col cols="12">
-    <!-- <user-stats-list-item
-      v-if="dialog"
-      @close="dialog = false"
-      @outside="changeModal"
-      :dialog="dialog"
-      :gameListIndex="modalIndex"
-    >
-    </user-stats-list-item> -->
-    <v-dialog v-model="dialog" width="400" overlay-opacity="0.7">
-      <v-card color="secondary" flat @click="dialog = false">
-        <v-card-title class="font-weight-bold title white--text"
-          >{{ getUserGames[modalIndex].course.courseName }} -
-          {{ getUserGames[modalIndex].gameDate }}</v-card-title
-        >
-
+    <v-dialog v-model="dialog" overlay-opacity="0.7">
+      <v-card color="secondary" @click="dialog = false">
+        <v-card class="secondary" flat>
+          <v-card-title flat class="font-weight-bold title white--text">
+            {{ getUserGames[modalIndex].course.courseName }}
+          </v-card-title>
+          <v-card-subtitle flat class="font-weight-bold title white--text">
+            {{ getUserGames[modalIndex].gameDate }}
+          </v-card-subtitle>
+        </v-card>
         <v-simple-table class="mx-auto" dense>
           <template v-slot:default>
             <thead class="header" bold>
@@ -75,15 +70,14 @@
       :key="gameList.id"
       @click.stop="openModal(gameListIndex)"
     >
-      <v-toolbar flat color="secondary">
-        <v-toolbar-title class=" white--text headline ">
-          {{ gameList.course.courseName }} -
-        </v-toolbar-title>
-        <br />
-        <v-toolbar-title class=" white--text title ">
+      <v-card color="secondary" flat>
+        <v-card-title flat class="font-weight-bold title white--text">
+          {{ gameList.course.courseName }}
+        </v-card-title>
+        <v-card-subtitle flat class="font-weight-bold title white--text">
           {{ gameList.gameDate }}
-        </v-toolbar-title>
-      </v-toolbar>
+        </v-card-subtitle>
+      </v-card>
       <v-card-text>
         <ul class="white--text pl-0 ">
           <li

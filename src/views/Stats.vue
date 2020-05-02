@@ -6,7 +6,12 @@
     <v-content>
       <v-container fluid class="mt-0 pt-0">
         <v-row>
-          <user-stats-list />
+          <user-stats-list v-if="getUserGames[0].gameId" />
+          <v-col cols="12" v-else>
+            <v-card flat>
+              <v-card-title> No statistics yet. Start playing! </v-card-title>
+            </v-card>
+          </v-col>
         </v-row>
       </v-container>
     </v-content>
@@ -14,7 +19,8 @@
 </template>
 
 <script>
-  import { mapActions } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
+  import { getUserLocation } from "../services";
   import { Fragment } from "vue-fragment";
   import UserStatsList from "../components/stats/UserStatsList.vue";
   export default {
@@ -22,6 +28,9 @@
     components: {
       UserStatsList,
       Fragment,
+    },
+    computed: {
+      ...mapGetters(["getUserGames"]),
     },
     methods: {
       ...mapActions(["fetchUserGameList", "showBottomNav", "resetGame", "resetCourse"]),
@@ -34,6 +43,7 @@
       this.bottomNavHandler(true);
       this.resetGame();
       this.resetCourse();
+      getUserLocation();
     },
   };
 </script>

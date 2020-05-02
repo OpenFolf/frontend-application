@@ -14,7 +14,7 @@
         <v-spacer />
         <v-icon dark large>fa-angle-right</v-icon>
       </v-card-title>
-      <v-card-subtitle>
+      <v-card-subtitle v-if="!getUserLocationError">
         <v-icon dark class="mr-2">fa-map-marker-alt</v-icon>
         <span class="title white--text">{{ content.distance }} KM</span>
       </v-card-subtitle>
@@ -24,7 +24,7 @@
 
 <script>
   import { replaceIcelandicCharacters } from "@/services";
-  import { mapActions } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
   export default {
     name: "course-list-item",
     props: {
@@ -37,6 +37,9 @@
       return {
         pathName: replaceIcelandicCharacters(this.content.name),
       };
+    },
+    computed: {
+      ...mapGetters(["getUserLocationError"]),
     },
     methods: {
       ...mapActions(["fetchCourse"]),

@@ -28,7 +28,7 @@
       </v-card-title>
       <v-card-text class="font-weight-bold mt-3">{{ message.body }}</v-card-text>
       <v-divider />
-      <v-card-actions class="mt-2">
+      <v-card-actions class="mt-2 ">
         <v-spacer />
         <v-btn large color="error" class="font-weight-bold" @click="localDialog = false">
           {{ message.button1 }}
@@ -37,7 +37,7 @@
           large
           class="font-weight-bold"
           v-if="message.title === 'Start Game'"
-          color="primary"
+          color="success"
           @click="$emit('start')"
         >
           {{ message.button2 }}
@@ -46,7 +46,7 @@
           large
           class="font-weight-bold"
           v-if="message.title === 'Cancel Game'"
-          color="primary"
+          color="success"
           @click="$emit('cancelGame')"
         >
           {{ message.button2 }}
@@ -55,7 +55,7 @@
           large
           class="font-weight-bold"
           v-if="message.title === 'Kick Player'"
-          color="primary"
+          color="success"
           @click="$emit('removeUser', userToRemove)"
         >
           {{ message.button2 }}
@@ -64,7 +64,7 @@
           large
           class="font-weight-bold"
           v-if="message.title === 'Leave Lobby'"
-          color="primary"
+          color="success"
           @click="$emit('removeUser', userToRemove)"
         >
           {{ message.button2 }}
@@ -73,7 +73,7 @@
           large
           class="font-weight-bold"
           v-if="message.title === 'End Game'"
-          color="primary"
+          color="success"
           @click="$emit('finishGame')"
         >
           {{ message.button2 }}

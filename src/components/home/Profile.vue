@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row dense>
       <v-col cols="12">
-        <v-card color="amber" class="pa-1 overflow-x-auto" flat>
+        <v-card color="accent" class="pa-1 overflow-x-auto" flat>
           <v-card-title class="headline">
             <span class="font-weight-bold title">Tee name:</span>
             <span class="display-1 ml-3"> {{ getUserName }}</span>
@@ -73,7 +73,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getUserName", "getUserTheme", "errorMsg", "getIsUserDark"]),
+      ...mapGetters(["getUserName", "getUserTheme", "errorMsg", "getIsUserDark", "signedIn"]),
       nameErrors() {
         const errors = [];
         if (this.errorMsg.message) {
@@ -91,9 +91,14 @@
     methods: {
       // TODO: @ARNAR - NO MUTATIONS FROM COMPONENTS, ONLY DISPATCH
       ...mapMutations(["CLEAR_ERRORS"]),
-      ...mapActions(["setUserName", "setUserTheme"]),
+      ...mapActions(["setUserName", "setUserTheme", "signOutRouting"]),
       saveLocalUserName() {
         this.setUserName(this.name.toUpperCase());
+      },
+    },
+    watch: {
+      signedIn() {
+        this.signOutRouting();
       },
     },
   };

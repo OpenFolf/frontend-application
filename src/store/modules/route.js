@@ -135,6 +135,12 @@ const actions = {
       Router.push({ name: "auth" });
     }
   },
+
+  signOutRouting(context) {
+    if (!context.rootState.auth.signedIn) {
+      Router.push({ name: "auth" });
+    }
+  },
 };
 
 export default {

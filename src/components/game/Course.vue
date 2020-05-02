@@ -9,7 +9,7 @@
         </v-container>
       </v-toolbar>
       <v-card class="ma-0 pa-0 d-flex justify-center" color="secondary" tile>
-        <v-btn large class="my-8 primary" @click="playCourse">
+        <v-btn large class="my-8 success" @click="playCourse">
           <span class="font-weight-bold">Play Course</span>
         </v-btn>
       </v-card>
@@ -18,7 +18,7 @@
           <span class="font-weight-bold">{{ tab }}</span>
         </v-tab>
       </v-tabs>
-      <v-tabs-items v-model="currentTab">
+      <v-tabs-items v-model="currentTab" touchless>
         <v-tab-item><course-info :course="getCurrentCourse" :holeSums="holeSums"/></v-tab-item>
         <v-tab-item>
           <course-map

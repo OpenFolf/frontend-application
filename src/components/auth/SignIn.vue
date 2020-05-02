@@ -32,7 +32,7 @@
           block
           :disabled="$v.email.$invalid || $v.password.$invalid"
           @click="signInUser"
-          color="primary"
+          color="success"
         >
           <span class="font-weight-bold"> SIGN IN</span>
         </v-btn>
