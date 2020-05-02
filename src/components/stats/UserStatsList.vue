@@ -95,7 +95,6 @@
 </template>
 
 <script>
-  //  import UserStatsListItem from "./UserStatsListItem";
   import { mapGetters } from "vuex";
   export default {
     name: "user-stats-list",

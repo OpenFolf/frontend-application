@@ -2,11 +2,6 @@
   <v-card color="transparent" flat>
     <v-container>
       <v-row dense>
-        <!-- <v-col cols="12">
-          <v-container class="d-flex flex-row justify-center align-center">
-            <iframe frameborder="0" src="https://www.youtube.com/embed/tgbNymZ7vqY" />
-          </v-container>
-        </v-col> -->
         <v-col cols="12">
           <v-card-title class="font-weight-bold">General Disc Golf Rules</v-card-title>
           <v-card-text>

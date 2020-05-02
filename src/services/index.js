@@ -67,29 +67,15 @@ export function getUserLocation() {
       lng: position.coords.longitude,
       error: 0,
     });
-    console.log(
-      "services/getUserLocation",
-      position.coords.latitude,
-      " ",
-      position.coords.longitude,
-    );
   }
 
   function errorHandler(e) {
-    // TODO: .
-    // Here we need to react to different reasons for geoLocation API failing.
-    // The service might be blocked or the user refused. Maybe more?
     console.log("services/getUserLocation", e.message);
 
     const lat = 64.123777;
     const lng = -21.926144;
     const error = 1;
     Store.dispatch("setUserLocation", { lat, lng, error });
-    // Store.dispatch("setUserLocation", {
-    //   lat: null,
-    //   lng: null,
-    //   error: true,
-    // });
   }
 }
 
@@ -115,6 +101,7 @@ export function isPlayerInGame(userId, playerArray) {
   return playerInGame;
 }
 
+// Reorganize list of games for rendering on stats page
 export function reorganizeGameList(userGameList) {
   // Function that goes through list of user games and re-organizes
   const statsList = [];

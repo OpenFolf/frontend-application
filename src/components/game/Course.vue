@@ -77,7 +77,6 @@
       swipe(direction) {
         this.dir = direction;
       },
-      //TODO: Move to services
       calculateLengthAndTotalPar() {
         if (this.getCurrentCourse.holes.items.length > 0) {
           this.getCurrentCourse.holes.items.forEach((m) => {

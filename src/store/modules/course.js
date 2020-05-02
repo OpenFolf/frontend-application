@@ -30,7 +30,6 @@ const mutations = {
     state.currentCourse = payload;
   },
   RESET_COURSE(state) {
-    // console.log("Course>mutations>RESET_COURSE");
     state.currentCourse = "";
   },
 };
@@ -70,7 +69,6 @@ const actions = {
     }
   },
   resetCourse({ commit }) {
-    console.log("Course>Actions>resetCourse");
     commit("RESET_COURSE");
   },
 };

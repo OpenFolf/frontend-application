@@ -85,17 +85,17 @@ const actions = {
             });
           }
           break;
-        case "1":
+        case "1": // GameStatus = 1 then route to scorecard
           if (payload != "scorecard") {
             Router.push({ name: "game-scorecard" });
           }
           break;
-        case "2":
+        case "2": // GameStatus = 2 then route to statspage
           if (payload != "stats") {
             Router.push({ name: "stats" });
           }
           break;
-        case "-1":
+        case "-1": // GameStatus = -1 then route to home
           Router.push({ name: "home-menu" });
           break;
         default:
@@ -108,23 +108,24 @@ const actions = {
   },
 
   scorecardRouting(context, payload) {
+    // Check if user is signed in, if not signed in then route to sign in page
     if (context.rootState.auth.signedIn) {
       const gameStatus = context.rootState.game.game.gameStatus;
       switch (gameStatus) {
-        case "":
+        case "": // GameStatus = "" then route to home
           Router.push({ name: "home-menu" });
           break;
-        case "1":
+        case "1": // GameStatus = 1 then route to scorecard
           if (payload != "scorecard") {
             Router.push({ name: "game-scorecard" });
           }
           break;
-        case "2":
+        case "2": // GameStatus = 2 then route to stats
           if (payload != "stats") {
             Router.push({ name: "stats" });
           }
           break;
-        case "-1":
+        case "-1": // GameStatus = -1 then route to home
           Router.push({ name: "home-menu" });
           break;
         default:
@@ -137,6 +138,7 @@ const actions = {
   },
 
   signOutRouting(context) {
+    // Check if user is signed in, if not signed in then route to sign in page
     if (!context.rootState.auth.signedIn) {
       Router.push({ name: "auth" });
     }

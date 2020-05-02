@@ -55,7 +55,6 @@
 </template>
 
 <script>
-  // TODO: @ARNAR - NO MUTATONS, ONLY DISPATCH
   import { mapActions, mapGetters, mapMutations } from "vuex";
   import { required, minLength, maxLength } from "vuelidate/lib/validators";
   export default {
@@ -89,7 +88,6 @@
       },
     },
     methods: {
-      // TODO: @ARNAR - NO MUTATIONS FROM COMPONENTS, ONLY DISPATCH
       ...mapMutations(["CLEAR_ERRORS"]),
       ...mapActions(["setUserName", "setUserTheme", "signOutRouting"]),
       saveLocalUserName() {

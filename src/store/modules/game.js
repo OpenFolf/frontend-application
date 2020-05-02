@@ -108,7 +108,6 @@ const mutations = {
     state.game.gameStatus = payload;
   },
   RESET_GAME(state) {
-    //console.log("Game>mutations>RESET_GAME");
     // Reset the game object
     const newState = initialState();
     Object.keys(newState).forEach((key) => {
@@ -193,7 +192,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      //console.log("Update gameStatus error", e);
+      throw Error("Cancel game error", e);
     }
   },
   async startGame(context) {
@@ -256,7 +255,6 @@ const actions = {
       context.commit("SET_GAMESLIST", gamesList);
       // if gamesList length is 0 then error message 'no such game'
       if (gamesList.length == 0) {
-        //console.log("JoinGame>NoGame");
         // Signal to component that no game exists with lobby code
         context.commit("ERROR_MSG", { message: `No game found with the lobby code ${code}` });
       }
@@ -325,7 +323,6 @@ const actions = {
     // TODO: Turn off all subscribers, check if needed
   },
   resetGame(context) {
-    //console.log("Game>Actions>resetGame");
     context.commit("RESET_GAME");
   },
   //Player actions
@@ -403,7 +400,6 @@ const actions = {
         gamePlayers[i].totalScore = sum;
       }
     }
-    //console.log("gamePlayers: ", gamePlayers);
     // Set new scorearray in state
     context.commit("SET_SCORE_ARRAY", gamePlayers);
     // Update score for player in database
@@ -430,7 +426,6 @@ const actions = {
       });
       // Push to subscription array
       context.commit("PUSH_PLAYER_SUBSCRIPTION", subscription);
-      // console.log("Subscription", subscription);
     } catch (e) {
       throw Error("Player subscription error", e);
     }
@@ -447,7 +442,6 @@ const actions = {
       });
       // Store subscription in state
       context.commit("SET_GAME_SUBSCRIPTION", gameSubscription);
-      //console.log("Game subscription: ", gameSubscription);
     } catch (e) {
       throw Error("Game subscription error", e);
     }
@@ -458,7 +452,6 @@ const actions = {
     //Unsubscribes to any changes on game object in the database
     try {
       context.state.gameSubscription.unsubscribe();
-      // console.log("Game un-subscription: ", context.state.gameSubscription);
     } catch (e) {
       throw Error("Game un-subscription error", e);
     }
@@ -471,7 +464,6 @@ const actions = {
     // Subscribe to changes on all players
     for (let i = 0; i < gamePlayers.length; i++) {
       context.dispatch("subscribeToPlayer", gamePlayers[i].id);
-      // console.log("Subscribing to", gamePlayers[i].id);
     }
   },
   unSubscribeToPlayerList(context) {
@@ -482,7 +474,6 @@ const actions = {
     // Subscribe to changes on all players
     for (let i = 0; i < playerSubscriptions.length; i++) {
       playerSubscriptions[i].unsubscribe();
-      // console.log("Un-Subscribing to", playerSubscriptions[i]);
     }
   },
   // Refresh actions
@@ -496,7 +487,6 @@ const actions = {
   refreshLobby(context) {
     // Fetch game object again from database
     const gameId = context.rootState.game.game.id;
-    //console.log("Fetching game: ", gameId);
     context.dispatch("fetchGame", gameId);
     // Subscribe to all players in game again
     context.dispatch("subscribeToPlayerList");

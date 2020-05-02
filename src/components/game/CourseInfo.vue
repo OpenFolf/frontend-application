@@ -1,7 +1,5 @@
 <template>
   <v-container class="ma-0 pa-0" fluid>
-    <!-- <v-row dense>
-      <v-col cols="12"> -->
     <v-card
       color="secondary"
       tile
@@ -42,13 +40,10 @@
         <span class="white--text">{{ course.baskettype }}</span>
       </v-card-subtitle>
     </v-card>
-    <!-- </v-col>
-    </v-row> -->
   </v-container>
 </template>
 
 <script>
-  // import div from "vue-div";
   export default {
     name: "game-course-info",
     props: {
@@ -61,9 +56,7 @@
         required: true,
       },
     },
-    components: {
-      // div,
-    },
+    components: {},
     computed: {
       checkUrl() {
         return (

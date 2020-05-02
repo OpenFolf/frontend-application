@@ -78,9 +78,6 @@ const getters = {
   getUserGames: (state) => {
     return state.userGames;
   },
-  // getUserHistoryGameListItemPlayerItem: (state) => {
-  //   return state.userGames.gamesPlayed.items.game.players.items;
-  // },
 };
 
 const mutations = {
@@ -91,7 +88,6 @@ const mutations = {
     state.user.id = payload;
   },
   setUserName: (state, payload) => {
-    //console.log("User>mutations>setUserName, payload", payload);
     state.user.username = payload;
   },
   setUserEmail: (state, payload) => {
@@ -105,7 +101,6 @@ const mutations = {
   },
   setUserDefaultTee: (state, payload) => {
     state.user.defTee = payload;
-    //console.log("DefTee", payload);
     //Add to database
   },
   setUserLocation: (state, payload) => {
@@ -117,12 +112,10 @@ const mutations = {
     const gameObjectList = services.reorganizeGameList(payload.gamesPlayed.items);
 
     if (gameObjectList.length) {
-      console.log("setUserGames> gameObjectList", gameObjectList);
       state.userGames = gameObjectList;
     }
   },
   RESET_USER(state) {
-    ////console.log("Auth>mutations>RESET_USER");
     const newState = initialState();
     Object.keys(newState).forEach((key) => {
       state[key] = newState[key];
@@ -132,17 +125,14 @@ const mutations = {
 
 const actions = {
   setUserId: ({ commit }, payload) => {
-    //console.log("User>setUserId");
     commit("setUserId", payload);
   },
 
   resetUser({ commit }) {
-    //console.log("Course>Actions>resetUser");
     commit("RESET_USER");
   },
   async setUserName(context, payload) {
-    //console.log("User>actions>setUserName, payload", payload);
-    // Add to database
+    // Set new username to add to database
     const userId = context.rootState.user.user.id;
     try {
       await API.graphql(
@@ -151,7 +141,7 @@ const actions = {
         }),
       );
     } catch (e) {
-      //console.log("ErrorSETUSERNAME", e);
+      // Set error message to display
       context.commit("ERROR_MSG", {
         message: "User name may not contain an empty string or symbols",
       });
@@ -160,6 +150,7 @@ const actions = {
   },
 
   async setUserTheme(context) {
+    // Set user default theme, light or dark
     const userId = context.rootState.user.user.id;
     const userTheme = context.state.user.defMode;
     if (userTheme == "DARK") {
@@ -174,7 +165,7 @@ const actions = {
         throw Error("Update to LIGHT defMode error: ", e);
       }
       context.commit("setUserTheme", "LIGHT");
-      //console.log("Vuetify object: ", Vuetify);
+      // Set theme in app
       Vuetify.framework.theme.dark = false;
     } else {
       context.commit("setUserTheme", "DARK");
@@ -187,13 +178,13 @@ const actions = {
       } catch (e) {
         throw Error("Update to DARK defMode error: ", e);
       }
-      //console.log("Vuetify object: ", Vuetify);
       context.commit("setUserTheme", "DARK");
       Vuetify.framework.theme.dark = true;
     }
   },
 
   async setUserDefaultTee(context, payload) {
+    // Set default tee for user to play from
     const userId = context.rootState.user.user.id;
     try {
       await API.graphql(
@@ -208,10 +199,11 @@ const actions = {
   },
 
   setUserLocation: ({ commit }, payload) => {
+    // Add user location to state
     commit("setUserLocation", payload);
   },
   async fetchUser(context) {
-    //console.log("User>fetchUser");
+    // Fetch user info from database
     try {
       const response = await API.graphql(
         graphqlOperation(usergraphQL.fetchUser, { id: state.user.id }),
@@ -228,7 +220,7 @@ const actions = {
   },
 
   async fetchUserGameList(context) {
-    //console.log("Fetch UserGamesList User ID", context.rootState.user.user.id);
+    // Fetch list of all user games
     let response = {};
     try {
       response = await API.graphql(
