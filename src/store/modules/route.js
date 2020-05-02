@@ -23,11 +23,12 @@ const actions = {
   },
 
   defaultRouting(context, payload) {
+    // Check if user is signed in, if not signed in then route to sign in page
     if (context.rootState.auth.signedIn) {
       const gameStatus = context.rootState.game.game.gameStatus;
       const game = context.rootState.game.game;
       switch (gameStatus) {
-        case "0":
+        case "0": // GameStatus = 0 then route to lobby
           Router.push({
             name: "join-lobby",
             params: {
@@ -36,10 +37,10 @@ const actions = {
             },
           });
           break;
-        case "1":
+        case "1": // GameStatus = 1 then route to scorecard
           Router.push({ name: "game-scorecard" });
           break;
-        case "-1":
+        case "-1": // GameStatus = -1 then route to home
           if (payload != "course") {
             Router.push({ name: "home-menu" });
           }
@@ -48,6 +49,7 @@ const actions = {
           break;
       }
     } else {
+      // If not signed in then route to sign in page
       Router.push({ name: "auth" });
     }
   },
@@ -56,15 +58,15 @@ const actions = {
     const gamePlayers = context.rootState.game.game.players.items;
     const userId = context.rootState.user.user.id;
     let isUserStillInGame = services.isPlayerInGame(userId, gamePlayers);
-
+    // Check if player has been kicked out of game then trigger routing by removing game object
     if (!isUserStillInGame) {
-      // Router.push({ name: "home-menu" });
       // clear game state
       context.dispatch("resetGame");
     }
   },
 
   inGameRouting(context, payload) {
+    // Check if user is signed in, if not signed in then route to sign in page
     if (context.rootState.auth.signedIn) {
       const gameStatus = context.rootState.game.game.gameStatus;
       const game = context.rootState.game.game;
@@ -72,7 +74,7 @@ const actions = {
         case "":
           Router.push({ name: "home-menu" });
           break;
-        case "0":
+        case "0": // GameStatus = 0 then route to lobby
           if (payload != "lobby") {
             Router.push({
               name: "join-lobby",
