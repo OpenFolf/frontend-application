@@ -69,9 +69,7 @@ export function getUserLocation() {
     });
   }
 
-  function errorHandler(e) {
-    console.log("services/getUserLocation", e.message);
-
+  function errorHandler() {
     const lat = 64.123777;
     const lng = -21.926144;
     const error = 1;
