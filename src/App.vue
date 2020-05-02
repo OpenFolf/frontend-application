@@ -2,7 +2,7 @@
   <v-app>
     <error-boundary>
       <router-view />
-      <bottom-nav v-if="signedIn && getBottomNav" />
+      <bottom-nav data-testid="bottom-nav" v-if="signedIn && getBottomNav" />
     </error-boundary>
   </v-app>
 </template>
