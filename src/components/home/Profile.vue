@@ -5,7 +5,7 @@
         <v-card color="accent" class="pa-1 overflow-x-auto" flat>
           <v-card-title class="headline">
             <span class="font-weight-bold title">Tee name:</span>
-            <span class="display-1 ml-3"> {{ getUserName }}</span>
+            <span data-testid="user-name" class="display-1 ml-3"> {{ getUserName }}</span>
           </v-card-title>
           <v-divider />
           <v-card-title class="headline">
@@ -29,6 +29,7 @@
                 class="px-2"
                 append-icon="fa-save"
                 color="primary"
+                data-testid="user-name-send"
                 >Save
               </v-btn>
             </v-form>
@@ -42,8 +43,9 @@
               :color="!getIsUserDark ? 'accent' : 'warning'"
               depressed
               @click="setUserTheme"
+              data-testid="user-theme"
             >
-              <v-icon :color="!getIsUserDark ? 'white' : 'black'">
+              <v-icon data-testid="user-theme-button" :color="!getIsUserDark ? 'white' : 'black'">
                 {{ !getIsUserDark ? "fa-moon" : "fa-sun" }}
               </v-icon>
             </v-btn>
@@ -73,7 +75,7 @@
       },
     },
     computed: {
-      ...mapGetters(["getUserName", "getUserTheme", "errorMsg", "getIsUserDark", "signedIn"]),
+      ...mapGetters(["getUserName", "errorMsg", "getIsUserDark", "signedIn"]),
       nameErrors() {
         const errors = [];
         if (this.errorMsg.message) {
