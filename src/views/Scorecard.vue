@@ -41,7 +41,13 @@
                       :id="`p${playerIndex}h${holeIndex}`"
                       :style="inputStyles(`p${playerIndex}h${holeIndex}`)"
                       class="text-center headline font-weight-bold"
-                      @click="activeHole(playerIndex, holeIndex, hole.redPar)"
+                      @click="
+                        activeHole(
+                          playerIndex,
+                          holeIndex,
+                          hole.whitePar == '0' ? hole.redPar : hole.whitePar,
+                        )
+                      "
                     >
                       {{ player.scoreArray[holeIndex] == "0" ? "-" : player.scoreArray[holeIndex] }}
                     </td>
@@ -199,16 +205,32 @@
         if (this.zigZag) {
           if (this.selectedPlayer < this.getPlayers.length - 1) {
             this.selectedPlayer++;
+            this.selectedPar =
+              this.getHoles[this.selectedHole].whitePar == "0"
+                ? this.getHoles[this.selectedHole].redPar
+                : this.getHoles[this.selectedHole].whitePar;
           } else if (
-            this.selectedPlayer === this.getPlayers.length - 1 &&
-            this.selectedHole != this.getGame.course.holeCount - 1
+            (this.selectedPlayer === this.getPlayers.length - 1 &&
+              this.selectedHole != this.getGame.course.holeCount - 1,
+            (this.selectedPar =
+              this.getHoles[this.selectedHole].whitePar == "0"
+                ? this.getHoles[this.selectedHole].redPar
+                : this.getHoles[this.selectedHole].whitePar))
           ) {
             this.selectedPlayer = 0;
             this.selectedHole++;
+            this.selectedPar =
+              this.getHoles[this.selectedHole].whitePar == "0"
+                ? this.getHoles[this.selectedHole].redPar
+                : this.getHoles[this.selectedHole].whitePar;
           }
         } else {
           if (this.selectedHole < this.getHoles.length - 1) {
             this.selectedHole++;
+            this.selectedPar =
+              this.getHoles[this.selectedHole].whitePar == "0"
+                ? this.getHoles[this.selectedHole].redPar
+                : this.getHoles[this.selectedHole].whitePar;
           }
         }
       },
