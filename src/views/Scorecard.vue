@@ -217,12 +217,14 @@
                 ? this.getHoles[this.selectedHole].redPar
                 : this.getHoles[this.selectedHole].whitePar))
           ) {
-            this.selectedPlayer = 0;
-            this.selectedHole++;
-            this.selectedPar =
-              this.getHoles[this.selectedHole].whitePar == "0"
-                ? this.getHoles[this.selectedHole].redPar
-                : this.getHoles[this.selectedHole].whitePar;
+            if (this.selectedHole < this.getHoles.length - 1) {
+              this.selectedPlayer = 0;
+              this.selectedHole++;
+              this.selectedPar =
+                this.getHoles[this.selectedHole].whitePar == "0"
+                  ? this.getHoles[this.selectedHole].redPar
+                  : this.getHoles[this.selectedHole].whitePar;
+            }
           }
         } else {
           if (this.selectedHole < this.getHoles.length - 1) {
