@@ -38,8 +38,7 @@
                     <span class="font-weight-medium white--text">
                       {{ player.user.email }}
                     </span>
-                  </td>
-                  <td class="text-right font-weight-bold">
+                    <v-spacer />
                     <template v-if="isOwner && getUser.id !== player.user.id">
                       <confirm-dialogue
                         :userToRemove="player.id"
@@ -49,6 +48,9 @@
                       />
                     </template>
                   </td>
+                  <!-- <td class="text-right font-weight-bold">
+
+                  </td> -->
                 </tr>
               </tbody>
             </v-simple-table>
@@ -201,9 +203,3 @@
     },
   };
 </script>
-
-<style lang="scss" scoped>
-  tbody {
-    border: thin solid rgba(255, 255, 255, 0.12);
-  }
-</style>
