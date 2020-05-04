@@ -4,17 +4,17 @@
       <v-col cols="12">
         <v-card color="accent" class="pa-1 overflow-x-auto" flat>
           <v-card-title class="headline">
-            <span class="font-weight-bold title">Tee name:</span>
+            <span class="font-weight-bold title">Scorecard Name:</span>
             <span data-testid="user-name" class="display-1 ml-3"> {{ getUserName }}</span>
           </v-card-title>
           <v-divider />
           <v-card-title class="headline">
-            <span class="headline">Choose a 3 letter Tee name:</span>
+            <span class="title">Pick a 3 letter Scorecard Name:</span>
           </v-card-title>
           <v-card-text>
             <v-form @submit.prevent ref="signInForm" color="red">
               <v-text-field
-                label="Tee Name"
+                label="Scorecard Name"
                 type="name"
                 @blur="$v.name.$touch()"
                 :error-messages="nameErrors"

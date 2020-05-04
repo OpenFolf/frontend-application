@@ -53,7 +53,7 @@
         </v-row>
       </v-container>
     </v-content>
-    <v-bottom-navigation dark height="194px" app background-color="#005737">
+    <v-bottom-navigation class="bottomNav" dark height="194px" app background-color="#005737">
       <v-card flat color="primary" width="100%">
         <v-card-title class="mb-0 font-weight-bold headline">
           <v-spacer />
@@ -234,5 +234,8 @@
 <style scoped>
   th {
     background-color: #005737;
+  }
+  .bottomNav {
+    font-family: Roboto, sans-serif;
   }
 </style>

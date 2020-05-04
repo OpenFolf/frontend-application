@@ -1,7 +1,7 @@
 <template>
   <v-container class="ma-0 pa-0" fluid>
     <v-card
-      color="secondary"
+      color="courseInfo"
       tile
       class="d-flex flex-column justify-center align-center px-2 py-4 ma-0"
       flat

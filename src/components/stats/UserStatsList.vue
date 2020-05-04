@@ -63,7 +63,7 @@
       </v-card>
     </v-dialog>
     <v-card
-      color="addedColor"
+      color="courseInfo"
       flat
       class="mb-2"
       v-for="(gameList, gameListIndex) in getUserGames"
