@@ -33,20 +33,20 @@
               </thead>
               <tbody>
                 <tr v-for="(player, index) in getPlayers" :key="index" class="secondary">
-                  <td>
-                    <v-icon v-if="!index" small color="warning" class="mr-2">fa-crown</v-icon>
-                    <span class="font-weight-medium white--text">
-                      {{ player.user.email }}
+                  <td class="d-flex flex-row justify-space-between align-center">
+                    <span>
+                      <v-icon v-if="!index" small color="warning" class="mr-2">fa-crown</v-icon>
+                      <span class="font-weight-medium white--text">
+                        {{ player.user.email }}
+                      </span>
                     </span>
-                    <v-spacer />
-                    <template v-if="isOwner && getUser.id !== player.user.id">
-                      <confirm-dialogue
-                        :userToRemove="player.id"
-                        :dialog="kickUserDialog"
-                        :message="kickUserMsg"
-                        @removeUser="removeUser"
-                      />
-                    </template>
+                    <confirm-dialogue
+                      v-if="isOwner && getUser.id !== player.user.id"
+                      :userToRemove="player.id"
+                      :dialog="kickUserDialog"
+                      :message="kickUserMsg"
+                      @removeUser="removeUser"
+                    />
                   </td>
                   <!-- <td class="text-right font-weight-bold">
 
