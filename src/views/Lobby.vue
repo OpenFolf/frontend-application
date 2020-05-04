@@ -14,12 +14,12 @@
                 <span class="headline font-weight-bold mx-3">{{ getGame.course.name }}</span>
               </v-card-title>
             </v-card>
-            <v-card class="d-flex justify-center" color="info">
+            <v-card class="d-flex justify-center" color="lobbyCode">
               <v-card-title class="white--text headline text-center font-weight-bold" flat>
                 CODE: <span class="display-2 font-weight-bold mx-3">{{ getGame.lobbyCode }}</span>
               </v-card-title>
             </v-card>
-            <v-simple-table hide-actions>
+            <v-simple-table hide-actions class="table-bordered">
               <thead class="secondary">
                 <tr>
                   <th
@@ -32,12 +32,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(player, index) in getPlayers" :key="index">
+                <tr v-for="(player, index) in getPlayers" :key="index" class="secondary">
                   <td>
                     <v-icon v-if="!index" small color="warning" class="mr-2">fa-crown</v-icon>
-                    {{ player.user.email }}
+                    <span class="font-weight-medium white--text">
+                      {{ player.user.email }}
+                    </span>
                   </td>
-                  <td class="text-right">
+                  <td class="text-right font-weight-bold">
                     <template v-if="isOwner && getUser.id !== player.user.id">
                       <confirm-dialogue
                         :userToRemove="player.id"
@@ -48,14 +50,13 @@
                     </template>
                   </td>
                 </tr>
-                <tr>
-                  <td colspan="2">
-                    <v-skeleton-loader type="list-item" />
-                  </td>
-                </tr>
               </tbody>
             </v-simple-table>
-            <v-card flat>
+            <v-card class="mt-2" flat outlined>
+              <v-skeleton-loader type="list-item" />
+            </v-card>
+
+            <v-card flat outlined class="mt-2">
               <v-card-actions>
                 <confirm-dialogue
                   v-if="!isOwner"
@@ -200,3 +201,9 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  tbody {
+    border: thin solid rgba(255, 255, 255, 0.12);
+  }
+</style>

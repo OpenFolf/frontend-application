@@ -9,38 +9,38 @@
       </v-btn>
 
       <v-dialog v-model="dialog" overlay-opacity="0.7">
-        <v-card color="accent">
-          <v-card-title class="headline">How to openFOLF?</v-card-title>
+        <v-card color="addedBackGround">
+          <v-card-title class="headline black--text">How to openFOLF?</v-card-title>
 
-          <v-card-text>
+          <v-card-text class="font-weight-medium  black--text">
             Press the play button and select the course you wish to play and start a game lobby your
             friends can join.
           </v-card-text>
 
           <v-card color="secondary mr-2 ml-2 mb-2" flat>
             <v-card-actions class="d-flex flex-column">
-              <span class="mb-3">Play a Game</span>
+              <span class="mb-3 white--text">Play a Game</span>
               <v-btn block @click="dialog = false" color="primary" :to="{ name: 'game' }">
                 <v-icon>fa-play</v-icon>
               </v-btn>
             </v-card-actions>
           </v-card>
 
-          <v-card-text class="mt-2">
+          <v-card-text class="mt-2 font-weight-medium  black--text">
             Want to join another players game lobby? Press the join button and enter your lobby
             code.
           </v-card-text>
 
           <v-card color="secondary mr-2 ml-2 mb-2" flat>
             <v-card-actions class="d-flex flex-column">
-              <span class="mb-3">Join a Game</span>
+              <span class="mb-3 white--text">Join a Game</span>
               <v-btn block @click="dialog = false" color="primary" :to="{ name: 'join-game' }">
                 <v-icon>fa-compress-alt</v-icon>
               </v-btn>
             </v-card-actions>
           </v-card>
 
-          <v-card-text>
+          <v-card-text class="font-weight-medium  black--text">
             When all players have entered the game lobby start the game.
           </v-card-text>
         </v-card>
